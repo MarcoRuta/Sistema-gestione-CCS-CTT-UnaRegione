@@ -1,9 +1,9 @@
-1. Premessa
+1. Premessa:
 La Regione “UnaRegione” (committente) intende dotarsi di una soluzione software avanzata per la gestione integrata della giacenze di sangue presso la rete dei Centri Trasfusionali Territoriali.
 Attualmente i Centri Trasfusionali Territoriali gestiscono le scorte di sangue localmente, e questo impedisce la gestione ottimale delle scorte su base Regionale. Ad esempio, uno specifico Centro Trasfusionale Territoriale che avesse bisogno di una dose di sangue di un certo gruppo, non presente localmente, non ha nessuno strumento per verificarne la presenza presso altri Centri della Regione. Similmente, se un Centro ha una sacca in scadenza a breve (es. 72 ore), non ha nessuna possibilità di allertare altri Centri che ne avessero eventualmente bisogno, con il rischio che la dose venga lasciata scadere mentre potrebbe essere utilizzata immediatamente in altre aree della Regione.
 Il sistema software permettere di integrare i diversi Centri Trasfusionali Territoriali (CTT) e un Centro Controllo e Smistamento (CCS) con il compito di raccogliere le informazioni nate in periferia nei CTT, ovvero trasmettere ai CTT informazioni di interesse ed alert. E’ espressamente previsto che il colloquio fra CCT e CCS avvenga in tempo reale attraverso un canale di comunicazione.
 
-2. Oggetto della Fornitura
+2. Oggetto della Fornitura:
 Il presente capitolato d’appalto ha per oggetto la fornitura del sistema software per la gestione integrata della giacenze di sangue presso la rete dei Centri Trasfusionali Territoriali di cui in premessa secondo le caratteristiche di seguito indicate.
 Il sistema deve articolarsi in diversi sistemi periferici (per i diversi CTT)) ed in una componente centrale (CCS); quest’ultima deve avere il compito di raccolta delle informazioni nate in periferia o della trasmissione alla periferia di informazioni ed alert;
 Il colloquio fra centro e periferia deve avvenire in tempo reale attraverso un canale di comunicazione; i sistemi periferici devono comunque essere in grado di garantire la loro piena operatività anche in temporanea assenza di connettività di rete, garantendo il successivo riallineamento dei dati;
@@ -21,19 +21,18 @@ Attualmente sul territorio Regionale sono attivi 43 CTT, come riportato nell’e
 Il sistema deve fornire le necessarie garanzie sulla sicurezza e sulla riservatezza delle informazioni e dei dati, in funzione della tipologia dei trattamenti gestiti.
 La fornitura dovrà comprendere la consegna, l’installazione, la configurazione e l’avvio operativo del sistema software, nonché la formazione del personale del CCS e dei CTT.
 
-3. Durata
+3. Durata:
 La durata massima del progetto, comprensiva di installazione, configurazione, formazione e collaudo, è di 15 settimane a partire dalla data di pubblicazione del seguente bando. I gruppi dovranno proporre una temporizzazione delle attività e una descrizione della struttura del progetto e della struttura organizzativa del team entro le prime due settimane.
- 
 Durante il progetto, il committente si impegna ad assicurare un minimo di 3 incontri in cui sarà possibile discutere e definire l’introduzione di modifiche o nuove funzionalità del sistema di gestione.
 L’accettazione del prodotto avverrà a valle di una attività di collaudo condotta congiuntamente dal gruppo di lavoro e dal committente o suo rappresentante.
 In caso di non conformità rilevate durante il collaudo, la consegna è considerata in ritardo e una nuova data per la ripetizione del collaudo sarà concordata fra gruppo e committente. Sono possibili al massimo due ripetizioni, dopo le quali il committente si riserva di rifiutare il prodotto o di accettarlo come non conforme.
 4. Servizi Aggiuntivi
 Il gruppo potrà proporre, dettagliandoli nella documentazione tecnica, eventuali funzionalità aggiuntive e migliorie che intende apportare rispetto a quelli espressamente richiesti nel capitolato, se pertinenti agli ambiti trattati. Funzionalità aggiuntive e/o integrative verranno prese in considerazione dal committente ai fini della valutazione finale.
 
-5. Trattamento dei dati
+5. Trattamento dei dati:
 Il committente si impegna al pieno rispetto della riservatezza dei dati e della documentazione che ciascun gruppo fornirà durante lo sviluppo del progetto.
  Ciascun gruppo ha l’obbligo di mantenere riservati i dati e le informazioni fornite dal committente, o da questi rese disponibili attraverso sistemi informativi, di non divulgarli in alcun modo e in qualsiasi forma e di non farne oggetto di utilizzazione a qualsiasi titolo per scopi diversi da quelli strettamente necessari all’esecuzione del progetto.
  
-6. Responsabilità e obblighi
+6. Responsabilità e obblighi:
 I partecipanti a ciascun gruppo di lavoro si impegnano a dare il loro personale contributo all’avanzamento dei lavori del proprio gruppo, secondo i ruoli e i compiti definiti. Eventuali difficoltà o impossibilità, anche temporanee, a portare avanti il proprio carico di lavoro, vanno immediatamente riportata al resto del gruppo di lavoro, e discusse con il committente.
 Tutti i partecipanti, individualmente e come gruppo, si impegnano ad evitare situazioni di plagio, a non spacciare il lavoro degli altri per il proprio lavoro e a non falsificare i risultati.
