@@ -1,4 +1,4 @@
-# Patch Notes 1.1
+# Patch Notes 1.0.1
 ## Modifiche rispetto a Scenari_1.0:
 
 ***Aggiunta sacca CTT esterno:*** refining seguendo le modifiche effettuate a sequence e use case diagrams relativi.
