@@ -7,7 +7,29 @@
 
 
 # Progetto Ingegneria del Software 2021
-## Premessa:
+
+Progetto di ingegneria del software svolto dal gruppo formato da:
+- Marco La Rocca
+- Marco Ruta
+- Andrea Albano
+- Francesco Cosimo Mazzitelli
+- Francesco Pio Belperio
+- Pio Antonio Perugini
+- Donato Guerrera
+- Salvatore Di Maria
+
+# Sommario
+
+[1. Premessa](#premessa)
+
+[2. Mockup](#mockup)
+
+
+
+
+
+
+# Premessa:
 
 La Regione “UnaRegione” (committente) intende dotarsi di una soluzione software avanzata per la gestione integrata della giacenze di sangue presso la rete dei Centri Trasfusionali Territoriali. Attualmente i Centri Trasfusionali Territoriali gestiscono le scorte di sangue localmente, e questo impedisce la gestione ottimale delle scorte su base Regionale. Ad esempio, uno specifico Centro Trasfusionale Territoriale che avesse bisogno di una dose di sangue di un certo gruppo, non presente localmente, non ha nessuno strumento per verificarne la presenza presso altri Centri della Regione. Similmente, se un Centro ha una sacca in scadenza a breve (es. 72 ore), non ha nessuna possibilità di allertare altri Centri che ne avessero eventualmente bisogno, con il rischio che la dose venga lasciata scadere mentre potrebbe essere utilizzata immediatamente in altre aree della Regione. Il sistema software permettere di integrare i diversi Centri Trasfusionali Territoriali (CTT) e un Centro Controllo e Smistamento (CCS) con il compito di raccogliere le informazioni nate in periferia nei CTT, ovvero trasmettere ai CTT informazioni di interesse ed alert. E’ espressamente previsto che il colloquio fra CCT e CCS avvenga in tempo reale attraverso un canale di comunicazione.
 
@@ -30,3 +52,25 @@ Il committente si impegna al pieno rispetto della riservatezza dei dati e della 
 ## Responsabilità e obblighi:
 
 I partecipanti a ciascun gruppo di lavoro si impegnano a dare il loro personale contributo all’avanzamento dei lavori del proprio gruppo, secondo i ruoli e i compiti definiti. Eventuali difficoltà o impossibilità, anche temporanee, a portare avanti il proprio carico di lavoro, vanno immediatamente riportata al resto del gruppo di lavoro, e discusse con il committente. Tutti i partecipanti, individualmente e come gruppo, si impegnano ad evitare situazioni di plagio, a non spacciare il lavoro degli altri per il proprio lavoro e a non falsificare i risultati.
+
+# Mockup
+
+## Terminale Amministratore CCS
+<p align= "center">
+<img src="https://i.ibb.co/jDgMcf0/terminale-Amministratore-CCS.png" alt="TerminaleAmministratoreCCS">
+</p>
+
+## Terminale Amministratore CTT
+<p align="center">
+    <img src="https://i.ibb.co/ws37Ff3/Terminale-Amministratore-CTT.png" alt="TerminaleAmministratoreCTT">
+</p>
+
+## Terminale Magazziniere CTT
+<p align="center">
+    <img src="https://i.ibb.co/N25t9BG/Terminale-Magazziniere-CTT.png" alt="TerminaleMagazziniere">
+</p>
+
+## Terminale Operatore CTT
+<p align="center">
+    <img src="https://i.ibb.co/3YjymPx/Terminale-Operatore-CTT.png" alt="TerminaleOperatoreCTT">
+</p>
