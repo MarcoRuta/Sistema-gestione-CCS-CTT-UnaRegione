@@ -57,20 +57,26 @@ I partecipanti a ciascun gruppo di lavoro si impegnano a dare il loro personale 
 
 ## Terminale Amministratore CCS
 <p align= "center">
-<img src="https://i.ibb.co/jDgMcf0/terminale-Amministratore-CCS.png" alt="TerminaleAmministratoreCCS">
+<img src="https://i.ibb.co/Fxh4Q4s/Amministratore-CCS.png" alt="TerminaleAmministratoreCCS">
 </p>
 
 ## Terminale Amministratore CTT
 <p align="center">
-    <img src="https://i.ibb.co/ws37Ff3/Terminale-Amministratore-CTT.png" alt="TerminaleAmministratoreCTT">
+    <img src="https://i.ibb.co/RpgmcqC/Amministratore-CTT.png" alt="TerminaleAmministratoreCTT">
 </p>
 
 ## Terminale Magazziniere CTT
 <p align="center">
-    <img src="https://i.ibb.co/N25t9BG/Terminale-Magazziniere-CTT.png" alt="TerminaleMagazziniere">
+    <img src="https://i.ibb.co/b5nxGLM/Magazziniere-CTT.png" alt="TerminaleMagazziniere">
 </p>
 
 ## Terminale Operatore CTT
 <p align="center">
-    <img src="https://i.ibb.co/3YjymPx/Terminale-Operatore-CTT.png" alt="TerminaleOperatoreCTT">
+    <img src="https://i.ibb.co/gVVVY76/Operatore-CTT.png" alt="TerminaleOperatoreCTT">
+</p>
+
+## Pagina di login
+<p align = "center">
+    <img src = "https://i.ibb.co/RH90HJ3/Login.png"
+    alt = "Login">
 </p>
