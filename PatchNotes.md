@@ -1,79 +1,114 @@
-# Patch Notes 1.1
-## Modifiche rispetto a Scenari_1.0:
+# Patch Notes 1.2
+## Release System Definition Document
 
-***Aggiunta sacca CTT esterno:*** refining seguendo le modifiche effettuate a sequence e use case diagrams relativi.
+***Introduction:*** 
+- Introduction
+       - Osservazioni sullo statement
+       - Il metodo seguito
+- Ruoli all'interno dei sistemi CTT e CCS
+- Rationale
+  
 
-***Aggiunta sacca da fonte esterna:*** refining seguendo le modifiche effettuate a sequence e use case diagrams relativi.
+***Scenari:***
+- Aggiunta sacca da fonte esterna
+- Aggiunta Centro Trasfusionale Territoriale (CTT)
+- Eliminazione CTT #5 
+- Aggiunta personale al CTT #4
+- Rimozione personale al CTT #4
+- Controllo per Alert di una sacca di sangue in scadenza non prenotata, in seguito ad una richiesta urgente
+- Controllo per Alert di una sacca di sangue in scadenza non prenotata
+- Controllo per Alert di una sacca di sangue in scadenza non prenotata, senza riscontro
+- Invio sacca
+- Controllo rendimento dei CTT
+- Report statistico regionale tipi di sacche
+- Report statistico regionale di operatori CTT
+- Report statistico sacche inviate e ricevute dal CTT #3 nell’ultimo mese
+- Controllo locale operatori del CTT
+- Report di stampa con numero di sacche per tipo, livello locale
+- Report sul gruppo sanguigno più richiesto, livello locale
+- Richiesta NON urgente di una sacca di sangue, con riscontro locale positivo
+- Richiesta urgente di una sacca di sangue, con riscontro locale positivo
+- Richiesta NON urgente di una sacca di sangue, con riscontro locale negativo e regionale - positivo
+- Richiesta urgente di una sacca di sangue, con riscontro locale negativo e regionale positivo
+- Richiesta NON urgente di una sacca di sangue, con riscontro locale negativo e regionale - negativo
+- Richiesta urgente di una sacca di sangue, con riscontro locale negativo e regionale negativo
+- Rimozione sacca causa trasfusione
+- Rimozione sacca scaduta
 
-***Risposta alert urgente:*** refining seguendo le modifiche effettuate a sequence e use case diagrams relativi.
+***UseCase Diagrams:*** 
+- Aggiunta CTT
+- Rimozione CTT
+- Report Statistici CCS
+- Report Statistici CTT
+- Login
+- Ricerca Sacche
+- Evasione Sacche
+- Aggiunta Sacche
+- Eliminazione Sacche Scadute
+- Aggiunta Dipendente 
+- Rimozione Dipendente
+- Inoltro Alert
+- Risposta Alert
+  
+***Sequence Diagrams:*** 
+- AggiuntaCTT
+- RimozioneCTT
+- ReportStatisticiCCS
+- ReportStatisticiCTT
+- Login
+- RicercaSaccaConESenzaPriorità
+- EvasioneSacca
+- AggiuntaSaccaMagazziniere
+- EliminazioneSaccaScaduta
+- AggiuntaNuovoDipendenteCTT 
+- RimozioneDipendenteCTT
+- InoltroAlert
+- RispostaAlert
 
-***Richiesta urgente sacca di sangue con riscontro locale positivo:*** refining seguendo le modifiche effettuate a sequence e use case diagrams relativi.
+***Class Diagrams:*** 
+- AggiuntaRimozioneCTT
+- AggiuntaRimozioneDipendenteCTT
+- AggiuntaSaccaMagazziniere
+- EliminazioneSaccaScaduta
+- EvasioneSacca
+- InoltroAlert
+- Login
+- ReportStatisticiCCS
+- ReportStatisticiCTT
+- RicercaSaccaConESenzaPriorità
+  
+***Glossary***  
 
-***Richiesta urgente sacca di sangue con riscontro locale negativo e Regionale positivo:*** refining seguendo le modifiche effettuate a sequence e use case diagrams relativi.
+***System Mapping***  
 
-***Richiesta non urgente sacca di sangue con riscontro locale negativo e regionale positivo:*** refining seguendo le modifiche effettuate a sequence e use case diagrams relativi.
+***Resource Access Definition*** 
 
-***Richiesta non urgente sacca di sangue con riscontro locale positivo:*** refining seguendo le modifiche effettuate a sequence e use case diagrams relativi.
+## GUI HTML
+- Assets
+- AggiungiSaccaForm.html
+- AggiungiNuovoCTTForm.html
+- AggiuntaNuovoDipendenteCCTForm.html
+- AmministratoreCCS.html
+- AmministratoreCTT.html
+- DisponibilitàRegionaleSaccheForm.html
+- EvasioneSaccaForm.html
+- Login.html
+- MagazziniereCTT.html
+- MenùDiSelezioneQueryCCS.html
+- MenùDiSelezioneQueryCTT.html
+- OperatoreCTT.html
+- OperatoriCTTForm.html
+- OrdinaCTTPerRichiesteForm.html
+- OrdinaGruppiSanguigniPerRichiesteForm.html
+- ReportLocaleSaccheinviateRicevuteCTTForm.html
+- ReportOperatoriCTTForm.html
+- RicercaSaccaFrom.html
+- RimozioneCTTForm.html
+- RimozioneDipendenteCTTForm.html
+- SaccheInviateRicevuteCTTForm.html
 
-***Controllo per Alert di una sacca di sangue in scadenza non prenotata, countdown non interrotto:*** refining seguendo le modifiche effettuate a sequence e use case diagrams relativi.
+## CTT_DataBase
 
-***Controllo per Alert di una sacca di sangue in scadenza non prenotata, countdown interrotto:*** refining seguendo le modifiche effettuate a sequence e use case diagrams relativi.
-
-***Controllo operatori CTT:*** scenario non presente nella versione 1.0 del file.
-
-***Report statistico regionale di operatori CTT:*** scenario non presente nella versione 1.0 del file
-
-## Modifiche rispetto a UseCases_1.0:
-
-***RispostaAlertUrgente:*** aggiunta la fase finale di creazione dei DatiSacca attraverso AggiungiDatiSaccaForm
-
-***RicercaSacca:*** refining seguendo le specifiche del sequence diagram. 
-
-***RicercaSaccaAltaPriorità:*** refining seguendo le specifiche del sequence diagram.
-
-***RicercaSaccaGlobale:*** refining seguendo le specifiche del sequence diagram, aggiunta la fase finale di creazione dei DatiSacca attraverso AggiungiDatiSaccaForm.
-
-***RicercaSaccaGlobaleAltaPriorità:*** refining seguendo le specifiche del sequence diagram, aggiunta la fase finale di creazione dei DatiSacca attraverso AggiungiDatiSaccaForm.
-
-***SaccaAssegnata:*** aggiunta la fase finale di creazione dei DatiSacca attraverso AggiungiDatiSaccaForm.
-
-***OrdinaGruppiSanguigniPerRichieste:*** refining seguendo le specifiche del sequence diagram.
- 
-***ReportLocaleSaccheInviateRicevute:*** refining seguendo le specifiche del sequence diagram. 
-
-***ReportOperatoriCTT:*** refining seguendo le specifiche del sequence diagram. 
-
-***InizializzaReportStatisticiCCS:*** refining seguendo le specifiche del sequence diagram. 
-
-***OrdinaCTTPerRichieste:*** refining seguendo le specifiche del sequence diagram. 
-
-***DisponibilitàRegionaleSacche:*** refining seguendo le specifiche del sequence diagram.
-
-***SaccheInviateRicevuteCTT:*** refining seguendo le specifiche del sequence diagram.
-
-***OperatoriCTT:*** refining seguendo le specifiche del sequence diagram.
-
-***InvioSacca:*** refining seguendo le specifiche del sequence diagram, aggiunta la fase finale di aggiornamento dei DatiSacca con i dati relativi al destinatario.
-
-***AggiuntaSacca:*** refining seguendo le specifiche del sequence diagram, aggiunta la fase finale di aggiornamento dei DatiSacca con i dati relativi al mittente.
-
-***InizializzaReportStatisticiCTT:*** Use case non presente nella versione 1.0 del file.
-
-***AggiuntaNuovoCTT:*** Use case non presente nella versione 1.0 del file.
-
-
-## Modifiche rispetto a Sequence diagrams_1.0:
-
-***RicercaSaccaConPriorità:*** aggiunto, nel caso di riscontro locale positivo, l'aggiornamento dei dati realtivi all' affidamento della sacca.
-
-***RispostaAlertUrgente:*** aggiunta, come in ricercaSacca, la creazione dei DatiSacca una volta ricevuta la notifica di affidamento.
-
-***RispostaAlertNonUrgente:*** aggiunta, come in ricercaSacca, la creazione dei DatiSacca una volta ricevuta la notifica di affidamento.
-
-
-## Modifiche rispetto a Glossary diagrams_1.0:
-
-**Nessuna modifica effettuata**
-
+- Prima versione del DataBaseManagerCTT con prime funzionalità offline
 
 
