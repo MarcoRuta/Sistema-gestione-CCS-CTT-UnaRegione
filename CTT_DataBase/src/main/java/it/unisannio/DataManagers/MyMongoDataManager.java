@@ -36,7 +36,6 @@ public class MyMongoDataManager implements DataManager {
 	private static final String ELEMENT_DATAPRODUZIONE = "dataProduzione";
 	private static final String ELEMENT_DATASCADENZA = "dataScadenza";
 	private static final String ELEMENT_PRENOTATO = "prenotato";
-
 	
 	private static final String COLLECTION_DATISACCHE = "DATISACCHE";
 	private static final String ELEMENT_DATAARRIVO = "dataArrivo";
