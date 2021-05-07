@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script>
+        function print1(){
+            if(numctt.value!="")
+                document.getElementById("p1").innerHTML = "Numero CTT: "+"<span class='textPrint'>" +numctt.value+"</span>";
+            else document.getElementById("p1").innerHTML = "Numero CTT: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
+        }
+    </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>RimozioneCTTForm</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/formStyles.css">
+</head>
+
+<body>
+    <div class="titlePage">
+        <div>
+            <span class="fontTitle">
+               Rimozione CTT Form            
+            </span>
+        </div>
+    </div>
+    
+    <div class="container" style="max-width: 1430px; margin: 1.5% auto;">
+        
+        <div class="dateForm">
+            <div class="titleDateForm">
+                <p>Inserisci il numero CTT da rimuovere</p>
+            </div>
+            <div class="row row-cols-2">
+                <div class="row">
+                    <p style="margin: 20% 30%;">Numero CTT:</p>
+                </div>
+                <div class="row">
+                    <div class="inputForm">
+                        <input id="numctt" oninput="print1()" type="number" style="margin: 16.5% 0%; width: 300px;"></input>
+                    </div>
+                </div>
+            </div>    
+        </div>
+
+        <div class="previewForm">
+            <div class="titleDateForm">
+                <p>Anteprima</p>
+            </div>
+            <div class="outPreview" style="">
+                <p id="p1"></p>
+            </div>
+            <div class="outPreview" style="height: 40px;margin: 4% 45px;"></div>
+            <button class="btn btn-primary" type="button" style="margin-left: 73.5%; width: 140px;height: 51px;font-family: Calibri light;font-size: 20px;">Conferma</button>
+        </div>
+        
+    </div>
+        
+    <div class="footer"></div>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>

@@ -22,8 +22,9 @@ Progetto di ingegneria del software svolto dal gruppo formato da:
 
 [1. Premessa](#premessa)
 
-[2. Mockup](#mockup)
+[2. Screen GUI](#Screen GUI)
 
+[3. Mockup](http://centrosmistamento.hostinggratis.it/)
 
 
 
@@ -53,30 +54,54 @@ Il committente si impegna al pieno rispetto della riservatezza dei dati e della 
 
 I partecipanti a ciascun gruppo di lavoro si impegnano a dare il loro personale contributo all’avanzamento dei lavori del proprio gruppo, secondo i ruoli e i compiti definiti. Eventuali difficoltà o impossibilità, anche temporanee, a portare avanti il proprio carico di lavoro, vanno immediatamente riportata al resto del gruppo di lavoro, e discusse con il committente. Tutti i partecipanti, individualmente e come gruppo, si impegnano ad evitare situazioni di plagio, a non spacciare il lavoro degli altri per il proprio lavoro e a non falsificare i risultati.
 
-# Mockup
+# Screen GUI
+
+## Pagina Di Login
+<p align = "center">
+    <img src = "https://i.ibb.co/sbJQtjD/Login.png" alt = "Login">
+</p>
 
 ## Terminale Amministratore CCS
 <p align= "center">
-<img src="https://i.ibb.co/Rb0wX1Y/Immagine-2021-05-02-190112.png" alt="TerminaleAmministratoreCCS">
+<img src="https://i.ibb.co/s5Mn2Hw/CCSHub.png" alt="TerminaleAmministratoreCCS">
 </p>
 
 ## Terminale Amministratore CTT
 <p align="center">
-    <img src="https://i.ibb.co/x7sbVt6/AmmCTT.png" alt="TerminaleAmministratoreCTT">
+    <img src="https://i.ibb.co/zSFXQ2F/AMMCTThub.png" alt="TerminaleAmministratoreCTT">
 </p>
 
 ## Terminale Magazziniere CTT
 <p align="center">
-    <img src="https://i.ibb.co/b5nxGLM/Magazziniere-CTT.png" alt="TerminaleMagazziniere">
+    <img src="https://i.ibb.co/0CsYyFt/Magazz-CTT.png" alt="TerminaleMagazziniere">
 </p>
 
 ## Terminale Operatore CTT
 <p align="center">
-    <img src="https://i.ibb.co/ss9PRnk/OPCTT.png" alt="TerminaleOperatoreCTT">
+    <img src="https://i.ibb.co/BZ0dmk4/OPCTTHub.png" alt="TerminaleOperatoreCTT">
 </p>
 
-## Pagina Di Login
-<p align = "center">
-    <img src = "https://i.ibb.co/qWMFd6z/Immagine-2021-05-02-191520.png"
-    alt = "Login">
+## Menù di selezione Query CTT
+<p align="center">
+    <img src="https://i.ibb.co/1LhLsWJ/QueryCTT.png" alt="MenuSelezioneQueryCTT">
+</p>
+
+## Menù di selezione Query CCS
+<p align="center">
+    <img src="https://i.ibb.co/FY0ZVV8/QueryCCS.png" alt="MenuSelezioneQueryCCS">
+</p>
+
+##Form N1
+<p align="center">
+    <img src="https://i.ibb.co/sVQKCGM/Operatori-CTTForm.png" alt="FormN1">
+</p>
+
+##Form N2
+<p align="center">
+    <img src="https://i.ibb.co/fXvQSn4/Ricerca-Sacca-Form.png" alt="FormN2">
+</p>
+
+##Form N3
+<p align="center">
+    <img src="https://i.ibb.co/qDtyrFk/Ordina-Gruppi-Sanguigni-Per-Richieste-Form.png" alt="FormN3">
 </p>
