@@ -22,7 +22,7 @@ Progetto di ingegneria del software svolto dal gruppo formato da:
 
 [1. Premessa](#premessa)
 
-[2. Screen GUI](#Screen GUI)
+[2. Screen GUI](#Screen\ GUI)
 
 [3. Mockup](http://centrosmistamento.hostinggratis.it/)
 
