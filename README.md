@@ -22,7 +22,7 @@ Progetto di ingegneria del software svolto dal gruppo formato da:
 
 [1. Premessa](#premessa)
 
-[2. Screen GUI](#Screen\ GUI)
+[2. ScreenGUI](#GUI)
 
 [3. Mockup](http://centrosmistamento.hostinggratis.it/)
 
@@ -54,7 +54,7 @@ Il committente si impegna al pieno rispetto della riservatezza dei dati e della 
 
 I partecipanti a ciascun gruppo di lavoro si impegnano a dare il loro personale contributo all’avanzamento dei lavori del proprio gruppo, secondo i ruoli e i compiti definiti. Eventuali difficoltà o impossibilità, anche temporanee, a portare avanti il proprio carico di lavoro, vanno immediatamente riportata al resto del gruppo di lavoro, e discusse con il committente. Tutti i partecipanti, individualmente e come gruppo, si impegnano ad evitare situazioni di plagio, a non spacciare il lavoro degli altri per il proprio lavoro e a non falsificare i risultati.
 
-# Screen GUI
+# GUI
 
 ## Pagina Di Login
 <p align = "center">
