@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script>
+        function print1(){
+            if(tipsang.value!=0)
+                document.getElementById("p1").innerHTML = "Tipo di sangue: <span class='textPrint'>"+tipsang.value+"</span>";
+        }
+    </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>DisponibilitàRegionaleSaccheForm</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/formStyles.css">
+</head>
+
+<body style="background-color: #ffffff;">
+    
+    <div class="titlePage">
+        <div>
+            <span class="fontTitle">
+               Disponibilità regionale sacche form            
+            </span>
+        </div>
+    </div>
+    
+    <div class="container" style="max-width: 1430px; margin: 1.5% auto;">
+        
+        <div class="dateForm">
+            <div class="titleDateForm">
+                <p>Inserisci il tipo di sangue per cui filtrare</p>
+            </div>
+            <div class="row row-cols-2">
+                <div class="row">
+                    <p style="margin: 25% 28%;">Tipo di sangue:</p>
+                </div>
+                <div class="row">
+                    <div class="inputForm">
+                        <select id="tipsang" oninput="print1()" style="width: 300px;margin: 21% 4%; height: 30px;">
+                            <optgroup>
+                                <option value='0'>Seleziona dall'elenco corrente</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                                <option value="0+">0+</option>
+                                <option value="0-">0-</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                </div>
+            </div>    
+        </div>
+
+        <div class="previewForm">
+            <div class="titleDateForm">
+                <p>Anteprima</p>
+            </div>
+            <div class="outPreview" style="">
+                 <p id="p1"></p>
+            </div>
+            <div class="outPreview" style="height: 40px;margin: 4% 45px;"></div>
+            <button class="btn btn-primary" type="button" style="margin-left: 73.5%; width: 140px;height: 51px;font-family: Calibri light;font-size: 20px;">Conferma</button>
+        </div>
+        
+    </div>
+        
+    <div class="footer"></div>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>

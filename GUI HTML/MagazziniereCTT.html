@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script>
+        /*FUNZIONE PER AGGIUNTA NOTIFICA*/
+         /*function addNotification()
+        {
+            var node = document.getElementById("divNot");
+            htmlContent = node.innerHTML;
+            divNot.innerHTML = htmlContent + "<p class='notification'>> Sacca scaduta del gruppo sanguigno A+ del CTT#3</p>";
+        }*/
+        
+        function removeNotification()
+        {
+            divNot.innerHTML = "";
+        }
+    </script>
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>MagazziniereHub</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<body>
+    
+    <div class="titlePage">
+        <div>
+            <span class="fontTitle">
+                Centro Trasfusionale Territoriale
+            </span>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row row-cols-2">
+            
+            <div class="col">
+                <div class="border rounded-0 shadow-sm profile-box" style=" height: 96%;background-color: #eef4f7;margin: 2%; background-image: url(&quot;assets/img/bg-pattern.png&quot;);">
+                    <h2 style="font-family: muli,sans-serif;margin: 10px 30px;text-align: left;">Notifiche</h2>
+                    <div style="height: 65px;margin: -3em 63%; width: auto;">
+                        <button class="btn btn-primary" onclick="removeNotification()" type="button" style="background-color: #13958d;width: 177px;">Pulisci notifiche</button>
+                    </div>
+                    <div id="divNot" style="margin-top: 5%; overflow:auto;height:460px;">
+                        <p class="notification"><span id="urgent"> > Richiesta di sacca urgente del gruppo sanguigno A- del CTT#10</span></p>
+                        <p class="notification"><span id="urgent"> > Richiesta di sacca urgente del gruppo sanguigno B+ del CTT#11</span></p>
+                        <p class="notification"> > Sacca scaduta del gruppo sanguigno A+ del CTT#3</p>
+                    </div>
+                </div>            
+            </div>
+        
+            <div class="col border profile-box" style="height: 300px;background-color: #eef4f7;background-image: url(&quot;assets/img/bg-pattern.png&quot;); margin: 1% 0px;">
+                <img src="assets/img/doctor+pediatrician+icon-1320185104387356300.png" style="width: 220px;margin: 25px 30px;">
+                <div style="height: 40px;width: 180px;margin: -20px 12%;">
+                    <span style="font-size: 22px;font-family: muli,sans-serif;">Magazziniere CTT</span>
+                </div>
+                
+                <div class="border profile-box" style="width: auto; height:190px; background-color: #eef4f7;background-image: url(&quot;assets/img/bg-pattern.png&quot;); margin: 10% -1em;"> 
+                    <div style="height: 40px;width: 670px;margin: 7% 10%; ">
+                        <div style="height: 40px;width: 670px;">
+                            <button class="btn btn-primary" onclick="location.href='AggiungiSaccaForm.html';" type="button" style="background-color: #13958d;width: 179px;">Aggiunta sacca</button>
+                            <button class="btn btn-primary" onclick="location.href='EvasioneSaccaForm.html';" type="button" style="margin: 0px 12%;background-color: #13958d;">Evasione sacca prenotata</button>
+                        </div>
+                    </div>
+                </div>
+                <div style="height: 200px;width: 400px;margin: -32em 52%;">
+                    <div style="width: 60px;">
+                        <span style="font-family: muli,sans-serif;font-size: 20px;">Nome:</span>
+                    </div>
+                    <div style="margin: 30px 0px;width: 90px;">
+                        <span style="font-size: 20px;font-family: muli,sans-serif;">Cognome:</span>
+                    </div>
+                    <div style="height: 30px;width: 200px;margin: -117px 100px;">
+                        <p id="name"></p>
+                    </div>
+                    <div style="height: 30px;width: 200px;margin: 148px 100px;">
+                        <p id="surname"></p>
+                    </div>
+                    <div style="height: 40px;width: 200px;margin: -95px 15%;">
+                        <button class="btn btn-primary" onclick="location.href='Login.html';" type="button" style="width: 109px;height: 42px;margin: 0px 5%;background-color: #13958d;">Log out</button>
+                    </div>
+                </div>
+            
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <p></p>
+    </div>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>

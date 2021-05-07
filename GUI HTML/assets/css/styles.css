@@ -1,0 +1,50 @@
+.footer {
+	position: fixed;
+  	left: 0;
+   	bottom: 0;
+   	width: 100%;
+	height: 5%;
+   	background-color: #13958d;
+	background-image: linear-gradient(#214F52,#13958d);
+   	color: white;
+   	text-align: center;
+}
+
+
+.titlePage {
+	width: auto;
+	height: 150px;
+	background-color: #13958d;
+	background-image: linear-gradient(#13958d,#214F52);
+	padding: 30px 36px;
+}
+
+span.fontTitle {
+	color: rgb(255,255,255);
+	font-size: 50px;
+	font-family: muli,sans-serif;
+}
+
+div.titlePage p {
+	color: rgb(255,255,255);
+	font-size: 50px;
+	font-family: muli,sans-serif;
+}
+
+.loginForm {
+	height: 330px;
+	margin: 100px auto;
+	width: 300px;
+}
+
+.notification {
+	overflow: hidden;
+  	display: -webkit-box;
+  	-webkit-line-clamp: 3;
+  	-webkit-box-orient: vertical;
+	margin: 10px;
+}
+
+span#urgent {
+	color: red;
+}

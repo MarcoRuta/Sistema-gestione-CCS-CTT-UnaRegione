@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+     <script>
+        function print1(){
+            if(codice.value!="")
+                document.getElementById("p1").innerHTML = "Codice fiscale: "+"<span class='textPrint'>" +codice.value+"</span>";
+            else document.getElementById("p1").innerHTML = "Codice fiscale: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
+        }
+        function print2(){
+            if(nome.value!="")
+                document.getElementById("p2").innerHTML = "Nome: "+"<span class='textPrint'>" +nome.value+"</span>";
+             else document.getElementById("p2").innerHTML = "Nome: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
+        }
+        function print3(){
+            if(cognome.value!="")
+                document.getElementById("p3").innerHTML = "Cognome: "+"<span class='textPrint'>" +cognome.value+"</span>";
+             else document.getElementById("p3").innerHTML = "Cognome: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
+        }
+        function print4(){
+            if(data.value!="")
+                document.getElementById("p4").innerHTML = "Data di nascita: "+"<span class='textPrint'>" +data.value+"</span>";
+             else document.getElementById("p4").innerHTML = "Data di nascita: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
+        }
+        function print5(){
+            if(username.value!="")
+                document.getElementById("p5").innerHTML = "Username: "+"<span class='textPrint'>" +username.value+"</span>";
+             else document.getElementById("p5").innerHTML = "Username: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
+        }
+        function print6(){
+            if(password.value!="")
+                document.getElementById("p6").innerHTML = "Password: "+"<span class='textPrint'>" +password.value+"</span>";
+             else document.getElementById("p6").innerHTML = "Password: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
+        }
+        function print7(){
+            if(ruolo.value!="")
+                document.getElementById("p7").innerHTML = "Ruolo: "+"<span class='textPrint'>" +ruolo.value+"</span>";
+             else document.getElementById("p7").innerHTML = "Ruolo: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
+        }
+    </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>AggiuntaNuovoDipendente</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/formStyles.css">
+</head>
+
+<body>
+    <div class="titlePage">
+        <div>
+            <span class="fontTitle">
+                Aggiunta Nuovo Dipentente Form            
+            </span>
+        </div>
+    </div>
+    
+    <div class="container" style="max-width: 1430px; margin: 1.5% auto;">
+        
+        <div class="dateForm" style="height: 510px;">
+            <div class="titleDateForm">
+                <p>Inserisci i Dati:</p>
+            </div>
+            <div class="row row-cols-2" style="overflow: auto; max-height: 450px; max-width: 705px">
+                <div class="row">
+                    <p>Codice Fiscale:</p>
+                    <p>Nome:</p>
+                    <p>Cognome:</p>
+                    <p>Data di nascita:</p>
+                    <p>Username:</p>
+                    <p>Password:</p>
+                    <p>Ruolo:</p>
+                </div>
+                <div class="row">
+                    <div class="inputForm">
+                        <input id="codice" oninput="print1()" type="text">
+                    </div>
+                    <div class="inputForm">
+                         <input id="nome" oninput="print2()" type="text">
+                    </div>
+                    <div class="inputForm">
+                         <input id="cognome" oninput="print3()" type="text">
+                    </div>
+                    <div class="inputForm">
+                         <input id="data" oninput="print4()" type="date">
+                    </div>
+                    <div class="inputForm">
+                         <input id="username" oninput="print5()" type="text">
+                    </div>
+                    <div class="inputForm">
+                         <input id="password" oninput="print6()" type="text">
+                    </div>
+                    <div class="inputForm">
+                         <input id="ruolo" oninput="print7()" type="text">
+                    </div>
+                </div>
+            </div>    
+        </div>
+
+        <div class="previewForm" style="height: 510px;margin: -510px 710px;">
+            <div class="titleDateForm">
+                <p>Anteprima</p>
+            </div>
+            <div class="outPreview" style="">
+                <p id="p1"></p>
+                <p id="p2"></p>
+                <p id="p3"></p>
+                <p id="p4"></p>
+                <p id="p5"></p>
+                <p id="p6"></p>
+                <p id="p7"></p>
+            </div>
+            <div class="outPreview" style="height: 40px;margin: 4% 45px;"></div>
+            <button class="btn btn-primary" type="button" style="margin-left: 73.5%; width: 140px;height: 51px;font-family: Calibri light;font-size: 20px;">Conferma</button>
+        </div>
+        
+    </div>
+        
+    <div class="footer"></div>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>
