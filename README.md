@@ -24,7 +24,7 @@ Progetto di ingegneria del software svolto dal gruppo formato da:
 
 [2. ScreenGUI](#GUI)
 
-[3. Mockup](http://centrosmistamento.hostinggratis.it/)
+[3. Mockup](https://centrosmistamento.000webhostapp.com/Index.html)
 
 
 
