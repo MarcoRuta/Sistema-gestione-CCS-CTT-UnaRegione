@@ -14,9 +14,10 @@ public class TestOperatoreCTT {
     	MyOperatoreCTTDataManager oper = new MyOperatoreCTTDataManager();
   	 
     	GruppoSanguigno gs = GruppoSanguigno.Ap;    	
-    	LocalDate localDataArrivoMassima = LocalDate.of(2010,04,10);   		
+    	LocalDate localDataArrivoMassima = LocalDate.of(2010,10,18);   		
     	String enteRichiedente = "Mr. Damme tutto";
     	Sacca s = oper.ricercaSaccaLocale(gs, localDataArrivoMassima, enteRichiedente);	
+    	
     	s.print(ps);
     	
     	MyMongoDataManager mm = new MyMongoDataManager();

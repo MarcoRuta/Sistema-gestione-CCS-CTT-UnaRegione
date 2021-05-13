@@ -1,18 +1,14 @@
 package it.unisannio.ingegneriaDelSoftware.DataManagers;
 
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.*;
-
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Updates;
-
 import it.unisannio.ingegneriaDelSoftware.Interfaces.DataManager;
 import it.unisannio.ingegneriaDelSoftware.Util.DateConverter;
 import it.unisannio.ingegneriaDelSoftware.Classes.*;
-import it.unisannio.ingegneriaDelSoftware.Util.*;
 import static com.mongodb.client.model.Filters.*;
 import org.bson.Document;
 
@@ -149,156 +145,17 @@ public class MyMongoDataManager implements DataManager {
 				eq(ELEMENT_SERIALE,seriale.getSeriale()),
 				Updates.set(ELEMENT_PRENOTATO, true));
 	}
-	
-	
-	/**Cerca e resituisce una Sacca all'interno del database delle sacche che non scada entro una dataArrivoMassima
-	 * @param gs Gruppo sanguigno della Sacca che si vuole ricercare
-	 * @param dataArrivoMassima Data entro la quale la Sacca non deve essere scaduta
-	 * @return null se la sacca non è stata trovata; la Sacca se essa è stata trovata 
-	 */
-	public Sacca getSaccaPerRicerca(GruppoSanguigno gs, LocalDate dataArrivoMassima) {
-		MongoDatabase database = mongoClient.getDatabase(DB_NAME);
-	    MongoCollection<Document> collection = database.getCollection(COLLECTION_SACCHE);
-	    
-		Sacca s=null;
-		Sacca selez = new Sacca();
-		Date dataScadenzaImminente = null;
-		try {
-			dataScadenzaImminente = Constants.sdf.parse("01-01-2999");
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
 		
-		for (Document current : collection.find(eq(ELEMENT_GRUPPO, gs.toString()))) {
-			if(current.getBoolean(ELEMENT_PRENOTATO)==false) { //ricerca solo su sacche non prenotate
-				Date dataScadenza = current.getDate(ELEMENT_DATASCADENZA);
-				if(dataScadenzaImminente.after(dataScadenza) && dataScadenza.after(DateConverter.convertLocalDateToDate(dataArrivoMassima))) {
-					dataScadenzaImminente = dataScadenza;
-					s = new Sacca(new Seriale(current.getString(ELEMENT_SERIALE)), 
-							GruppoSanguigno.valueOf(current.getString(ELEMENT_GRUPPO)), 
-							DateConverter.convertDateToLocalDate(current.getDate(ELEMENT_DATAPRODUZIONE)),
-							DateConverter.convertDateToLocalDate(current.getDate(ELEMENT_DATASCADENZA)),
-							current.getBoolean(ELEMENT_PRENOTATO));
-					selez = s;
-				}	
-			}	
-		}
-		setPrenotatoSacca(selez.getSeriale());
-		selez.setPrenotato();
-		return selez;
-	}
-	
-	
-	/**Cerca e restituisce una Sacca compatibile al gruppo ricercato e che non scada entro una dataArrivoMassima, all'interno del database delle sacche
-	 * @param gs Gruppo sanguigno della Sacca che si vuole ricercare
-	 * @param dataArrivoMassima Data entro la quale la Sacca non deve essere scaduta
-	 * @return null se la sacca non è stata trovata; la Sacca se essa è stata trovata
+	/**Restituisce la lista dei datiSacche presenti nel database
+	 * @return la lista dei dati sacca che sono presenti nel database
 	 */
-	public Sacca getSaccaCompatibilePerRicerca(GruppoSanguigno gs, LocalDate dataArrivoMassima) {
-		MongoDatabase database = mongoClient.getDatabase(DB_NAME);
-	    MongoCollection<Document> collection = database.getCollection(COLLECTION_SACCHE);
-	    
-		Sacca s = null;
-		Sacca selez = null;
-		Date dataScadenzaImminente = null;
-		Iterator<GruppoSanguigno> i = GruppoSanguigno.puoRicevereDa(gs);
-		
-		while(i.hasNext()) {
-			GruppoSanguigno grs = i.next();
-			for (Document current : collection.find(eq(ELEMENT_GRUPPO,grs.toString()))) {
-				if(current.getBoolean(ELEMENT_PRENOTATO)==false) { //ricerca solo su sacche non prenotate
-					Date dataScadenza = current.getDate(ELEMENT_DATASCADENZA);
-					
-					if(dataScadenzaImminente.after(dataScadenza) && dataScadenza.before(DateConverter.convertLocalDateToDate(dataArrivoMassima))) {
-						dataScadenzaImminente = dataScadenza;
-						s = new Sacca(new Seriale(current.getString(ELEMENT_SERIALE)), 
-							GruppoSanguigno.valueOf(current.getString(ELEMENT_GRUPPO)), 
-							DateConverter.convertDateToLocalDate(current.getDate(ELEMENT_DATAPRODUZIONE)),
-							DateConverter.convertDateToLocalDate(current.getDate(ELEMENT_DATASCADENZA)),
-							current.getBoolean(ELEMENT_PRENOTATO));
-						selez = s;
-					}
-				}
-			}
-		}
-		mongoClient.close();
-		selez.setPrenotato();
-		return selez;
-	}
-	
-	
-	/** Restituisce una lista contenente tutte le Sacche con scadenza inferiore a 72 ore da oggi
-	 * @return la lista delle Sacche in scadenza
-	 */
-    public List<Sacca> getSaccheEntroScadenza() {
-    	MongoDatabase database = mongoClient.getDatabase(DB_NAME);
-	    MongoCollection<Document> collection = database.getCollection(COLLECTION_SACCHE);
-        List<Sacca> saccheInScadenza = new ArrayList<Sacca>();
-        
-        List<Document> sacche = collection.find().into(new ArrayList<Document>());
-        Date oggi = new Date();
-        long dataScadenza = oggi.getTime();
-        long dataScadenza72 = dataScadenza + 259200000;
-
-        for (Document current : sacche){
-            if(current.getDate(ELEMENT_DATASCADENZA).getTime()>(dataScadenza) 
-            		&& current.getDate(ELEMENT_DATASCADENZA).getTime()<(dataScadenza72)) {
-                Sacca s = new Sacca(new Seriale(current.getString(ELEMENT_SERIALE)), 
-                        GruppoSanguigno.valueOf(current.getString(ELEMENT_GRUPPO)),
-                        DateConverter.convertDateToLocalDate(current.getDate(ELEMENT_DATAPRODUZIONE)),
-                        DateConverter.convertDateToLocalDate(current.getDate(ELEMENT_DATASCADENZA)),
-                        current.getBoolean(ELEMENT_PRENOTATO));
-                saccheInScadenza.add(s);
-            }
-        }
-        mongoClient.close();
-        return saccheInScadenza;
-    }
-      
-    
-    /**Restituisce la lista delle Sacche di un determinato Gruppo sanguigno, presenti del database delle Sacche
-	 * @param g Gruppo sanguigno delle Sacche che si vogliono ricercare
-	 * @return la lista di Sacche di un determinato Gruppo sanguigno
-	 */
-	public List<Sacca> listaSaccheGS(GruppoSanguigno g){		
-		MongoDatabase database = mongoClient.getDatabase(DB_NAME);
-	    MongoCollection<Document> collection = database.getCollection(COLLECTION_SACCHE);
-	
-	    List<Sacca> sacche = new ArrayList<Sacca>();
-	    
-		for (Document current : collection.find(eq(ELEMENT_GRUPPO,g.toString()))) {
-			Sacca s = new Sacca(new Seriale(current.getString(ELEMENT_SERIALE)), 
-					GruppoSanguigno.valueOf(current.getString(ELEMENT_GRUPPO)), 
-					DateConverter.convertDateToLocalDate(current.getDate(ELEMENT_DATAPRODUZIONE)), 
-					DateConverter.convertDateToLocalDate(current.getDate(ELEMENT_DATASCADENZA)),
-					current.getBoolean(ELEMENT_PRENOTATO));
-		    sacche.add(s);
-		}
-		mongoClient.close();	
-		return sacche;
-	}
-	
-	
-	/**Restituisce la lista dei datiSacche che sono transitate per un CTT in un determinato arco temporale
-	 * @param dataInizio Data inizio dell' arco temporale
-	 * @param dataFine Data fine dell' arco temporale
-	 * @return la lista di sacche che sono transitate per un CTT in un determinato arco temporale
-	 */
-	public List<DatiSacca> listaDatiSaccheInIntervallo(Date dataInizio, Date dataFine) {
+	public List<DatiSacca> getListaDatiSacche() {
 		MongoDatabase database = mongoClient.getDatabase(DB_NAME);
 	    MongoCollection<Document> collection = database.getCollection(COLLECTION_DATISACCHE);
 	    List<DatiSacca> datiSacche = new ArrayList<DatiSacca>();
-	    
-	    Date dataArrivo = null;
-    	Date dataAffidamento = null;
-	    
+	   
 	    for (Document current : collection.find()) {
-	    	 dataArrivo = current.getDate(ELEMENT_DATAARRIVO);
-	    	 dataAffidamento = current.getDate(ELEMENT_DATAAFFIDAMENTO);
-	    	     	 
-	    	if((dataArrivo.after(dataInizio) && dataArrivo.before(dataFine))
-	    			|| (dataAffidamento.after(dataInizio) && dataAffidamento.before(dataFine))) {
-
+	       
 			DatiSacca ds = new DatiSacca(new Seriale(current.getString(ELEMENT_SERIALE)), 
 					GruppoSanguigno.valueOf(current.getString(ELEMENT_GRUPPO)), 
 					DateConverter.convertDateToLocalDate(current.getDate(ELEMENT_DATAARRIVO)), 
@@ -307,11 +164,34 @@ public class MyMongoDataManager implements DataManager {
 					current.getString(ELEMENT_ENTERICHIEDENTE));
 			
 	    	datiSacche.add(ds);
-	    	}
+	    	
 		}	    
 		return datiSacche;
-	}
 		
+	}
+	
+	/** Restituisce una lista contenente tutte le Sacche presenti in magazzino
+	 * @return la lista delle Sacche presenti in magazzino
+	 */
+	public List<Sacca> getListaSacche(){
+		MongoDatabase database = mongoClient.getDatabase(DB_NAME);
+	    MongoCollection<Document> collection = database.getCollection(COLLECTION_SACCHE);
+        List<Sacca> listaSacche = new ArrayList<Sacca>();
+        
+        List<Document> sacche = collection.find().into(new ArrayList<Document>());
+        
+        
+        for (Document current : sacche){
+                Sacca s = new Sacca(new Seriale(current.getString(ELEMENT_SERIALE)), 
+                        GruppoSanguigno.valueOf(current.getString(ELEMENT_GRUPPO)),
+                        DateConverter.convertDateToLocalDate(current.getDate(ELEMENT_DATAPRODUZIONE)),
+                        DateConverter.convertDateToLocalDate(current.getDate(ELEMENT_DATASCADENZA)),
+                        current.getBoolean(ELEMENT_PRENOTATO));
+                listaSacche.add(s);
+            }
+        return listaSacche;
+	}
+	  		
 	
 	/** Modifica il parametro dataArrivo di una DatiSacca identificata tramite Seriale nel database dei DatiSacca
 	 * @param seriale Seriale della sacca da modificare
@@ -411,17 +291,16 @@ public class MyMongoDataManager implements DataManager {
 	}
 
 	
-	/**Restituisce la lista dei Dipendenti del CTT che occupano il Ruolo scelto
-	 * @param ruolo Ruolo dei Dipendenti da cercare
-	 * @return la lista dei Dipendenti del Ruolo scelto
+	/**Restituisce la lista dei Dipendenti del CTT presenti nel database
+	 * @return la lista dei Dipendenti del CTT
 	 */
-	public List<Dipendente> getlistaDipendentiByRuolo(RuoloDipendente ruolo) {
+	public List<Dipendente> getListaDipendenti() {
 		MongoDatabase database = mongoClient.getDatabase(DB_NAME);
 	    MongoCollection<Document> collection = database.getCollection(COLLECTION_DIPENDENTI);
 
         List<Dipendente> dipendenti = new ArrayList<Dipendente>();
 
-        for (Document current : collection.find(eq(ELEMENT_RUOLO, ruolo.toString()))) {
+        for (Document current : collection.find()) {
                 Dipendente dip = new Dipendente(new Cdf(current.getString(ELEMENT_CDF)), 
                         current.getString(ELEMENT_NOME), 
                         current.getString(ELEMENT_COGNOME),

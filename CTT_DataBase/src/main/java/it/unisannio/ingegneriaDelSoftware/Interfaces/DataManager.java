@@ -1,9 +1,6 @@
 package it.unisannio.ingegneriaDelSoftware.Interfaces;
 import it.unisannio.ingegneriaDelSoftware.Classes.*;
-
-import java.text.ParseException;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 public interface DataManager {
@@ -16,18 +13,13 @@ public interface DataManager {
 
 	Sacca getSacca(Seriale ser);
 
-	
 	DatiSacca getDatiSacca(Seriale ser);
 	
-	Sacca getSaccaPerRicerca(GruppoSanguigno gs, LocalDate dataAffidamento) throws ParseException; 	
+	List<Sacca> getListaSacche();
 	
-	Sacca getSaccaCompatibilePerRicerca(GruppoSanguigno gs, LocalDate dataAffidamento);
+	List<DatiSacca> getListaDatiSacche();
 	
-	List<Sacca> getSaccheEntroScadenza(); 													
-
-	List<Sacca> listaSaccheGS(GruppoSanguigno gs); 
-	
-	List<DatiSacca> listaDatiSaccheInIntervallo(Date dataInizio, Date dataFine);
+	void setPrenotatoSacca(Seriale ser);
 	
 	void setDataArrivoDatiSacca(Seriale seriale, LocalDate dataArrivo);
 
@@ -41,6 +33,5 @@ public interface DataManager {
 	
 	Dipendente getDipendente(String username, String password);
 	
-	List<Dipendente> getlistaDipendentiByRuolo(RuoloDipendente ruolo);
 	
 }

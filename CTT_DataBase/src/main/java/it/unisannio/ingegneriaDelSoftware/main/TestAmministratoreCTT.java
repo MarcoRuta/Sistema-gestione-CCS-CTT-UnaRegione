@@ -30,7 +30,7 @@ public class TestAmministratoreCTT {
         if(amm.login("username 008", "005")) ps.println("Login effettuato");
         else ps.println("Login fallito");
    
-//TEST REPORTOPERATORI PER RUOLO			
+//TEST REPORTOPERATORI PER RUOLO (OperatoriCTT)			
 		RuoloDipendente role = RuoloDipendente.OperatoreCTT;
 		List<Dipendente> listone = amm.reportOperatoriCTT(role);
         for(Dipendente dip : listone) {

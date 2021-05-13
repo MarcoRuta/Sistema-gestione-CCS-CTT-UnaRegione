@@ -17,6 +17,9 @@ public interface AmministratoreCTTDataManager {
 
 	void removeDipendente(Cdf cdf);	
 
+	List<Sacca> listaSaccheGS(GruppoSanguigno gs); 
+	
+	List<DatiSacca> listaDatiSaccheInIntervallo(Date dataInizio, Date dataFine);
 	
 	List<Dipendente> reportOperatoriCTT(RuoloDipendente ruolo);
 
@@ -25,4 +28,6 @@ public interface AmministratoreCTTDataManager {
 	String OrdinaGruppiSanguigniPerRichieste(List<GruppoSanguigno> lista, Date dataInizio, Date dataFine);
 	
 	List<DatiSacca> ReportLocaleSaccheInviateERicevuteCTT(Date dataInizio, Date dataFine);
+	
+	List<Dipendente> getlistaDipendentiByRuolo(RuoloDipendente ruolo);
 }

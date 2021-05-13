@@ -11,7 +11,7 @@ public class MyCTTDataManager implements CTTDataManager{
 	 * @return la lista di sacche non ancora scadute ma che scadono entro 72 ore da oggi
 	 */
 	public List<Sacca> alertControlScadenza() {
-		MyMongoDataManager mm = new MyMongoDataManager();
+		MyOperatoreCTTDataManager mm = new MyOperatoreCTTDataManager();
 		return mm.getSaccheEntroScadenza();
 	}
 	

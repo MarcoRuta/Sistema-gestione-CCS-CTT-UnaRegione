@@ -1,10 +1,18 @@
 package it.unisannio.ingegneriaDelSoftware.DataManagers;
 
+
+import java.text.ParseException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.DipendenteCTT;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.OperatoreCTTDataManager;
+import it.unisannio.ingegneriaDelSoftware.Util.Constants;
+import it.unisannio.ingegneriaDelSoftware.Util.DateConverter;
 
 public class MyOperatoreCTTDataManager implements OperatoreCTTDataManager, DipendenteCTT {
 	
@@ -25,16 +33,121 @@ public class MyOperatoreCTTDataManager implements OperatoreCTTDataManager, Dipen
      * @param dataArrivoMassima Data entro la quale la Sacca non deve scadere e deve arrivare all'Ente richiedente
      * @param enteRichiedente Ente richiedente della Sacca
      * @return la sacca con le caratteristiche richieste
+	 * @throws  
      */
 	public Sacca ricercaSaccaLocale(GruppoSanguigno gs, LocalDate dataArrivoMassima, String enteRichiedente){
+		MyOperatoreCTTDataManager ms = new MyOperatoreCTTDataManager();
 		MyMongoDataManager mm = new MyMongoDataManager();
+		
 		Sacca s = null;
+		s = ms.getSaccaPerRicerca(gs, dataArrivoMassima);
+		if(s==null) s = ms.getSaccaCompatibilePerRicerca(gs, dataArrivoMassima);
 		
-		s = mm.getSaccaPerRicerca(gs, dataArrivoMassima);
-		if(s==null) s = mm.getSaccaCompatibilePerRicerca(gs, dataArrivoMassima);
-		
+		if(s!=null) {
 		mm.setEnteRichiedenteDatiSacca(s.getSeriale(), enteRichiedente);
 		mm.setDataAffidamentoDatiSacca(s.getSeriale(), LocalDate.now());
+		}
 		return s;
+		
 	}
+	
+	
+	/**Cerca e restituisce una Sacca compatibile al gruppo ricercato e che non scada entro una dataArrivoMassima, all'interno del database delle sacche
+	 * @param gs Gruppo sanguigno della Sacca che si vuole ricercare
+	 * @param dataArrivoMassima Data entro la quale la Sacca non deve essere scaduta
+	 * @return null se la sacca non è stata trovata; la Sacca se essa è stata trovata
+	 */
+	public  Sacca getSaccaCompatibilePerRicerca(GruppoSanguigno gs, LocalDate dataArrivoMassima) {
+		MyMongoDataManager mm = new MyMongoDataManager();
+		
+		List<Sacca> listaSacche = mm.getListaSacche();
+	    
+		
+		Sacca selez = null;
+		Date dataScadenzaImminente = null;
+		try {
+			dataScadenzaImminente = Constants.sdf.parse("01-01-2999");
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		Iterator<GruppoSanguigno> i = GruppoSanguigno.puoRicevereDa(gs);
+		
+		while(i.hasNext()) {
+			GruppoSanguigno grs = i.next();
+			for (Sacca sacca : listaSacche) {
+				if(!sacca.isPrenotato() && sacca.getGruppoSanguigno().equals(grs)) { //ricerca solo su sacche non prenotate
+				
+					if(dataScadenzaImminente.after(DateConverter.convertLocalDateToDate(sacca.getDataScadenza())) && DateConverter.convertLocalDateToDate(sacca.getDataScadenza()).after(DateConverter.convertLocalDateToDate(dataArrivoMassima))) {
+						dataScadenzaImminente = DateConverter.convertLocalDateToDate(sacca.getDataScadenza());
+						
+						selez = sacca;
+					}	
+				}	
+			}
+		}
+		
+		if(selez != null) mm.setPrenotatoSacca(selez.getSeriale());
+		return selez;
+	}
+	
+
+	/**Cerca e resituisce una Sacca all'interno del database delle sacche che non scada entro una dataArrivoMassima
+	 * @param gs Gruppo sanguigno della Sacca che si vuole ricercare
+	 * @param dataArrivoMassima Data entro la quale la Sacca non deve essere scaduta
+	 * @return null se la sacca non è stata trovata; la Sacca se essa è stata trovata 
+	 */
+	public Sacca getSaccaPerRicerca(GruppoSanguigno gs, LocalDate dataArrivoMassima) {
+		MyMongoDataManager mm = new MyMongoDataManager();
+		
+		List<Sacca> listaSacche = mm.getListaSacche();
+		
+		
+		Sacca selez = null;
+		Date dataScadenzaImminente = null;
+		try {
+			dataScadenzaImminente = Constants.sdf.parse("01-01-2999");
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		for (Sacca sacca : listaSacche) {
+			if(!sacca.isPrenotato() && sacca.getGruppoSanguigno().equals(gs)) { //ricerca solo su sacche non prenotate
+			
+				if(dataScadenzaImminente.after(DateConverter.convertLocalDateToDate(sacca.getDataScadenza())) && DateConverter.convertLocalDateToDate(sacca.getDataScadenza()).after(DateConverter.convertLocalDateToDate(dataArrivoMassima))) {
+					dataScadenzaImminente = DateConverter.convertLocalDateToDate(sacca.getDataScadenza());
+					
+					selez = sacca;
+				}	
+			}	
+		}
+		if(selez != null)mm.setPrenotatoSacca(selez.getSeriale());
+		return selez;
+	}
+	
+	
+	/** Restituisce una lista contenente tutte le Sacche con scadenza inferiore a 72 ore da oggi
+	 * @return la lista delle Sacche in scadenza
+	 */
+    public List<Sacca> getSaccheEntroScadenza() {
+    	MyMongoDataManager mm = new MyMongoDataManager();
+		
+		List<Sacca> listaSacche = mm.getListaSacche();
+		List<Sacca> saccheInScadenza = new ArrayList<Sacca>();
+		
+        Date oggi = new Date();
+        long dataScadenza = oggi.getTime();
+        long dataScadenza72 = dataScadenza + 259200000;
+
+        for (Sacca sacca : listaSacche){
+            if(DateConverter.convertLocalDateToDate(sacca.getDataScadenza()).getTime()>(dataScadenza) 
+            		&& DateConverter.convertLocalDateToDate(sacca.getDataScadenza()).getTime()<(dataScadenza72)) {
+
+            	saccheInScadenza.add(sacca);
+            }
+        }
+        return saccheInScadenza;
+    }
+	
+
 }
