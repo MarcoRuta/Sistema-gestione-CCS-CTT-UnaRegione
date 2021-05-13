@@ -8,14 +8,83 @@
                 document.getElementById("p1").innerHTML = "Data inizio: "+"<span class='textPrint'>" +datein.value+"</span>";
             else document.getElementById("p1").innerHTML = "Data inizio: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
         }
+        
         function print2(){
             if(dateout.value!="")
                 document.getElementById("p2").innerHTML = "Data fine: "+"<span class='textPrint'>" +dateout.value+"</span>";
             else document.getElementById("p2").innerHTML = "Data fine: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
         }
+        
         function print3(){
-            if(tipsang.value!=0)
-                document.getElementById("p3").innerHTML = "Tipo di sangue: "+"<span class='textPrint'>" +tipsang.value+"</span>";
+            var text = document.getElementById("p3").innerHTML;
+            text = "Tipo di sangue: <span class='textPrint'> ";
+            if(btnAp.checked){
+                text = text + btnAp.value + " ";
+                document.getElementById("labelAp").style.backgroundColor= '#138496';
+            }
+            else {
+                document.getElementById("labelAp").style.backgroundColor= '#17a2b8';
+            }
+            
+            if(btnAm.checked){
+                text = text + btnAm.value + " ";
+                document.getElementById("labelAm").style.backgroundColor= '#138496';
+            }
+            else {
+                document.getElementById("labelAm").style.backgroundColor= '#17a2b8';
+            }
+            
+            if(btnBp.checked){
+                text = text + btnBp.value + " ";
+                document.getElementById("labelBp").style.backgroundColor= '#138496';
+            }
+            else {
+                document.getElementById("labelBp").style.backgroundColor= '#17a2b8';
+            }
+            
+            if(btnBm.checked){
+                text = text + btnBm.value + " "; 
+                document.getElementById("labelBm").style.backgroundColor= '#138496';
+            }
+            else {
+                document.getElementById("labelBm").style.backgroundColor= '#17a2b8';
+            }
+            
+            if(btnABp.checked){
+                text = text + btnABp.value + " ";
+                document.getElementById("labelABp").style.backgroundColor= '#138496';
+            }
+            else {
+                document.getElementById("labelABp").style.backgroundColor= '#17a2b8';
+            }
+            
+            if(btnABm.checked){
+                text = text + btnABm.value + " "; 
+                document.getElementById("labelABm").style.backgroundColor= '#138496';
+            }
+            else {
+                document.getElementById("labelABm").style.backgroundColor= '#17a2b8';
+            }
+            
+            if(btnZEROp.checked){
+                text = text + btnZEROp.value + " ";
+                document.getElementById("labelZEROp").style.backgroundColor= '#138496';
+            }
+            else {
+                document.getElementById("labelZEROp").style.backgroundColor= '#17a2b8';
+            }
+            
+            if(btnZEROm.checked){
+                text = text + btnZEROm.value + " "; 
+                document.getElementById("labelZEROm").style.backgroundColor= '#138496';
+            }
+            else {
+                document.getElementById("labelZEROm").style.backgroundColor= '#17a2b8';
+            }
+            
+            text = text + "</span>";
+            document.getElementById("p3").innerHTML = text;
+
         }
     </script>
     <meta charset="utf-8">
@@ -33,51 +102,69 @@
                 Ordina gruppi sanguigni per richieste form            
             </span>
         </div>
+        <div>
+            <img class="logoCTT" src="assets/img/LOGO_CTT.svg">
+        </div>
     </div>
     
     <div class="container" style="max-width: 1430px; margin: 1.5% auto;">
         
-        <div class="dateForm">
+        <div class="dateForm" style="overflow: auto"> 
             <div class="titleDateForm">
                 <p>Inserisci i dati per cui filtrare:</p>
             </div>
-            <div class="row row-cols-2">
-                <div class="row">
-                    <p style="margin: 10% 27%;">Data di inizio:</p>
-                    <p style="margin: 10% 27%;">Data di fine:</p>
-                    <p style="margin: 10% 27%;">Tipo di sangue:</p>
-                </div>
-                <div class="row">
-                    <div class="inputForm">
-                        <input id="datein" oninput="print1()" type="date" style="margin: 5% 0%; font-size: 19px;font-family: Calibri light;width: 300px;">
+            <div class="containerForm" >
+                <form id="myForm">
+                    <div class="row">
+                        <label style="margin: 5% 10%;">Data inizio:</label>
+                        <div class="inputForm">
+                            <input id="datein" name="data_in" oninput="print1();" class="form-control" type="date" style="width: 300px; margin: -1.5em 0%;">
+                        </div>
                     </div>
-                    <div class="inputForm">
-                        <input id="dateout" oninput="print2()" type="date" style="margin: 5% 0%; font-size: 19px;font-family: Calibri light;width: 300px;">
+                    <div class="row">
+                        <label style="margin: 0% 10%;">Data fine:</label>
+                        <div class="inputForm">
+                            <input id="dateout" name="data_out" oninput="print2();" class="form-control" type="date" style="width: 300px; margin: 2% 0%;">
+                        </div>
                     </div>
-                    <div class="inputForm">
-                        <select id="tipsang" oninput="print3()" style="margin: 5% 0%; height: 34px;width: 300px;">
-                            <optgroup>
-                                <option value='0'>Seleziona il tipo di sangue</option>
-                                <option value="A+">A+</option>
-                                <option value="A-">A-</option>
-                                <option value="B+">B+</option>
-                                <option value="B-">B-</option>
-                                <option value="AB+">AB+</option>
-                                <option value="AB-">AB-</option>
-                                <option value="0+">0+</option>
-                                <option value="0-">0-</option>
-                            </optgroup>
-                        </select>
+                    <div class="row">
+                        <label style="margin: 5% 10%;">Tipo di sangue:</label>
                     </div>
-                </div>
-            </div>    
+                    <div class="row" style="margin-left:5.5%">
+                        <label id="labelAp" class="btn btn-info" for="btnAp" style="height: auto;">A+</label>
+                        <input type="checkbox" onclick="print3(); "class="btn-check" id="btnAp" value="Ap" visibility: hidden></input>
+                        
+                        <label id="labelAm" class="btn btn-info" for="btnAm" style="height: auto;">A-</label>
+                        <input type="checkbox" onclick="print3(); "class="btn-check" id="btnAm" value="Am" visibility: hidden></input>
+                        
+                        <label id="labelBp" class="btn btn-info" for="btnBp" style="height: auto;">B+</label>
+                        <input type="checkbox" onclick="print3(); "class="btn-check" id="btnBp" value="Bp" visibility: hidden></input>
+                        
+                        <label id="labelBm" class="btn btn-info" for="btnBm" style="height: auto;">B-</label>
+                        <input type="checkbox" onclick="print3(); "class="btn-check" id="btnBm" value="Bm" visibility: hidden></input>
+                        
+                        <label id="labelABp" class="btn btn-info" for="btnABp" style="height: auto;">AB+</label>
+                        <input type="checkbox" onclick="print3(); "class="btn-check" id="btnABp" value="ABp" visibility: hidden></input>
+                        
+                        <label id="labelABm" class="btn btn-info" for="btnABm" style="height: auto;">AB-</label>
+                        <input type="checkbox" onclick="print3(); "class="btn-check" id="btnABm" value="ABm" visibility: hidden></input>
+                        
+                        <label id="labelZEROp" class="btn btn-info" for="btnZEROp" style="height: auto;">0+</label>
+                        <input type="checkbox" onclick="print3(); "class="btn-check" id="btnZEROp" value="ZEROp" visibility: hidden></input>
+                        
+                        <label id="labelZEROm" class="btn btn-info" for="btnZEROm" style="height: auto;">0-</label>
+                        <input type="checkbox" onclick="print3(); "class="btn-check" id="btnZEROm" value="ZEROm" visibility: hidden></input>
+                        
+                    </div>
+                </form>
+            </div>
         </div>
 
         <div class="previewForm">
             <div class="titleDateForm">
                 <p>Anteprima</p>
             </div>
-            <div class="outPreview" style="">
+            <div class="outPreview">
                 <p id="p1"></p>
                 <p id="p2"></p>
                 <p id="p3"></p>

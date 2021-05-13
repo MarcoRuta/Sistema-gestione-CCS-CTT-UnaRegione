@@ -3,68 +3,28 @@
 
 <head>
     <script>
-        function print1(){
-            if(numsacca.value!="")
-                document.getElementById("p1").innerHTML = "Numero seriale sacca: "+"<span class='textPrint'>" +numsacca.value+"</span>";
-            else document.getElementById("p1").innerHTML = "Numero seriale sacca: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
-        }
         function print2(){
-            if(dateprod.value!="")
-                document.getElementById("p2").innerHTML = "Data di produzione sacca: "+"<span class='textPrint'>" +dateprod.value+"</span>";
+            if(data_produzione.value!="")
+                document.getElementById("p2").innerHTML = "Data di produzione sacca: "+"<span class='textPrint'>" +data_produzione.value+"</span>";
             else document.getElementById("p2").innerHTML = "Data di produzione sacca: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
         }
         function print3(){
-            if(datescad.value!="")
-                document.getElementById("p3").innerHTML = "Data di scadenza sacca: "+"<span class='textPrint'>" +datescad.value+"</span>";
+            if(data_scadenza.value!="")
+                document.getElementById("p3").innerHTML = "Data di scadenza sacca: "+"<span class='textPrint'>" +data_scadenza.value+"</span>";
             else document.getElementById("p3").innerHTML = "Data di scadenza sacca: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
         }
-        function print4(){
-            if(datearr.value!="")
-                document.getElementById("p4").innerHTML = "Data di arrivo: "+"<span class='textPrint'>" +datearr.value+"</span>";
-            else document.getElementById("p4").innerHTML = "Data di arrivo: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
-        }
-        function print9(){
-            if(entedon.value!="")
-                document.getElementById("p9").innerHTML = "Data di arrivo: "+"<span class='textPrint'>" +entedon.value+"</span>";
-            else document.getElementById("p9").innerHTML = "Data di arrivo: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
-        }
         function print5(){
-            if(tipsang.value!=0)
-                document.getElementById("p5").innerHTML = "Tipo di sangue: "+"<span class='textPrint'>" +tipsang.value+"</span>";
+            if(ente_donatore.value!="")
+                document.getElementById("p5").innerHTML = "Data di arrivo: "+"<span class='textPrint'>" +ente_donatore.value+"</span>";
+            else document.getElementById("p5").innerHTML = "Data di arrivo: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
         }
         function print6(){
-            if(document.getElementById("check").checked)
-                document.getElementById("p6").innerHTML = "Prenotata:<span class='textPrint'> SI</span>";
-            else document.getElementById("p6").innerHTML = "Prenotata:<span class='textPrint'> NO</span>";
+            if(gruppo_sanguigno.value!=0)
+                document.getElementById("p6").innerHTML = "Tipo di sangue: "+"<span class='textPrint'>" +gruppo_sanguigno.value+"</span>";
         }
-        function print7(){
-            if(dateaff.value!="")
-                document.getElementById("p7").innerHTML = "Data di scadenza sacca: "+"<span class='textPrint'>" +dateaff.value+"</span>";
-            else document.getElementById("p7").innerHTML = "Data di scadenza sacca: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
-        }
-        function print8(){
-            if(enteric.value!="")
-                document.getElementById("p8").innerHTML = "Data di affidamento: "+"<span class='textPrint'>" +enteric.value+"</span>";
-            else document.getElementById("p8").innerHTML = "Ente richiedente: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
-        }
-        
-        function mostra() {
-            if(document.getElementById("check").checked) {
-               document.getElementById("divAff").style.visibility = 'visible' ;
-               document.getElementById("labelAff").style.visibility = 'visible' ;
-               document.getElementById("divEnt").style.visibility = 'visible' ;
-               document.getElementById("labelEnt").style.visibility = 'visible' ;
-            }
-            else {
-                document.getElementById("p7").innerHTML = "";
-                document.getElementById("p8").innerHTML = "";
-                document.getElementById("divAff").style.visibility = 'hidden' ;
-                document.getElementById("labelAff").style.visibility = 'hidden' ;
-                document.getElementById("divEnt").style.visibility = 'hidden' ;
-                document.getElementById("labelEnt").style.visibility = 'hidden' ;
-            }
-        }
+
     </script>
+    
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>AggiuntaSaccaForm</title>
@@ -81,55 +41,54 @@
                 Aggiunta Sacca Form            
             </span>
         </div>
+        <div>
+            <img class="logoCTT" src="assets/img/LOGO_CTT.svg">
+        </div>
     </div>
     
-    <div class="container" style="max-width: 1430px; margin: 1.5% auto;">
+    <div class="container">
         
         <div class="dateForm">
             <div class="titleDateForm">
                 <p>Dati Sacca</p>
             </div>
-            <div class="row row-cols-2" style="max-height: 450px; max-width: 705px">
-                <div class="row">
-                    <p>Numero seriale sacca:</p>
-                    <p>Data di produzione sacca:</p>
-                    <p>Data di scadenza sacca:</p>
-                    <p>Data di arrivo:</p>
-                    <p>Ente donatore:</p>
-                    <p>Tipo di sangue:</p>
-                </div>
-                <div class="row">
-                    <div class="inputForm">
-                        <input id="numsacca" oninput="print1()" type="text">
+            <div class="containerForm">
+                <form id="myForm">
+                    <div class="form-group row">
+                        <label>Data di produzione sacca:</label>
+                        <div class="col-sm-10 inputForm">
+                            <input id="data_produzione" name="data_produzione" oninput="print2()" class="form-control" type="date">
+                        </div>
                     </div>
-                    <div class="inputForm">
-                        <input id="dateprod" oninput="print2()" type="date">
+                    <div class="form-group row">
+                        <label>Data di scadenza sacca:</label>
+                        <div class="col-sm-10 inputForm">
+                            <input id="data_scadenza" name="data_scadenza" oninput="print3()" class="form-control" type="date">
+                        </div>
                     </div>
-                    <div class="inputForm">
-                        <input id="datescad" oninput="print3()" type="date">
+                    <div class="form-group row">
+                        <label>Ente donatore:</label>
+                        <div class="col-sm-10 inputForm">
+                            <input id="ente_donatore" name="ente_donatore" oninput="print5()" class="form-control" type="text" placeholder="Donatore">
+                        </div>
                     </div>
-                    <div class="inputForm">
-                        <input id="datearr" oninput="print4()" type="date">
-                    </div>
-                    <div class="inputForm">
-                        <input id="entedon" oninput="print9()" type="text">
-                    </div>
-                    <div class="inputForm">
-                        <select id="tipsang" oninput="print5()" style="height: 34px;width: 364px;">
-                            <optgroup>
+                    <div class="form-group row">
+                        <label>Tipo di sangue:</label>
+                        <div class="col-sm-10 inputForm">
+                            <select id="gruppo_sanguigno" name="gruppo_sanguigno" oninput="print6()" class="custom-select" style="width:364px">
                                 <option value='0'>Seleziona il tipo di sangue</option>
-                                <option value="A+">A+</option>
-                                <option value="A-">A-</option>
-                                <option value="B+">B+</option>
-                                <option value="B-">B-</option>
-                                <option value="AB+">AB+</option>
-                                <option value="AB-">AB-</option>
-                                <option value="0+">0+</option>
-                                <option value="0-">0-</option>
-                            </optgroup>
-                        </select>
+                                <option value="Ap">A+</option>
+                                <option value="Am">A-</option>
+                                <option value="Bp">B+</option>
+                                <option value="Bm">B-</option>
+                                <option value="ABp">AB+</option>
+                                <option value="ABm">AB-</option>
+                                <option value="ZEROp">0+</option>
+                                <option value="ZEROm">0-</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>    
         </div>
 
@@ -142,14 +101,61 @@
                 <p id="p2"></p>
                 <p id="p3"></p>
                 <p id="p4"></p>
-                <p id="p9"></p>
                 <p id="p5"></p>
+                <p id="p6"></p>
             </div>
-            <div class="outPreview" style="height: 40px;margin: 4% 45px;"></div>
-            <button class="btn btn-primary" type="button" style="margin-left: 73.5%; width: 140px;height: 51px;font-family: Calibri light;font-size: 20px;">Conferma</button>
+            <div class="outPreview" style="height: 40px;margin: 4% 45px;">
+                <p id="result"></p>
+            </div>
+            <button class="btn btn-primary" type="submit" onclick="loadDoc();" style="margin-left: 73.5%; width: 140px;height: 51px;font-family: Calibri light;font-size: 20px;">Conferma</button>
         </div>
         
     </div>
+    
+     <script type="application/javascript">
+        
+            var xhttp = new XMLHttpRequest();
+
+            function loadDoc(){
+            	
+                var url = "http://127.0.0.1:8080/rest/CTT/aggiuntaSacca";
+                
+                var gp = gruppo_sanguigno.value;
+                var ed = ente_donatore.value;
+                var ds = data_scadenza.value;
+                var dp = data_produzione.value;
+                
+                var params = 'gruppo_sanguigno='+gp+'&data_scadenza='+ds+'&data_produzione='+dp+'&ente_donatore='+ed;
+                /*
+                var formData = new FormData(myForm);
+            	formData.append("gruppo_sanguigno", gruppo_sanguigno.value);
+            	formData.append("data_scadenza", data_scadenza.value);
+            	formData.append("data_produzione", data_produzione.value);
+            	formData.append("ente_donatore", ente_donatore.value);
+            	
+            	for (var value of formData.values()) {
+            		   confirm(value);
+            		}
+				*/
+
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                	    res = this.response;
+                 	    document.getElementById("result").innerHTML = "Evasione Riuscita";
+                 	}else {document.getElementById("result").innerHTML = this.response;}
+
+                };
+
+                xhttp.onerror = function(){
+                    document.getElementById("result").innerHTML = "Sacca non esistente";
+                };
+
+                xhttp.open("POST", url, true);
+                xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhttp.send(params);
+
+            }
+    </script>
         
     <div class="footer"></div>
     <script src="assets/js/jquery.min.js"></script>

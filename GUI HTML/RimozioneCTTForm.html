@@ -24,6 +24,8 @@
                Rimozione CTT Form            
             </span>
         </div>
+            <img class="logoCCS" src="assets/img/LOGO_CCS.svg">
+        </div>
     </div>
     
     <div class="container" style="max-width: 1430px; margin: 1.5% auto;">
@@ -32,16 +34,16 @@
             <div class="titleDateForm">
                 <p>Inserisci il numero CTT da rimuovere</p>
             </div>
-            <div class="row row-cols-2">
-                <div class="row">
-                    <p style="margin: 20% 30%;">Numero CTT:</p>
-                </div>
-                <div class="row">
-                    <div class="inputForm">
-                        <input id="numctt" oninput="print1()" type="number" style="margin: 16.5% 0%; width: 300px;"></input>
+            <div class="containerForm">
+                <form id="myForm">
+                    <div class="form-group row" style="margin: 8% 5%">
+                        <label >Numero CTT:</label>
+                        <div class="inputForm">
+                                <input id="numctt" name="numCTT" oninput="print1();" class="form-control" type="number">
+                        </div>
                     </div>
-                </div>
-            </div>    
+                </form>
+            </div> 
         </div>
 
         <div class="previewForm">

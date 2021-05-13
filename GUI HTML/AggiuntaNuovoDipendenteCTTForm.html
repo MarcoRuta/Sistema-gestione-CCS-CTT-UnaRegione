@@ -5,7 +5,7 @@
      <script>
         function print1(){
             if(codice.value!="")
-                document.getElementById("p1").innerHTML = "Codice fiscale: "+"<span class='textPrint'>" +codice.value+"</span>";
+                document.getElementById("p1").innerHTML = "Codice fiscale: "+"<span class='textPrint' style='text-transform:uppercase'>" +codice.value+"</span>";
             else document.getElementById("p1").innerHTML = "Codice fiscale: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
         }
         function print2(){
@@ -19,8 +19,8 @@
              else document.getElementById("p3").innerHTML = "Cognome: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
         }
         function print4(){
-            if(data.value!="")
-                document.getElementById("p4").innerHTML = "Data di nascita: "+"<span class='textPrint'>" +data.value+"</span>";
+            if(datanasc.value!="")
+                document.getElementById("p4").innerHTML = "Data di nascita: "+"<span class='textPrint'>" +datanasc.value+"</span>";
              else document.getElementById("p4").innerHTML = "Data di nascita: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
         }
         function print5(){
@@ -34,10 +34,11 @@
              else document.getElementById("p6").innerHTML = "Password: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
         }
         function print7(){
-            if(ruolo.value!="")
+            if(ruolo.value!=0)
                 document.getElementById("p7").innerHTML = "Ruolo: "+"<span class='textPrint'>" +ruolo.value+"</span>";
              else document.getElementById("p7").innerHTML = "Ruolo: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
         }
+        
     </script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
@@ -54,51 +55,73 @@
                 Aggiunta Nuovo Dipentente Form            
             </span>
         </div>
+        <div>
+            <img class="logoCTT" src="assets/img/LOGO_CTT.svg">
+        </div>
     </div>
     
     <div class="container" style="max-width: 1430px; margin: 1.5% auto;">
         
-        <div class="dateForm" style="height: 510px;">
+        <div class="dateForm">
             <div class="titleDateForm">
                 <p>Inserisci i Dati:</p>
             </div>
-            <div class="row row-cols-2" style="overflow: auto; max-height: 450px; max-width: 705px">
-                <div class="row">
-                    <p>Codice Fiscale:</p>
-                    <p>Nome:</p>
-                    <p>Cognome:</p>
-                    <p>Data di nascita:</p>
-                    <p>Username:</p>
-                    <p>Password:</p>
-                    <p>Ruolo:</p>
-                </div>
-                <div class="row">
-                    <div class="inputForm">
-                        <input id="codice" oninput="print1()" type="text">
-                    </div>
-                    <div class="inputForm">
-                         <input id="nome" oninput="print2()" type="text">
-                    </div>
-                    <div class="inputForm">
-                         <input id="cognome" oninput="print3()" type="text">
-                    </div>
-                    <div class="inputForm">
-                         <input id="data" oninput="print4()" type="date">
-                    </div>
-                    <div class="inputForm">
-                         <input id="username" oninput="print5()" type="text">
-                    </div>
-                    <div class="inputForm">
-                         <input id="password" oninput="print6()" type="text">
-                    </div>
-                    <div class="inputForm">
-                         <input id="ruolo" oninput="print7()" type="text">
-                    </div>
-                </div>
-            </div>    
+            <div class="containerForm" style= "overflow: auto; max-height: 440px; max-width: 705px" >
+                <form id="myForm">
+                        <div class="form-group row">
+                            <label>Codice fiscale:</label>
+                            <div class="inputForm">
+                                <input id="codice" name="cdf" onchange="controllaCF();" oninput="print1();" class="form-control" type="text" placeholder="Enter a 16-digit code" style='text-transform:uppercase' >
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label>Nome:</label>
+                            <div class="inputForm">
+                                <input id="nome" name="nome" onchange="controllaNome();" oninput="print2();" class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label>Cognome:</label>
+                            <div class="inputForm">
+                                <input id="cognome" name="cognome" onchange="controllaCognome();" oninput="print3();" class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label>Data di nascita:</label>
+                            <div class="inputForm">
+                                <input id="datanasc" name="datanasc" oninput="print4();" class="form-control" type="date">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label>Username:</label>
+                            <div class="inputForm">
+                                <input id="username" name="username" oninput="print5();" class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label>Password:</label>
+                            <div class="inputForm">
+                                <input id="password" name="password" onchange="controllaPassword();" oninput="print6();" class="form-control" type="text" placeholder=">=8 CARATTERI, ~1 LETTERA e ~1 NUMERO.">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label>Ruolo:</label>
+                            <div class="inputForm">
+                                <select class="form-control" id="ruolo" oninput="print7();" style="height: 40px;width: 364px;">
+                                <optgroup>
+                                    <option value='0'>Seleziona il tipo di ruolo</option>
+                                    <option value="AmministratoriCTT">AmministratoriCTT</option>
+                                    <option value="MagazzinieriCTT">MagazzinieriCTT</option>
+                                    <option value="OperatoriCTT">OperatoriCTT</option>
+                                </optgroup>
+                            </select>
+                            </div>
+                        </div>
+                </form>
+            </div>
         </div>
 
-        <div class="previewForm" style="height: 510px;margin: -510px 710px;">
+        <div class="previewForm">
             <div class="titleDateForm">
                 <p>Anteprima</p>
             </div>
@@ -111,7 +134,9 @@
                 <p id="p6"></p>
                 <p id="p7"></p>
             </div>
-            <div class="outPreview" style="height: 40px;margin: 4% 45px;"></div>
+            <div class="outPreview" style="height: 40px;margin: 4% 45px;">
+                <p id="result"></p>
+            </div>
             <button class="btn btn-primary" type="button" style="margin-left: 73.5%; width: 140px;height: 51px;font-family: Calibri light;font-size: 20px;">Conferma</button>
         </div>
         
@@ -120,6 +145,7 @@
     <div class="footer"></div>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/scriptControl.js"></script>
 </body>
 
 </html>

@@ -30,6 +30,8 @@
               Ordina CTT per richieste form            
             </span>
         </div>
+            <img class="logoCCS" src="assets/img/LOGO_CCS.svg">
+        </div>
     </div>
     
     <div class="container" style="max-width: 1430px; margin: 1.5% auto;">
@@ -37,21 +39,23 @@
         <div class="dateForm">
             <div class="titleDateForm">
                 <p>Inserisci l'arco temporale da considerare</p>
-            </div>              
-            <div class="row row-cols-2">
-                <div class="row">
-                    <p style="margin: 15% 35%;">Data inizio:</p>
-                    <p style="margin: 4% 35%;">Data fine:</p>
-                </div>
-                <div class="row">
-                    <div class="inputForm">
-                        <input id="datein" oninput="print1()" type="date" style="margin: 12% 0%; width: 300px;"></input>
+            </div>
+            <div class="containerForm">
+                <form id="myForm">
+                    <div class="form-group row">
+                        <label style="margin: 5% 10%;">Data inizio:</label>
+                        <div class="col-sm-10 inputForm">
+                            <input id="datein" name="data_in" oninput="print1();" class="form-control" type="date" style="width: 300px; margin: -1.5em 0%;">
+                        </div>
                     </div>
-                    <div class="inputForm">
-                        <input id="dateout" oninput="print2()" type="date" style="margin: 12% 0%; width: 300px;"></input>
+                    <div class="form-group row">
+                        <label style="margin: 0% 10%;">Data fine:</label>
+                        <div class="col-sm-10 inputForm">
+                            <input id="dateout" name="data_out" oninput="print2();" class="form-control" type="date" style="width: 300px; margin: 2% 0%;">
+                        </div>
                     </div>
-                </div>
-            </div>    
+                </form>
+            </div>
         </div>
 
         <div class="previewForm">

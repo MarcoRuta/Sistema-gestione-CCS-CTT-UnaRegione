@@ -19,6 +19,20 @@
 	padding: 30px 36px;
 }
 
+.logoCTT {
+	margin-left: 85%;
+	margin-top: -8em;
+	width:192px;
+	height:192px;
+}
+
+.logoCCS {
+	margin-left: 85%;
+	margin-top: -8em;
+	width:192px;
+	height:192px;
+}
+
 span.fontTitle {
 	color: rgb(255,255,255);
 	font-size: 50px;

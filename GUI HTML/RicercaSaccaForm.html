@@ -4,18 +4,18 @@
 <head>
     <script>
         function print1(){
-            if(ente.value!="")
-                document.getElementById("p1").innerHTML = "Numero seriale sacca: "+"<span class='textPrint'>" +ente.value+"</span>";
-            else document.getElementById("p1").innerHTML = "Numero seriale sacca: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
+            if(enteRic.value!="")
+                document.getElementById("p1").innerHTML = "Ente richiedente: "+"<span class='textPrint'>" +enteRic.value+"</span>";
+            else document.getElementById("p1").innerHTML = "Ente richiedente: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
         }
         function print2(){
-            if(dateaff.value!="")
-                document.getElementById("p2").innerHTML = "Data affidamento: "+"<span class='textPrint'>" +dateaff.value+"</span>";
+            if(dataaff.value!="")
+                document.getElementById("p2").innerHTML = "Data affidamento: "+"<span class='textPrint'>" +dataaff.value+"</span>";
             else document.getElementById("p2").innerHTML = "Data affidamento: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
         }
         function print3(){
-            if(tipsang.value!=0)
-                document.getElementById("p3").innerHTML = "Tipo di sangue: "+"<span class='textPrint'>" +tipsang.value+"</span>";
+            if(gruppo_sanguigno.value!=0)
+                document.getElementById("p3").innerHTML = "Tipo di sangue: "+"<span class='textPrint'>" +gruppo_sanguigno.value+"</span>";
         }
         function print4(){
             if(document.getElementById("check").checked)
@@ -38,6 +38,9 @@
                 Ricerca Sacca Form            
             </span>
         </div>
+        <div>
+            <img class="logoCTT" src="assets/img/LOGO_CTT.svg">
+        </div>
     </div>
     
     <div class="container" style="max-width: 1430px; margin: 1.5% auto;">
@@ -46,40 +49,44 @@
             <div class="titleDateForm">
                 <p>Inserisci i dati</p>
             </div>
-            <div class="row row-cols-2">
-                <div class="rowCTT">
-                    <p style="margin: 13% 27%;font-size: 22px;">Ente richiedente:</p>
-                    <p style="margin: 13% 27%;font-size: 22px;">Data affidamento:</p>
-                    <p style="margin: 13% 27%;font-size: 22px;">Tipo di sacca:</p>
-                    <p style="margin: 13% 27%;font-size: 22px;">Priorità:</p>
-                </div>
-                <div class="row">
-                    <div class="inputForm">
-                        <input id="ente" oninput="print1()" type="text" style="margin: 9% 0%; font-size: 19px;font-family: Calibri light;width: 300px;">
+            <div class="containerForm">
+                <form id="myForm">
+                    <div class="form-group row">
+                        <label>Ente richiedente:</label>
+                        <div class="col-sm-10 inputForm">
+                            <input id="enteRic" onchange="controllaEnteRic();" name="ente_richiedente" oninput="print1();" class="form-control" type="text" placeholder="Donatore">
+                        </div>
                     </div>
-                    <div class="inputForm">
-                        <input id="dateaff" oninput="print2()" type="date" style="margin: 5% 0%; font-size: 19px;font-family: Calibri light;width: 300px;">
+                    <div class="form-group row">
+                        <label>Data affidamento:</label>
+                        <div class="col-sm-10 inputForm">
+                            <input id="dataaff" name="data_affidamento" oninput="print2();" class="form-control" type="date">
+                        </div>
                     </div>
-                    <div class="inputForm">
-                        <select id="tipsang" oninput="print3()" style="margin: 0% 0%; height: 34px;width: 300px;">
-                            <optgroup>
+                    <div class="form-group row">
+                        <label>Tipo di sangue:</label>
+                        <div class="col-sm-10 inputForm">
+                            <select id="gruppo_sanguigno" name="gruppo_sanguigno" oninput="print3();" class="custom-select" style="width:364px">
                                 <option value='0'>Seleziona il tipo di sangue</option>
-                                <option value="A+">A+</option>
-                                <option value="A-">A-</option>
-                                <option value="B+">B+</option>
-                                <option value="B-">B-</option>
-                                <option value="AB+">AB+</option>
-                                <option value="AB-">AB-</option>
-                                <option value="0+">0+</option>
-                                <option value="0-">0-</option>
-                            </optgroup>
-                        </select>
+                                <option value="Ap">A+</option>
+                                <option value="Am">A-</option>
+                                <option value="Bp">B+</option>
+                                <option value="Bm">B-</option>
+                                <option value="ABp">AB+</option>
+                                <option value="ABm">AB-</option>
+                                <option value="ZEROp">0+</option>
+                                <option value="ZEROm">0-</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="inputForm">
-                        <input id="check" oninput="print4()" type="checkbox" style="width: 30px;height: 30px;">
+                    <div class="form-group row">
+                        <label>Priorità:</label>
+                        <div class="col-sm-10 inputForm">
+                            <input id="check" oninput="print4();" class="form-control" type="checkbox" style="width: 30px;height: 30px;">
+                        </div>
                     </div>
-                </div>
-            </div>    
+                </form>
+            </div>
         </div>
 
         <div class="previewForm">
@@ -101,6 +108,7 @@
     <div class="footer"></div>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/scriptControl.js"></script>
 </body>
 
 </html>

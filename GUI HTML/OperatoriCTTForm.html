@@ -29,6 +29,8 @@
                Operatori CTT form            
             </span>
         </div>
+            <img class="logoCCS" src="assets/img/LOGO_CCS.svg">
+        </div>
     </div>
     
     <div class="container" style="max-width: 1430px; margin: 1.5% auto;">
@@ -36,28 +38,29 @@
         <div class="dateForm">
             <div class="titleDateForm">
                 <p>Inserisci i dati per cui filtrare</p>
-            </div>              
-            <div class="row row-cols-2">
-                <div class="row">
-                    <p style="margin: 20% 25%;">Numero CTT:</p>
-                    <p style="margin: 2% 25%;">Ruolo dipendente:</p>
-                </div>
-                <div class="row">
-                    <div class="inputForm">
-                        <input id="numctt" oninput="print1()" type="number" style="margin: 16% 0%;width: 300px;"></input>
+            </div>
+            
+            <div class="containerForm">
+                <form id="myForm">
+                    <div class="form-group row">
+                            <label style="margin: 5% 5%;">Numero CTT:</label>
+                            <div class="inputForm">
+                                <input id="numctt" name="numCTT" oninput="print1();" class="form-control" type="number" style="width: 300px; margin: -1.5em 10%;">
+                            </div>
                     </div>
-                    <div class="inputForm">
-                        <select id="ruolo" oninput="print2()" style="margin: 16% 0%;width: 300px;height: 30px;">
-                            <optgroup>
+                    <div class="form-group row" >
+                        <label style="margin: 0% 5%;">Ruolo dipendente:</label>
+                        <div class="inputForm">
+                            <select id="ruolo" name="ruolo" oninput="print2();" class="custom-select" style="width:300px;margin: 2% 10%;">
                                 <option value='0'>Seleziona dall'elenco corrente</option>
                                 <option value="OperatoriCTT">OperatoriCTT</option>
                                 <option value="MagazzinieriCTT">MagazzinieriCTT</option>
                                 <option value="AmministratoriCTT">AmministratoriCTT</option>
-                            </optgroup>
-                        </select>
+                            </select>
+                        </div>
                     </div>
-                </div>  
-            </div>    
+                </form>
+            </div>
         </div>
 
         <div class="previewForm">
@@ -68,7 +71,9 @@
                 <p id="p1"></p>
                 <p id="p2"></p>
             </div>
-            <div class="outPreview" style="height: 40px;margin: 4% 45px;"></div>
+            <div class="outPreview" style="height: 40px;margin: 4% 45px;">
+                <p id="result"></p>
+            </div>
             <button class="btn btn-primary" type="button" style="margin-left: 73.5%; width: 140px;height: 51px;font-family: Calibri light;font-size: 20px;">Conferma</button>
         </div>
         

@@ -17,6 +17,23 @@ div.titleDateForm p {
 	font-family: muli,sans-serif;
 }
 
+.container {
+	max-width: 1430px;
+	margin: 1.5% auto;
+}
+
+.containerForm {
+	max-width: 1430px;
+	margin: 1.5% auto;
+	
+}
+
+.row {
+	margin-right:0px;
+	margin-left:0px;
+}
+
+
 div.row p{
 	width: 250px;
 	height: 40px;
@@ -26,59 +43,26 @@ div.row p{
 	color: rgb(255,255,255);
 }
 
-div.rowCTT p{
-	width: 170px;
-	height: 35px;
-	font-size: 20px;
-	font-family: Calibri light;
-	margin: 4% 25%;
-	color: rgb(255,255,255);
-}
-
-div.rowCTTDip p{
-	width: 170px;
-	height: 35px;
-	font-size: 20px;
-	font-family: Calibri light;
-	margin: 7% 25%;
-	color: rgb(255,255,255);
-}
-
-
-div.rowFilter p{
-	width: 260px;
+div.row label{
+	width: 250px;
 	height: 40px;
 	font-size: 24px;
 	font-family: Calibri light;
-	margin: 6.5% 14%;
 	color: rgb(255,255,255);
+	margin: 1% 4%;
 }
-
 
 .inputForm {
 	width: 400px;
 	height: 40px;
-	margin: 4.5% 0%;
+	margin: -3em 40%;
 }
+
 
 div.inputForm input {
 	width: 364px;
 	font-size: 19px;
-	font-size: 19px;
 	font-family: Calibri light;
-}
-
-
-div.rowInput input {
-	width: 300px;
-	height: 30px;
-	margin: 2.8% -2em;
-}
-
-div.rowInputDip input {
-	width: 300px;
-	height: 30px;
-	margin: 4.5% -2em;
 }
 
 

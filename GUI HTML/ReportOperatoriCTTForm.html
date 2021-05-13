@@ -23,6 +23,9 @@
                 Report Operatori CTT Form           
             </span>
         </div>
+        <div>
+            <img class="logoCTT" src="assets/img/LOGO_CTT.svg">
+        </div>
     </div>
     
     <div class="container" style="max-width: 1430px; margin: 1.5% auto;">
@@ -31,22 +34,20 @@
             <div class="titleDateForm">
                 <p>Inserisci il ruolo per cui filtrare:</p>
             </div>
-            <div class="row row-cols-2">
-                <div class="row">
-                    <p style="margin: 15% 22%;">Ruolo dipendente:</p>
-                </div>
-                <div class="row">
-                    <div class="inputForm">
-                        <select id="ruolo" oninput="print1()" style="height: 34px;width: 300px; margin: 11.5% 0%;">
-                            <optgroup>
+            <div class="containerForm">
+                <form id="myForm">
+                    <div class="form-group row" style="margin: 8% 5%">
+                        <label >Ruolo dipendente:</label>
+                        <div class="inputForm">
+                            <select id="ruolo" name="ruoloDip" oninput="print1();" class="custom-select" style="width:364px;">
                                 <option value='0'>Seleziona il tipo di ruolo</option>
                                 <option value="AmministratoriCTT">AmministratoriCTT</option>
                                 <option value="MagazzinieriCTT">MagazzinieriCTT</option>
                                 <option value="OperatoriCTT">OperatoriCTT</option>
-                            </optgroup>
-                        </select>
+                            </select>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>    
         </div>
 

@@ -24,6 +24,9 @@
                 Rimozione Dipendente Form           
             </span>
         </div>
+        <div>
+            <img class="logoCTT" src="assets/img/LOGO_CTT.svg">
+        </div>
     </div>
     
     <div class="container" style="max-width: 1430px; margin: 1.5% auto;">
@@ -32,16 +35,16 @@
             <div class="titleDateForm">
                 <p>Inserisci dipendente da rimuovere</p>
             </div>
-            <div class="row row-cols-2">
-                <div class="row">
-                    <p style="margin: 15% 22%;">Codice fiscale:</p>
-                </div>
-                <div class="row">
-                    <div class="inputForm">
-                        <input id="codice" oninput="print1()" type="text" style="width: 300px; margin: 11.5% 0%;">
-                    </div>
-                </div>
-            </div>    
+            <div class="containerForm">
+                <form id="myForm">
+                    <div class="form-group row" style="margin: 8% 5%">
+                            <label>Codice fiscale:</label>
+                            <div class="inputForm">
+                                <input id="codice" name="cdf" onchange="controllaCF();" oninput="print1();" class="form-control" type="text" placeholder="Enter a 16-digit code" style='text-transform:uppercase' >
+                            </div>
+                        </div>
+                </form>
+            </div>
         </div>
 
         <div class="previewForm">
@@ -60,6 +63,7 @@
     <div class="footer"></div>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/scriptControl.js"></script>
 </body>
 
 </html>
