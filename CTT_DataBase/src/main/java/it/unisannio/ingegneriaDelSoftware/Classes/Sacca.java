@@ -129,10 +129,10 @@ public class Sacca {
 
 	/**@return etichetta  con i dati della sacca*/
 	public String getEtichettaSacca() {
-		return "Seriale: "+this.seriale+ "\n"
+		return "Seriale: "+this.seriale.getSeriale()+ "\n"
 			+"Gruppo sanguigno: "+this.gruppo+ "\n"
 			+"Data produzione: "+this.dataProduzione+"\n"
-			+"Data di scadenza: "+this.dataScadenza;
+			+"Data di scadenza: "+this.dataScadenza+"\n";
 	}
 
 	@Override

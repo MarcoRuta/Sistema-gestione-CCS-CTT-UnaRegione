@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script>
+        function print1(){
+            if(ente.value!="")
+                document.getElementById("p1").innerHTML = "Ente richiedente: "+"<span class='textPrint'>" +ente.value+"</span>";
+            else document.getElementById("p1").innerHTML = "Ente richiedente: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
+        }
+        function print2(){
+            if(numsacca.value!="")
+                document.getElementById("p2").innerHTML = "Numero seriale sacca: "+"<span class='textPrint'>" +numsacca.value+"</span>";
+            else document.getElementById("p2").innerHTML = "Numero seriale sacca: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
+        }
+        
+        
+	</script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>EvasioneSaccaForm</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/formStyles.css">
+</head>
+
+<body style="background-color: #ffffff;">
+    
+    <div class="titlePage">
+        <div>
+            <span class="fontTitle">
+                Evasione Sacca Form            
+            </span>
+        </div>
+        <div>
+            <img class="logoCTT" src="assets/img/LOGO_CTT.svg">
+        </div>
+    </div>
+    
+    <div class="container" style="max-width: 1430px; margin: 1.5% auto;">
+        
+        <div class="dateForm">
+            <div class="titleDateForm">
+                <p>Dati Sacca</p>
+            </div>
+            <div class="containerForm">
+                <form id="myForm">
+                    <div class="form-group row">
+                            <label style="margin: 5% 5%;">Ente richiedente:</label>
+                            <div class="inputForm">
+                                <input id="ente" name="ent" oninput="print1();" class="form-control" type="text" style="width: 300px; margin: -1.5em 10%;">
+                            </div>
+                    </div>
+                    <div class="form-group row">
+                            <label style="margin: 0% 5%;">Numero seriale sacca:</label>
+                            <div class="inputForm">
+                                <input id="numsacca" name="num" onchange="controllaNumSacca();" oninput="print2();" class="form-control" type="text"  style="width: 300px; margin: 2% 10%;">
+                            </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="previewForm">
+            <div class="titleDateForm">
+                <p>Anteprima</p>
+            </div>
+            <div class="outPreview">
+                <p id="p1"></p>
+                <p id="p2"></p>
+            </div>
+            <div class="outPreview" style="height: 40px;margin: 4% 45px;">
+                <p id="result"></p>
+            </div>
+            <button class="btn btn-primary" type="submit" onclick="loadDoc()" style="margin-left: 73.5%; width: 140px;height: 51px;font-family: Calibri light;font-size: 20px;">Conferma</button>
+            <button id="btnPDF" class="btn btn-warning" type="submit" onclick="creaPdf();" style="visibility: hidden; color: white; margin-left: 6.5%; margin-top: -4em; width: 140px;height: 51px;font-family: Calibri light;font-size: 20px;">PDF</button>
+        </div>
+        
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
+    <script type="application/javascript">  
+            var res;
+            var xhttp = new XMLHttpRequest();
+            
+            function loadDoc(){
+                            	
+                var url = "http://127.0.0.1:8080/rest/CTT/evasione/" + numsacca.value;
+
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                	    res = this.response;
+                 	    document.getElementById("result").innerHTML = "Evasione Riuscita";
+                        setTimeout(visiblePDF,1000);
+                 	}
+                    else {
+                        document.getElementById("result").innerHTML = this.response;
+                    }
+
+                };
+                
+                xhttp.onerror = function(){
+                    document.getElementById("result").innerHTML = "Sacca non esistente";
+                };
+
+                xhttp.open("PUT", url, true);
+                xhttp.send(ente.value);
+                
+            }
+            
+            function visiblePDF() {
+                document.getElementById("btnPDF").style.visibility = "visible";
+            }
+
+
+            function creaPdf() {
+	            var doc = new jsPDF();
+	            /*var host = "http://"+ window.location.hostname;*/
+	            
+	            doc.setFontSize(25);
+	            doc.text(20, 20, "Evasione sacca "+numsacca.value);
+
+	            doc.setLineWidth(0.5);
+                doc.line(20, 25, 197, 25);
+
+                doc.setFontSize(20);
+	            doc.text(20, 40, res);
+
+
+	            // Save the PDF
+	            doc.save(numsacca.value+'.pdf');
+	        }
+
+    </script>
+        
+        
+    <div class="footer"></div>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/scriptControl.js"></script>
+</body>
+
+</html>

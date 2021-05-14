@@ -8,10 +8,10 @@ public class Cdf {
 
 	/**
 	 * @param cdf  deve essere una stringa di 16 caratteri*/
-    public Cdf(String s){
+    public Cdf(String cdf){
 
-        assert(s.length()==16) : "Il codice Fiscale deve essere di 16 caratteri";                     
-        this.codiceFiscale = s;
+        assert(cdf.length()==16) :"Il codice Fiscale deve essere di 16 caratteri";
+        this.codiceFiscale = cdf;
     }
 	
 	/**

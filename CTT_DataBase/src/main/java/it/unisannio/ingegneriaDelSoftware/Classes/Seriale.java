@@ -36,7 +36,7 @@ public class Seriale {
 	
 	public Seriale() {
 
-		seriale = radice+"-"+(new DecimalFormat("0000000000")).format(++lastAssigned);
+		seriale = radice+"-"+(new DecimalFormat("00000000")).format(++lastAssigned);
 	}
 	
 	/*

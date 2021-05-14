@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script>
+        function print2(){
+            if(data_produzione.value!="")
+                document.getElementById("p2").innerHTML = "Data di produzione sacca: "+"<span class='textPrint'>" +data_produzione.value+"</span>";
+            else document.getElementById("p2").innerHTML = "Data di produzione sacca: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
+        }
+        function print3(){
+            if(data_scadenza.value!="")
+                document.getElementById("p3").innerHTML = "Data di scadenza sacca: "+"<span class='textPrint'>" +data_scadenza.value+"</span>";
+            else document.getElementById("p3").innerHTML = "Data di scadenza sacca: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
+        }
+
+        function print5(){
+            if(ente_donatore.value!="")
+                document.getElementById("p5").innerHTML = "Ente Donatore: "+"<span class='textPrint'>" +ente_donatore.value+"</span>";
+            else document.getElementById("p5").innerHTML = "Ente Donatore: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
+        }
+        function print6(){
+            if(gruppo_sanguigno.value!=0)
+                document.getElementById("p6").innerHTML = "Tipo di sangue: "+"<span class='textPrint'>" +gruppo_sanguigno.value+"</span>";
+        }
+
+    </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>AggiuntaSaccaForm</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/formStyles.css">
+</head>
+
+<body style="background-color: #ffffff;">
+    
+    <div class="titlePage">
+        <div>
+            <span class="fontTitle">
+                Aggiunta Sacca Form            
+            </span>
+        </div>
+        <div>
+            <img class="logoCTT" src="assets/img/LOGO_CTT.svg">
+        </div>
+    </div>
+    
+    <div class="container">
+        
+        <div class="dateForm">
+            <div class="titleDateForm">
+                <p>Dati Sacca</p>
+            </div>
+            <div class="containerForm">
+                <form id="myForm">
+                    <div class="form-group row">
+                        <label  >Data di produzione sacca:</label>
+                        <div class="col-sm-10 inputForm">
+                            <input id="data_produzione" name="data_produzione" oninput="print2()" class="form-control" type="date" >
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label >Data di scadenza sacca:</label>
+                        <div class="col-sm-10 inputForm">
+                            <input id="data_scadenza" name="data_scadenza" oninput="print3()" class="form-control" type="date" >
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label >Ente donatore:</label>
+                        <div class="col-sm-10 inputForm">
+                            <input id="ente_donatore" name="ente_donatore" oninput="print5()" class="form-control" type="text" placeholder="Donatore">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label >Tipo di sangue:</label>
+                        <div class="col-sm-10 inputForm">
+                            <select id="gruppo_sanguigno" name="gruppo_sanguigno" oninput="print6()" class="custom-select" style="width:364px">
+                                <option value='0'>Seleziona il tipo di sangue</option>
+                                <option value="Ap">A+</option>
+                                <option value="Am">A-</option>
+                                <option value="Bp">B+</option>
+                                <option value="Bm">B-</option>
+                                <option value="ABp">AB+</option>
+                                <option value="ABm">AB-</option>
+                                <option value="ZEROp">0+</option>
+                                <option value="ZEROm">0-</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>    
+        </div>
+
+        <div class="previewForm">
+            <div class="titleDateForm">
+                <p>Anteprima</p>
+            </div>
+            <div class="outPreview">
+                <p id="p1"></p>
+                <p id="p2"></p>
+                <p id="p3"></p>
+                <p id="p4"></p>
+                <p id="p5"></p>
+                <p id="p6"></p>
+            </div>
+            <div class="outPreview" style="height: 40px;margin: 4% 45px;">
+                <p id="result"></p>
+            </div>
+            <button class="btn btn-primary" type="submit" onclick="loadDoc()" style="margin-left: 73.5%; width: 140px;height: 51px;font-family: Calibri light;font-size: 20px;">Conferma</button>
+        </div>
+        
+    </div>
+    <script type="application/javascript">
+            var xhttp = new XMLHttpRequest();
+
+            function loadDoc(){
+            	
+                var url = "http://127.0.0.1:8080/rest/CTT/aggiuntaSacca";
+                
+                var gp = gruppo_sanguigno.value;
+                var ed = ente_donatore.value;
+                var ds = data_scadenza.value;
+                var dp = data_produzione.value;
+                
+                var params = 'gruppo_sanguigno='+gp+'&data_scadenza='+ds+'&data_produzione='+dp+'&ente_donatore='+ed;
+
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                	    res = this.response;
+                 	    document.getElementById("result").innerHTML = "Evasione Riuscita";
+                 	}else {document.getElementById("result").innerHTML = this.response;}
+
+                };
+
+                xhttp.onerror = function(){
+                    document.getElementById("result").innerHTML = "Sacca non esistente";
+                }
+
+                xhttp.open("POST", url, true);
+                xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhttp.send(params);
+
+            }
+    </script>
+
+    <div class="footer"></div>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>
