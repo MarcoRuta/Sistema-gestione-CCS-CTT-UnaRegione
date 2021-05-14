@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.unisannio.ingegneriaDelSoftware.Classes.CTT;
+import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.AmministratoreCCSDataManager;
 
 
@@ -76,6 +77,12 @@ public class MyAmministratoreCCSDataManager implements AmministratoreCCSDataMana
 		for (CTT ctt : listaCTTOrdinata) if(min.distanzaDalCtt(c) > ctt.distanzaDalCtt(c)) min = ctt;  //per ogni CTT controllo se è più vicino del minimo attuale e aggiorno 
 		
 		return min;
+	}
+
+	public void addDipendente(Dipendente dip) {
+		MyMongoDataManager mm = new MyMongoDataManager();
+		mm.addDipendente(dip);
+		
 	}
 
 

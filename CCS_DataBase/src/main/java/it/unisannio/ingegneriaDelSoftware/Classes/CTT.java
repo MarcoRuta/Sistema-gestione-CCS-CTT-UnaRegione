@@ -8,13 +8,10 @@ public class CTT{
 	
 	private final Integer numero;
 	private String denominazione;
-	private final String provincia;
-	private final String città;
-	private final String indirizzo;
 	private final String telefono;
 	private final String e_mail;
-	private final double latitudine;
-	private final double longitudine;
+	private final CTTPosition posizione;
+	
 	
 
 	/**Metodo costruttore di CTT, accetta tutti i parametri
@@ -26,32 +23,21 @@ public class CTT{
 	 * @param indirizzo l'indirizzo del CTT
 	 * @param telefono il numero di telefono del CTT
 	 * @param e_mail l'email ufficiale del CTT
-	 * @param latitudine la latitudine del CTT
-	 * @param longitudine la longitudine del CTT
-	 * 
 	 * 
 	 * */
 	public CTT(Integer numero, String denominazione, String provincia, String città, String telefono, String indirizzo, String e_mail, double latitudine, double longitudine) {
 		assert numero != null: "Il numero del CTT non può essere null";
 		assert denominazione != null: "La denominazione non può essere null";
-		assert provincia != null: "la provincia non può essere null";
-		assert città != null: "la città non può essere null";
-		assert indirizzo != null: "l'indirizzo non può essere null";
 		assert telefono != null: "il telefono non può essere null";
 		assert e_mail != null: "l'e_mail non può essere null";
-		assert latitudine != 0: "la latitudine non può essere null";
-		assert longitudine != 0: "la longitudine non può essere null";
 		
-
+		this.posizione = new CTTPosition(provincia,città,indirizzo,latitudine,longitudine);
+		
 		this.numero = numero;
 		this.denominazione = denominazione;
-		this.provincia = provincia;
-		this.città = città;
-		this.indirizzo = indirizzo;
 		this.telefono = telefono;
 		this.e_mail = e_mail;
-		this.latitudine = latitudine;
-		this.longitudine = longitudine;
+	
 	}
 
 
@@ -65,14 +51,9 @@ public class CTT{
 		ps.println("\n##################################");
 		ps.println("Numero: "+ this.numero);
 		ps.println("Denominazione: "+ this.denominazione);
-		ps.println("Provincia: "+ this.provincia);
-		ps.println("Città: "+ this.città);
-		ps.println("Indirizzo: "+ this.indirizzo);
 		ps.println("Telefono: "+ this.telefono);
 		ps.println("e-mail: "+ this.e_mail);
-		ps.println("latitudine: "+ this.latitudine);
-		ps.println("longitutidine: "+ this.longitudine);
-		
+		this.getPosizione().print(ps);
 	}
 
 
@@ -94,13 +75,9 @@ public class CTT{
 		return "CTT{" +
 				"numero=" + numero +
 				", denominazione=" + denominazione +
-				", provincia=" + provincia +
-				", città=" + città +
-				", indirizzo=" + indirizzo +
 				", telefono=" + telefono +
 				", e_mail=" + e_mail +
-				", latitudine=" + latitudine +
-				", longitudine=" + longitudine +
+				posizione.toString() +
 				'}';
 	}
 	
@@ -113,10 +90,10 @@ public class CTT{
 	public double distanzaDalCtt(CTT c){
 		double distanza = -1;
 		final int R = 6371;  //raggio della terra
-		double distanzalat = Math.toRadians(c.getLatitudine()-this.latitudine);
-	    double distanzalon = Math.toRadians(c.getLongitudine() - this.longitudine);
+		double distanzalat = Math.toRadians(c.getPosizione().getLatitudine() - this.getPosizione().getLatitudine());
+	    double distanzalon = Math.toRadians(c.getPosizione().getLongitudine() - this.getPosizione().getLongitudine());
 	    
-	    Double x = Math.sin(distanzalat / 2) * Math.sin(distanzalat / 2) + Math.cos(Math.toRadians(this.latitudine)) * Math.cos(Math.toRadians(c.latitudine)) * Math.sin(distanzalon / 2) * Math.sin(distanzalon / 2);
+	    Double x = Math.sin(distanzalat / 2) * Math.sin(distanzalat / 2) + Math.cos(Math.toRadians(this.getPosizione().getLatitudine())) * Math.cos(Math.toRadians(c.getPosizione().getLatitudine())) * Math.sin(distanzalon / 2) * Math.sin(distanzalon / 2);
 		Double y = 2 * Math.atan2(Math.sqrt(x), Math.sqrt(1-x));
 		distanza = R*y;
 		return distanza;
@@ -132,20 +109,6 @@ public class CTT{
 		return denominazione;
 	}
 	
-	/**@return la provincia del CTT*/
-	public String getProvincia() {
-		return provincia;
-	}
-	
-	/**@return la città del CTT*/
-	public String getCittà() {
-		return città;
-	}
-	
-	/**@return l'indirizzo del CTT*/
-	public String getIndirizzo() {
-		return indirizzo;
-	}
 	
 	/**@return il numero di telefono del CTT*/
 	public String getTelefono() {
@@ -157,14 +120,9 @@ public class CTT{
 		return e_mail;
 	}
 	
-	/**@return la latitudine del CTT*/
-	public double getLatitudine() {
-		return latitudine;
-	}
-	
-	/**@return la longitudine del CTT*/
-	public double getLongitudine() {
-		return longitudine;
+
+	public CTTPosition getPosizione() {
+		return posizione;
 	}
 	
 	

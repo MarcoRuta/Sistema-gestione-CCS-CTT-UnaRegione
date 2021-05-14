@@ -7,10 +7,8 @@ import it.unisannio.ingegneriaDelSoftware.Interfaces.DataManager;
 import it.unisannio.ingegneriaDelSoftware.Classes.*;
 import com.mongodb.client.MongoCollection;
 import static com.mongodb.client.model.Filters.*;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import it.unisannio.ingegneriaDelSoftware.Util.DateConverter;
 import org.bson.Document;
 
@@ -65,13 +63,13 @@ public class MyMongoDataManager implements DataManager {
 	    
 	    Document ctt = new Document(ELEMENT_NUMERO, c.getNumero())
                 .append(ELEMENT_DENOMINAZIONE, c.getDenominazione())
-                .append(ELEMENT_PROVINCIA, c.getProvincia())
-                .append(ELEMENT_CITTA, c.getCittà())
-                .append(ELEMENT_INDIRIZZO, c.getIndirizzo())
+                .append(ELEMENT_PROVINCIA, c.getPosizione().getProvincia())
+                .append(ELEMENT_CITTA, c.getPosizione().getCittà())
+                .append(ELEMENT_INDIRIZZO, c.getPosizione().getIndirizzo())
                 .append(ELEMENT_TELEFONO, c.getTelefono())
                 .append(ELEMENT_EMAIL, c.getEmail())
-                .append(ELEMENT_LATITUDINE, c.getLatitudine())
-                .append(ELEMENT_LONGITUDINE, c.getLongitudine());
+                .append(ELEMENT_LATITUDINE, c.getPosizione().getLatitudine())
+                .append(ELEMENT_LONGITUDINE, c.getPosizione().getLongitudine());
                 
 	    collection.insertOne(ctt);
 	}
@@ -172,5 +170,20 @@ public class MyMongoDataManager implements DataManager {
 	    }
 	    return null;
 }
+
+	public void addDipendente(Dipendente dip) {
+		MongoDatabase database = mongoClient.getDatabase(DB_NAME);
+	    MongoCollection<Document> collection = database.getCollection(COLLECTION_DIPENDENTI);
+	    
+	    Document unDipendente = new Document(ELEMENT_CDF, dip.getCdf().getCodiceFiscale())
+                .append(ELEMENT_NOME, dip.getNome())
+                .append(ELEMENT_COGNOME, dip.getCognome())
+                .append(ELEMENT_DATADINASCITA, DateConverter.convertLocalDateToDate(dip.getDataDiNascita()))
+                .append(ELEMENT_RUOLO, dip.getRuolo().toString())
+                .append(ELEMENT_USERNAME, dip.getUsername())
+                .append(ELEMENT_PASSWORD, dip.getPassword());
+	    collection.insertOne(unDipendente);
+		
+	}
 	
 }
