@@ -20,8 +20,7 @@ import it.unisannio.ingegneriaDelSoftware.DataManagers.MyMongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 import it.unisannio.ingegneriaDelSoftware.Util.DateConverter;
 
-public class LoginTest {
-	
+public class ReportOperatoriTest {
 	
 	@BeforeClass public static void populateDBSacche() throws ParseException {
 		MyAmministratoreCTTDataManager amm = new MyAmministratoreCTTDataManager();
@@ -96,35 +95,28 @@ public class LoginTest {
         }       
 	}
 	
-	MyAmministratoreCTTDataManager amm = new MyAmministratoreCTTDataManager();  	
-		
+	MyAmministratoreCTTDataManager amm = new MyAmministratoreCTTDataManager();
 	
 	/**
-	*Test che dovrebbe restituire true in quanto l'utente con
-	*queste credenziali è presente nel database 
+	*Test che dovrebbe restituire restituire 3, il numero degli OperatoriCTT presenti nel database
 	*/
 	@Test	
 	public void test1(){  	
-		assertEquals(true, amm.login("username 008", "008"));
+		assertEquals(3, amm.reportOperatoriCTT(RuoloDipendente.OperatoreCTT).size());
+		amm.removeDipendente(new Cdf("122hfotndj13ht5f"));
 	}
-
+	
+	
 	/**
-	*Test che dovrebbe restituire true in quanto l'utente con
-	*queste credenziali è presente nel database 
+	*Test che dovrebbe restituire restituire 2, il numero degli OperatoriCTT presenti nel database
+	*(Il test di prima ne ha eliminato uno)
 	*/
 	@Test	
 	public void test2(){  	
-		assertEquals(true, amm.login("username 007", "007"));
+		assertEquals(2, amm.reportOperatoriCTT(RuoloDipendente.OperatoreCTT).size());
+		
 	}
 	
-	/**
-	*Test che dovrebbe restituire true in quanto l'utente con
-	*queste credenziali è presente nel database 
-	*/
-	@Test	
-	public void test3(){  	
-		assertEquals(false, amm.login("username 008", "005"));
-	}
 	
 	
 	@AfterClass public static void dropDBSacche() {

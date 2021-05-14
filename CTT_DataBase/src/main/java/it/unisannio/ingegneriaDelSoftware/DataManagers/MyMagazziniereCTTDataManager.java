@@ -5,17 +5,19 @@ import it.unisannio.ingegneriaDelSoftware.Interfaces.DataManager;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.DipendenteCTT;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.MagazziniereCTTDataManager;
 
+import javax.inject.Singleton;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 @Path("/CTT")
+@Singleton
+
 public class MyMagazziniereCTTDataManager implements MagazziniereCTTDataManager, DipendenteCTT {
 	
 	/**Login è l'operazione con la quale MagazziniereCTT accede al sistema
@@ -85,7 +87,6 @@ public class MyMagazziniereCTTDataManager implements MagazziniereCTTDataManager,
 										   @FormParam("data_scadenza") String data_scadenza,
 										   @FormParam("data_produzione") String data_produzion,
 										   @FormParam("ente_donatore") String ente_donatore) {
-		System.out.println("Arrivato un messaggio");
 		DataManager mm = new MyMongoDataManager();
 		try {
 			Sacca unaSacca = new Sacca(GruppoSanguigno.valueOf(gruppo_sanguigno),

@@ -19,9 +19,9 @@ public class MyMongoDataManager implements DataManager {
 	
 
 	
-	private MongoClient mongoClient;
+	private static MongoClient mongoClient;
 	
-	public MyMongoDataManager() {
+	static {
 		mongoClient = new MongoClient();
 	}
 

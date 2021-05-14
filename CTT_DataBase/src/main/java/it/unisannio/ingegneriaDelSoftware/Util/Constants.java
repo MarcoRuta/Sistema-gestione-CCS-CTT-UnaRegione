@@ -28,7 +28,8 @@ public class Constants {
 	public static final String ELEMENT_RUOLO = "ruolo";
 	public static final String ELEMENT_USERNAME = "username";
 	public static final String ELEMENT_PASSWORD = "password";
-	public static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	
+	public static SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 
 
 }

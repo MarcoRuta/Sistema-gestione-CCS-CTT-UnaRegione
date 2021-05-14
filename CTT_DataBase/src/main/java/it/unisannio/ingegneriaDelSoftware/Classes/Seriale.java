@@ -45,12 +45,12 @@ public class Seriale {
 	 * 17 caratteri
 	 * carattere "-" in quinta posizione
 	 * un intero dalla sesta posizione alla fine
-	 */	
+	 */
 	public Seriale(String ser) {
 		assert  ser != null: "Il seriale non puo essere null";
-		assert 	ser.length()==17 &&
-				ser.charAt(4)=='-' &&
-				ser.substring(5).matches("^[0-9]*$"): "Formato del seriale non valido";
+		assert 	ser.length()==15 &&
+				ser.charAt(6)=='-' &&
+				ser.substring(7).matches("^[0-9]*$"): "Formato del seriale non valido";
 		this.seriale = ser;
 	}
 
