@@ -1,6 +1,7 @@
 package it.unisannio.ingegneriaDelSoftware.junit;
 import static org.junit.Assert.assertEquals;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +14,11 @@ import it.unisannio.ingegneriaDelSoftware.DataManagers.MyAmministratoreCCSDataMa
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MyMongoDataManager;
 
 public class DistanceCTTTest {
-	
+	/**
+	 * Classe per la popolazione del database
+	 * 
+	 * @throws ParseException
+	 */
 	@BeforeClass public static void populateDataBaseCTT() {
 		
 		MyAmministratoreCCSDataManager amm = new MyAmministratoreCCSDataManager();
@@ -75,7 +80,11 @@ public class DistanceCTTTest {
 	public void test4() {
 		assertEquals(4,amm.CttPiùVicino(3).getNumero());
 	}
-	
+
+	/**
+	 * Classe per l'eliminazione del database
+	 * 
+	 */
 	@AfterClass public static void dropDataBaseCTT() {
 		MyMongoDataManager mm = new MyMongoDataManager();
 		mm.dropDB();

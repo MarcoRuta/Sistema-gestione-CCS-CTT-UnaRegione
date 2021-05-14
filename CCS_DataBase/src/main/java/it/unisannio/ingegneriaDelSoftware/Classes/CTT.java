@@ -14,9 +14,10 @@ public class CTT{
 	
 	
 
-	/**Metodo costruttore di CTT, accetta tutti i parametri
+	/**
+	 * Metodo costruttore di CTT
 	 * 
-	 * @param numero il numero identificativo del CTT
+	 * @param numero  l'identificativo del CTT
 	 * @param denominazione  il nome del CTT
 	 * @param provincia la provincia in cui è situato il CTT
 	 * @param città la città in cui è situato il CTT
@@ -41,12 +42,12 @@ public class CTT{
 	}
 
 
-	/**metodo di stampa per i CTT
+	/**
+	 * Metodo che stampa le informazioni di un CTT
 	 * 
-	 * @param ps  stream di output su cui stampare i dati della sacca
+	 * @param ps  stream di output su cui stampare i dati del CTT
 	 * 
 	 */
-	
 	public void print(PrintStream ps) {
 		ps.println("\n##################################");
 		ps.println("Numero: "+ this.numero);
@@ -56,7 +57,12 @@ public class CTT{
 		this.getPosizione().print(ps);
 	}
 
-
+	/**
+	 * Metodo che verifica l'uguaglianza tra due CTT
+	 * 
+	 * @return Un boolean true o false a seconda dell'esito del confronto
+	 *
+	 */
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -65,11 +71,23 @@ public class CTT{
 		return numero.equals(ctt.numero);
 	}
 
+	/**
+	 * Metodo che calcola l'hashcode di un CTT
+	 * 
+	 * @return Un intero pari all'hashcode generato
+	 * 
+	 */
 	@Override
 	public int hashCode() {
 		return Objects.hash(numero);
 	}
 
+	/**
+	 * Metodo che concatena in un'unica stringa le informazioni di un CTT
+	 *  * 
+	 * @return La stringa concatenata
+	 * 
+	 */
 	@Override
 	public String toString() {
 		return "CTT{" +
@@ -81,15 +99,16 @@ public class CTT{
 				'}';
 	}
 	
-	/**Questo metodo calcola la distanza tra due punti applicando la formula dell'emisenoverso, per fornire un'informazione abbastanza affidabile per calcolare la distanza tra due CTT
+	/*
+	 * Metodo che calcola la distanza tra due punti applicando la formula dell'emisenoverso
 	 * 
-	 * @param ctt il ctt da cui voglio calcolare la distanza rispetto a quello attuale
-	 * @return distance la distanza tra i due CTT
+	 * @param CTT Il ctt da cui voglio calcolare la distanza rispetto a quello attuale
+	 * @return La distanza tra i due CTT
 	 * 
 	 */
 	public double distanzaDalCtt(CTT c){
 		double distanza = -1;
-		final int R = 6371;  //raggio della terra
+		final int R = 6371;  
 		double distanzalat = Math.toRadians(c.getPosizione().getLatitudine() - this.getPosizione().getLatitudine());
 	    double distanzalon = Math.toRadians(c.getPosizione().getLongitudine() - this.getPosizione().getLongitudine());
 	    
@@ -99,28 +118,53 @@ public class CTT{
 		return distanza;
 	}
 
-	/**@return il numero del CTT*/
+	/**
+	 * Metodo che restituisce l'identificativo del CTT
+	 * 
+	 * @return  identificativo
+	 *
+	 */
 	public int getNumero() {
 		return numero;
 	}
 	
-	/**@return la denominazione del CTT*/
+	/**
+	 * Metodo che restituisce la denominazione del CTT
+	 * 
+	 * @return  Denominazione
+	 *
+	 */
 	public String getDenominazione() {
 		return denominazione;
 	}
 	
 	
-	/**@return il numero di telefono del CTT*/
+	/**
+	 * Metodo che restituisce il recapito telefonico del CTT
+	 * 
+	 * @return  Telefono
+	 *
+	 */
 	public String getTelefono() {
 		return telefono;
 	}
 	
-	/**@return l'email del CTT*/
+	/**
+	 * Metodo che restituisce l'email del CTT
+	 * 
+	 * @return  Email
+	 *
+	 */
 	public String getEmail() {
 		return e_mail;
 	}
 	
-
+	/**
+	 * Metodo che restituisce l'ubicazione del CTT
+	 * 
+	 * @return  Ubicazione
+	 *
+	 */
 	public CTTPosition getPosizione() {
 		return posizione;
 	}

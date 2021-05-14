@@ -12,8 +12,6 @@ public class TestCTT {
 	
 	public static void main(String[] args) throws ParseException {
 	
-	
-	
 	MyAmministratoreCCSDataManager amm = new MyAmministratoreCCSDataManager();
 	
 	List<CTT> listaCTT = new ArrayList<CTT>();

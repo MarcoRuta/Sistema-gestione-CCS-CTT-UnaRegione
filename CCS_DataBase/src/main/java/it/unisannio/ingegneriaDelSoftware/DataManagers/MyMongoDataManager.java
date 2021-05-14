@@ -1,6 +1,5 @@
 package it.unisannio.ingegneriaDelSoftware.DataManagers;
 
-
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoDatabase;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.DataManager;
@@ -12,9 +11,7 @@ import java.util.List;
 import it.unisannio.ingegneriaDelSoftware.Util.DateConverter;
 import org.bson.Document;
 
-
 public class MyMongoDataManager implements DataManager {
-	
 	private static final String DB_NAME = "CCS";
 	
 	private static final String COLLECTION_CTT = "CTT";
@@ -28,8 +25,6 @@ public class MyMongoDataManager implements DataManager {
 	private static final String ELEMENT_LATITUDINE = "latitudine";
 	private static final String ELEMENT_LONGITUDINE = "longitudine";
 	
-
-	
 	private static final String COLLECTION_DIPENDENTI = "DIPENDENTI";
 	private static final String ELEMENT_CDF = "cdf";
 	private static final String ELEMENT_NOME = "nome";
@@ -39,20 +34,33 @@ public class MyMongoDataManager implements DataManager {
 	private static final String ELEMENT_USERNAME = "username";
 	private static final String ELEMENT_PASSWORD = "password";
 
+	private static MongoClient mongoClient;
 	
-	private MongoClient mongoClient;
+	static {
+		mongoClient = new MongoClient();
+	}
 	
+	/**
+	 * Metodo che istanzia un Client per accedere al database
+	 * 
+	 */
 	public MyMongoDataManager() {
 		mongoClient = new MongoClient();
 	}
 
+	
+	/**
+	 *Metodo che elimina un database
+	 * 
+	 */
 	public void dropDB() {
 		MongoDatabase database = mongoClient.getDatabase(DB_NAME);
         database.drop();
         mongoClient.close();
     }
 
-	/**Metodo che permettere di aggiungere un CTT al database
+	/**
+	 * Metodo che permettere di aggiungere un CTT al database
 	 * 
 	 * @param c il CTT da aggiungere al database
 	 * 
@@ -74,8 +82,8 @@ public class MyMongoDataManager implements DataManager {
 	    collection.insertOne(ctt);
 	}
 
-
-	/**Metodo che permette di rimuovere un CTT dal database
+	/**
+	 * Metodo che permette di rimuovere un CTT dal database
 	 * 
 	 * @param numero Numero del CTT da rimuovere dal database
 	 * 
@@ -88,35 +96,36 @@ public class MyMongoDataManager implements DataManager {
 		    collection.deleteOne(current);
 	}
 
-
-	/**Metodo che permette di cercare un CTT all'interno del database
+	/**
+	 * Metodo che permette di cercare un CTT all'interno del database
+	 * 
 	 * @param numero Numero del CTT di cui si vogliono ottenere i dati
 	 * 
-	 * @return CTT cercato
+	 * @return CTT Il CTT ricercato
+	 * 
 	 */
 	public CTT getCTT(int numero) {
 		MongoDatabase database = mongoClient.getDatabase(DB_NAME);
 	    MongoCollection<Document> collection = database.getCollection(COLLECTION_CTT);
-	        
+	    CTT c= null;
+	    
 	    for (Document current : collection.find(eq(ELEMENT_NUMERO, numero))) {
-	    	
-	    		CTT c = new CTT(current.getInteger(ELEMENT_NUMERO), 
-	    				current.getString(ELEMENT_DENOMINAZIONE), 
-	    				current.getString(ELEMENT_PROVINCIA),
-	    				current.getString(ELEMENT_CITTA),
-	    				current.getString(ELEMENT_TELEFONO),
-	    				current.getString(ELEMENT_INDIRIZZO), 
-	    				current.getString(ELEMENT_EMAIL),
-	    				current.getDouble(ELEMENT_LATITUDINE),
-	    				current.getDouble(ELEMENT_LONGITUDINE));
-	    		return c;
-	    	
+	    	c = new CTT(current.getInteger(ELEMENT_NUMERO), 
+	    			current.getString(ELEMENT_DENOMINAZIONE), 
+	    			current.getString(ELEMENT_PROVINCIA),
+	    			current.getString(ELEMENT_CITTA),
+	    			current.getString(ELEMENT_TELEFONO),
+	    			current.getString(ELEMENT_INDIRIZZO), 
+	    			current.getString(ELEMENT_EMAIL),
+	    			current.getDouble(ELEMENT_LATITUDINE),
+	    			current.getDouble(ELEMENT_LONGITUDINE));
 	    }		
-		return null;
+	    return c;
 	}
 
 	
-	/**Metodo che restituisce la lista di tutti i CTT presenti nel database del CCS
+	/**
+	 * Metodo che restituisce la lista di tutti i CTT presenti nel database del CCS
 	 * @return Lista di tutti i CTT
 	 * 
 	 */
@@ -143,34 +152,42 @@ public class MyMongoDataManager implements DataManager {
                 listaCTT.add(c);
             
         }
-        mongoClient.close();
         return listaCTT;
     }
 	
-	/**Metodo che restituisce un dipendente presente nel database
+	/**
+	 * Metodo che restituisce un dipendente presente nel database
+	 * 
 	 * @param username Username del dipendente da cercare
 	 * @param password Password del dipendente da cercare
-	 * @return Dipendente che ha le credenziali che corrispondono
+	 * 
+	 * @return Dipendente cercato
 	 */
 	public Dipendente getDipendente(String username, String password) {
 		MongoDatabase database = mongoClient.getDatabase(DB_NAME);
 	    MongoCollection<Document> collection = database.getCollection(COLLECTION_DIPENDENTI);
-	        
+	    Dipendente dip = null;
+	    
 	    for (Document current : collection.find(eq(ELEMENT_USERNAME, username))) {
 	    	if(password.equals(current.getString(ELEMENT_PASSWORD))) {
-	    		Dipendente dip = new Dipendente(new Cdf(current.getString(ELEMENT_CDF)), 
+	    		dip = new Dipendente(new Cdf(current.getString(ELEMENT_CDF)), 
 	    				current.getString(ELEMENT_NOME), 
 	    				current.getString(ELEMENT_COGNOME),
 	    				DateConverter.convertDateToLocalDate(current.getDate(ELEMENT_DATADINASCITA)),
 	    				RuoloDipendente.valueOf(current.getString(ELEMENT_RUOLO)), 
 	    				current.getString(ELEMENT_USERNAME),
 	    				current.getString(ELEMENT_PASSWORD));
-	    		return dip;
 	    	}
 	    }
-	    return null;
+	    return dip;
 }
 
+	/*
+	 * *Metodo che aggiunge il dipendente al database
+	 * 
+	 * @param dip Dipendente da aggiungere
+	 * 
+	 */
 	public void addDipendente(Dipendente dip) {
 		MongoDatabase database = mongoClient.getDatabase(DB_NAME);
 	    MongoCollection<Document> collection = database.getCollection(COLLECTION_DIPENDENTI);

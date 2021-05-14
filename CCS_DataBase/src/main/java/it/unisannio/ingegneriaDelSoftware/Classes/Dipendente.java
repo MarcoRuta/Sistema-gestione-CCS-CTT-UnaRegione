@@ -16,7 +16,8 @@ public class Dipendente {
 	private final String username;
 	private String password;
 
-	/**Metodo Costruttore dell'oggetto Dipendente
+	/**
+	 * Metodo Costruttore dell'oggetto Dipendente
 	 * 
 	 * @param cdf  il codice fiscale del dipendente
 	 * @param cognome  il cognome del del dipendente
@@ -44,48 +45,92 @@ public class Dipendente {
 		this.password = password;
 	}	
 	
-	/**@return il codice fiscale del dipendente*/
+	/**
+	 * Metodo che restituisce il codice ficale di un dipendente
+	 * 
+	 * @return codice fiscale
+	 *
+	 */
 	public Cdf getCdf() {
 		return cdf;
 	}
 
-	/**@return il nome del dipendente*/
+	/**
+	 * Metodo che restituisce il nome del dipendente
+	 * 
+	 * @return nome
+	 *
+	 */
 	public String getNome() {
 		return nome;
 	}
 
-	/**@return il cognome del dipendente*/
+	/**
+	 * Metodo che restituisce il cognome del dipendente
+	 * 
+	 * @return cognome
+	 *
+	 */
 	public String getCognome() {
 		return cognome;
 	}
 
-	/**@return la data di nascita del dipendente*/
+	/**
+	 * Metodo che restituisce la data di nascita del dipendente
+	 * 
+	 * @return data di nascita
+	 *
+	 */
 	public LocalDate getDataDiNascita() {
 		return dataDiNascita;
 	}
 
-	/**@return il ruolo del dipendente*/
+	/**
+	 * Metodo che restituisce il ruolo del dipendente
+	 * 
+	 * @return ruolo
+	 *
+	 */
 	public RuoloDipendente getRuolo() {
 		return ruolo;
 	}
 
-	/**@return l'username del dipendente sul sistema CTT*/
+	/**
+	 * Metodo che restituisce l'username del dipendente
+	 * 
+	 * @return username
+	 *
+	 */
 	public String getUsername() {
 		return username;
 	}
 
-	/**@return la password del dipendente sul sistem CTT*/
+	/**
+	 * Metodo che restituisce la password del dipendente
+	 * 
+	 * @return password
+	 *
+	 */
 	public String getPassword() {
 		return password;
 	}
 
-	/**@param password  la password del dipendente sul sistema CTT*/
+	/**
+	 * Metodo che permette di settare la password del dipendente
+	 * @param password La nuova password 
+	 *
+	 */
 	public void setPassword(String password) {
 		assert password!= null: "La password del dipendente non può essere null";
 		this.password = password;
 	}
 
-	/**@param ps stream di output su cui stampare i dati del dipendente*/
+	/**
+	 * Metodo che stampa le informazioni di un dipendente 
+	 * 
+	 * @param ps  stream di output su cui stampare i dati del dipendente
+	 * 
+	 */
 	public void print(PrintStream ps) {
 		ps.println("\n##################################");
 		ps.println("Codice Fiscale: "+this.cdf);
@@ -97,6 +142,12 @@ public class Dipendente {
 		ps.println("Password: "+this.password);
 	}
 
+	/**
+	 * Metodo che concatena in un'unica stringa le informazioni del dipendente
+	 *  * 
+	 * @return La stringa concatenata
+	 * 
+	 */
 	@Override
 	public String toString() {
 		return "Dipendente{" +
@@ -110,6 +161,12 @@ public class Dipendente {
 				'}';
 	}
 
+	/**
+	 * Metodo che verifica l'uguaglianza tra due dipendenti
+	 * 
+	 * @return Un boolean true o false a seconda dell'esito del confronto
+	 *
+	 */
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -118,6 +175,12 @@ public class Dipendente {
 		return cdf.equals(that.cdf);
 	}
 
+	/**
+	 * Metodo che calcola l'hashcode di un dipendente
+	 * 
+	 * @return Un intero pari all'hashcode generato
+	 * 
+	 */
 	@Override
 	public int hashCode() {
 		return Objects.hash(cdf);

@@ -13,7 +13,8 @@ import it.unisannio.ingegneriaDelSoftware.Interfaces.AmministratoreCCSDataManage
 
 public class MyAmministratoreCCSDataManager implements AmministratoreCCSDataManager{
 
-	/**Login è l'operazione con la quale AmministratoreCCS accede al sistema
+	/*
+	 *Metodo col quale l'AmministratoreCCS accede al sistema CCS
 	 * 
 	 * @param username Username che usa AmministratoreCCS per entrare nel sistema
 	 * @param password Password che usa AmministratoreCCS per entrare nel sistema
@@ -35,7 +36,8 @@ public class MyAmministratoreCCSDataManager implements AmministratoreCCSDataMana
 		mm.createCTT(c);
 	}
 	
-	/**Metodo che rimuove un CTT e tutti i suoi dati dal database
+	/*
+	 * *Metodo che rimuove un CTT e tutti i suoi dati dal database
 	 * 
 	 * @param numero il numero del CTT che si vuole rimuovere dal database
 	 * 
@@ -45,7 +47,8 @@ public class MyAmministratoreCCSDataManager implements AmministratoreCCSDataMana
 		mm.removeCTT(numero);
 	}
 
-	/**Metodo che ricerca tutti i CTT all' interno del DataBase
+	/*
+	 * *Metodo che ricerca tutti i CTT all' interno del DataBase
 	 * 
 	 * @return Lista di tutti i CTT presenti all'interno del DataBase
 	 * 
@@ -55,7 +58,8 @@ public class MyAmministratoreCCSDataManager implements AmministratoreCCSDataMana
 		return mm.getListaCTT();
 	}
 	
-	/**Metodo che restituisce il CTT più vicino a quello dato
+	/*
+	 * *Metodo che restituisce il CTT più vicino a quello dato
 	 * 
 	 * @param num Numero del CTT dato
 	 * @return CTT più vicino a quello dato
@@ -70,20 +74,24 @@ public class MyAmministratoreCCSDataManager implements AmministratoreCCSDataMana
 		List<CTT> listaCTTOrdinata = new ArrayList<CTT>();
 		
 	
-		for (CTT ctt : listaCTT) if (!ctt.equals(c)) listaCTTOrdinata.add(ctt);       	//ho la lista di tutti i CTT tranne quello che voglio confrontare
+		for (CTT ctt : listaCTT) if (!ctt.equals(c)) listaCTTOrdinata.add(ctt);     
 		
-		CTT min = listaCTTOrdinata.get(0);  // imposto arbitrariamente il primo della lista come più vicino;
+		CTT min = listaCTTOrdinata.get(0);
 		
-		for (CTT ctt : listaCTTOrdinata) if(min.distanzaDalCtt(c) > ctt.distanzaDalCtt(c)) min = ctt;  //per ogni CTT controllo se è più vicino del minimo attuale e aggiorno 
+		for (CTT ctt : listaCTTOrdinata) if(min.distanzaDalCtt(c) > ctt.distanzaDalCtt(c)) min = ctt;
 		
 		return min;
 	}
 
+	/*
+	 * *Metodo che aggiunge il dipendente al database
+	 * 
+	 * @param dip Dipendente da aggiungere
+	 * 
+	 */
 	public void addDipendente(Dipendente dip) {
 		MyMongoDataManager mm = new MyMongoDataManager();
 		mm.addDipendente(dip);
 		
 	}
-
-
 }
