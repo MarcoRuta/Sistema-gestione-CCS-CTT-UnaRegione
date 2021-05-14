@@ -19,14 +19,15 @@ public class MyMongoDataManager implements DataManager {
 	
 
 	
-	private static MongoClient mongoClient;
+	private static  MongoClient mongoClient;
 	
-	static {
+	static{
 		mongoClient = new MongoClient();
 	}
 
 	public void dropDB() {
 		MongoDatabase database = mongoClient.getDatabase(Constants.DB_NAME);
+		
         database.drop();
         mongoClient.close();
     }
@@ -289,7 +290,7 @@ public class MyMongoDataManager implements DataManager {
                         current.getString(Constants.ELEMENT_PASSWORD));
                dipendenti.add(dip);
         }
-        mongoClient.close();
+        
         return dipendenti;
     }
 

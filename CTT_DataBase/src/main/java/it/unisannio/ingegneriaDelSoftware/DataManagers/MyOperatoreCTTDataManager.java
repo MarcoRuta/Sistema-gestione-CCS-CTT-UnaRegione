@@ -3,7 +3,6 @@ package it.unisannio.ingegneriaDelSoftware.DataManagers;
 
 import java.text.ParseException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -47,6 +46,7 @@ public class MyOperatoreCTTDataManager implements OperatoreCTTDataManager, Dipen
 		mm.setEnteRichiedenteDatiSacca(s.getSeriale(), enteRichiedente);
 		mm.setDataAffidamentoDatiSacca(s.getSeriale(), LocalDate.now());
 		}
+		
 		return s;
 		
 	}
@@ -57,7 +57,7 @@ public class MyOperatoreCTTDataManager implements OperatoreCTTDataManager, Dipen
 	 * @param dataArrivoMassima Data entro la quale la Sacca non deve essere scaduta
 	 * @return null se la sacca non è stata trovata; la Sacca se essa è stata trovata
 	 */
-	public  Sacca getSaccaCompatibilePerRicerca(GruppoSanguigno gs, LocalDate dataArrivoMassima) {
+	private  Sacca getSaccaCompatibilePerRicerca(GruppoSanguigno gs, LocalDate dataArrivoMassima) {
 		MyMongoDataManager mm = new MyMongoDataManager();
 		
 		List<Sacca> listaSacche = mm.getListaSacche();
@@ -97,7 +97,7 @@ public class MyOperatoreCTTDataManager implements OperatoreCTTDataManager, Dipen
 	 * @param dataArrivoMassima Data entro la quale la Sacca non deve essere scaduta
 	 * @return null se la sacca non è stata trovata; la Sacca se essa è stata trovata 
 	 */
-	public Sacca getSaccaPerRicerca(GruppoSanguigno gs, LocalDate dataArrivoMassima) {
+	private Sacca getSaccaPerRicerca(GruppoSanguigno gs, LocalDate dataArrivoMassima) {
 		MyMongoDataManager mm = new MyMongoDataManager();
 		
 		List<Sacca> listaSacche = mm.getListaSacche();
@@ -124,30 +124,6 @@ public class MyOperatoreCTTDataManager implements OperatoreCTTDataManager, Dipen
 		if(selez != null)mm.setPrenotatoSacca(selez.getSeriale());
 		return selez;
 	}
-	
-	
-	/** Restituisce una lista contenente tutte le Sacche con scadenza inferiore a 72 ore da oggi
-	 * @return la lista delle Sacche in scadenza
-	 */
-    public List<Sacca> getSaccheEntroScadenza() {
-    	MyMongoDataManager mm = new MyMongoDataManager();
-		
-		List<Sacca> listaSacche = mm.getListaSacche();
-		List<Sacca> saccheInScadenza = new ArrayList<Sacca>();
-		
-        Date oggi = new Date();
-        long dataScadenza = oggi.getTime();
-        long dataScadenza72 = dataScadenza + 259200000;
-
-        for (Sacca sacca : listaSacche){
-            if(DateConverter.convertLocalDateToDate(sacca.getDataScadenza()).getTime()>(dataScadenza) 
-            		&& DateConverter.convertLocalDateToDate(sacca.getDataScadenza()).getTime()<(dataScadenza72)) {
-
-            	saccheInScadenza.add(sacca);
-            }
-        }
-        return saccheInScadenza;
-    }
 	
 
 }

@@ -356,7 +356,7 @@ public class RicercaSaccaTest {
 	*/
 	@Test	
 	public void test1(){  	
-		assertEquals("CTT001-00000019", oper.ricercaSaccaLocale(GruppoSanguigno.Ap, LocalDate.of(2010,04,10), "Mr. Damme tutto").getSeriale().getSeriale());
+		assertEquals("CTT001-00000016", oper.ricercaSaccaLocale(GruppoSanguigno.Ap, LocalDate.of(2010,04,10), "Mr. Damme tutto").getSeriale().getSeriale());
 	}
 
 	/**
@@ -365,7 +365,7 @@ public class RicercaSaccaTest {
 	*/
 	@Test
 	public void test2() {
-		assertEquals("CTT001-00000004", oper.ricercaSaccaLocale(GruppoSanguigno.Ap, LocalDate.of(2010,04,10), "Mr. Damme tutto").getSeriale().getSeriale());
+		assertEquals("CTT001-00000001", oper.ricercaSaccaLocale(GruppoSanguigno.Ap, LocalDate.of(2010,04,10), "Mr. Damme tutto").getSeriale().getSeriale());
 	}
 	
 	/**
@@ -374,7 +374,7 @@ public class RicercaSaccaTest {
 	*/
 	@Test
 	public void test3() {
-		assertEquals("CTT001-00000007", oper.ricercaSaccaLocale(GruppoSanguigno.Ap, LocalDate.of(2010,04,10), "Mr. Damme tutto").getSeriale().getSeriale());
+		assertEquals("CTT001-00000004", oper.ricercaSaccaLocale(GruppoSanguigno.Ap, LocalDate.of(2010,04,10), "Mr. Damme tutto").getSeriale().getSeriale());
 	}
 	
 	/**
@@ -383,7 +383,7 @@ public class RicercaSaccaTest {
 	*/
 	@Test
 	public void test4() {
-		assertEquals("CTT001-00000016", oper.ricercaSaccaLocale(GruppoSanguigno.Ap, LocalDate.of(2010,04,10), "Mr. Damme tutto").getSeriale().getSeriale());
+		assertEquals("CTT001-00000013", oper.ricercaSaccaLocale(GruppoSanguigno.Ap, LocalDate.of(2010,04,10), "Mr. Damme tutto").getSeriale().getSeriale());
 	}
 	
 	/**
@@ -392,7 +392,7 @@ public class RicercaSaccaTest {
 	*/
 	@Test
 	public void test5() {
-		assertEquals("CTT001-00000012", oper.ricercaSaccaLocale(GruppoSanguigno.Ap, LocalDate.of(2010,04,10), "Mr. Damme tutto").getSeriale().getSeriale());
+		assertEquals("CTT001-00000009", oper.ricercaSaccaLocale(GruppoSanguigno.Ap, LocalDate.of(2010,04,10), "Mr. Damme tutto").getSeriale().getSeriale());
 	}
 	
 	/**

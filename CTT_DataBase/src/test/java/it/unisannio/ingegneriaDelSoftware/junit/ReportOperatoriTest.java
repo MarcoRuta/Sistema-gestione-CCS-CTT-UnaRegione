@@ -21,8 +21,9 @@ import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 import it.unisannio.ingegneriaDelSoftware.Util.DateConverter;
 
 public class ReportOperatoriTest {
+		
 	
-	@BeforeClass public static void populateDBSacche() throws ParseException {
+	@BeforeClass public static void populateDBDipendenti() throws ParseException {
 		MyAmministratoreCTTDataManager amm = new MyAmministratoreCTTDataManager();
 		List<Dipendente> listaDipendenti = new ArrayList<Dipendente>();
 	        
@@ -89,38 +90,40 @@ public class ReportOperatoriTest {
         Dipendente dip8 = new Dipendente(cdf, "andrea", "lezzi", ld, ruolo, username, password);
         listaDipendenti.add(dip8);
       
-//TEST AGGIUNTA DIPENDENTI        
+      
         for(Dipendente dip : listaDipendenti) {
         	amm.addDipendente(dip);
         }       
 	}
 	
-	MyAmministratoreCTTDataManager amm = new MyAmministratoreCTTDataManager();
+	MyAmministratoreCTTDataManager amm = new MyAmministratoreCTTDataManager();  	
+		
 	
 	/**
-	*Test che dovrebbe restituire restituire 3, il numero degli OperatoriCTT presenti nel database
+	*
+	*
 	*/
 	@Test	
 	public void test1(){  	
-		assertEquals(3, amm.reportOperatoriCTT(RuoloDipendente.OperatoreCTT).size());
-		amm.removeDipendente(new Cdf("122hfotndj13ht5f"));
+		assertEquals(3, amm.getlistaDipendentiByRuolo(RuoloDipendente.OperatoreCTT).size());
+		amm.removeDipendente(new Cdf("123456789swertyy"));
 	}
 	
-	
 	/**
-	*Test che dovrebbe restituire restituire 2, il numero degli OperatoriCTT presenti nel database
-	*(Il test di prima ne ha eliminato uno)
+	*
+	*
 	*/
 	@Test	
 	public void test2(){  	
-		assertEquals(2, amm.reportOperatoriCTT(RuoloDipendente.OperatoreCTT).size());
-		
+		assertEquals(2, amm.getlistaDipendentiByRuolo(RuoloDipendente.OperatoreCTT).size());
 	}
+
 	
 	
 	
-	@AfterClass public static void dropDBSacche() {
+	@AfterClass public static void dropDBDipendenti() {
 		MyMongoDataManager mm = new MyMongoDataManager();
 		mm.dropDB();
 	}
 }
+

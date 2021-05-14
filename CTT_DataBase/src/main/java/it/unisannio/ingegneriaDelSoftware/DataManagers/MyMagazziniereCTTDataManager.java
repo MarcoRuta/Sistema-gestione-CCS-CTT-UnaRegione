@@ -58,7 +58,7 @@ public class MyMagazziniereCTTDataManager implements MagazziniereCTTDataManager,
 		DataManager mm = new MyMongoDataManager();
 		DatiSacca datiSacca = mm.getDatiSacca(unSeriale);
 		Sacca unaSacca = mm.getSacca(unSeriale);
-		if (datiSacca== null || unaSacca == null)
+		if (datiSacca == null || unaSacca == null)
 			//The property does not exist.
 			return Response
 					.status(Response.Status.NOT_FOUND)

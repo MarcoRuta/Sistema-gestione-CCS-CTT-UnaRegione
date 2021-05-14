@@ -23,7 +23,7 @@ import it.unisannio.ingegneriaDelSoftware.Util.DateConverter;
 public class LoginTest {
 	
 	
-	@BeforeClass public static void populateDBSacche() throws ParseException {
+	@BeforeClass public static void populateDBDipendenti() throws ParseException {
 		MyAmministratoreCTTDataManager amm = new MyAmministratoreCTTDataManager();
 		List<Dipendente> listaDipendenti = new ArrayList<Dipendente>();
 	        
@@ -90,7 +90,7 @@ public class LoginTest {
         Dipendente dip8 = new Dipendente(cdf, "andrea", "lezzi", ld, ruolo, username, password);
         listaDipendenti.add(dip8);
       
-//TEST AGGIUNTA DIPENDENTI        
+      
         for(Dipendente dip : listaDipendenti) {
         	amm.addDipendente(dip);
         }       
@@ -127,7 +127,7 @@ public class LoginTest {
 	}
 	
 	
-	@AfterClass public static void dropDBSacche() {
+	@AfterClass public static void dropDBDipendenti() {
 		MyMongoDataManager mm = new MyMongoDataManager();
 		mm.dropDB();
 	}
