@@ -11,23 +11,19 @@ import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 import it.unisannio.ingegneriaDelSoftware.Util.DateConverter;
 import it.unisannio.ingegneriaDelSoftware.Classes.*;
 import static com.mongodb.client.model.Filters.*;
-
 import org.bson.Document;
 
 
 public class MyMongoDataManager implements DataManager {
-	
-
-	
-	private static  MongoClient mongoClient;
+		
+	private static MongoClient mongoClient;
 	
 	static{
 		mongoClient = new MongoClient();
 	}
 
 	public void dropDB() {
-		MongoDatabase database = mongoClient.getDatabase(Constants.DB_NAME);
-		
+		MongoDatabase database = mongoClient.getDatabase(Constants.DB_NAME);		
         database.drop();
         mongoClient.close();
     }
@@ -78,78 +74,46 @@ public class MyMongoDataManager implements DataManager {
 	}
 
 	
-	/**Restituisce una Sacca ricercata sul database dalle sacche tramite il Seriale
-	 * @param ser Seriale della sacca da ricercare
-	 * @return null se la sacca non è stata trovata; la sacca se essa è stata trovata
+	/**Restituisce una Sacca ricercata sul database dalle Sacche tramite il Seriale
+	 * @param ser Seriale della Sacca da ricercare
+	 * @return null se la Sacca non è stata trovata; la Sacca se essa è stata trovata
 	 */
 	public Sacca getSacca(Seriale ser) {
 		MongoDatabase database = mongoClient.getDatabase(Constants.DB_NAME);
 		MongoCollection<Document> collection = database.getCollection(Constants.COLLECTION_SACCHE);
-		
 		Sacca s = null;
-		for (Document current : collection.find(eq(Constants.ELEMENT_SERIALE, ser.getSeriale())))
+		
+		for (Document current : collection.find(eq(Constants.ELEMENT_SERIALE, ser.getSeriale()))) {
 			s = new Sacca( new Seriale(current.getString(Constants.ELEMENT_SERIALE)),
 				GruppoSanguigno.valueOf(current.getString(Constants.ELEMENT_GRUPPO)),
-					DateConverter.convertDateToLocalDate(current.getDate(Constants.ELEMENT_DATAPRODUZIONE)),
-					DateConverter.convertDateToLocalDate(current.getDate(Constants.ELEMENT_DATASCADENZA)),
+				DateConverter.convertDateToLocalDate(current.getDate(Constants.ELEMENT_DATAPRODUZIONE)),
+				DateConverter.convertDateToLocalDate(current.getDate(Constants.ELEMENT_DATASCADENZA)),
 				current.getBoolean(Constants.ELEMENT_PRENOTATO));
-			return s;
-
+		}
+		return s;	
 	}
 
 	
-	/**Restituisce i dati di una Sacca ricercata sul database delle sacche tramite il Seriale
-	 * @param ser Seriale della sacca da ricercare
-	 * @return null se la sacca non è stata trovata; DatiSacca se essa è stata trovata
+	/**Restituisce i dati di una Sacca ricercata sul database delle Sacche tramite il Seriale
+	 * @param ser Seriale della Sacca da ricercare
+	 * @return null se la Sacca non è stata trovata; DatiSacca se essa è stata trovata
 	 */
 	public DatiSacca getDatiSacca(Seriale ser) {
 		MongoDatabase database = mongoClient.getDatabase(Constants.DB_NAME);
 		MongoCollection<Document> collection = database.getCollection(Constants.COLLECTION_DATISACCHE);
 		DatiSacca ds = null;
-		for (Document current : collection.find(eq(Constants.ELEMENT_SERIALE,ser.getSeriale())))
+		
+		for (Document current : collection.find(eq(Constants.ELEMENT_SERIALE,ser.getSeriale()))) {
 			ds = new DatiSacca(new Seriale(current.getString(Constants.ELEMENT_SERIALE)),
 					GruppoSanguigno.valueOf(current.getString(Constants.ELEMENT_GRUPPO)),
 					DateConverter.convertDateToLocalDate(current.getDate(Constants.ELEMENT_DATAARRIVO)),
 					DateConverter.convertDateToLocalDate(current.getDate(Constants.ELEMENT_DATAAFFIDAMENTO)),
 					current.getString(Constants.ELEMENT_ENTEDONATORE),
 					current.getString(Constants.ELEMENT_ENTERICHIEDENTE));
-			return ds;
+		}
+		return ds;	
 	}
-
-	/**Cambia lo stato di prenotazione di una Sacca identificata tramite il Seriale
-	 * @param seriale Seriale della Sacca da ricercare
-	 */
-	public void setPrenotatoSacca(Seriale seriale) {
-		MongoDatabase database = mongoClient.getDatabase(Constants.DB_NAME);
-		MongoCollection<Document> collection = database.getCollection(Constants.COLLECTION_SACCHE);
-		collection.updateOne(
-				eq(Constants.ELEMENT_SERIALE,seriale.getSeriale()),
-				Updates.set(Constants.ELEMENT_PRENOTATO, true));
-	}
-		
-	/**Restituisce la lista dei datiSacche presenti nel database
-	 * @return la lista dei dati sacca che sono presenti nel database
-	 */
-	public List<DatiSacca> getListaDatiSacche() {
-		MongoDatabase database = mongoClient.getDatabase(Constants.DB_NAME);
-	    MongoCollection<Document> collection = database.getCollection(Constants.COLLECTION_DATISACCHE);
-	    List<DatiSacca> datiSacche = new ArrayList<DatiSacca>();
-	   
-	    for (Document current : collection.find()) {
-	       
-			DatiSacca ds = new DatiSacca(new Seriale(current.getString(Constants.ELEMENT_SERIALE)),
-					GruppoSanguigno.valueOf(current.getString(Constants.ELEMENT_GRUPPO)),
-					DateConverter.convertDateToLocalDate(current.getDate(Constants.ELEMENT_DATAARRIVO)),
-					DateConverter.convertDateToLocalDate(current.getDate(Constants.ELEMENT_DATAAFFIDAMENTO)),
-					current.getString(Constants.ELEMENT_ENTEDONATORE),
-					current.getString(Constants.ELEMENT_ENTERICHIEDENTE));
-			
-	    	datiSacche.add(ds);
-	    	
-		}	    
-		return datiSacche;
-		
-	}
+	
 	
 	/** Restituisce una lista contenente tutte le Sacche presenti in magazzino
 	 * @return la lista delle Sacche presenti in magazzino
@@ -159,10 +123,7 @@ public class MyMongoDataManager implements DataManager {
 	    MongoCollection<Document> collection = database.getCollection(Constants.COLLECTION_SACCHE);
         List<Sacca> listaSacche = new ArrayList<Sacca>();
         
-        List<Document> sacche = collection.find().into(new ArrayList<Document>());
-        
-        
-        for (Document current : sacche){
+        for (Document current : collection.find()){
                 Sacca s = new Sacca(new Seriale(current.getString(Constants.ELEMENT_SERIALE)),
                         GruppoSanguigno.valueOf(current.getString(Constants.ELEMENT_GRUPPO)),
                         DateConverter.convertDateToLocalDate(current.getDate(Constants.ELEMENT_DATAPRODUZIONE)),
@@ -172,7 +133,41 @@ public class MyMongoDataManager implements DataManager {
             }
         return listaSacche;
 	}
-	  		
+	
+	
+	/**Restituisce la lista dei datiSacche presenti nel database
+	 * @return la lista dei DatiSacca che sono presenti nel database
+	 */
+	public List<DatiSacca> getListaDatiSacche() {
+		MongoDatabase database = mongoClient.getDatabase(Constants.DB_NAME);
+	    MongoCollection<Document> collection = database.getCollection(Constants.COLLECTION_DATISACCHE);
+	    List<DatiSacca> datiSacche = new ArrayList<DatiSacca>();
+	   
+	    for (Document current : collection.find()) {	       
+			DatiSacca ds = new DatiSacca(new Seriale(current.getString(Constants.ELEMENT_SERIALE)),
+					GruppoSanguigno.valueOf(current.getString(Constants.ELEMENT_GRUPPO)),
+					DateConverter.convertDateToLocalDate(current.getDate(Constants.ELEMENT_DATAARRIVO)),
+					DateConverter.convertDateToLocalDate(current.getDate(Constants.ELEMENT_DATAAFFIDAMENTO)),
+					current.getString(Constants.ELEMENT_ENTEDONATORE),
+					current.getString(Constants.ELEMENT_ENTERICHIEDENTE));			
+	    	datiSacche.add(ds);
+		}	    
+		return datiSacche;		
+	}
+	  	
+	
+	/**Cambia lo stato di prenotazione di una Sacca identificata tramite il Seriale
+	 * @param seriale Seriale della Sacca da ricercare
+	 */
+	public void setPrenotatoSacca(Seriale seriale) {
+		MongoDatabase database = mongoClient.getDatabase(Constants.DB_NAME);
+		MongoCollection<Document> collection = database.getCollection(Constants.COLLECTION_SACCHE);
+		
+		collection.updateOne(
+				eq(Constants.ELEMENT_SERIALE,seriale.getSeriale()),
+				Updates.set(Constants.ELEMENT_PRENOTATO, true));
+	}
+	
 	
 	/** Modifica il parametro dataArrivo di una DatiSacca identificata tramite Seriale nel database dei DatiSacca
 	 * @param seriale Seriale della sacca da modificare
@@ -210,7 +205,6 @@ public class MyMongoDataManager implements DataManager {
 		collection.updateOne(
 				eq(Constants.ELEMENT_SERIALE,seriale.getSeriale()),
 				Updates.set(Constants.ELEMENT_DATAAFFIDAMENTO,DateConverter.convertLocalDateToDate(dataAffidamento)));
-
 	}
 
 	
@@ -228,8 +222,7 @@ public class MyMongoDataManager implements DataManager {
                 .append(Constants.ELEMENT_RUOLO, d.getRuolo().toString())
                 .append(Constants.ELEMENT_USERNAME, d.getUsername())
                 .append(Constants.ELEMENT_PASSWORD, d.getPassword());
-	    collection.insertOne(unDipendente);
-	      
+	    collection.insertOne(unDipendente);      
 	}
 	
 	
@@ -242,7 +235,6 @@ public class MyMongoDataManager implements DataManager {
 	    
 	    for (Document current : collection.find(eq(Constants.ELEMENT_CDF, cdf.getCodiceFiscale())))
 	    	collection.deleteOne(current);
-
 	}	
 	
 	
@@ -277,7 +269,6 @@ public class MyMongoDataManager implements DataManager {
 	public List<Dipendente> getListaDipendenti() {
 		MongoDatabase database = mongoClient.getDatabase(Constants.DB_NAME);
 	    MongoCollection<Document> collection = database.getCollection(Constants.COLLECTION_DIPENDENTI);
-
         List<Dipendente> dipendenti = new ArrayList<Dipendente>();
 
         for (Document current : collection.find()) {
@@ -289,9 +280,7 @@ public class MyMongoDataManager implements DataManager {
                         current.getString(Constants.ELEMENT_USERNAME),
                         current.getString(Constants.ELEMENT_PASSWORD));
                dipendenti.add(dip);
-        }
-        
+        }        
         return dipendenti;
     }
-
 }

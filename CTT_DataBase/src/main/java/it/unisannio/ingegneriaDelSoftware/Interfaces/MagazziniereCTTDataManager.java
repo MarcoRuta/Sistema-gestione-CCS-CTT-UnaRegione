@@ -6,12 +6,12 @@ import javax.ws.rs.core.Response;
 
 public interface MagazziniereCTTDataManager {
 
-	/**@param username username del magazziniere che si logga nel sistema
-	 * @param password  password del magazziniere che si logga nel sistema*/
+	/**@param username Username del magazziniere che si logga nel sistema
+	 * @param password Password del magazziniere che si logga nel sistema*/
 	//boolean login(String username, String password);
 
 	/**
-	 * @param seriale seriale della sacca da evadere
+	 * @param seriale Seriale della sacca da evadere
 	 * Metodo attivato dal magazziniere quando riceve una notifica evasione sacca
 	 * esso aggiorna i dati sacca e rimuove la sacca dal DB attivo
 	 * @return */
@@ -28,7 +28,4 @@ public interface MagazziniereCTTDataManager {
 										   @FormParam("data_scadenza") String data_scadenza,
 										   @FormParam("data_produzione") String data_produzion,
 										   @FormParam("ente_donatore") String ente_donatore);
-
-
-
 }

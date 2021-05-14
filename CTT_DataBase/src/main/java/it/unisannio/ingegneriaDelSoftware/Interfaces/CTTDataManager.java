@@ -9,5 +9,5 @@ public interface CTTDataManager {
 
 	List<Sacca> alertControlScadenza();
 	
-	void removeSaccaScaduta(Sacca s);
+	void removeSaccheScadute();
 }

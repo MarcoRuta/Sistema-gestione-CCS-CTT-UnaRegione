@@ -1,25 +1,26 @@
 package it.unisannio.ingegneriaDelSoftware.junit;
 
-import static org.junit.Assert.assertEquals;
-
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
 import it.unisannio.ingegneriaDelSoftware.Classes.DatiSacca;
 import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MyAmministratoreCTTDataManager;
+import it.unisannio.ingegneriaDelSoftware.Classes.Seriale;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MyCTTDataManager;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MyMagazziniereCTTDataManager;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MyMongoDataManager;
-import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 
-public class ReportLocaleSaccheInviateERicevuteTest {
-	MyAmministratoreCTTDataManager amm = new MyAmministratoreCTTDataManager();
+public class RemoveSaccheScaduteTest {
+	MyCTTDataManager ctt = new MyCTTDataManager();
+	MyMagazziniereCTTDataManager magazz = new MyMagazziniereCTTDataManager();
+	MyMongoDataManager mm = new MyMongoDataManager();
 	
 	@BeforeClass public static void populateDBSacche() {
 		
@@ -351,16 +352,27 @@ public class ReportLocaleSaccheInviateERicevuteTest {
         }
 	}
 	
+	
 	/**
-	 * Test che dovrebbe restituire una lista di DatiSacca con 8 elementi
-	 * @throws ParseException
+	 * Test che restituisce "Scaduta", siccome il metodo aggiorna i DatiSacca della Sacca rimossa con "Scaduta"
 	 */
-	@Test public void test1() throws ParseException {
-		assertEquals(8, amm.ReportLocaleSaccheInviateERicevuteCTT(Constants.sdf.parse("01-01-2021"), Constants.sdf.parse("31-12-2021")).size());
+	@Test public void test1() {
+    	ctt.removeSaccheScadute();
+    	DatiSacca ds = mm.getDatiSacca(new Seriale("CTT001-00000001"));
+		assertEquals("Scaduta", ds.getEnteRichiedente());
 	}
-
+	
+	
+	/**
+	 * Test che dovrebbe restituire una lista di Sacche con 11 elementi 
+	 */
+	@Test public void test2() {
+    	ctt.removeSaccheScadute();
+		assertEquals(11, mm.getListaSacche().size());
+	}
+	
 	@AfterClass public static void dropDBSacche() {
 		MyMongoDataManager mm = new MyMongoDataManager();
 		mm.dropDB();
-	}
+	}	
 }

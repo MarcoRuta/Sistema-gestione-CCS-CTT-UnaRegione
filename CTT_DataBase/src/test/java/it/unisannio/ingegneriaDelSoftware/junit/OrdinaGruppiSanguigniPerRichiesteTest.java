@@ -18,8 +18,8 @@ import it.unisannio.ingegneriaDelSoftware.DataManagers.MyAmministratoreCTTDataMa
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MyMongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 
-public class ReportLocaleSaccheInviateERicevuteTest {
-	MyAmministratoreCTTDataManager amm = new MyAmministratoreCTTDataManager();
+public class OrdinaGruppiSanguigniPerRichiesteTest {
+MyAmministratoreCTTDataManager amm = new MyAmministratoreCTTDataManager();
 	
 	@BeforeClass public static void populateDBSacche() {
 		
@@ -351,13 +351,29 @@ public class ReportLocaleSaccheInviateERicevuteTest {
         }
 	}
 	
+	
 	/**
-	 * Test che dovrebbe restituire una lista di DatiSacca con 8 elementi
+	 * Test che dovrebbe restituire il testo "Gruppo sanguigno Am= 1", siccome viene effettuato il metodo solo sul gruppo sanguigno Am
 	 * @throws ParseException
 	 */
-	@Test public void test1() throws ParseException {
-		assertEquals(8, amm.ReportLocaleSaccheInviateERicevuteCTT(Constants.sdf.parse("01-01-2021"), Constants.sdf.parse("31-12-2021")).size());
+	@Test 
+	public void test1() throws ParseException {
+		 List<GruppoSanguigno> lista = new ArrayList<GruppoSanguigno>();
+	        lista.add(GruppoSanguigno.Am);
+		assertEquals("Gruppo sanguigno Am= 1", amm.OrdinaGruppiSanguigniPerRichieste(lista,Constants.sdf.parse("01-01-2021"), Constants.sdf.parse("31-12-2021")));
 	}
+	
+	/**
+	 * Test che dovrebbe restituire il testo "Gruppo sanguigno Bm= 0", siccome viene effettuato il metodo solo sul gruppo sanguigno Bm
+	 * @throws ParseException
+	 */
+	@Test 
+	public void test2() throws ParseException {
+		 List<GruppoSanguigno> lista = new ArrayList<GruppoSanguigno>();
+	        lista.add(GruppoSanguigno.Bm);
+		assertEquals("Gruppo sanguigno Bm= 0", amm.OrdinaGruppiSanguigniPerRichieste(lista,Constants.sdf.parse("01-01-2021"), Constants.sdf.parse("31-12-2021")));
+	}
+
 
 	@AfterClass public static void dropDBSacche() {
 		MyMongoDataManager mm = new MyMongoDataManager();

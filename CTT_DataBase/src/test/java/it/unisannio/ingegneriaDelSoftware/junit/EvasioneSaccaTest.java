@@ -1,26 +1,22 @@
 package it.unisannio.ingegneriaDelSoftware.junit;
 
 import static org.junit.Assert.assertEquals;
-
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
 import it.unisannio.ingegneriaDelSoftware.Classes.DatiSacca;
 import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MyAmministratoreCTTDataManager;
+import it.unisannio.ingegneriaDelSoftware.Classes.Seriale;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MyMagazziniereCTTDataManager;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MyMongoDataManager;
-import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 
-public class ReportLocaleSaccheInviateERicevuteTest {
-	MyAmministratoreCTTDataManager amm = new MyAmministratoreCTTDataManager();
-	
+
+public class EvasioneSaccaTest {
 	@BeforeClass public static void populateDBSacche() {
 		
     	MyMongoDataManager mm = new MyMongoDataManager();
@@ -351,13 +347,37 @@ public class ReportLocaleSaccheInviateERicevuteTest {
         }
 	}
 	
+	MyMagazziniereCTTDataManager magazz = new MyMagazziniereCTTDataManager();
+	MyMongoDataManager mongo = new MyMongoDataManager();
+	
 	/**
-	 * Test che dovrebbe restituire una lista di DatiSacca con 8 elementi
+	 * Test che dovrebbe restituire una lista di Sacche con 21 elementi
+	 * @throws ParseException 
+	*/
+	@Test public void test1() {
+		assertEquals(21,mongo.getListaSacche().size());
+	}
+	
+	
+	/**
+	 * Test che dovrebbe restituire null, siccome la Sacca viene rimossa
+	 * @throws ParseException 
+	*/
+	@Test 
+	public void test2() {
+		magazz.evasioneSacca("CTT001-00000009","Cardarelli");
+		assertEquals(null,mongo.getSacca(new Seriale("CTT001-00000009")));
+	}
+	
+	
+	/**
+	 * Test che dovrebbe restituire una lista di Sacche con 20 elementi
 	 * @throws ParseException
 	 */
-	@Test public void test1() throws ParseException {
-		assertEquals(8, amm.ReportLocaleSaccheInviateERicevuteCTT(Constants.sdf.parse("01-01-2021"), Constants.sdf.parse("31-12-2021")).size());
+	@Test public void test3() {
+		assertEquals(20,mongo.getListaSacche().size());
 	}
+
 
 	@AfterClass public static void dropDBSacche() {
 		MyMongoDataManager mm = new MyMongoDataManager();

@@ -84,13 +84,13 @@ public class MyMagazziniereCTTDataManager implements MagazziniereCTTDataManager,
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public Response aggiuntaSaccaMagazzino(@FormParam("gruppo_sanguigno") String gruppo_sanguigno,
+										   @FormParam("data_produzione") String data_produzione,
 										   @FormParam("data_scadenza") String data_scadenza,
-										   @FormParam("data_produzione") String data_produzion,
 										   @FormParam("ente_donatore") String ente_donatore) {
 		DataManager mm = new MyMongoDataManager();
 		try {
 			Sacca unaSacca = new Sacca(GruppoSanguigno.valueOf(gruppo_sanguigno),
-					LocalDate.parse(data_produzion, DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+					LocalDate.parse(data_produzione, DateTimeFormatter.ofPattern("yyyy-MM-dd")),
 					LocalDate.parse(data_scadenza, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 			mm.createSacca(unaSacca);
 			DatiSacca datiSacca = new DatiSacca(unaSacca.getSeriale(), unaSacca.getGruppoSanguigno(), LocalDate.now(), null, ente_donatore, null);

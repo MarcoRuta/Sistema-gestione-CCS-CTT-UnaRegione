@@ -16,9 +16,9 @@ import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MyAmministratoreCTTDataManager;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MyMongoDataManager;
-import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 
-public class ReportLocaleSaccheInviateERicevuteTest {
+
+public class ReportStatisticoSaccheTest {
 	MyAmministratoreCTTDataManager amm = new MyAmministratoreCTTDataManager();
 	
 	@BeforeClass public static void populateDBSacche() {
@@ -351,13 +351,70 @@ public class ReportLocaleSaccheInviateERicevuteTest {
         }
 	}
 	
+	
 	/**
-	 * Test che dovrebbe restituire una lista di DatiSacca con 8 elementi
-	 * @throws ParseException
+	 * Test che dovrebbe restituire una lista di Sacche con 3 elementi, siccome le sacche di GruppoSanguigno Ap presenti nel database dei Dipendenti sono 3
 	 */
-	@Test public void test1() throws ParseException {
-		assertEquals(8, amm.ReportLocaleSaccheInviateERicevuteCTT(Constants.sdf.parse("01-01-2021"), Constants.sdf.parse("31-12-2021")).size());
+	@Test public void test1(){
+		assertEquals(3, amm.reportStatisticoSacche(GruppoSanguigno.Ap).size());
 	}
+	
+	
+	/**
+	 * Test che dovrebbe restituire una lista di Sacche con 3 elementi, siccome le sacche di GruppoSanguigno Am presenti nel database dei Dipendenti sono 3
+	 */
+	@Test public void test2(){
+		assertEquals(3, amm.reportStatisticoSacche(GruppoSanguigno.Am).size());
+	}
+	
+	
+	/**
+	 * Test che dovrebbe restituire una lista di Sacche con 3 elementi, siccome le sacche di GruppoSanguigno ABm presenti nel database dei Dipendenti sono 3
+	 */
+	@Test public void test3(){
+		assertEquals(3, amm.reportStatisticoSacche(GruppoSanguigno.ABm).size());
+	}
+	
+	
+	/**
+	 * Test che dovrebbe restituire una lista di Sacche con 3 elementi, siccome le sacche di GruppoSanguigno Bp presenti nel database dei Dipendenti sono 3
+	 */
+	@Test public void test4(){
+		assertEquals(3, amm.reportStatisticoSacche(GruppoSanguigno.Bp).size());
+	}
+	
+	
+	/**
+	 * Test che dovrebbe restituire una lista di Sacche con 3 elementi, siccome le sacche di GruppoSanguigno Bm presenti nel database dei Dipendenti sono 3
+	 */
+	@Test public void test5(){
+		assertEquals(3, amm.reportStatisticoSacche(GruppoSanguigno.Bm).size());
+	}
+	
+	
+	/**
+	 * Test che dovrebbe restituire una lista di Sacche con 3 elementi, siccome le sacche di GruppoSanguigno ABp presenti nel database dei Dipendenti sono 2
+	 */
+	@Test public void test6(){
+		assertEquals(2, amm.reportStatisticoSacche(GruppoSanguigno.ABp).size());
+	}
+	
+	
+	/**
+	 * Test che dovrebbe restituire una lista di Sacche con 3 elementi, siccome le sacche di GruppoSanguigno ZEROp presenti nel database dei Dipendenti sono 2
+	 */
+	@Test public void test7(){
+		assertEquals(2, amm.reportStatisticoSacche(GruppoSanguigno.ZEROp).size());
+	}
+	
+	
+	/**
+	 * Test che dovrebbe restituire una lista di Sacche con 3 elementi, siccome le sacche di GruppoSanguigno ZEROm presenti nel database dei Dipendenti sono 2
+	 */
+	@Test public void test8(){
+		assertEquals(2, amm.reportStatisticoSacche(GruppoSanguigno.ZEROm).size());
+	}
+
 
 	@AfterClass public static void dropDBSacche() {
 		MyMongoDataManager mm = new MyMongoDataManager();

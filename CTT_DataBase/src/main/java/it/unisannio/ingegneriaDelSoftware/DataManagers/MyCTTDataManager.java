@@ -14,32 +14,9 @@ public class MyCTTDataManager implements CTTDataManager{
 	 * @return la lista di sacche non ancora scadute ma che scadono entro 72 ore da oggi
 	 */
 	public List<Sacca> alertControlScadenza() {
-		MyCTTDataManager mm = new MyCTTDataManager();
-		return mm.getSaccheEntroScadenza();
-	}
-	
-	
-	/**Rimuove una Sacca dal Database e setta la dataAffidamento di DatiSacca alla data di scadenza e setta l'enteRichiedente con "Scaduta"
-	 * @param s Sacca da rimuovere dal database delle Sacche
-	 */
-	public void removeSaccaScaduta(Sacca s) {
-		MyMongoDataManager mm = new MyMongoDataManager();		
-		mm.removeSacca(s.getSeriale());
-		mm.setDataAffidamentoDatiSacca(s.getSeriale(), s.getDataScadenza());
-		mm.setEnteRichiedenteDatiSacca(s.getSeriale(), "Scaduta");
-
-	}
-	
-	
-	/** Restituisce una lista contenente tutte le Sacche con scadenza inferiore a 72 ore da oggi
-	 * @return la lista delle Sacche in scadenza
-	 */
-	private List<Sacca> getSaccheEntroScadenza() {
-    	MyMongoDataManager mm = new MyMongoDataManager();
-		
+    	MyMongoDataManager mm = new MyMongoDataManager();		
 		List<Sacca> listaSacche = mm.getListaSacche();
-		List<Sacca> saccheInScadenza = new ArrayList<Sacca>();
-		
+		List<Sacca> saccheInScadenza = new ArrayList<Sacca>();		
         Date oggi = new Date();
         long dataScadenza = oggi.getTime();
         long dataScadenza72 = dataScadenza + 259200000;
@@ -52,6 +29,32 @@ public class MyCTTDataManager implements CTTDataManager{
             }
         }
         return saccheInScadenza;
-    }
+	}
 	
+	
+	/**Rimuove tutte le Sacche scadute dal database delle Sacche e aggiorna i corrispettivi DatiSacca con enteRichiedente "Scaduta" e dataAffidamento con la data di scadenza
+	 */
+	public void removeSaccheScadute() {
+		MyMongoDataManager mm = new MyMongoDataManager();
+		List<Sacca> listaSacche = mm.getListaSacche();		
+		Date oggi = new Date();
+		
+		for(Sacca sacca : listaSacche) {
+			if(DateConverter.convertLocalDateToDate(sacca.getDataScadenza()).after(oggi)) {
+				removeSaccaScaduta(sacca);
+            }
+		}			
+	}
+	
+	
+	/**Rimuove una Sacca dal Database e setta la dataAffidamento di DatiSacca alla data di scadenza e setta l'enteRichiedente con "Scaduta"
+	 * @param s Sacca da rimuovere dal database delle Sacche
+	 */
+	private void removeSaccaScaduta(Sacca s) {
+		MyMongoDataManager mm = new MyMongoDataManager();
+		
+		mm.removeSacca(s.getSeriale());
+		mm.setDataAffidamentoDatiSacca(s.getSeriale(), s.getDataScadenza());
+		mm.setEnteRichiedenteDatiSacca(s.getSeriale(), "Scaduta");
+	}
 }

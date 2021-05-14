@@ -14,13 +14,10 @@ import org.junit.Test;
 import it.unisannio.ingegneriaDelSoftware.Classes.DatiSacca;
 import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MyAmministratoreCTTDataManager;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MyMagazziniereCTTDataManager;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MyMongoDataManager;
-import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 
-public class ReportLocaleSaccheInviateERicevuteTest {
-	MyAmministratoreCTTDataManager amm = new MyAmministratoreCTTDataManager();
-	
+public class AggiuntaSaccaMagazzinoTest {
 	@BeforeClass public static void populateDBSacche() {
 		
     	MyMongoDataManager mm = new MyMongoDataManager();
@@ -351,12 +348,30 @@ public class ReportLocaleSaccheInviateERicevuteTest {
         }
 	}
 	
+	MyMagazziniereCTTDataManager magazz = new MyMagazziniereCTTDataManager();
+	MyMongoDataManager mongo = new MyMongoDataManager();
+	
 	/**
-	 * Test che dovrebbe restituire una lista di DatiSacca con 8 elementi
+	 * Test che dovrebbe restituire una lista di Sacche con 21 elementi
 	 * @throws ParseException
 	 */
 	@Test public void test1() throws ParseException {
-		assertEquals(8, amm.ReportLocaleSaccheInviateERicevuteCTT(Constants.sdf.parse("01-01-2021"), Constants.sdf.parse("31-12-2021")).size());
+		assertEquals(21,mongo.getListaSacche().size());
+	}
+	
+	
+	/**
+	 * Test che dovrebbe restituire una lista di Sacche con 22 elementi
+	 * @throws ParseException
+	 */
+	@Test public void test2() throws ParseException {
+		GruppoSanguigno gs = GruppoSanguigno.Ap;
+    	LocalDate localDataProduzione = LocalDate.of(2018,11,10);
+    	LocalDate localDataScadenza = LocalDate.of(2020,11,12);
+    	Boolean prenotato = false;
+    	Sacca sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
+    	mongo.createSacca(sacca);
+		assertEquals(22,mongo.getListaSacche().size());
 	}
 
 	@AfterClass public static void dropDBSacche() {
