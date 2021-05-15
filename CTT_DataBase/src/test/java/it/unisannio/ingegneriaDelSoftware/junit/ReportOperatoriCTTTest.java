@@ -108,7 +108,7 @@ public class ReportOperatoriCTTTest {
 	}
 	
 	/**
-	 * Test che dovrebbe restituire una lista di Dipendenti con 3 elementi, siccome gli MagazzinierCTT presenti nel database dei Dipendenti sono 3
+	 * Test che dovrebbe restituire una lista di Dipendenti con 3 elementi, siccome gli MagazziniereCTT presenti nel database dei Dipendenti sono 3
 	*/
 	@Test	
 	public void test3(){  	
