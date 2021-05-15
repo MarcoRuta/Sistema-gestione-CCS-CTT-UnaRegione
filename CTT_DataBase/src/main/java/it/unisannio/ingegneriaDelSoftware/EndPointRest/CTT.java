@@ -1,4 +1,4 @@
-package it.unisannio.ingegneriaDelSoftware.DataManagers;
+package it.unisannio.ingegneriaDelSoftware.EndPointRest;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -6,16 +6,17 @@ import java.util.Date;
 import java.util.List;
 
 import it.unisannio.ingegneriaDelSoftware.Classes.*;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.*;
 import it.unisannio.ingegneriaDelSoftware.Util.DateConverter;;
 
-public class MyCTTDataManager implements CTTDataManager{
+public class CTT implements CTTDataManager{
 	
 	/**Restituisce una lista di tutte le sacche che scadono entro 72 ore
 	 * @return la lista di sacche non ancora scadute ma che scadono entro 72 ore da oggi
 	 */
 	public List<Sacca> alertControlScadenza() {
-    	MyMongoDataManager mm = new MyMongoDataManager();		
+    	MongoDataManager mm = new MongoDataManager();
 		List<Sacca> listaSacche = mm.getListaSacche();
 		List<Sacca> saccheInScadenza = new ArrayList<Sacca>();		
         Date oggi = new Date();
@@ -36,7 +37,7 @@ public class MyCTTDataManager implements CTTDataManager{
 	/**Rimuove tutte le Sacche scadute dal database delle Sacche e aggiorna i corrispettivi DatiSacca con enteRichiedente "Scaduta" e dataAffidamento con la data di scadenza
 	 */
 	public void removeSaccheScadute() {
-		MyMongoDataManager mm = new MyMongoDataManager();
+		MongoDataManager mm = new MongoDataManager();
 		List<Sacca> listaSacche = mm.getListaSacche();		
 		
 		
@@ -52,7 +53,7 @@ public class MyCTTDataManager implements CTTDataManager{
 	 * @param s Sacca da rimuovere dal database delle Sacche
 	 */
 	private void removeSaccaScaduta(Sacca s) {
-		MyMongoDataManager mm = new MyMongoDataManager();
+		MongoDataManager mm = new MongoDataManager();
 		
 		mm.removeSacca(s.getSeriale());
 		mm.setDataAffidamentoDatiSacca(s.getSeriale(), s.getDataScadenza());

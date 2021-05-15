@@ -11,8 +11,8 @@ import org.junit.Test;
 import it.unisannio.ingegneriaDelSoftware.Classes.Cdf;
 import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.RuoloDipendente;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MyAmministratoreCTTDataManager;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MyMongoDataManager;
+import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointAmministratoreCTT;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 import it.unisannio.ingegneriaDelSoftware.Util.DateConverter;
 
@@ -20,7 +20,7 @@ import it.unisannio.ingegneriaDelSoftware.Util.DateConverter;
 
 public class RemoveDipendenteTest {	
 		@BeforeClass public static void populateDBDipendenti() throws ParseException {
-			MyAmministratoreCTTDataManager amm = new MyAmministratoreCTTDataManager();
+			EndPointAmministratoreCTT amm = new EndPointAmministratoreCTT();
 			List<Dipendente> listaDipendenti = new ArrayList<Dipendente>();
 		        
 		 	Cdf cdf = new Cdf("122hfotndj13ht5f");
@@ -93,7 +93,7 @@ public class RemoveDipendenteTest {
 		}
 		
 	
-		MyMongoDataManager mm = new MyMongoDataManager();	
+		MongoDataManager mm = new MongoDataManager();
 		
 		/**
 		 * Test che dovrebbe restituire una lista di Dipendenti con 7 elementi
@@ -115,7 +115,7 @@ public class RemoveDipendenteTest {
 	
 		
 		@AfterClass public static void dropDBDipendenti() {
-			MyMongoDataManager mm = new MyMongoDataManager();
+			MongoDataManager mm = new MongoDataManager();
 			mm.dropDB();
 		}
 	}

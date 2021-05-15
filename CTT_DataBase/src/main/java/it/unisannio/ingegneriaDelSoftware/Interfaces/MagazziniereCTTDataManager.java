@@ -17,7 +17,11 @@ public interface MagazziniereCTTDataManager {
 	 * @return */
 	@PUT
 	@Path("/evasione/{seriale}")
-	Response evasioneSacca(@QueryParam("seriale") String seriale, String ente_richiedente);
+	@Produces(MediaType.TEXT_PLAIN)
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	public Response evasioneSacca(@PathParam("seriale") String seriale,
+								  @FormParam("enterichiedente") String ente_richiedente,
+								  @FormParam("indirizzo")String indirizzo);
 
 	/**@return  messaggio corretta aggiunta sacca*/
 	@POST

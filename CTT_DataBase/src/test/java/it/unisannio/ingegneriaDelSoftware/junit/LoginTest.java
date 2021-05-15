@@ -15,8 +15,8 @@ import org.junit.Test;
 import it.unisannio.ingegneriaDelSoftware.Classes.Cdf;
 import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.RuoloDipendente;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MyAmministratoreCTTDataManager;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MyMongoDataManager;
+import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointAmministratoreCTT;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 import it.unisannio.ingegneriaDelSoftware.Util.DateConverter;
 
@@ -24,7 +24,7 @@ public class LoginTest {
 	
 	
 	@BeforeClass public static void populateDBDipendenti() throws ParseException {
-		MyAmministratoreCTTDataManager amm = new MyAmministratoreCTTDataManager();
+		EndPointAmministratoreCTT amm = new EndPointAmministratoreCTT();
 		List<Dipendente> listaDipendenti = new ArrayList<Dipendente>();
 	        
 	 	Cdf cdf = new Cdf("122hfotndj13ht5f");
@@ -96,7 +96,7 @@ public class LoginTest {
         }       
 	}
 	
-	MyAmministratoreCTTDataManager amm = new MyAmministratoreCTTDataManager();  	
+	EndPointAmministratoreCTT amm = new EndPointAmministratoreCTT();
 		
 	
 	/**
@@ -128,7 +128,7 @@ public class LoginTest {
 	
 	
 	@AfterClass public static void dropDBDipendenti() {
-		MyMongoDataManager mm = new MyMongoDataManager();
+		MongoDataManager mm = new MongoDataManager();
 		mm.dropDB();
 	}
 }

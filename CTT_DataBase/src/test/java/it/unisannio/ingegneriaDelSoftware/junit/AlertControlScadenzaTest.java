@@ -13,17 +13,17 @@ import org.junit.Test;
 import it.unisannio.ingegneriaDelSoftware.Classes.DatiSacca;
 import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MyCTTDataManager;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MyMagazziniereCTTDataManager;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MyMongoDataManager;
+import it.unisannio.ingegneriaDelSoftware.EndPointRest.CTT;
+import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointMagazziniereCTT;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 
 public class AlertControlScadenzaTest {
-	MyMagazziniereCTTDataManager magazz = new MyMagazziniereCTTDataManager();
-	MyCTTDataManager ctt = new MyCTTDataManager();
+	EndPointMagazziniereCTT magazz = new EndPointMagazziniereCTT();
+	CTT ctt = new CTT();
 	
 	@BeforeClass public static void populateDBSacche() {
 		
-	    	MyMongoDataManager mm = new MyMongoDataManager();
+	    	MongoDataManager mm = new MongoDataManager();
 	    	List<Sacca> listaSacche = new ArrayList<Sacca>();
 	    	List<DatiSacca> listaDatiSacche = new ArrayList<DatiSacca>();
 	    	
@@ -607,7 +607,7 @@ public class AlertControlScadenzaTest {
 	}
 	
 	@AfterClass public static void dropDBSacche() {
-		MyMongoDataManager mm = new MyMongoDataManager();
+		MongoDataManager mm = new MongoDataManager();
 		mm.dropDB();
 	}
 }

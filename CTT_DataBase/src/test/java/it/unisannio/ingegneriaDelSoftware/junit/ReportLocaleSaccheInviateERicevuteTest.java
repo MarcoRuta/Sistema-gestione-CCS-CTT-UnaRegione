@@ -15,16 +15,16 @@ import it.unisannio.ingegneriaDelSoftware.Classes.DatiSacca;
 import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
 import it.unisannio.ingegneriaDelSoftware.Classes.Seriale;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MyAmministratoreCTTDataManager;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MyMongoDataManager;
+import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointAmministratoreCTT;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 
 public class ReportLocaleSaccheInviateERicevuteTest {
-	MyAmministratoreCTTDataManager amm = new MyAmministratoreCTTDataManager();
+	EndPointAmministratoreCTT amm = new EndPointAmministratoreCTT();
 	
 	@BeforeClass public static void populateDBSacche() {
 		
-		MyMongoDataManager mm = new MyMongoDataManager();
+		MongoDataManager mm = new MongoDataManager();
     	List<Sacca> listaSacche = new ArrayList<Sacca>();
     	List<DatiSacca> listaDatiSacche = new ArrayList<DatiSacca>();
     	
@@ -1028,7 +1028,7 @@ public class ReportLocaleSaccheInviateERicevuteTest {
 	}
 
 	@AfterClass public static void dropDBSacche() {
-		MyMongoDataManager mm = new MyMongoDataManager();
+		MongoDataManager mm = new MongoDataManager();
 		mm.dropDB();
 	}
 }

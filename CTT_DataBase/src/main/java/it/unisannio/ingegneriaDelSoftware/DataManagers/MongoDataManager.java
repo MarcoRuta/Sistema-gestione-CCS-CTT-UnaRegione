@@ -14,7 +14,7 @@ import static com.mongodb.client.model.Filters.*;
 import org.bson.Document;
 
 
-public class MyMongoDataManager implements DataManager {
+public class MongoDataManager implements DataManager {
 		
 	private static MongoClient mongoClient;
 	
@@ -253,8 +253,7 @@ public class MyMongoDataManager implements DataManager {
 	
 	
 	/**Cerca e restituisce un Dipendente con un determinato Username e Password, presente all'interno del database dei Dipendenti
-	 * @param username Username del Dipendente
-	 * @param password Password del Dipendente
+	 * @param cdf cdf del dipendente che si sta ricercando
 	 * @return il Dipendente cercato
 	 */
 	public Dipendente getDipendente(Cdf cdf) {
@@ -298,8 +297,9 @@ public class MyMongoDataManager implements DataManager {
 	    }		
 		return null;
 	}
-	
-	
+
+
+
 	/**Restituisce la lista dei Dipendenti del CTT presenti nel database
 	 * @return la lista dei Dipendenti del CTT
 	 */

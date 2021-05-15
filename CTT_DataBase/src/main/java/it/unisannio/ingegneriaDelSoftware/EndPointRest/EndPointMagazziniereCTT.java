@@ -1,10 +1,13 @@
-package it.unisannio.ingegneriaDelSoftware.DataManagers;
+package it.unisannio.ingegneriaDelSoftware.EndPointRest;
 
 import it.unisannio.ingegneriaDelSoftware.Classes.*;
+import it.unisannio.ingegneriaDelSoftware.Annotazioni.Secured;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaGiaPresenteException;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.DataManager;
-import it.unisannio.ingegneriaDelSoftware.Interfaces.DipendenteCTT;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.MagazziniereCTTDataManager;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Singleton;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -14,23 +17,14 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Path("/CTT")
 @Singleton
-
-public class MyMagazziniereCTTDataManager implements MagazziniereCTTDataManager, DipendenteCTT {
-	
-	/**Login è l'operazione con la quale MagazziniereCTT accede al sistema
-	 * @param username Username che usa MagazziniereCTT per entrare nel sistema
-	 * @param password Password che usa MagazziniereCTT per entrare nel sistema
-	 * @return true se Username e Password corrispondono; false altrimenti
-	 */
-	public boolean login(String username, String password) {
-		MyMongoDataManager mm = new MyMongoDataManager();		
-		if(mm.getDipendente(username, password)!= null) return true;
-		else return false;
-	}
-
+@Secured
+@RolesAllowed("MagazziniereCTT")
+public class EndPointMagazziniereCTT implements MagazziniereCTTDataManager {
 
 	/**
 	 * @param seriale seriale della sacca da evadere
@@ -40,12 +34,34 @@ public class MyMagazziniereCTTDataManager implements MagazziniereCTTDataManager,
 	@PUT
 	@Path("/evasione/{seriale}")
 	@Produces(MediaType.TEXT_PLAIN)
-	@Consumes(MediaType.TEXT_PLAIN)
-	//CTT001
-	public Response evasioneSacca(@PathParam("seriale") String seriale, String ente_richiedente){
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	public Response evasioneSacca(@PathParam("seriale") String seriale,
+								  @FormParam("enterichiedente") String ente_richiedente,
+								  @FormParam("indirizzo")String indirizzo){
 		Seriale unSeriale = null;
 		try {
 			unSeriale = new Seriale(seriale);
+			DataManager mm = new MongoDataManager();
+			DatiSacca datiSacca = mm.getDatiSacca(unSeriale);
+			Sacca unaSacca = mm.getSacca(unSeriale);
+			if (datiSacca== null || unaSacca == null)
+				//The property does not exist.
+				return Response
+						.status(Response.Status.NOT_FOUND)
+						.entity("Seriale non presente nel DataBase")
+						.build();
+
+			mm.setEnteRichiedenteDatiSacca(unSeriale, ente_richiedente);
+			mm.setDataAffidamentoDatiSacca(unSeriale, LocalDate.now());
+			mm.setIndirizzoEnteDatiSacca(unSeriale,indirizzo);
+
+			datiSacca = mm.getDatiSacca(unSeriale);
+			mm.removeSacca(unaSacca.getSeriale());
+			//The property set or change succeeded.
+			return Response
+					.status(Response.Status.OK)
+					.entity(unaSacca.getEtichettaSacca()+"\n"+ datiSacca.getEtichettaDatiSacca())
+					.build();
 		}catch(AssertionError assertionError){
 			//The request could not be understood by the server due to malformed syntax.
 			// The client SHOULD NOT repeat the request without modifications.
@@ -54,27 +70,6 @@ public class MyMagazziniereCTTDataManager implements MagazziniereCTTDataManager,
 					.entity("Formattazione del seriale non corretto")
 					.build();
 		}
-
-		DataManager mm = new MyMongoDataManager();
-		DatiSacca datiSacca = mm.getDatiSacca(unSeriale);
-		Sacca unaSacca = mm.getSacca(unSeriale);
-		if (datiSacca == null || unaSacca == null)
-			//The property does not exist.
-			return Response
-					.status(Response.Status.NOT_FOUND)
-					.entity("Seriale non presente nel DataBase")
-					.build();
-
-		mm.setEnteRichiedenteDatiSacca(unSeriale, ente_richiedente);
-		mm.setDataAffidamentoDatiSacca(unSeriale, LocalDate.now());
-
-		datiSacca = mm.getDatiSacca(unSeriale);
-		mm.removeSacca(unaSacca.getSeriale());
-		//The property set or change succeeded.
-		return Response
-				.status(Response.Status.OK)
-				.entity(unaSacca.getEtichettaSacca()+"\n"+ datiSacca.getEtichettaDatiSacca())
-				.build();
 	}
 
 
@@ -84,14 +79,16 @@ public class MyMagazziniereCTTDataManager implements MagazziniereCTTDataManager,
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public Response aggiuntaSaccaMagazzino(@FormParam("gruppo_sanguigno") String gruppo_sanguigno,
-										   @FormParam("data_produzione") String data_produzione,
 										   @FormParam("data_scadenza") String data_scadenza,
+										   @FormParam("data_produzione") String data_produzion,
 										   @FormParam("ente_donatore") String ente_donatore) {
-		DataManager mm = new MyMongoDataManager();
+		DataManager mm = new MongoDataManager();
 		try {
 			Sacca unaSacca = new Sacca(GruppoSanguigno.valueOf(gruppo_sanguigno),
-					LocalDate.parse(data_produzione, DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+					LocalDate.parse(data_produzion, DateTimeFormatter.ofPattern("yyyy-MM-dd")),
 					LocalDate.parse(data_scadenza, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+			//controllo che non ci sia una sacca con lo stesso seriale nel DB
+			if (mm.containsSacca(unaSacca.getSeriale())) throw new SaccaGiaPresenteException("Impossibile avere delle sacche con lo stesso seriale");
 			mm.createSacca(unaSacca);
 			DatiSacca datiSacca = new DatiSacca(unaSacca.getSeriale(), unaSacca.getGruppoSanguigno(), LocalDate.now(), null, ente_donatore, null,null);
 			mm.createDatiSacca(datiSacca);
@@ -109,7 +106,7 @@ public class MyMagazziniereCTTDataManager implements MagazziniereCTTDataManager,
 			// The client SHOULD NOT repeat the request without modifications.
 			return Response
 					.status(Response.Status.BAD_REQUEST)
-					.entity("Dati non corretti, impossibile aggiungere la sacca al Magazzino")
+					.entity("Dati non corretti, impossibile aggiungere la sacca al Magazzino\n"+assertionError.getMessage())
 					.build();
 		}catch (DateTimeParseException dateTimeParseException){
 			//The request could not be understood by the server due to malformed syntax.
@@ -125,6 +122,41 @@ public class MyMagazziniereCTTDataManager implements MagazziniereCTTDataManager,
 					.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity("Non è stato possibile creare l'uri per la nuova risorsa")
 					.build();
+		}catch (IllegalArgumentException illegalArgumentException){
+			//The request could not be understood by the server due to malformed syntax.
+			// The client SHOULD NOT repeat the request without modifications.
+			return Response
+					.status(Response.Status.BAD_REQUEST)
+					.entity("Dati non corretti, impossibile aggiungere la sacca al Magazzino\n"+illegalArgumentException.getMessage())
+					.build();
+		} catch (SaccaGiaPresenteException e) {
+			//The request could not be understood by the server due to malformed syntax.
+			// The client SHOULD NOT repeat the request without modifications.
+			return Response
+					.status(Response.Status.BAD_REQUEST)
+					.entity(e.getMessage())
+					.build();
 		}
+	}
+
+	/**
+	 * Metodo utilizzato per aggiunta automatica del seriale delle sacche
+	 * disponibili nel magazzino per l'evasione
+	 * @return serialiSacca*/
+	@GET
+	@Path("/sacche")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Seriale> listaSacca(){
+
+		DataManager mm = new MongoDataManager();
+		List<Sacca> listasacche = mm.getListaSacche();
+		List<Seriale> serialiSacca = new ArrayList<Seriale>();
+
+		for(int i=0; i< listasacche.size(); i++) {
+			serialiSacca.add(listasacche.get(i).getSeriale());
+		}
+
+		return serialiSacca;
+
 	}
 }

@@ -18,6 +18,8 @@ public interface DataManager {
 	List<Sacca> getListaSacche();
 	
 	List<DatiSacca> getListaDatiSacche();
+
+	boolean containsSacca(Seriale seriale);
 	
 	void setPrenotatoSacca(Seriale ser);
 	
@@ -26,12 +28,14 @@ public interface DataManager {
 	void setEnteRichiedenteDatiSacca(Seriale seriale, String enteRichiedente);
 
 	void setDataAffidamentoDatiSacca(Seriale seriale, LocalDate dataAffidamento);
+
+	void setIndirizzoEnteDatiSacca(Seriale seriale, String indirizzo);
 	
 	void addDipendente(Dipendente d);
 
 	void removeDipendente(Cdf cdf);
 	
 	Dipendente getDipendente(String username, String password);
-	
-	
+
+
 }

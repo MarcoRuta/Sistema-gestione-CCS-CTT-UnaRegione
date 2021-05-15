@@ -1,4 +1,4 @@
-package it.unisannio.ingegneriaDelSoftware.DataManagers;
+package it.unisannio.ingegneriaDelSoftware.EndPointRest;
 
 
 
@@ -8,12 +8,13 @@ import java.util.Iterator;
 import java.util.List;
 import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaLocaleNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.DipendenteCTT;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.OperatoreCTTDataManager;
 import it.unisannio.ingegneriaDelSoftware.Util.ScadenzeComparator;
 
-public class MyOperatoreCTTDataManager implements OperatoreCTTDataManager, DipendenteCTT {
+public class EndPointOperatoreCTT implements OperatoreCTTDataManager, DipendenteCTT {
 	
 	/**Login è l'operazione con la quale OperatoreCTT accede al sistema
 	 * @param username Username che usa OperatoreCTT per entrare nel sistema
@@ -21,7 +22,7 @@ public class MyOperatoreCTTDataManager implements OperatoreCTTDataManager, Dipen
 	 * @return true se Username e Password corrispondono; false altrimenti
 	 */
 	public boolean login(String username, String password) {
-		MyMongoDataManager mm = new MyMongoDataManager();		
+		MongoDataManager mm = new MongoDataManager();
 		if(mm.getDipendente(username, password)!= null) return true;
 		else return false;
 	}
@@ -35,8 +36,8 @@ public class MyOperatoreCTTDataManager implements OperatoreCTTDataManager, Dipen
 	 * @throws  
      */
 	public Sacca ricercaSaccaLocale(GruppoSanguigno gs, LocalDate dataArrivoMassima, String enteRichiedente, String indirizzoEnte){
-		MyOperatoreCTTDataManager ms = new MyOperatoreCTTDataManager();
-		MyMongoDataManager mm = new MyMongoDataManager();
+		EndPointOperatoreCTT ms = new EndPointOperatoreCTT();
+		MongoDataManager mm = new MongoDataManager();
 		
 		Sacca s = null;
 		s = ms.ricercaSacca(gs, dataArrivoMassima);
@@ -59,7 +60,7 @@ public class MyOperatoreCTTDataManager implements OperatoreCTTDataManager, Dipen
 	 */
 	private Sacca ricercaSacca(GruppoSanguigno gs, LocalDate dataArrivoMassima) {
 		
-		MyMongoDataManager mm = new MyMongoDataManager();		
+		MongoDataManager mm = new MongoDataManager();
 		List<Sacca> listaSacche = mm.getListaSacche();	
 		List<Sacca> saccheTrovate = new ArrayList<Sacca>();
 		
@@ -85,7 +86,7 @@ public class MyOperatoreCTTDataManager implements OperatoreCTTDataManager, Dipen
 	 */
 	private  Sacca ricercaSaccaCompatibile(GruppoSanguigno gs, LocalDate dataArrivoMassima) {
 		
-		MyMongoDataManager mm = new MyMongoDataManager();		
+		MongoDataManager mm = new MongoDataManager();
 		List<Sacca> listaSacche = mm.getListaSacche();
 		List<Sacca> saccheTrovate = new ArrayList<Sacca>();
 		

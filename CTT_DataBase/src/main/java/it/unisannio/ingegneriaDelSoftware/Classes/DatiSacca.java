@@ -144,7 +144,7 @@ public class DatiSacca {
 				+"Data di affidamento: "+this.dataAffidamento.get()+"\n"
 				+"Ente richiedente: "	+this.enteRichiedente.get()+"\n"
 				+"Ente donatore: "		+this.enteDonatore+"\n"
-				+"Indirizzo Ente: "		+this.indirizzoEnte;
+				+"Indirizzo Ente: "		+this.indirizzoEnte.get();
 	}
 
 

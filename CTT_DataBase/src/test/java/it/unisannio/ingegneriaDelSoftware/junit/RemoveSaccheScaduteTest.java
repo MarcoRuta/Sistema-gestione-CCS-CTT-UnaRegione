@@ -10,18 +10,18 @@ import org.junit.Test;
 import it.unisannio.ingegneriaDelSoftware.Classes.DatiSacca;
 import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MyCTTDataManager;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MyMagazziniereCTTDataManager;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MyMongoDataManager;
+import it.unisannio.ingegneriaDelSoftware.EndPointRest.CTT;
+import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointMagazziniereCTT;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 
 public class RemoveSaccheScaduteTest {
-	MyCTTDataManager ctt = new MyCTTDataManager();
-	MyMagazziniereCTTDataManager magazz = new MyMagazziniereCTTDataManager();
-	MyMongoDataManager mm = new MyMongoDataManager();
+	CTT ctt = new CTT();
+	EndPointMagazziniereCTT magazz = new EndPointMagazziniereCTT();
+	MongoDataManager mm = new MongoDataManager();
 	
 	@BeforeClass public static void populateDBSacche() {
 		
-    	MyMongoDataManager mm = new MyMongoDataManager();
+    	MongoDataManager mm = new MongoDataManager();
     	List<Sacca> listaSacche = new ArrayList<Sacca>();
     	List<DatiSacca> listaDatiSacche = new ArrayList<DatiSacca>();
     	
@@ -616,7 +616,7 @@ public class RemoveSaccheScaduteTest {
 	
 	
 	@AfterClass public static void dropDBSacche() {
-		MyMongoDataManager mm = new MyMongoDataManager();
+		MongoDataManager mm = new MongoDataManager();
 		mm.dropDB();
 	}	
 }

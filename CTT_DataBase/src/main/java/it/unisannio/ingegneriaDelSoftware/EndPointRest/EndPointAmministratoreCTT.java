@@ -1,4 +1,4 @@
-package it.unisannio.ingegneriaDelSoftware.DataManagers;
+package it.unisannio.ingegneriaDelSoftware.EndPointRest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -8,12 +8,13 @@ import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.Classes.RuoloDipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.AmministratoreCTTDataManager;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.DipendenteCTT;
 import it.unisannio.ingegneriaDelSoftware.Util.DateConverter;
 
 
-public class MyAmministratoreCTTDataManager implements AmministratoreCTTDataManager, DipendenteCTT{
+public class EndPointAmministratoreCTT implements AmministratoreCTTDataManager, DipendenteCTT{
 
 	/**Login è l'operazione con la quale AmministratoreCTT accede al sistema
 	 * @param username Username che usa AmministratoreCTT per entrare nel sistema
@@ -21,7 +22,7 @@ public class MyAmministratoreCTTDataManager implements AmministratoreCTTDataMana
 	 * @return true se username e password corrispondono; false altrimenti
 	 */
 	public boolean login(String username, String password) {
-		MyMongoDataManager mm = new MyMongoDataManager();		
+		MongoDataManager mm = new MongoDataManager();
 		if(mm.getDipendente(username, password)!= null) return true;
 		else return false;
 	}
@@ -31,7 +32,7 @@ public class MyAmministratoreCTTDataManager implements AmministratoreCTTDataMana
 	 * @param d Dipendente da aggiungere al DataBase
 	 */
 	public void addDipendente(Dipendente d) {
-		MyMongoDataManager mm = new MyMongoDataManager();
+		MongoDataManager mm = new MongoDataManager();
 		mm.addDipendente(d);
 	}
 
@@ -40,7 +41,7 @@ public class MyAmministratoreCTTDataManager implements AmministratoreCTTDataMana
 	 * @param cdf Codice fiscale del dipendente da rimuovere dal DataBase
 	 */
 	public void removeDipendente(Cdf cdf) {
-		MyMongoDataManager mm = new MyMongoDataManager();
+		MongoDataManager mm = new MongoDataManager();
 		mm.removeDipendente(cdf);
 	}
 	
@@ -50,7 +51,7 @@ public class MyAmministratoreCTTDataManager implements AmministratoreCTTDataMana
 	 * @return la lista dei Dipendenti del Ruolo scelto
 	 */
 	public List<Dipendente> reportOperatoriCTT(RuoloDipendente ruolo) {
-		MyMongoDataManager mm = new MyMongoDataManager();
+		MongoDataManager mm = new MongoDataManager();
 		
 		List<Dipendente> dipendenti = mm.getListaDipendenti();
         List<Dipendente> dipendentiRuolo = new ArrayList<Dipendente>();
@@ -68,7 +69,7 @@ public class MyAmministratoreCTTDataManager implements AmministratoreCTTDataMana
 	 * @return la lista di Sacche di un determinato Gruppo sanguigno
 	 */
 	public List<Sacca> reportStatisticoSacche(GruppoSanguigno gs){	
-		MyMongoDataManager mm = new MyMongoDataManager();		
+		MongoDataManager mm = new MongoDataManager();
 		List<Sacca> saccheGS = new ArrayList<Sacca>();
 		
 		List<Sacca> listaSacche = mm.getListaSacche();	    
@@ -85,7 +86,7 @@ public class MyAmministratoreCTTDataManager implements AmministratoreCTTDataMana
 	 * @return la lista di sacche che sono transitate per un CTT in un determinato arco temporale
 	 */
 	public List<DatiSacca> ReportLocaleSaccheInviateERicevuteCTT(Date dataInizio, Date dataFine) {
-		MyMongoDataManager mm = new MyMongoDataManager();
+		MongoDataManager mm = new MongoDataManager();
 		
 		List<DatiSacca> listaDati = mm.getListaDatiSacche();
 		List<DatiSacca> datiSaccaTransitati = new ArrayList<DatiSacca>();
