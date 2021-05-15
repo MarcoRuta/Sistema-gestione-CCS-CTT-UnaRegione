@@ -19,6 +19,9 @@ public class DatiSacca {
 	private final String enteDonatore;
 	/**colui che richiede la sacca, viene aggiunto nel momento in cui la sacca è affidata*/
 	private Optional<String> enteRichiedente;
+	/**l'indirizzo di colui che richiede la sacca, viene aggiunto nel momento in cui la sacca è affidata*/
+	private Optional<String> indirizzoEnte;
+	
 
 	/** costruttore invocato quando la sacca è inserita nel Magazzino
 	 * @param dataArrivo  data in cui la sacca è arrivata
@@ -27,7 +30,7 @@ public class DatiSacca {
 	 * @param gruppoSanguigno gruppo sanguigno della sacca
 	 * @param dataAffidamento  data nella quale viene affidata la sacca. Se la sacca non è stata affidata può essere settato a null
 	 * @param enteRichiedente  ente che ha richiesto la saccca. Se la sacca non è stata affidata può essere settato a null*/
-	public DatiSacca(Seriale seriale, GruppoSanguigno gruppoSanguigno, LocalDate dataArrivo, LocalDate dataAffidamento, String enteDonatore, String enteRichiedente) {
+	public DatiSacca(Seriale seriale, GruppoSanguigno gruppoSanguigno, LocalDate dataArrivo, LocalDate dataAffidamento, String enteDonatore, String enteRichiedente, String indirizzoEnte) {
 		assert seriale != null: "Il seriale non può essere nullo";
 		assert gruppoSanguigno!= null: "Il gruppo sanguigno non puo essere nullo";
 		assert dataArrivo != null: "La data di arrivo non può essere nulla";
@@ -39,6 +42,7 @@ public class DatiSacca {
 		this.dataAffidamento = Optional.ofNullable(dataAffidamento); //se null, nel db compare lo stesso una data ma è 01-01-0001
 		this.enteDonatore = enteDonatore;
 		this.enteRichiedente = Optional.ofNullable(enteRichiedente);
+		this.indirizzoEnte = Optional.ofNullable(indirizzoEnte);
 	}
 
 	/**@return  il seriale della sacca*/
@@ -71,19 +75,30 @@ public class DatiSacca {
 
 		return enteRichiedente.isPresent()?enteRichiedente.get():"";
 	}
-
+	
+	/**@return  restituisce l'indirizzo dell'ente richiedente se presente, altrimenti restituisce una stringa vuota*/
+	public String getIndirizzoEnte() {
+		return indirizzoEnte.isPresent()?indirizzoEnte.get():"";
+	}
+	
 	/**@param dataAffidamento  data in cui e stata affidata la sacca, non può essere null*/
 	public void setDataAffidamento(LocalDate dataAffidamento) {
 		assert dataAffidamento != null: "La data di affidamento non può essere null";
 		this.dataAffidamento = Optional.of(dataAffidamento);
 	}
-
+	
 	/**@param enteRichiedente  l'ente che ha richiesto la sacca. Non può essere null*/
 	public void setEnteRichiedente(String enteRichiedente) {
 		assert enteRichiedente != null: "l'ente richiedente non può essere null";
 		this.enteRichiedente = Optional.of(enteRichiedente);
 	}
+	
 
+	/**@param indirizzoEnte l'indirizzo dell'ente che ha richiesto la sacca. Non può essere null*/
+	public void setIndirizzoEnte(Optional<String> indirizzoEnte) {
+		this.indirizzoEnte = indirizzoEnte;
+	}
+	
 	@Override
 	public String toString() {
 		return "DatiSacca{" +
@@ -93,6 +108,7 @@ public class DatiSacca {
 				", dataAffidamento=" + dataAffidamento +
 				", enteDonatore='" + enteDonatore + '\'' +
 				", enteRichiedente=" + enteRichiedente +
+				", indirizzoEnte=" + indirizzoEnte +
 				'}';
 	}
 
@@ -118,6 +134,7 @@ public class DatiSacca {
 		ps.println("Data di affidamento: "+ (this.dataAffidamento.isPresent()?this.dataAffidamento.get():""));
 		ps.println("Ente donatore: "+this.enteDonatore);
 		ps.println("Ente richiedente: "+(this.enteRichiedente.isPresent()?this.enteRichiedente.get():""));
+		ps.println("Indirizzo Ente: "+(this.indirizzoEnte.isPresent()?this.indirizzoEnte.get():""));
 	}
 
 	/**@return etichetta  con i dati della sacca*/
@@ -126,6 +143,9 @@ public class DatiSacca {
 				+"Data di in ingresso: "+this.dataArrivo+"\n"
 				+"Data di affidamento: "+this.dataAffidamento.get()+"\n"
 				+"Ente richiedente: "	+this.enteRichiedente.get()+"\n"
-				+"Ente donatore: "		+this.enteDonatore;
+				+"Ente donatore: "		+this.enteDonatore+"\n"
+				+"Indirizzo Ente: "		+this.indirizzoEnte;
 	}
+
+
 }

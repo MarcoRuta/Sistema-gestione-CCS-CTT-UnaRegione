@@ -57,7 +57,8 @@ public class MyMongoDataManager implements DataManager {
                 .append(Constants.ELEMENT_DATAARRIVO, DateConverter.convertLocalDateToDate(ds.getDataArrivo()))
                 .append(Constants.ELEMENT_DATAAFFIDAMENTO, DateConverter.convertLocalDateToDate(ds.getDataAffidamento()))
                 .append(Constants.ELEMENT_ENTEDONATORE, ds.getEnteDonatore())
-                .append(Constants.ELEMENT_ENTERICHIEDENTE, ds.getEnteRichiedente());
+                .append(Constants.ELEMENT_ENTERICHIEDENTE, ds.getEnteRichiedente())
+                .append(Constants.ELEMENT_INDIRIZZOENTE, ds.getIndirizzoEnte());
 	    collection.insertOne(datiSacca);
 	}
 
@@ -109,7 +110,8 @@ public class MyMongoDataManager implements DataManager {
 					DateConverter.convertDateToLocalDate(current.getDate(Constants.ELEMENT_DATAARRIVO)),
 					DateConverter.convertDateToLocalDate(current.getDate(Constants.ELEMENT_DATAAFFIDAMENTO)),
 					current.getString(Constants.ELEMENT_ENTEDONATORE),
-					current.getString(Constants.ELEMENT_ENTERICHIEDENTE));
+					current.getString(Constants.ELEMENT_ENTERICHIEDENTE),
+					current.getString(Constants.ELEMENT_INDIRIZZOENTE));
 		}
 		return ds;	
 	}
@@ -149,7 +151,8 @@ public class MyMongoDataManager implements DataManager {
 					DateConverter.convertDateToLocalDate(current.getDate(Constants.ELEMENT_DATAARRIVO)),
 					DateConverter.convertDateToLocalDate(current.getDate(Constants.ELEMENT_DATAAFFIDAMENTO)),
 					current.getString(Constants.ELEMENT_ENTEDONATORE),
-					current.getString(Constants.ELEMENT_ENTERICHIEDENTE));			
+					current.getString(Constants.ELEMENT_ENTERICHIEDENTE),	
+					current.getString(Constants.ELEMENT_INDIRIZZOENTE));	
 	    	datiSacche.add(ds);
 		}	    
 		return datiSacche;		
@@ -194,6 +197,17 @@ public class MyMongoDataManager implements DataManager {
 				Updates.set(Constants.ELEMENT_ENTERICHIEDENTE, enteRichiedente));
 	}
 
+	/**Modifica il parametro indirizzoEnte di una DatiSacca identificata tramite Seriale nel database dei DatiSacca
+	 * @param seriale Seriale della Sacca da modificare
+	 * @param indirizzoEnte indirizzo dell'ente a cui sarà affidata la Sacca
+	 */
+	public void setIndirizzoEnteDatiSacca(Seriale seriale, String indirizzoEnte) {
+		MongoDatabase database = mongoClient.getDatabase(Constants.DB_NAME);
+		MongoCollection<Document> collection = database.getCollection(Constants.COLLECTION_DATISACCHE);
+		collection.updateOne(
+				eq(Constants.ELEMENT_SERIALE, seriale.getSeriale()),
+				Updates.set(Constants.ELEMENT_INDIRIZZOENTE, indirizzoEnte));
+	}
 	
 	/**Modifica il parametro enteRichiedente di una DatiSacca identificata tramite Seriale nel database dei DatiSacca
 	 * @param seriale Seriale della Sacca da ricercare
@@ -243,6 +257,29 @@ public class MyMongoDataManager implements DataManager {
 	 * @param password Password del Dipendente
 	 * @return il Dipendente cercato
 	 */
+	public Dipendente getDipendente(Cdf cdf) {
+		MongoDatabase database = mongoClient.getDatabase(Constants.DB_NAME);
+	    MongoCollection<Document> collection = database.getCollection(Constants.COLLECTION_DIPENDENTI);
+	        
+	    for (Document current : collection.find(eq(Constants.ELEMENT_CDF, cdf))) {
+	        		  Dipendente dip = new Dipendente(new Cdf(current.getString(Constants.ELEMENT_CDF)),
+	    				current.getString(Constants.ELEMENT_NOME),
+	    				current.getString(Constants.ELEMENT_COGNOME),
+	    				DateConverter.convertDateToLocalDate(current.getDate(Constants.ELEMENT_DATADINASCITA)),
+	    				RuoloDipendente.valueOf(current.getString(Constants.ELEMENT_RUOLO)),
+	    				current.getString(Constants.ELEMENT_USERNAME),
+	    				current.getString(Constants.ELEMENT_PASSWORD));
+	    		return dip;
+	    	}
+	    	
+		return null;
+	}
+
+	/**Cerca e restituisce un Dipendente con un determinato Username e Password, presente all'interno del database dei Dipendenti
+	 * @param username Username del Dipendente
+	 * @param password Password del Dipendente
+	 * @return il Dipendente cercato
+	 */
 	public Dipendente getDipendente(String username, String password) {
 		MongoDatabase database = mongoClient.getDatabase(Constants.DB_NAME);
 	    MongoCollection<Document> collection = database.getCollection(Constants.COLLECTION_DIPENDENTI);
@@ -261,7 +298,7 @@ public class MyMongoDataManager implements DataManager {
 	    }		
 		return null;
 	}
-
+	
 	
 	/**Restituisce la lista dei Dipendenti del CTT presenti nel database
 	 * @return la lista dei Dipendenti del CTT
@@ -283,4 +320,28 @@ public class MyMongoDataManager implements DataManager {
         }        
         return dipendenti;
     }
+
+	/**@param seriale il seriale della sacca che si vuole cercare
+     * @return true se la sacca è contenuta*/
+    public boolean containsSacca(Seriale seriale){
+        Sacca unSacca = this.getSacca(seriale);
+        return unSacca != null?true:false;
+    }
+    
+    
+    /**@param seriale il seriale della sacca che si vuole cercare
+     * @return true se i dati sacca sono contenuti*/
+    public boolean containsDatiSacca(Seriale seriale){
+        DatiSacca unDatiSacca = this.getDatiSacca(seriale);
+        return unDatiSacca != null?true:false;
+    }
+
+
+    /**@param cdf il codice fiscale del dipendente che si vuole cercare
+     * @return true se la sacca è contenuta*/
+    public boolean containsDipendente(Cdf cdf){
+        Dipendente unDipendente = this.getDipendente(cdf);
+        return unDipendente != null?true:false;
+    }
+
 }

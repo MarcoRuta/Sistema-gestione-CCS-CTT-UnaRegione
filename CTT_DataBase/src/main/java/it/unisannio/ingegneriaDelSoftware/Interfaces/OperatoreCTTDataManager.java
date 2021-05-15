@@ -6,5 +6,5 @@ import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
 
 public interface OperatoreCTTDataManager {	
 
-	Sacca ricercaSaccaLocale(GruppoSanguigno gs, LocalDate dataArrivoMassima, String enteRichiedente);	
+	Sacca ricercaSaccaLocale(GruppoSanguigno gs, LocalDate dataArrivoMassima, String enteRichiedente, String indirizzoEnte);	
 }

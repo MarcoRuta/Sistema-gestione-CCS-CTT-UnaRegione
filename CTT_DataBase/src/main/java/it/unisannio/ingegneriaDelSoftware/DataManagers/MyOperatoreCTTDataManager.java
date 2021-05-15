@@ -1,9 +1,9 @@
 package it.unisannio.ingegneriaDelSoftware.DataManagers;
 
 
-import java.text.ParseException;
+
 import java.time.LocalDate;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
@@ -11,8 +11,7 @@ import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaLocaleNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.DipendenteCTT;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.OperatoreCTTDataManager;
-import it.unisannio.ingegneriaDelSoftware.Util.Constants;
-import it.unisannio.ingegneriaDelSoftware.Util.DateConverter;
+import it.unisannio.ingegneriaDelSoftware.Util.ScadenzeComparator;
 
 public class MyOperatoreCTTDataManager implements OperatoreCTTDataManager, DipendenteCTT {
 	
@@ -35,17 +34,18 @@ public class MyOperatoreCTTDataManager implements OperatoreCTTDataManager, Dipen
      * @return la Sacca con le caratteristiche richieste
 	 * @throws  
      */
-	public Sacca ricercaSaccaLocale(GruppoSanguigno gs, LocalDate dataArrivoMassima, String enteRichiedente){
+	public Sacca ricercaSaccaLocale(GruppoSanguigno gs, LocalDate dataArrivoMassima, String enteRichiedente, String indirizzoEnte){
 		MyOperatoreCTTDataManager ms = new MyOperatoreCTTDataManager();
 		MyMongoDataManager mm = new MyMongoDataManager();
 		
 		Sacca s = null;
-		s = ms.getSaccaPerRicerca(gs, dataArrivoMassima);
-		if(s==null) s = ms.getSaccaCompatibilePerRicerca(gs, dataArrivoMassima);
+		s = ms.ricercaSacca(gs, dataArrivoMassima);
+		if(s==null) s = ms.ricercaSaccaCompatibile(gs, dataArrivoMassima);
 		
 		if(s!=null) {
 		mm.setEnteRichiedenteDatiSacca(s.getSeriale(), enteRichiedente);
 		mm.setDataAffidamentoDatiSacca(s.getSeriale(), LocalDate.now());
+		mm.setIndirizzoEnteDatiSacca(s.getSeriale(), indirizzoEnte);
 		}
 		else throw new SaccaLocaleNotFoundException();
 		return s;		
@@ -57,25 +57,22 @@ public class MyOperatoreCTTDataManager implements OperatoreCTTDataManager, Dipen
 	 * @param dataArrivoMassima Data entro la quale la Sacca non deve essere scaduta
 	 * @return null se la sacca non è stata trovata; la Sacca se essa è stata trovata 
 	 */
-	private Sacca getSaccaPerRicerca(GruppoSanguigno gs, LocalDate dataArrivoMassima) {
+	private Sacca ricercaSacca(GruppoSanguigno gs, LocalDate dataArrivoMassima) {
+		
 		MyMongoDataManager mm = new MyMongoDataManager();		
-		List<Sacca> listaSacche = mm.getListaSacche();			
+		List<Sacca> listaSacche = mm.getListaSacche();	
+		List<Sacca> saccheTrovate = new ArrayList<Sacca>();
+		
 		Sacca selez = null;
-		Date dataScadenzaImminente = null;
 		
-		try {
-			dataScadenzaImminente = Constants.sdf.parse("01-01-2999");
-		} catch (ParseException e) {e.printStackTrace();}
+				
+		for (Sacca sacca : listaSacche) 
+			if(!sacca.isPrenotato() && sacca.getGruppoSanguigno().equals(gs) && sacca.getDataScadenza().isAfter(dataArrivoMassima) && sacca.getDataScadenza().isAfter(LocalDate.now())) 
+				saccheTrovate.add(sacca);
 		
-		for (Sacca sacca : listaSacche) {
-			if(!sacca.isPrenotato() && sacca.getGruppoSanguigno().equals(gs) 
-					&& dataScadenzaImminente.after(DateConverter.convertLocalDateToDate(sacca.getDataScadenza())) 
-					&& DateConverter.convertLocalDateToDate(sacca.getDataScadenza()).after(DateConverter.convertLocalDateToDate(dataArrivoMassima))) {
-			
-					dataScadenzaImminente = DateConverter.convertLocalDateToDate(sacca.getDataScadenza());					
-					selez = sacca;
-			}	
-		}
+		saccheTrovate.sort(new ScadenzeComparator());
+		if(!saccheTrovate.isEmpty()) selez = saccheTrovate.get(0);
+		
 		if(selez != null)mm.setPrenotatoSacca(selez.getSeriale());
 		return selez;
 	}	
@@ -86,31 +83,31 @@ public class MyOperatoreCTTDataManager implements OperatoreCTTDataManager, Dipen
 	 * @param dataArrivoMassima Data entro la quale la Sacca non deve essere scaduta
 	 * @return null se la Sacca non è stata trovata; la Sacca se essa è stata trovata
 	 */
-	private  Sacca getSaccaCompatibilePerRicerca(GruppoSanguigno gs, LocalDate dataArrivoMassima) {
-		MyMongoDataManager mm = new MyMongoDataManager();		
-		List<Sacca> listaSacche = mm.getListaSacche();	    		
-		Sacca selez = null;
-		Date dataScadenzaImminente = null;
+	private  Sacca ricercaSaccaCompatibile(GruppoSanguigno gs, LocalDate dataArrivoMassima) {
 		
-		try {
-			dataScadenzaImminente = Constants.sdf.parse("01-01-2999");
-		} catch (ParseException e) {e.printStackTrace();}
+		MyMongoDataManager mm = new MyMongoDataManager();		
+		List<Sacca> listaSacche = mm.getListaSacche();
+		List<Sacca> saccheTrovate = new ArrayList<Sacca>();
+		
+		Sacca selez = null;
+		
 		
 		Iterator<GruppoSanguigno> i = GruppoSanguigno.puoRicevereDa(gs);		
 		while(i.hasNext()) {
 			GruppoSanguigno grs = i.next();
-			for (Sacca sacca : listaSacche) {
-				if(!sacca.isPrenotato() && sacca.getGruppoSanguigno().equals(grs) 
-					&& dataScadenzaImminente.after(DateConverter.convertLocalDateToDate(sacca.getDataScadenza())) 
-					&& DateConverter.convertLocalDateToDate(sacca.getDataScadenza()).after(DateConverter.convertLocalDateToDate(dataArrivoMassima))) {				
-						
-					dataScadenzaImminente = DateConverter.convertLocalDateToDate(sacca.getDataScadenza());						
-					selez = sacca;
-				}	
+			for (Sacca sacca : listaSacche) 
+				if(!sacca.isPrenotato() && sacca.getGruppoSanguigno().equals(grs) && sacca.getDataScadenza().isAfter(dataArrivoMassima)&& sacca.getDataScadenza().isAfter(LocalDate.now())) 
+					saccheTrovate.add(sacca);
 			}
-		}
 		
+		saccheTrovate.sort(new ScadenzeComparator());
+		if(!saccheTrovate.isEmpty()) selez = saccheTrovate.get(0);
+			
+				
 		if(selez != null) mm.setPrenotatoSacca(selez.getSeriale());
 		return selez;
+			
 	}
-}
+	
+}	
+	

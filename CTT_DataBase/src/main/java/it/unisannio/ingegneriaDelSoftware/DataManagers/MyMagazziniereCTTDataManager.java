@@ -93,7 +93,7 @@ public class MyMagazziniereCTTDataManager implements MagazziniereCTTDataManager,
 					LocalDate.parse(data_produzione, DateTimeFormatter.ofPattern("yyyy-MM-dd")),
 					LocalDate.parse(data_scadenza, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 			mm.createSacca(unaSacca);
-			DatiSacca datiSacca = new DatiSacca(unaSacca.getSeriale(), unaSacca.getGruppoSanguigno(), LocalDate.now(), null, ente_donatore, null);
+			DatiSacca datiSacca = new DatiSacca(unaSacca.getSeriale(), unaSacca.getGruppoSanguigno(), LocalDate.now(), null, ente_donatore, null,null);
 			mm.createDatiSacca(datiSacca);
 			//update Seriale settings
 			Seriale.updateSettings();

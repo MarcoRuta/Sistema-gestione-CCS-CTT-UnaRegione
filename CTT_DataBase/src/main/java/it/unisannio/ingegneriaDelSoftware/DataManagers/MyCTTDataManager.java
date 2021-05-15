@@ -1,5 +1,6 @@
 package it.unisannio.ingegneriaDelSoftware.DataManagers;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -37,10 +38,10 @@ public class MyCTTDataManager implements CTTDataManager{
 	public void removeSaccheScadute() {
 		MyMongoDataManager mm = new MyMongoDataManager();
 		List<Sacca> listaSacche = mm.getListaSacche();		
-		Date oggi = new Date();
+		
 		
 		for(Sacca sacca : listaSacche) {
-			if(DateConverter.convertLocalDateToDate(sacca.getDataScadenza()).after(oggi)) {
+			if(sacca.getDataScadenza().isBefore(LocalDate.now())) {
 				removeSaccaScaduta(sacca);
             }
 		}			
@@ -56,5 +57,6 @@ public class MyCTTDataManager implements CTTDataManager{
 		mm.removeSacca(s.getSeriale());
 		mm.setDataAffidamentoDatiSacca(s.getSeriale(), s.getDataScadenza());
 		mm.setEnteRichiedenteDatiSacca(s.getSeriale(), "Scaduta");
+		mm.setIndirizzoEnteDatiSacca(s.getSeriale(), "Scaduta");
 	}
 }

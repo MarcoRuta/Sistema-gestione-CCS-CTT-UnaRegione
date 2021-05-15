@@ -19,6 +19,7 @@ public class Constants {
 	public static final String ELEMENT_DATAAFFIDAMENTO = "dataAffidamento";
 	public static final String ELEMENT_ENTEDONATORE = "enteDonatore";
 	public static final String ELEMENT_ENTERICHIEDENTE = "enteRichiedente";
+	public static final String ELEMENT_INDIRIZZOENTE = "indirizzoEnte";
 
 	public static final String COLLECTION_DIPENDENTI = "DIPENDENTI";
 	public static final String ELEMENT_CDF = "cdf";
