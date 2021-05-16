@@ -2,23 +2,27 @@ package it.unisannio.ingegneriaDelSoftware.EndPointRest;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
+
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Singleton;
+
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
 import it.unisannio.ingegneriaDelSoftware.Annotazioni.Secured;
 import it.unisannio.ingegneriaDelSoftware.Classes.CTT;
 import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
-import it.unisannio.ingegneriaDelSoftware.Exceptions.CTTNotFoundException;
+import it.unisannio.ingegneriaDelSoftware.Interfaces.DataManager;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointAmministratoreCCS;
 
 
@@ -113,6 +117,20 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 	
 	}
 	
+	/**
+	 * Metodo utilizzato per aggiunta automatica dei CTT
+	 * 
+	 * @return */
+	@GET
+	@Path("/centers")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<CTT> listaCTT(){
+
+		DataManager mm = new MongoDataManager();
+		
+		return mm.getListaCTT();	
+
+	}
 
 
 	/*
