@@ -4,14 +4,19 @@
 <head>
     <script>
         function print1(){
-            if(enteRic.value!="")
-                document.getElementById("p1").innerHTML = "Ente richiedente: "+"<span class='textPrint'>" +enteRic.value+"</span>";
+            if(ente.value!="")
+                document.getElementById("p1").innerHTML = "Ente richiedente: "+"<span class='textPrint'>" +ente.value+"</span>";
             else document.getElementById("p1").innerHTML = "Ente richiedente: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
         }
         function print2(){
-            if(numsacca.value!="")
-                document.getElementById("p2").innerHTML = "Numero seriale sacca: "+"<span class='textPrint'>" +numsacca.value+"</span>";
-            else document.getElementById("p2").innerHTML = "Numero seriale sacca: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
+            if(indirizzo.value!=0)
+                document.getElementById("p2").innerHTML = "Indirizzo: "+"<span class='textPrint'>" +indirizzo.value+"</span>";
+            else document.getElementById("p2").innerHTML = "Indirizzo: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
+        }
+        function print3(){
+            if(numsacca.value!=0)
+                document.getElementById("p3").innerHTML = "Numero seriale sacca: "+"<span class='textPrint'>" +numsacca.value+"</span>";
+            else document.getElementById("p3").innerHTML = "Numero seriale sacca: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
         }
         
         
@@ -25,7 +30,7 @@
     <link rel="stylesheet" href="assets/css/formStyles.css">
 </head>
 
-<body style="background-color: #ffffff;">
+<body style="background-color: #ffffff;" onload="keepSacche();">
     
     <div class="titlePage">
         <div>
@@ -43,19 +48,28 @@
         <div class="dateForm">
             <div class="titleDateForm">
                 <p>Dati Sacca</p>
+                <button class="btn" onclick="location.href='MagazziniereCTT.html';"><img class="return" src="assets/img/return.png" /></button>
             </div>
             <div class="containerForm">
                 <form id="myForm">
                     <div class="form-group row">
                             <label style="margin: 5% 5%;">Ente richiedente:</label>
                             <div class="inputForm">
-                                <input id="enteRic" name="ent" onchange="controllaEnteRic();" oninput="print1();" class="form-control" type="text" style="width: 300px; margin: -1.5em 10%;">
+                                <input id="ente" name="ent" oninput="print1();" class="form-control" type="text" style="width: 300px; margin: -1.5em 10%;">
                             </div>
                     </div>
                     <div class="form-group row">
+                            <label style="margin: 0% 5%;">Indirizzo:</label>
+                            <div class="inputForm">
+                                <input id="indirizzo" name="ind" oninput="print2();" class="form-control" type="text" style="width: 300px; margin: 0.1em 10%;">
+                            </div>
+                    </div>
+                    <div class="form-group row" style="margin: 6% 0%">
                             <label style="margin: 0% 5%;">Numero seriale sacca:</label>
                             <div class="inputForm">
-                                <input id="numsacca" name="num" onchange="controllaNumSacca();" oninput="print2();" class="form-control" type="text" placeholder="XXX000-00000000" style="width: 300px; margin: 2% 10%;">
+                                <select id="numsacca" name="numsacca" oninput="print3()" class="form-control" onfocus='this.size=5;' onblur='this.size=1;' onchange='this.size=1; this.blur();' style="width: 300px; margin: 3% 10%;">
+                                        <option value='0'>Seleziona la sacca da evadere</option>
+                                </select>
                             </div>
                     </div>
                 </form>
@@ -69,6 +83,7 @@
             <div class="outPreview">
                 <p id="p1"></p>
                 <p id="p2"></p>
+                <p id="p3"></p>
             </div>
             <div class="outPreview" style="height: 40px;margin: 4% 45px;">
                 <p id="result"></p>
@@ -79,21 +94,25 @@
         
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
-    <script type="application/javascript">  
+    <script type="application/javascript">
+        
             var res;
+            var obj;
             var xhttp = new XMLHttpRequest();
             
             function loadDoc(){
                             	
                 var url = "http://127.0.0.1:8080/rest/CTT/evasione/" + numsacca.value;
+                var indirizzorichiedente = indirizzo.value;
+                var enterichiedente = ente.value;
+                var params = 'enterichiedente='+enterichiedente+'&indirizzo='+indirizzorichiedente;
 
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
                 	    res = this.response;
                  	    document.getElementById("result").innerHTML = "Evasione Riuscita";
                         setTimeout(visiblePDF,1000);
-                 	}
-                    else {
+                 	}else {
                         document.getElementById("result").innerHTML = this.response;
                     }
 
@@ -103,11 +122,31 @@
                     document.getElementById("result").innerHTML = "Sacca non esistente";
                 };
 
+
                 xhttp.open("PUT", url, true);
-                xhttp.send(ente.value);
-                
+                xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhttp.send(params);
+
             }
             
+            function keepSacche(){
+                           
+                xhttp = new XMLHttpRequest(); 	
+                url = "http://127.0.0.1:8080/rest/CTT/sacche";
+
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        obj = JSON.parse(this.responseText);
+                        addOption();
+                        }  
+
+                };
+                
+                xhttp.open("GET", url, true);
+                xhttp.send();
+                
+            }
+                        
             function visiblePDF() {
                 document.getElementById("btnPDF").style.visibility = "visible";
             }
@@ -125,11 +164,26 @@
 
                 doc.setFontSize(20);
 	            doc.text(20, 40, res);
+	            //doc.text(20,45,indirizzo.value);
 
 
 	            // Save the PDF
 	            doc.save(numsacca.value+'.pdf');
 	        }
+            
+                        
+            function addOption() {
+                
+                var x = document.getElementById("numsacca");
+                var option;
+                for(var i=0; i < obj.length; i++) {
+                    option = document.createElement('option');
+                    option.appendChild(document.createTextNode(obj[i].seriale));
+                    option.value=obj[i].seriale;
+                    x.appendChild(option);
+                }
+            }
+            
 
     </script>
         

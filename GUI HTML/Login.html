@@ -20,19 +20,66 @@
         </div>
     </div>
     <div class="loginForm">
-        <form method="post">
+        <form id="formLogin">
             <h2 class="sr-only">Login Form</h2>
-                <div class="illustration"><i class="icon ion-ios-locked-outline"></i></div>
-                <div class="form-group"><input class="form-control" type="email" name="email" placeholder="Email"></div>
-                <div class="form-group"><input class="form-control" type="password" name="password" placeholder="Password"></div>
-                <div class="form-group"><button class="btn btn-primary btn-block" type="submit" style="background-color: #13958d;">Log In</button></div>
+                <div class="illustration">
+                    <i class="icon ion-ios-locked-outline"></i>
+                    <span id="error"></span>
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="text" id="user" name="username" placeholder="Username">
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="password" id="pass" name="password" placeholder="Password">
+                </div>
                 <a class="forgot" href="#">Hai dimenticato email o password?</a>
         </form>
+        <div class="form-group">
+            <button class="btn btn-primary btn-block" id="btnLogin" type="submit" onclick="verifyLogin();" style="background-color: #13958d;">Log In</button>
+        </div>
+
     </div>
-    <div class="footer">
-    </div>
+    <p id="result"></p>
+    <div class="footer"></div>
+    
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    
+    <script type="application/javascript">
+        
+            var xhttp = new XMLHttpRequest();
+
+            function verifyLogin(){
+                var username = user.value;
+                var password = pass.value;
+                var url = "http://127.0.0.1:8080/rest/login";
+                param = 'username='+username+'&password='+password;
+
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200 ) {
+                        window.location.href=this.response+'.html';
+                 	}else{
+                 	if (this.readyState == 4 && this.status !=200)
+                 	    document.getElementById("error").innerHTML="<span style = 'color:red'>"+this.response+"</span>";
+                 	}
+
+                };
+
+
+                xhttp.onerror = function(){
+                    document.getElementById("error").innerHTML="<span style = 'color:red'>Impossibile inviare la richiesta</span>";
+                };
+
+
+                xhttp.open("POST", url, true);
+                xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhttp.send(param);
+
+                }
+                
+    </script>
+    
+    
 </body>
 
 </html>
