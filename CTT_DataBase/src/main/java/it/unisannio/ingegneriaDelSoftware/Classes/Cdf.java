@@ -1,16 +1,26 @@
 package it.unisannio.ingegneriaDelSoftware.Classes;
 
-import java.util.Objects;
+import java.util.*;
 
+/**Questo è un FlyWeight*/
 public class Cdf {
 	private String codiceFiscale;
+	private static Map<String, Cdf> cdfs = new HashMap<String,Cdf>();
 
+
+	public static Cdf getCDF(String cdf) throws AssertionError{
+		assert cdf != null: "Il cdf non puo essere null";
+		if (Cdf.cdfs.containsKey(cdf))
+			return Cdf.cdfs.get(cdf);
+		Cdf aCdf = new Cdf(cdf);
+		Cdf.cdfs.put(cdf,aCdf);
+		return aCdf;
+	}
 
 	/**
 	 * @param cdf  deve essere una stringa di 16 caratteri*/
-    public Cdf(String cdf){
-
-        assert(cdf.length()==16) :"Il codice Fiscale deve essere di 16 caratteri";
+    private Cdf(String cdf){
+		assert(cdf.length()==16) :"Il codice Fiscale deve essere di 16 caratteri";
         this.codiceFiscale = cdf;
     }
 	

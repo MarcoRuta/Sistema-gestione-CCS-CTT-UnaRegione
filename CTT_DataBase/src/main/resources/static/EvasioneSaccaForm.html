@@ -48,6 +48,7 @@
         <div class="dateForm">
             <div class="titleDateForm">
                 <p>Dati Sacca</p>
+                <button class="btn" onclick="location.href='MagazziniereCTT.html';"><img class="return" src="assets/img/return.png" /></button>
             </div>
             <div class="containerForm">
                 <form id="myForm">
@@ -66,7 +67,7 @@
                     <div class="form-group row" style="margin: 6% 0%">
                             <label style="margin: 0% 5%;">Numero seriale sacca:</label>
                             <div class="inputForm">
-                                <select id="numsacca" name="numsacca" oninput="print3()" class="custom-select" style="width: 300px; margin: 3% 10%;">
+                                <select id="numsacca" name="numsacca" oninput="print3()" class="form-control" onfocus='this.size=5;' onblur='this.size=1;' onchange='this.size=1; this.blur();' style="width: 300px; margin: 3% 10%;">
                                         <option value='0'>Seleziona la sacca da evadere</option>
                                 </select>
                             </div>

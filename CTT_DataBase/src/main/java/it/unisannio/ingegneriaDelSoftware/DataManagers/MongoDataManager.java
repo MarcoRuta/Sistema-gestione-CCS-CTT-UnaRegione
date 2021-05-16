@@ -88,7 +88,7 @@ public class MongoDataManager implements DataManager {
 		Sacca s = null;
 		
 		for (Document current : collection.find(eq(Constants.ELEMENT_SERIALE, ser.getSeriale()))) {
-			s = new Sacca( new Seriale(current.getString(Constants.ELEMENT_SERIALE)),
+			s = new Sacca(Seriale.getSeriale(current.getString(Constants.ELEMENT_SERIALE)),
 				GruppoSanguigno.valueOf(current.getString(Constants.ELEMENT_GRUPPO)),
 				DateUtil.convertDateToLocalDate(current.getDate(Constants.ELEMENT_DATAPRODUZIONE)),
 				DateUtil.convertDateToLocalDate(current.getDate(Constants.ELEMENT_DATASCADENZA)),
@@ -108,7 +108,7 @@ public class MongoDataManager implements DataManager {
 		DatiSacca ds = null;
 		
 		for (Document current : collection.find(eq(Constants.ELEMENT_SERIALE,ser.getSeriale()))) {
-			ds = new DatiSacca(new Seriale(current.getString(Constants.ELEMENT_SERIALE)),
+			ds = new DatiSacca(Seriale.getSeriale(current.getString(Constants.ELEMENT_SERIALE)),
 					GruppoSanguigno.valueOf(current.getString(Constants.ELEMENT_GRUPPO)),
 					DateUtil.convertDateToLocalDate(current.getDate(Constants.ELEMENT_DATAARRIVO)),
 					DateUtil.convertDateToLocalDate(current.getDate(Constants.ELEMENT_DATAAFFIDAMENTO)),
@@ -129,7 +129,7 @@ public class MongoDataManager implements DataManager {
         List<Sacca> listaSacche = new ArrayList<Sacca>();
         
         for (Document current : collection.find())
-                listaSacche.add(this.getSacca(new Seriale(current.getString(Constants.ELEMENT_SERIALE))));
+                listaSacche.add(this.getSacca(Seriale.getSeriale(current.getString(Constants.ELEMENT_SERIALE))));
         return listaSacche;
 	}
 	
@@ -143,7 +143,7 @@ public class MongoDataManager implements DataManager {
 	    List<DatiSacca> datiSacche = new ArrayList<DatiSacca>();
 	   
 	    for (Document current : collection.find())
-	    	datiSacche.add(this.getDatiSacca(new Seriale(current.getString(Constants.ELEMENT_SERIALE))));
+	    	datiSacche.add(this.getDatiSacca(Seriale.getSeriale(current.getString(Constants.ELEMENT_SERIALE))));
 		return datiSacche;		
 	}
 	  	
@@ -251,7 +251,7 @@ public class MongoDataManager implements DataManager {
 	    MongoCollection<Document> collection = database.getCollection(Constants.COLLECTION_DIPENDENTI);
 	        
 	    for (Document current : collection.find(eq(Constants.ELEMENT_CDF, cdf.getCodiceFiscale()))) {
-	        		  Dipendente dip = new Dipendente(new Cdf(current.getString(Constants.ELEMENT_CDF)),
+	        		  Dipendente dip = new Dipendente(Cdf.getCDF(current.getString(Constants.ELEMENT_CDF)),
 	    				current.getString(Constants.ELEMENT_NOME),
 	    				current.getString(Constants.ELEMENT_COGNOME),
 	    				DateUtil.convertDateToLocalDate(current.getDate(Constants.ELEMENT_DATADINASCITA)),
@@ -273,18 +273,9 @@ public class MongoDataManager implements DataManager {
 		MongoDatabase database = mongoClient.getDatabase(Constants.DB_NAME);
 	    MongoCollection<Document> collection = database.getCollection(Constants.COLLECTION_DIPENDENTI);
 	        
-	    for (Document current : collection.find(eq(Constants.ELEMENT_USERNAME, username))) {
-	    	if(password.equals(current.getString(Constants.ELEMENT_PASSWORD))) {
-	    		Dipendente dip = new Dipendente(new Cdf(current.getString(Constants.ELEMENT_CDF)),
-	    				current.getString(Constants.ELEMENT_NOME),
-	    				current.getString(Constants.ELEMENT_COGNOME),
-	    				DateUtil.convertDateToLocalDate(current.getDate(Constants.ELEMENT_DATADINASCITA)),
-	    				RuoloDipendente.valueOf(current.getString(Constants.ELEMENT_RUOLO)),
-	    				current.getString(Constants.ELEMENT_USERNAME),
-	    				current.getString(Constants.ELEMENT_PASSWORD));
-	    		return dip;
-	    	}
-	    }		
+	    for (Document current : collection.find(eq(Constants.ELEMENT_USERNAME, username)))
+	    	if(password.equals(current.getString(Constants.ELEMENT_PASSWORD)))
+	    		return this.getDipendente(Cdf.getCDF(current.getString(Constants.ELEMENT_CDF)));
 		return null;
 	}
 
@@ -299,7 +290,7 @@ public class MongoDataManager implements DataManager {
         List<Dipendente> dipendenti = new ArrayList<Dipendente>();
 
         for (Document current : collection.find())
-               dipendenti.add(this.getDipendente(new Cdf(current.getString(Constants.ELEMENT_CDF))));
+               dipendenti.add(this.getDipendente(Cdf.getCDF(current.getString(Constants.ELEMENT_CDF))));
         return dipendenti;
     }
 

@@ -618,7 +618,7 @@ public class EvasioneSaccaTest {
 	@Test 
 	public void test2() {
 		magazz.evasioneSacca("CTT001-00000009","Cardarelli","Benevento,via dei caduti");
-		assertNull(mongo.getSacca(new Seriale("CTT001-00000009")));
+		assertNull(mongo.getSacca(Seriale.getSeriale("CTT001-00000009")));
 	}
 	
 	

@@ -1,13 +1,13 @@
 package it.unisannio.ingegneriaDelSoftware.Classes;
 
+import it.unisannio.ingegneriaDelSoftware.Exceptions.SerialeNotFoundException;
+
 import java.io.*;
 import java.text.DecimalFormat;
-import java.util.InvalidPropertiesFormatException;
-import java.util.Objects;
-import java.util.Properties;
+import java.util.*;
 
 
-
+/**FlyWeight*/
 public class Seriale {
 
 	/** tag usati per i settings all'interno del file XML*/
@@ -17,6 +17,8 @@ public class Seriale {
 	private final static String radice;
 	private static int lastAssigned;
 	private final String seriale;
+
+	private static Map<String,Seriale> seriali = new HashMap<String,Seriale>();
 
 	/**Costruisco il seriale a partire da configurazioni presenti in /localsettings/serial_settings.xml*/
 	static {
@@ -33,28 +35,40 @@ public class Seriale {
 	    radice = loadProps.getProperty(TAG_RADICE);
 	    lastAssigned = Integer.valueOf(loadProps.getProperty(TAG_LAST_ASSIGNED));
 	}
-	
-	/**
-	 * costruisco un seriale*/
-	public Seriale() {
 
-		seriale = radice+"-"+(new DecimalFormat("00000000")).format(++lastAssigned);
+
+
+	/**Ricavo il Seriale se è stato gia creato
+	 * Si evita di creare piu volte lo stesso seriale
+	 * @param seriale deve essere una stringa di 15 caratteri con '-' in 6 posizione*/
+	public static Seriale getSeriale(String seriale){
+		assert seriale!= null:"il seriale non puo essere null";
+		if (seriali.containsKey(seriale))
+			return seriali.get(seriale);
+		Seriale aSeriale = new Seriale(seriale);
+		Seriale.seriali.put(seriale,aSeriale);
+		return aSeriale;
 	}
+
 	
 	/**
-	 * @pre ser deve essere un seriale corretto
-	 * !null
-	 * 17 caratteri
-	 * carattere "-" in quinta posizione
-	 * un intero dalla sesta posizione alla fine
-	 */
-	public Seriale(String ser) {
-		assert  ser != null: "Il seriale non puo essere null";
-		assert 	ser.length()==15 &&
-				ser.charAt(6)=='-' &&
-				ser.substring(7).matches("^[0-9]*$"): "Formato del seriale non valido";
-		this.seriale = ser;
+	 * costruisco un seriale, di volta in volta il seriale creato sarà diverso*/
+	public Seriale() {
+		this.seriale = radice+"-"+(new DecimalFormat("00000000")).format(++lastAssigned);
+		Seriale.seriali.put(this.seriale,this);
 	}
+
+	/**costruisco il seriale a partire da una stringa
+	 * @param seriale deve essere una stringa di 15 caratteri con '-' in 6 posizione
+	 * */
+	private Seriale(String seriale) {
+		assert  seriale != null: "Il seriale non puo essere null";
+		assert 	seriale.length()==15 &&
+				seriale.charAt(6)=='-' &&
+				seriale.substring(7).matches("^[0-9]*$"): "Formato del seriale non valido";
+		this.seriale = seriale;
+	}
+
 
 	/**aggiorno il file xml di settings per la generazione del seriale*/
 	public static void updateSettings() {

@@ -39,7 +39,7 @@ public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 								  @FormParam("indirizzo")String indirizzo){
 		Seriale unSeriale = null;
 		try {
-			unSeriale = new Seriale(seriale);
+			unSeriale = Seriale.getSeriale(seriale);
 			DataManager mm = new MongoDataManager();
 			DatiSacca datiSacca = mm.getDatiSacca(unSeriale);
 			Sacca unaSacca = mm.getSacca(unSeriale);

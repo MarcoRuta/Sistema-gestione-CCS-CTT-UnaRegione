@@ -196,3 +196,25 @@
              
           }
         }
+        
+        function controllaEnteRic()
+        {
+          // Definisco un pattern per il confronto
+          var pattern = /^[a-zA-Z\s]{1,24}$/;
+        
+          // creo una variabile per richiamare con facilità il nostro campo di input
+          var ente = document.getElementById("enteRic");
+        
+          // utilizzo il metodo search per verificare che il valore inserito nel campo
+          // di input rispetti la stringa di verifica (pattern)
+          if (ente.value.search(pattern) == -1)
+          {
+            // In caso di errore stampo un avviso e pulisco il campo...
+            ente.value = "";
+            print1();
+            ente.focus();
+          }else{
+             // ...in caso contrario stampo un avviso di successo!
+             
+          }
+        }

@@ -592,7 +592,7 @@ public class RicercaSaccaLocaleTest {
 
 //Caricamento sul sistema di datiSacca relativi a sacche che hanno attraversato il magazzino nel passato (e quindi non sono presenti attualmente)
 	    	 
-	    	 Seriale ser = new Seriale("CTT001-00000100");
+	    	 Seriale ser =Seriale.getSeriale("CTT001-00000100");
 	    	 gs = GruppoSanguigno.Am;
 	    	 localDataArrivo = LocalDate.of(2019,12,15); //YY-MM-DD
 	    	 LocalDate localDataAffidamento = LocalDate.of(2020,01,23);
@@ -602,7 +602,7 @@ public class RicercaSaccaLocaleTest {
 	    	 datisacca = new DatiSacca(ser, gs, localDataArrivo, localDataAffidamento, enteDonatore, enteRichiedente, indirizzoEnte);
 	    	 listaDatiSacche.add(datisacca);
 
-	    	 ser = new Seriale("CTT001-00000101");
+	    	 ser = Seriale.getSeriale("CTT001-00000101");
 	    	 gs = GruppoSanguigno.Am;
 	    	 localDataArrivo = LocalDate.of(2019,01,01); //YY-MM-DD
 	    	 localDataAffidamento = LocalDate.of(2019,12,12);
@@ -612,7 +612,7 @@ public class RicercaSaccaLocaleTest {
 	    	 datisacca = new DatiSacca(ser, gs, localDataArrivo, localDataAffidamento, enteDonatore, enteRichiedente, indirizzoEnte);
 	    	 listaDatiSacche.add(datisacca);
 
-	    	 ser = new Seriale("CTT001-00000102");
+	    	 ser = Seriale.getSeriale("CTT001-00000102");
 	    	 gs = GruppoSanguigno.Am;
 	    	 localDataArrivo = LocalDate.of(2018,02,18); //YY-MM-DD
 	    	 localDataAffidamento = LocalDate.of(2018,03,30);
@@ -622,7 +622,7 @@ public class RicercaSaccaLocaleTest {
 	    	 datisacca = new DatiSacca(ser, gs, localDataArrivo, localDataAffidamento, enteDonatore, enteRichiedente, indirizzoEnte);
 	    	 listaDatiSacche.add(datisacca);
 
-	    	 ser = new Seriale("CTT001-00000103");
+	    	 ser = Seriale.getSeriale("CTT001-00000103");
 	    	 gs = GruppoSanguigno.Am;
 	    	 localDataArrivo = LocalDate.of(2016,03,04); //YY-MM-DD
 	    	 localDataAffidamento = LocalDate.of(2017,02,06);
@@ -632,7 +632,7 @@ public class RicercaSaccaLocaleTest {
 	    	 datisacca = new DatiSacca(ser, gs, localDataArrivo, localDataAffidamento, enteDonatore, enteRichiedente, indirizzoEnte);
 	    	 listaDatiSacche.add(datisacca);
 
-	    	 ser = new Seriale("CTT001-00000104");
+	    	 ser = Seriale.getSeriale("CTT001-00000104");
 	    	 gs = GruppoSanguigno.Am;
 	    	 localDataArrivo = LocalDate.of(2000,8,18); //YY-MM-DD
 	    	 localDataAffidamento = LocalDate.of(2000,9,14);
@@ -642,7 +642,7 @@ public class RicercaSaccaLocaleTest {
 	    	 datisacca = new DatiSacca(ser, gs, localDataArrivo, localDataAffidamento, enteDonatore, enteRichiedente, indirizzoEnte);
 	    	 listaDatiSacche.add(datisacca);
 
-	    	 ser = new Seriale("CTT001-00000105");
+	    	 ser = Seriale.getSeriale("CTT001-00000105");
 	    	 gs = GruppoSanguigno.Ap;
 	    	 localDataArrivo = LocalDate.of(2002,03,17); //YY-MM-DD
 	    	 localDataAffidamento = LocalDate.of(2002,03,20);
@@ -652,7 +652,7 @@ public class RicercaSaccaLocaleTest {
 	    	 datisacca = new DatiSacca(ser, gs, localDataArrivo, localDataAffidamento, enteDonatore, enteRichiedente, indirizzoEnte);
 	    	 listaDatiSacche.add(datisacca);
 
-	    	 ser = new Seriale("CTT001-00000106");
+	    	 ser = Seriale.getSeriale("CTT001-00000106");
 	    	 gs = GruppoSanguigno.Ap;
 	    	 localDataArrivo = LocalDate.of(2007,11,19); //YY-MM-DD
 	    	 localDataAffidamento = LocalDate.of(2008,9,14);
@@ -662,7 +662,7 @@ public class RicercaSaccaLocaleTest {
 	    	 datisacca = new DatiSacca(ser, gs, localDataArrivo, localDataAffidamento, enteDonatore, enteRichiedente, indirizzoEnte);
 	    	 listaDatiSacche.add(datisacca);
 
-	    	 ser = new Seriale("CTT001-00000107");
+	    	 ser = Seriale.getSeriale("CTT001-00000107");
 	    	 gs = GruppoSanguigno.Ap;
 	    	 localDataArrivo = LocalDate.of(2001,05,11); //YY-MM-DD
 	    	 localDataAffidamento = LocalDate.of(2003,9,24);
@@ -672,7 +672,7 @@ public class RicercaSaccaLocaleTest {
 	    	 datisacca = new DatiSacca(ser, gs, localDataArrivo, localDataAffidamento, enteDonatore, enteRichiedente, indirizzoEnte);
 	    	 listaDatiSacche.add(datisacca);
 
-	    	 ser = new Seriale("CTT001-00000108");
+	    	 ser = Seriale.getSeriale("CTT001-00000108");
 	    	 gs = GruppoSanguigno.Ap;
 	    	 localDataArrivo = LocalDate.of(2008,06,30); //YY-MM-DD
 	    	 localDataAffidamento = LocalDate.of(2009,9,14);
@@ -682,7 +682,7 @@ public class RicercaSaccaLocaleTest {
 	    	 datisacca = new DatiSacca(ser, gs, localDataArrivo, localDataAffidamento, enteDonatore, enteRichiedente, indirizzoEnte);
 	    	 listaDatiSacche.add(datisacca);
 
-	    	 ser = new Seriale("CTT001-00000109");
+	    	 ser = Seriale.getSeriale("CTT001-00000109");
 	    	 gs = GruppoSanguigno.Ap;
 	    	 localDataArrivo = LocalDate.of(2000,8,18); //YY-MM-DD
 	    	 localDataAffidamento = LocalDate.of(2000,9,14);
@@ -692,7 +692,7 @@ public class RicercaSaccaLocaleTest {
 	    	 datisacca = new DatiSacca(ser, gs, localDataArrivo, localDataAffidamento, enteDonatore, enteRichiedente, indirizzoEnte);
 	    	 listaDatiSacche.add(datisacca);
 	    	                                                 
-	    	 ser = new Seriale("CTT001-00000110");
+	    	 ser = Seriale.getSeriale("CTT001-00000110");
 	    	 gs = GruppoSanguigno.Bm;
 	    	 localDataArrivo = LocalDate.of(2004,10,10); //YY-MM-DD
 	    	 localDataAffidamento = LocalDate.of(2004,10,30);
@@ -702,7 +702,7 @@ public class RicercaSaccaLocaleTest {
 	    	 datisacca = new DatiSacca(ser, gs, localDataArrivo, localDataAffidamento, enteDonatore, enteRichiedente, indirizzoEnte);
 	    	 listaDatiSacche.add(datisacca);
 
-	    	 ser = new Seriale("CTT001-00000111");
+	    	 ser = Seriale.getSeriale("CTT001-00000111");
 	    	 gs = GruppoSanguigno.Bm;
 	    	 localDataArrivo = LocalDate.of(2001,11,05); //YY-MM-DD
 	    	 localDataAffidamento = LocalDate.of(2001,12,31);
@@ -712,7 +712,7 @@ public class RicercaSaccaLocaleTest {
 	    	 datisacca = new DatiSacca(ser, gs, localDataArrivo, localDataAffidamento, enteDonatore, enteRichiedente, indirizzoEnte);
 	    	 listaDatiSacche.add(datisacca);
 
-	    	 ser = new Seriale("CTT001-00000112");
+	    	 ser = Seriale.getSeriale("CTT001-00000112");
 	    	 gs = GruppoSanguigno.Bm;
 	    	 localDataArrivo = LocalDate.of(2002,07,07); //YY-MM-DD
 	    	 localDataAffidamento = LocalDate.of(2002,8,30);
@@ -722,7 +722,7 @@ public class RicercaSaccaLocaleTest {
 	    	 datisacca = new DatiSacca(ser, gs, localDataArrivo, localDataAffidamento, enteDonatore, enteRichiedente, indirizzoEnte);
 	    	 listaDatiSacche.add(datisacca);
 
-	    	 ser = new Seriale("CTT001-00000113");
+	    	 ser = Seriale.getSeriale("CTT001-00000113");
 	    	 gs = GruppoSanguigno.Bm;
 	    	 localDataArrivo = LocalDate.of(2012,8,18); //YY-MM-DD
 	    	 localDataAffidamento = LocalDate.of(2014,9,14);
@@ -732,7 +732,7 @@ public class RicercaSaccaLocaleTest {
 	    	 datisacca = new DatiSacca(ser, gs, localDataArrivo, localDataAffidamento, enteDonatore, enteRichiedente, indirizzoEnte);
 	    	 listaDatiSacche.add(datisacca);
 
-	    	 ser = new Seriale("CTT001-00000114");
+	    	 ser = Seriale.getSeriale("CTT001-00000114");
 	    	 gs = GruppoSanguigno.Bm;
 	    	 localDataArrivo = LocalDate.of(2019,12,30); //YY-MM-DD
 	    	 localDataAffidamento = LocalDate.of(2020,01,01);
@@ -742,7 +742,7 @@ public class RicercaSaccaLocaleTest {
 	    	 datisacca = new DatiSacca(ser, gs, localDataArrivo, localDataAffidamento, enteDonatore, enteRichiedente, indirizzoEnte);
 	    	 listaDatiSacche.add(datisacca);
 
-	    	 ser = new Seriale("CTT001-00000115");
+	    	 ser = Seriale.getSeriale("CTT001-00000115");
 	    	 gs = GruppoSanguigno.Bp;
 	    	 localDataArrivo = LocalDate.of(2017,01,12); //YY-MM-DD
 	    	 localDataAffidamento = LocalDate.of(2019,10,14);
@@ -752,7 +752,7 @@ public class RicercaSaccaLocaleTest {
 	    	 datisacca = new DatiSacca(ser, gs, localDataArrivo, localDataAffidamento, enteDonatore, enteRichiedente, indirizzoEnte);
 	    	 listaDatiSacche.add(datisacca);
 
-	    	 ser = new Seriale("CTT001-00000116");
+	    	 ser = Seriale.getSeriale("CTT001-00000116");
 	    	 gs = GruppoSanguigno.Bp;
 	    	 localDataArrivo = LocalDate.of(2015,04,30); //YY-MM-DD
 	    	 localDataAffidamento = LocalDate.of(2015,05,01);
@@ -762,7 +762,7 @@ public class RicercaSaccaLocaleTest {
 	    	 datisacca = new DatiSacca(ser, gs, localDataArrivo, localDataAffidamento, enteDonatore, enteRichiedente, indirizzoEnte);
 	    	 listaDatiSacche.add(datisacca);
 
-	    	 ser = new Seriale("CTT001-00000117");
+	    	 ser = Seriale.getSeriale("CTT001-00000117");
 	    	 gs = GruppoSanguigno.Bp;
 	    	 localDataArrivo = LocalDate.of(2018,07,21); //YY-MM-DD
 	    	 localDataAffidamento = LocalDate.of(2020,01,01);
@@ -772,7 +772,7 @@ public class RicercaSaccaLocaleTest {
 	    	 datisacca = new DatiSacca(ser, gs, localDataArrivo, localDataAffidamento, enteDonatore, enteRichiedente, indirizzoEnte);
 	    	 listaDatiSacche.add(datisacca);
 
-	    	 ser = new Seriale("CTT001-00000118");
+	    	 ser = Seriale.getSeriale("CTT001-00000118");
 	    	 gs = GruppoSanguigno.Bp;
 	    	 localDataArrivo = LocalDate.of(2016,12,01); //YY-MM-DD
 	    	 localDataAffidamento = LocalDate.of(2017,01,01);
@@ -782,7 +782,7 @@ public class RicercaSaccaLocaleTest {
 	    	 datisacca = new DatiSacca(ser, gs, localDataArrivo, localDataAffidamento, enteDonatore, enteRichiedente, indirizzoEnte);
 	    	 listaDatiSacche.add(datisacca);
 
-	    	 ser = new Seriale("CTT001-00000119");
+	    	 ser = Seriale.getSeriale("CTT001-00000119");
 	    	 gs = GruppoSanguigno.Bp;
 	    	 localDataArrivo = LocalDate.of(2017,03,12); //YY-MM-DD
 	    	 localDataAffidamento = LocalDate.of(2017,03,29);
@@ -792,7 +792,7 @@ public class RicercaSaccaLocaleTest {
 	    	 datisacca = new DatiSacca(ser, gs, localDataArrivo, localDataAffidamento, enteDonatore, enteRichiedente, indirizzoEnte);
 	    	 listaDatiSacche.add(datisacca);
 	    	                                
-	    	 ser = new Seriale("CTT001-00000120");
+	    	 ser = Seriale.getSeriale("CTT001-00000120");
 	    	 gs = GruppoSanguigno.ZEROp;
 	    	 localDataArrivo = LocalDate.of(2003,10,10); //YY-MM-DD
 	    	 localDataAffidamento = LocalDate.of(2003,12,12);
@@ -802,7 +802,7 @@ public class RicercaSaccaLocaleTest {
 	    	 datisacca = new DatiSacca(ser, gs, localDataArrivo, localDataAffidamento, enteDonatore, enteRichiedente, indirizzoEnte);
 	    	 listaDatiSacche.add(datisacca);
 
-	    	 ser = new Seriale("CTT001-00000121");
+	    	 ser = Seriale.getSeriale("CTT001-00000121");
 	    	 gs = GruppoSanguigno.ZEROp;
 	    	 localDataArrivo = LocalDate.of(2015,8,05); //YY-MM-DD
 	    	 localDataAffidamento = LocalDate.of(2016,04,29);
@@ -812,7 +812,7 @@ public class RicercaSaccaLocaleTest {
 	    	 datisacca = new DatiSacca(ser, gs, localDataArrivo, localDataAffidamento, enteDonatore, enteRichiedente, indirizzoEnte);
 	    	 listaDatiSacche.add(datisacca);
 
-	    	 ser = new Seriale("CTT001-00000122");
+	    	 ser =Seriale.getSeriale("CTT001-00000122");
 	    	 gs = GruppoSanguigno.ZEROp;
 	    	 localDataArrivo = LocalDate.of(2014,06,15); //YY-MM-DD
 	    	 localDataAffidamento = LocalDate.of(2014,07,30);
@@ -822,7 +822,7 @@ public class RicercaSaccaLocaleTest {
 	    	 datisacca = new DatiSacca(ser, gs, localDataArrivo, localDataAffidamento, enteDonatore, enteRichiedente, indirizzoEnte);
 	    	 listaDatiSacche.add(datisacca);
 
-	    	 ser = new Seriale("CTT001-00000123");
+	    	 ser =Seriale.getSeriale("CTT001-00000123");
 	    	 gs = GruppoSanguigno.ZEROp;
 	    	 localDataArrivo = LocalDate.of(2014,02,14); //YY-MM-DD
 	    	 localDataAffidamento = LocalDate.of(2014,02,28);
@@ -832,7 +832,7 @@ public class RicercaSaccaLocaleTest {
 	    	 datisacca = new DatiSacca(ser, gs, localDataArrivo, localDataAffidamento, enteDonatore, enteRichiedente, indirizzoEnte);
 	    	 listaDatiSacche.add(datisacca);
 
-	    	 ser = new Seriale("CTT001-00000124");
+	    	 ser = Seriale.getSeriale("CTT001-00000124");
 	    	 gs = GruppoSanguigno.ZEROp;
 	    	 localDataArrivo = LocalDate.of(2001,01,10); //YY-MM-DD
 	    	 localDataAffidamento = LocalDate.of(2002,01,18);
@@ -842,7 +842,7 @@ public class RicercaSaccaLocaleTest {
 	    	 datisacca = new DatiSacca(ser, gs, localDataArrivo, localDataAffidamento, enteDonatore, enteRichiedente, indirizzoEnte);
 	    	 listaDatiSacche.add(datisacca);
 	    	                                       
-	    	 ser = new Seriale("CTT001-00000125");
+	    	 ser = Seriale.getSeriale("CTT001-00000125");
 	    	 gs = GruppoSanguigno.ZEROm;
 	    	 localDataArrivo = LocalDate.of(2001,01,10); //YY-MM-DD
 	    	 localDataAffidamento = LocalDate.of(2001,01,18);
@@ -852,7 +852,7 @@ public class RicercaSaccaLocaleTest {
 	    	 datisacca = new DatiSacca(ser, gs, localDataArrivo, localDataAffidamento, enteDonatore, enteRichiedente, indirizzoEnte);
 	    	 listaDatiSacche.add(datisacca);
 
-	    	 ser = new Seriale("CTT001-00000126");
+	    	 ser = Seriale.getSeriale("CTT001-00000126");
 	    	 gs = GruppoSanguigno.ZEROm;
 	    	 localDataArrivo = LocalDate.of(2010,10,10); //YY-MM-DD
 	    	 localDataAffidamento = LocalDate.of(2011,01,02);
@@ -862,7 +862,7 @@ public class RicercaSaccaLocaleTest {
 	    	 datisacca = new DatiSacca(ser, gs, localDataArrivo, localDataAffidamento, enteDonatore, enteRichiedente, indirizzoEnte);
 	    	 listaDatiSacche.add(datisacca);
 
-	    	 ser = new Seriale("CTT001-00000127");
+	    	 ser = Seriale.getSeriale("CTT001-00000127");
 	    	 gs = GruppoSanguigno.ZEROm;
 	    	 localDataArrivo = LocalDate.of(2020,10,20); //YY-MM-DD
 	    	 localDataAffidamento = LocalDate.of(2021,05,14);
@@ -872,7 +872,7 @@ public class RicercaSaccaLocaleTest {
 	    	 datisacca = new DatiSacca(ser, gs, localDataArrivo, localDataAffidamento, enteDonatore, enteRichiedente, indirizzoEnte);
 	    	 listaDatiSacche.add(datisacca);
 
-	    	 ser = new Seriale("CTT001-00000128");
+	    	 ser = Seriale.getSeriale("CTT001-00000128");
 	    	 gs = GruppoSanguigno.ZEROm;
 	    	 localDataArrivo = LocalDate.of(2020,9,30); //YY-MM-DD
 	    	 localDataAffidamento = LocalDate.of(2021,05,01);
@@ -882,7 +882,7 @@ public class RicercaSaccaLocaleTest {
 	    	 datisacca = new DatiSacca(ser, gs, localDataArrivo, localDataAffidamento, enteDonatore, enteRichiedente, indirizzoEnte);
 	    	 listaDatiSacche.add(datisacca);
 
-	    	 ser = new Seriale("CTT001-00000129");
+	    	 ser = Seriale.getSeriale("CTT001-00000129");
 	    	 gs = GruppoSanguigno.ZEROm;
 	    	 localDataArrivo = LocalDate.of(2020,9,14); //YY-MM-DD
 	    	 localDataAffidamento = LocalDate.of(2021,01,01);
@@ -892,7 +892,7 @@ public class RicercaSaccaLocaleTest {
 	    	 datisacca = new DatiSacca(ser, gs, localDataArrivo, localDataAffidamento, enteDonatore, enteRichiedente, indirizzoEnte);
 	    	 listaDatiSacche.add(datisacca);
 	    	                                    
-	    	 ser = new Seriale("CTT001-00000130");
+	    	 ser = Seriale.getSeriale("CTT001-00000130");
 	    	 gs = GruppoSanguigno.ABp;
 	    	 localDataArrivo = LocalDate.of(2000,10,14); //YY-MM-DD
 	    	 localDataAffidamento = LocalDate.of(2002,12,01);
@@ -902,7 +902,7 @@ public class RicercaSaccaLocaleTest {
 	    	 datisacca = new DatiSacca(ser, gs, localDataArrivo, localDataAffidamento, enteDonatore, enteRichiedente, indirizzoEnte);
 	    	 listaDatiSacche.add(datisacca);
 
-	    	 ser = new Seriale("CTT001-00000131");
+	    	 ser = Seriale.getSeriale("CTT001-00000131");
 	    	 gs = GruppoSanguigno.ABp;
 	    	 localDataArrivo = LocalDate.of(2020,01,17); //YY-MM-DD
 	    	 localDataAffidamento = LocalDate.of(2020,05,10);
@@ -912,7 +912,7 @@ public class RicercaSaccaLocaleTest {
 	    	 datisacca = new DatiSacca(ser, gs, localDataArrivo, localDataAffidamento, enteDonatore, enteRichiedente, indirizzoEnte);
 	    	 listaDatiSacche.add(datisacca);
 
-	    	 ser = new Seriale("CTT001-00000132");
+	    	 ser = Seriale.getSeriale("CTT001-00000132");
 	    	 gs = GruppoSanguigno.ABp;
 	    	 localDataArrivo = LocalDate.of(2018,9,14); //YY-MM-DD
 	    	 localDataAffidamento = LocalDate.of(2018,10,01);
@@ -922,7 +922,7 @@ public class RicercaSaccaLocaleTest {
 	    	 datisacca = new DatiSacca(ser, gs, localDataArrivo, localDataAffidamento, enteDonatore, enteRichiedente, indirizzoEnte);
 	    	 listaDatiSacche.add(datisacca);
 
-	    	 ser = new Seriale("CTT001-00000133");
+	    	 ser = Seriale.getSeriale("CTT001-00000133");
 	    	 gs = GruppoSanguigno.ABp;
 	    	 localDataArrivo = LocalDate.of(2017,10,12); //YY-MM-DD
 	    	 localDataAffidamento = LocalDate.of(2017,11,02);
@@ -932,7 +932,7 @@ public class RicercaSaccaLocaleTest {
 	    	 datisacca = new DatiSacca(ser, gs, localDataArrivo, localDataAffidamento, enteDonatore, enteRichiedente, indirizzoEnte);
 	    	 listaDatiSacche.add(datisacca);
 
-	    	 ser = new Seriale("CTT001-00000134");
+	    	 ser = Seriale.getSeriale("CTT001-00000134");
 	    	 gs = GruppoSanguigno.ABp;
 	    	 localDataArrivo = LocalDate.of(2020,10,12); //YY-MM-DD
 	    	 localDataAffidamento = LocalDate.of(2021,02,12);
@@ -942,7 +942,7 @@ public class RicercaSaccaLocaleTest {
 	    	 datisacca = new DatiSacca(ser, gs, localDataArrivo, localDataAffidamento, enteDonatore, enteRichiedente, indirizzoEnte);
 	    	 listaDatiSacche.add(datisacca);
 	    	                                 
-	    	 ser = new Seriale("CTT001-00000135");
+	    	 ser = Seriale.getSeriale("CTT001-00000135");
 	    	 gs = GruppoSanguigno.ABm;
 	    	 localDataArrivo = LocalDate.of(2002,01,12); //YY-MM-DD
 	    	 localDataAffidamento = LocalDate.of(2004,01,01);
@@ -952,7 +952,7 @@ public class RicercaSaccaLocaleTest {
 	    	 datisacca = new DatiSacca(ser, gs, localDataArrivo, localDataAffidamento, enteDonatore, enteRichiedente, indirizzoEnte);
 	    	 listaDatiSacche.add(datisacca);         
 
-	    	 ser = new Seriale("CTT001-00000136");
+	    	 ser = Seriale.getSeriale("CTT001-00000136");
 	    	 gs = GruppoSanguigno.ABm;
 	    	 localDataArrivo = LocalDate.of(2020,10,12); //YY-MM-DD
 	    	 localDataAffidamento = LocalDate.of(2021,02,12);
@@ -962,7 +962,7 @@ public class RicercaSaccaLocaleTest {
 	    	 datisacca = new DatiSacca(ser, gs, localDataArrivo, localDataAffidamento, enteDonatore, enteRichiedente, indirizzoEnte);
 	    	 listaDatiSacche.add(datisacca);
 
-	    	 ser = new Seriale("CTT001-00000137");
+	    	 ser = Seriale.getSeriale("CTT001-00000137");
 	    	 gs = GruppoSanguigno.ABm;
 	    	 localDataArrivo = LocalDate.of(2020,10,12); //YY-MM-DD
 	    	 localDataAffidamento = LocalDate.of(2021,02,12);
@@ -972,7 +972,7 @@ public class RicercaSaccaLocaleTest {
 	    	 datisacca = new DatiSacca(ser, gs, localDataArrivo, localDataAffidamento, enteDonatore, enteRichiedente, indirizzoEnte);
 	    	 listaDatiSacche.add(datisacca);
 
-	    	 ser = new Seriale("CTT001-00000138");
+	    	 ser =Seriale.getSeriale("CTT001-00000138");
 	    	 gs = GruppoSanguigno.ABm;
 	    	 localDataArrivo = LocalDate.of(2020,10,12); //YY-MM-DD
 	    	 localDataAffidamento = LocalDate.of(2021,02,12);
@@ -982,7 +982,7 @@ public class RicercaSaccaLocaleTest {
 	    	 datisacca = new DatiSacca(ser, gs, localDataArrivo, localDataAffidamento, enteDonatore, enteRichiedente, indirizzoEnte);
 	    	 listaDatiSacche.add(datisacca);
 
-	    	 ser = new Seriale("CTT001-00000139");
+	    	 ser = Seriale.getSeriale("CTT001-00000139");
 	    	 gs = GruppoSanguigno.ABm;
 	    	 localDataArrivo = LocalDate.of(2020,10,12); //YY-MM-DD
 	    	 localDataAffidamento = LocalDate.of(2021,02,12);
