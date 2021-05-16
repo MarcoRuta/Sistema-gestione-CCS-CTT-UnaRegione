@@ -1,17 +1,16 @@
 package it.unisannio.ingegneriaDelSoftware.junit;
 import static org.junit.Assert.assertEquals;
-
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
 import it.unisannio.ingegneriaDelSoftware.Classes.CTT;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MyAmministratoreCCSDataManager;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MyMongoDataManager;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
+import it.unisannio.ingegneriaDelSoftware.EndPointRest.CCS;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.CTTNotFoundException;
+
 
 public class DistanceCTTTest {
 	/**
@@ -21,7 +20,7 @@ public class DistanceCTTTest {
 	 */
 	@BeforeClass public static void populateDataBaseCTT() {
 		
-		MyAmministratoreCCSDataManager amm = new MyAmministratoreCCSDataManager();
+		MongoDataManager mongo = new MongoDataManager();
 		
 		List<CTT> listaCTT = new ArrayList<CTT>();
 		
@@ -39,46 +38,50 @@ public class DistanceCTTTest {
 		listaCTT.add(ctt);
 		
 		for(CTT c : listaCTT) {
-	    	amm.addCTT(c);
+			mongo.createCTT(c);
 	    }
 	}
 	
-	MyAmministratoreCCSDataManager amm = new MyAmministratoreCCSDataManager();
+	CCS ccs = new CCS();
 	
 	/**Test 1
 	 * 
 	 * Il ctt più vicino al 4 (Campobasso) dovrebbe essere il 3 (Ferrazano)
+	 * @throws CTTNotFoundException 
 	 */
 	@Test
-	public void test1() {
-		assertEquals(3,amm.CttPiùVicino(4).getNumero());
+	public void test1() throws CTTNotFoundException {
+		assertEquals(3,ccs.CttPiùVicino(4).getNumero());
 	}
 	
 	/**Test 2
 	 * 
 	 * Il ctt più vicino al 1 (Benevento) dovrebbe essere il 2 (Morcone)
+	 * @throws CTTNotFoundException 
 	 */
 	@Test
-	public void test2() {
-		assertEquals(2,amm.CttPiùVicino(1).getNumero());
+	public void test2() throws CTTNotFoundException {
+		assertEquals(2,ccs.CttPiùVicino(1).getNumero());
 	}
 	
 	/**Test 3
 	 * 
 	 * Il ctt più vicino al 2 (Morcone) dovrebbe essere il 4 (Ferrazzano)
+	 * @throws CTTNotFoundException 
 	 */
 	@Test
-	public void test3() {
-		assertEquals(3,amm.CttPiùVicino(2).getNumero());
+	public void test3() throws CTTNotFoundException {
+		assertEquals(3,ccs.CttPiùVicino(2).getNumero());
 	}
 	
 	/**Test 4
 	 * 
 	 * Il ctt più vicino al 2 (Ferrazzano) dovrebbe essere il 4 (Campobasso)
+	 * @throws CTTNotFoundException 
 	 */
 	@Test
-	public void test4() {
-		assertEquals(4,amm.CttPiùVicino(3).getNumero());
+	public void test4() throws CTTNotFoundException {
+		assertEquals(4,ccs.CttPiùVicino(3).getNumero());
 	}
 
 	/**
@@ -86,7 +89,7 @@ public class DistanceCTTTest {
 	 * 
 	 */
 	@AfterClass public static void dropDataBaseCTT() {
-		MyMongoDataManager mm = new MyMongoDataManager();
+		MongoDataManager mm = new MongoDataManager();
 		mm.dropDB();
 	}
 	

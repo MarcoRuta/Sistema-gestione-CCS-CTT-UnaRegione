@@ -1,28 +1,28 @@
 package it.unisannio.ingegneriaDelSoftware.junit;
 
 import static org.junit.Assert.assertEquals;
-
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import it.unisannio.ingegneriaDelSoftware.Classes.CTT;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MyAmministratoreCCSDataManager;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MyMongoDataManager;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.CTTNotFoundException;
+
+
 
 public class RemoveCTTTest {
 	/**
 	 * Classe per la popolazione del database
-	 * 
+	 * 					
 	 * @throws ParseException
 	 */
 	@BeforeClass 
 	public static void populateDBCTT() throws ParseException {
 		
-		MyAmministratoreCCSDataManager amm = new MyAmministratoreCCSDataManager();
+		MongoDataManager amm = new MongoDataManager();
 		List<CTT> listaCTT = new ArrayList<CTT>();
 	        
 		Integer numero = 1;
@@ -110,11 +110,11 @@ public class RemoveCTTTest {
         listaCTT.add(CTT007);
       
         for(CTT ctt : listaCTT) {
-        	amm.addCTT(ctt);
+        	amm.createCTT(ctt);
         }      
 	}
 	
-	MyMongoDataManager mongo = new MyMongoDataManager();  	
+	MongoDataManager mongo = new MongoDataManager();  	
 		
 	
 	/**
@@ -129,28 +129,33 @@ public class RemoveCTTTest {
 	/**
 	*
 	*Test per la corretta rimozione di un CTT
+	 * @throws CTTNotFoundException 
 	*/
 	@Test	
-	public void test2(){  	
+	public void test2() throws CTTNotFoundException{  	
 		mongo.removeCTT(1);
 		assertEquals(6, mongo.getListaCTT().size());
 	}
-
+	
 	/**
 	*
-	*Test per la corretta rimozione di un CTT
+	*Si prova a rimuovere un CTT non presente nel Database
+	 * @throws CTTNotFoundException 
 	*/
-	@Test	
-	public void test3(){  	
-		assertEquals(null, mongo.getCTT(1));
+	@Test(expected = AssertionError.class)	
+	public void test3() throws CTTNotFoundException{  	
+		mongo.removeCTT(10);
+		
 	}
+
+	
 
 	/**
 	 * Classe per l'eliminazione del database
 	 * 
 	 */
 	@AfterClass public static void dropDBCTT() {
-		MyMongoDataManager mm = new MyMongoDataManager();
+		MongoDataManager mm = new MongoDataManager();
 		mm.dropDB();
 	}
 	

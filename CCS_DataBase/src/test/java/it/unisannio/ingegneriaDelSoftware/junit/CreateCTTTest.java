@@ -9,8 +9,8 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import it.unisannio.ingegneriaDelSoftware.Classes.CTT;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MyAmministratoreCCSDataManager;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MyMongoDataManager;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
+
 
 public class CreateCTTTest {
 	/**
@@ -21,7 +21,7 @@ public class CreateCTTTest {
 	@BeforeClass 
 	public static void populateDBCTT() throws ParseException {
 		
-			MyAmministratoreCCSDataManager amm = new MyAmministratoreCCSDataManager();
+			MongoDataManager amm = new MongoDataManager();
 			List<CTT> listaCTT = new ArrayList<CTT>();
 		        
 			Integer numero = 1;
@@ -108,12 +108,12 @@ public class CreateCTTTest {
 	        CTT CTT007 = new CTT(numero, denominazione, provincia, città, telefono, indirizzo, email, latitudine, longitudine);  
 	        listaCTT.add(CTT007);
 	      
-	        for(CTT ctt : listaCTT) {
-	        	amm.addCTT(ctt);
-	        }             
+	        
+		 for(CTT ctt : listaCTT) amm.createCTT(ctt);
+	                  
 	}
 	
-	MyMongoDataManager mongo = new MyMongoDataManager();  	
+	MongoDataManager mongo = new MongoDataManager();  	
 		
 	
 	/**
@@ -150,7 +150,7 @@ public class CreateCTTTest {
 	 * 
 	 */
 	@AfterClass public static void dropDBCTT() {
-		MyMongoDataManager mm = new MyMongoDataManager();
+		MongoDataManager mm = new MongoDataManager();
 		mm.dropDB();
 	}
 	
