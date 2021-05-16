@@ -10,20 +10,20 @@ import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaLocaleNotFoundException;
-import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointLogin;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointOperatoreCTT;
 import it.unisannio.ingegneriaDelSoftware.Util.ScadenzeComparator;
 
 public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT{
 
-	/**Restituisce la sacca del GruppoSanguigno richiesto con Data di scadenza più vicina nel DataBase locale.
+	/**Restituisce la Sacca del GruppoSanguigno richiesto con Data di scadenza più vicina nel DataBase locale.
      * @param gs Gruppo sanguigno ricercato
      * @param dataArrivoMassima Data entro la quale la Sacca non deve scadere e deve arrivare all'Ente richiedente
      * @param enteRichiedente Ente richiedente della Sacca
-     * @return la Sacca con le caratteristiche richieste
-	 * @throws  
+     * @return la Sacca con le caratteristiche richieste  
+	 * @throws SaccaNotFoundException 
      */
-	public Sacca ricercaSaccaLocale(GruppoSanguigno gs, LocalDate dataArrivoMassima, String enteRichiedente, String indirizzoEnte){
+	public Sacca ricercaSaccaLocale(GruppoSanguigno gs, LocalDate dataArrivoMassima, String enteRichiedente, String indirizzoEnte) throws SaccaNotFoundException{
 		EndPointRestOperatoreCTT ms = new EndPointRestOperatoreCTT();
 		MongoDataManager mm = new MongoDataManager();
 		
@@ -45,8 +45,9 @@ public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT{
 	 * @param gs Gruppo sanguigno della Sacca che si vuole ricercare
 	 * @param dataArrivoMassima Data entro la quale la Sacca non deve essere scaduta
 	 * @return null se la sacca non è stata trovata; la Sacca se essa è stata trovata 
+	 * @throws SaccaNotFoundException 
 	 */
-	private Sacca ricercaSacca(GruppoSanguigno gs, LocalDate dataArrivoMassima) {
+	private Sacca ricercaSacca(GruppoSanguigno gs, LocalDate dataArrivoMassima) throws SaccaNotFoundException {
 		
 		MongoDataManager mm = new MongoDataManager();
 		List<Sacca> listaSacche = mm.getListaSacche();	
@@ -71,8 +72,9 @@ public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT{
 	 * @param gs Gruppo sanguigno della Sacca che si vuole ricercare
 	 * @param dataArrivoMassima Data entro la quale la Sacca non deve essere scaduta
 	 * @return null se la Sacca non è stata trovata; la Sacca se essa è stata trovata
+	 * @throws SaccaNotFoundException 
 	 */
-	private  Sacca ricercaSaccaCompatibile(GruppoSanguigno gs, LocalDate dataArrivoMassima) {
+	private  Sacca ricercaSaccaCompatibile(GruppoSanguigno gs, LocalDate dataArrivoMassima) throws SaccaNotFoundException {
 		
 		MongoDataManager mm = new MongoDataManager();
 		List<Sacca> listaSacche = mm.getListaSacche();

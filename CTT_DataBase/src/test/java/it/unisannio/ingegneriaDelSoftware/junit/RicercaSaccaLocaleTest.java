@@ -15,13 +15,14 @@ import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointRestMagazziniereC
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointRestOperatoreCTT;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaLocaleNotFoundException;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaNotFoundException;
 
 
 public class RicercaSaccaLocaleTest {
 	EndPointRestMagazziniereCTT magazz = new EndPointRestMagazziniereCTT();
 	EndPointRestOperatoreCTT oper = new EndPointRestOperatoreCTT();
 	
-	@BeforeClass public static void populateDBSacche() {
+	@BeforeClass public static void populateDBSacche() throws SaccaNotFoundException {
 		
 	    	MongoDataManager mm = new MongoDataManager();
 	    	List<Sacca> listaSacche = new ArrayList<Sacca>();
@@ -1005,162 +1006,180 @@ public class RicercaSaccaLocaleTest {
 	/**
 	*Test che dovrebbe restituire la Sacca del tipo ricercato
 	*"CTT001-00000004"
+	 * @throws SaccaNotFoundException 
 	*/
 	@Test	
-	public void testA1(){  	
+	public void testA1() throws SaccaNotFoundException{  	
 		assertEquals("CTT001-00000004", oper.ricercaSaccaLocale(GruppoSanguigno.Ap, LocalDate.of(2010,04,10), "TESTING","TESTING").getSeriale().getSeriale());
 	}
 
 	/**
 	*Test che dovrebbe restituire la Sacca del tipo ricercato
 	*"CTT001-00000003"
+	 * @throws SaccaNotFoundException 
 	*/
 	@Test
-	public void testA2() {
+	public void testA2() throws SaccaNotFoundException {
 		assertEquals("CTT001-00000003", oper.ricercaSaccaLocale(GruppoSanguigno.Ap, LocalDate.of(2010,04,10),"TESTING","TESTING").getSeriale().getSeriale());
 	}
 	
 	/**
 	*Test che dovrebbe restituire la Sacca del tipo ricercato
 	*"CTT001-00000002"
+	 * @throws SaccaNotFoundException 
 	*/
 	@Test
-	public void testA3() {
+	public void testA3() throws SaccaNotFoundException {
 		assertEquals("CTT001-00000002", oper.ricercaSaccaLocale(GruppoSanguigno.Ap, LocalDate.of(2010,04,10), "TESTING","TESTING").getSeriale().getSeriale());
 	}
 	
 	/**
 	*Test che dovrebbe restituire la Sacca del tipo ricercato
 	*"CTT001-00000001"
+	 * @throws SaccaNotFoundException 
 	*/
 	@Test
-	public void testA4() {
+	public void testA4() throws SaccaNotFoundException {
 		assertEquals("CTT001-00000001", oper.ricercaSaccaLocale(GruppoSanguigno.Ap, LocalDate.of(2010,04,10), "TESTING","TESTING").getSeriale().getSeriale());
 	}
 	
 	/**
 	*Test che dovrebbe restituire la Sacca di un tipo compatibile a quello ricercato
 	*"CTT001-00000009"
+	 * @throws SaccaNotFoundException 
 	*/
 	@Test
-	public void testA5() {
+	public void testA5() throws SaccaNotFoundException {
 		assertEquals("CTT001-00000009", oper.ricercaSaccaLocale(GruppoSanguigno.Ap, LocalDate.of(2010,04,10), "TESTING","TESTING").getSeriale().getSeriale());
 	}
 	
 	/**
 	*Test che dovrebbe restituire la Sacca di un tipo compatibile a quello ricercato
 	*"CTT001-00000034"
+	 * @throws SaccaNotFoundException 
 	*/
 	@Test
-	public void testA6() {
+	public void testA6() throws SaccaNotFoundException {
 		assertEquals("CTT001-00000034", oper.ricercaSaccaLocale(GruppoSanguigno.Ap, LocalDate.of(2010,04,10), "TESTING","TESTING").getSeriale().getSeriale());
 	}
 	
 	/**
 	*Test che dovrebbe restituire la Sacca di un tipo compatibile a quello ricercato
 	*"CTT001-00000004"
+	 * @throws SaccaNotFoundException 
 	*/
 	@Test
-	public void testA7() {
+	public void testA7() throws SaccaNotFoundException {
 		assertEquals("CTT001-00000039", oper.ricercaSaccaLocale(GruppoSanguigno.Ap, LocalDate.of(2010,04,10), "TESTING","TESTING").getSeriale().getSeriale());
 	}
 	
 	/**
 	*Test che dovrebbe restituire la Sacca di un tipo compatibile a quello ricercato
 	*"CTT001-00000004"
+	 * @throws SaccaNotFoundException 
 	*/
 	@Test
-	public void testA8() {
+	public void testA8() throws SaccaNotFoundException {
 		assertEquals("CTT001-00000008", oper.ricercaSaccaLocale(GruppoSanguigno.Ap, LocalDate.of(2010,04,10), "TESTING","TESTING").getSeriale().getSeriale());
 	}
 	
 	/**
 	*Test che dovrebbe restituire SaccaLocaleNotFoundException in quanto si sta cercando una sacca per una data in cui saranno tutte scadute
 	*"CTT001-00000004"
+	 * @throws SaccaNotFoundException 
 	*/
 	@Test(expected = SaccaLocaleNotFoundException.class)
-	public void testA9() {
+	public void testA9() throws SaccaNotFoundException {
 		assertEquals("CTT001-00000004", oper.ricercaSaccaLocale(GruppoSanguigno.Ap, LocalDate.of(2023,04,10), "TESTING","TESTING").getSeriale().getSeriale());
 	}
 	
 	/**
 	*Test che dovrebbe restituire la Sacca di un tipo compatibile a quello ricercato
 	*"CTT001-00000033"
+	 * @throws SaccaNotFoundException 
 	*/
 	@Test
-	public void testB1() {
+	public void testB1() throws SaccaNotFoundException {
 		assertEquals("CTT001-00000033", oper.ricercaSaccaLocale(GruppoSanguigno.Ap, LocalDate.of(2010,04,10), "TESTING","TESTING").getSeriale().getSeriale());
 	}
 	
 	/**
 	*Test che dovrebbe restituire la Sacca di un tipo compatibile a quello ricercato
 	*"CTT001-00000038"
+	 * @throws SaccaNotFoundException 
 	*/
 	@Test
-	public void testB2() {
+	public void testB2() throws SaccaNotFoundException {
 		assertEquals("CTT001-00000038", oper.ricercaSaccaLocale(GruppoSanguigno.Ap, LocalDate.of(2010,04,10), "TESTING","TESTING").getSeriale().getSeriale());
 	}
 	
 	/**
 	*Test che dovrebbe restituire la Sacca di un tipo compatibile a quello ricercato
 	*"CTT001-00000007"
+	 * @throws SaccaNotFoundException 
 	*/
 	@Test
-	public void testB3() {
+	public void testB3() throws SaccaNotFoundException {
 		assertEquals("CTT001-00000007", oper.ricercaSaccaLocale(GruppoSanguigno.Ap, LocalDate.of(2010,04,10), "TESTING","TESTING").getSeriale().getSeriale());
 	}
 	
 	/**
 	*Test che dovrebbe restituire la Sacca di un tipo compatibile a quello ricercato
 	*"CTT001-00000032"
+	 * @throws SaccaNotFoundException 
 	*/
 	@Test
-	public void testB4() {
+	public void testB4() throws SaccaNotFoundException {
 		assertEquals("CTT001-00000032", oper.ricercaSaccaLocale(GruppoSanguigno.Ap, LocalDate.of(2010,04,10), "TESTING","TESTING").getSeriale().getSeriale());
 	}
 	
 	/**
 	*Test che dovrebbe restituire la Sacca di un tipo compatibile a quello ricercato
 	*"CTT001-00000037"
+	 * @throws SaccaNotFoundException 
 	*/
 	@Test
-	public void testB5() {
+	public void testB5() throws SaccaNotFoundException {
 		assertEquals("CTT001-00000037", oper.ricercaSaccaLocale(GruppoSanguigno.Ap, LocalDate.of(2010,04,10), "TESTING","TESTING").getSeriale().getSeriale());
 	}
 	
 	/**
 	*Test che dovrebbe restituire la Sacca di un tipo compatibile a quello ricercato
 	*"CTT001-00000006"
+	 * @throws SaccaNotFoundException 
 	*/
 	@Test
-	public void testB6() {
+	public void testB6() throws SaccaNotFoundException {
 		assertEquals("CTT001-00000006", oper.ricercaSaccaLocale(GruppoSanguigno.Ap, LocalDate.of(2010,04,10), "TESTING","TESTING").getSeriale().getSeriale());
 	}
 	
 	/**
 	*Test che dovrebbe restituire la Sacca di un tipo compatibile a quello ricercato
 	*"CTT001-00000031"
+	 * @throws SaccaNotFoundException 
 	*/
 	@Test
-	public void testB7() {
+	public void testB7() throws SaccaNotFoundException {
 		assertEquals("CTT001-00000031", oper.ricercaSaccaLocale(GruppoSanguigno.Ap, LocalDate.of(2010,04,10), "TESTING","TESTING").getSeriale().getSeriale());
 	}
 	
 	/**
 	*Test che dovrebbe restituire la Sacca di un tipo compatibile a quello ricercato
 	*"CTT001-00000036"
+	 * @throws SaccaNotFoundException 
 	*/
 	@Test
-	public void testB8() {
+	public void testB8() throws SaccaNotFoundException {
 		assertEquals("CTT001-00000036", oper.ricercaSaccaLocale(GruppoSanguigno.Ap, LocalDate.of(2010,04,10), "TESTING","TESTING").getSeriale().getSeriale());
 	}
 	
 	/**
 	*Test che dovrebbe restituire SaccaLocaleNotFoundException in quanto non sono più presenti sacche del tipo cercato ne di tipo compatibile
+	 * @throws SaccaNotFoundException 
 	*
 	*/
 	@Test(expected = SaccaLocaleNotFoundException.class)
-	public void testB9() {
+	public void testB9() throws SaccaNotFoundException {
 		oper.ricercaSaccaLocale(GruppoSanguigno.Ap, LocalDate.of(2010,04,10), "TESTING","TESTING").getSeriale().getSeriale();
 	}
 	

@@ -2,7 +2,7 @@ package it.unisannio.ingegneriaDelSoftware.Interfaces;
 
 import javax.ws.rs.core.Response;
 
-public interface EndPointLogin {
+public interface EndPointAutenticazione {
 
 	/**
 	 * Login è l'operazione con la quale un generico dipendente del ctt accede al sistema
@@ -13,4 +13,5 @@ public interface EndPointLogin {
 	 */
 	Response login(String username, String password);
 	
+	Response logOut(String username, String password);
 }

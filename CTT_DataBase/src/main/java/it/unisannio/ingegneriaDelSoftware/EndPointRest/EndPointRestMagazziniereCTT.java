@@ -3,6 +3,7 @@ package it.unisannio.ingegneriaDelSoftware.EndPointRest;
 import it.unisannio.ingegneriaDelSoftware.Classes.*;
 import it.unisannio.ingegneriaDelSoftware.Annotazioni.Secured;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.DataManager;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointMagazziniereCTT;
 import it.unisannio.ingegneriaDelSoftware.Util.DateUtil;
@@ -25,10 +26,9 @@ import java.util.List;
 @RolesAllowed("MagazziniereCTT")
 public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 
-	/**
-	 * @param seriale seriale della sacca da evadere
-	 * Metodo attivato dal magazziniere quando riceve una notifica evasione sacca
-	 * esso aggiorna i dati sacca e rimuove la sacca dal DB attivo
+	/**Metodo attivato dal magazziniere quando riceve una notifica evasione Sacca
+	 * esso aggiorna i datiSacca e rimuove la Sacca dal DB attivo
+	 * @param seriale Seriale della Sacca da evadere
 	 * @return */
 	@PUT
 	@Path("/evasione/{seriale}")
@@ -64,6 +64,11 @@ public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 		}catch(AssertionError assertionError){
 			//The request could not be understood by the server due to malformed syntax.
 			// The client SHOULD NOT repeat the request without modifications.
+			return Response
+					.status(Response.Status.BAD_REQUEST)
+					.entity("Formattazione del seriale non corretto")
+					.build();
+		} catch (SaccaNotFoundException e) {
 			return Response
 					.status(Response.Status.BAD_REQUEST)
 					.entity("Formattazione del seriale non corretto")
@@ -120,17 +125,23 @@ public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 					.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity("Non è stato possibile creare l'uri per la nuova risorsa")
 					.build();
+		} catch (SaccaNotFoundException e) {
+			return Response
+					.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity("Non è stato possibile creare l'uri per la nuova risorsa")
+					.build();
 		}
 	}
 
 	/**
 	 * Metodo utilizzato per aggiunta automatica del seriale delle sacche
 	 * disponibili nel magazzino per l'evasione
-	 * @return serialiSacca*/
+	 * @return serialiSacca
+	 * @throws SaccaNotFoundException */
 	@GET
 	@Path("/sacche")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Seriale> listaSacca(){
+	public List<Seriale> listaSacca() throws SaccaNotFoundException{
 
 		DataManager mm = new MongoDataManager();
 		List<Sacca> listasacche = mm.getListaSacche();

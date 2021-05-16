@@ -1,27 +1,29 @@
 package it.unisannio.ingegneriaDelSoftware.Interfaces;
 import it.unisannio.ingegneriaDelSoftware.Classes.*;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaNotFoundException;
+
 import java.time.LocalDate;
 import java.util.List;
 
 public interface DataManager {
 
-	void createSacca(Sacca s);
+	void createSacca(Sacca s) throws SaccaNotFoundException;
 
 	void createDatiSacca(DatiSacca ds);
 
-	void removeSacca(Seriale ser);
+	void removeSacca(Seriale ser) throws SaccaNotFoundException;
 
-	Sacca getSacca(Seriale ser);
+	Sacca getSacca(Seriale ser) throws SaccaNotFoundException;
 
 	DatiSacca getDatiSacca(Seriale ser);
 	
-	List<Sacca> getListaSacche();
+	List<Sacca> getListaSacche() throws SaccaNotFoundException;
 	
 	List<DatiSacca> getListaDatiSacche();
 
-	boolean containsSacca(Seriale seriale);
+	boolean containsSacca(Seriale seriale) throws SaccaNotFoundException;
 	
-	void setPrenotatoSacca(Seriale ser);
+	void setPrenotatoSacca(Seriale ser) throws SaccaNotFoundException;
 
 	void setEnteRichiedenteDatiSacca(Seriale seriale, String enteRichiedente);
 

@@ -14,13 +14,14 @@ import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
 import it.unisannio.ingegneriaDelSoftware.Classes.Seriale;
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointRestAmministratoreCTT;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 
 
 public class ReportStatisticoSaccheTest {
 	EndPointRestAmministratoreCTT amm = new EndPointRestAmministratoreCTT();
 	
-	@BeforeClass public static void populateDBSacche() {
+	@BeforeClass public static void populateDBSacche() throws SaccaNotFoundException {
 		
 		MongoDataManager mm = new MongoDataManager();
     	List<Sacca> listaSacche = new ArrayList<Sacca>();
@@ -1005,64 +1006,72 @@ public class ReportStatisticoSaccheTest {
 	
 	/**
 	 * Test che dovrebbe restituire una lista di Sacche con 3 elementi, siccome le sacche di GruppoSanguigno Ap presenti nel database delle sacche sono 5
+	 * @throws SaccaNotFoundException 
 	 */
-	@Test public void test1(){
+	@Test public void test1() throws SaccaNotFoundException{
 		assertEquals(5, amm.reportStatisticoSacche(GruppoSanguigno.Ap).size());
 	}
 	
 	
 	/**
 	 * Test che dovrebbe restituire una lista di Sacche con 3 elementi, siccome le sacche di GruppoSanguigno Am presenti nel database delle sacche sono 5
+	 * @throws SaccaNotFoundException 
 	 */
-	@Test public void test2(){
+	@Test public void test2() throws SaccaNotFoundException{
 		assertEquals(5, amm.reportStatisticoSacche(GruppoSanguigno.Am).size());
 	}
 	
 	
 	/**
 	 * Test che dovrebbe restituire una lista di Sacche con 3 elementi, siccome le sacche di GruppoSanguigno ABm presenti nel database delle sacche sono 5
+	 * @throws SaccaNotFoundException 
 	 */
-	@Test public void test3(){
+	@Test public void test3() throws SaccaNotFoundException{
 		assertEquals(5, amm.reportStatisticoSacche(GruppoSanguigno.ABm).size());
 	}
 	
 	
 	/**
 	 * Test che dovrebbe restituire una lista di Sacche con 3 elementi, siccome le sacche di GruppoSanguigno Bp presenti nel database delle sacche sono 5
+	 * @throws SaccaNotFoundException 
 	 */
-	@Test public void test4(){
+	@Test public void test4() throws SaccaNotFoundException{
 		assertEquals(5, amm.reportStatisticoSacche(GruppoSanguigno.Bp).size());
 	}
 	
 	
 	/**
 	 * Test che dovrebbe restituire una lista di Sacche con 3 elementi, siccome le sacche di GruppoSanguigno Bm presenti nel database delle sacche sono 5
+	 * @throws SaccaNotFoundException 
 	 */
-	@Test public void test5(){
+	@Test public void test5() throws SaccaNotFoundException{
 		assertEquals(5, amm.reportStatisticoSacche(GruppoSanguigno.Bm).size());
 	}
 	
 	
 	/**
 	 * Test che dovrebbe restituire una lista di Sacche con 3 elementi, siccome le sacche di GruppoSanguigno ABp presenti nel database delle sacche sono 5
+	 * @throws SaccaNotFoundException 
 	 */
-	@Test public void test6(){
+	@Test public void test6() throws SaccaNotFoundException{
 		assertEquals(5, amm.reportStatisticoSacche(GruppoSanguigno.ABp).size());
 	}
 	
 	
 	/**
 	 * Test che dovrebbe restituire una lista di Sacche con 3 elementi, siccome le sacche di GruppoSanguigno ZEROp presenti nel database delle sacche sono 5
+	 * @throws SaccaNotFoundException 
 	 */
-	@Test public void test7(){
+	@Test public void test7() throws SaccaNotFoundException{
 		assertEquals(5, amm.reportStatisticoSacche(GruppoSanguigno.ZEROp).size());
 	}
 	
 	
 	/**
 	 * Test che dovrebbe restituire una lista di Sacche con 3 elementi, siccome le sacche di GruppoSanguigno ZEROm presenti nel database delle sacche sono 5
+	 * @throws SaccaNotFoundException 
 	 */
-	@Test public void test8(){
+	@Test public void test8() throws SaccaNotFoundException{
 		assertEquals(5, amm.reportStatisticoSacche(GruppoSanguigno.ZEROm).size());
 	}
 

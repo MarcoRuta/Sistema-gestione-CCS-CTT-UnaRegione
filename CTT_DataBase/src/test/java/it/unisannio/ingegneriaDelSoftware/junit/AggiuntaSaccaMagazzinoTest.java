@@ -15,10 +15,11 @@ import it.unisannio.ingegneriaDelSoftware.Classes.DatiSacca;
 import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointRestMagazziniereCTT;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 
 public class AggiuntaSaccaMagazzinoTest {
-	@BeforeClass public static void populateDBSacche() {
+	@BeforeClass public static void populateDBSacche() throws SaccaNotFoundException {
 		
     	MongoDataManager mm = new MongoDataManager();
     	List<Sacca> listaSacche = new ArrayList<Sacca>();
@@ -602,8 +603,9 @@ public class AggiuntaSaccaMagazzinoTest {
 	/**
 	 * Test che dovrebbe restituire una lista di Sacche con 21 elementi
 	 * @throws ParseException
+	 * @throws SaccaNotFoundException 
 	 */
-	@Test public void test1() throws ParseException {
+	@Test public void test1() throws ParseException, SaccaNotFoundException {
 		assertEquals(40,mongo.getListaSacche().size());
 	}
 	
@@ -611,8 +613,9 @@ public class AggiuntaSaccaMagazzinoTest {
 	/**
 	 * Test che dovrebbe restituire una lista di Sacche con 22 elementi
 	 * @throws ParseException
+	 * @throws SaccaNotFoundException 
 	 */
-	@Test public void test2() throws ParseException {
+	@Test public void test2() throws ParseException, SaccaNotFoundException {
 		GruppoSanguigno gs = GruppoSanguigno.Ap;
     	LocalDate localDataProduzione = LocalDate.of(2018,11,10);
     	LocalDate localDataScadenza = LocalDate.of(2020,11,12);

@@ -7,6 +7,7 @@ import java.util.List;
 
 import it.unisannio.ingegneriaDelSoftware.Classes.*;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.*;
 import it.unisannio.ingegneriaDelSoftware.Util.DateUtil;;
 
@@ -14,8 +15,9 @@ public class CTT implements CTTFunction {
 	
 	/**Restituisce una lista di tutte le sacche che scadono entro 72 ore
 	 * @return la lista di sacche non ancora scadute ma che scadono entro 72 ore da oggi
+	 * @throws SaccaNotFoundException 
 	 */
-	public List<Sacca> alertControlScadenza() {
+	public List<Sacca> alertControlScadenza() throws SaccaNotFoundException {
     	MongoDataManager mm = new MongoDataManager();
 		List<Sacca> listaSacche = mm.getListaSacche();
 		List<Sacca> saccheInScadenza = new ArrayList<Sacca>();		
@@ -35,8 +37,9 @@ public class CTT implements CTTFunction {
 	
 	
 	/**Rimuove tutte le Sacche scadute dal database delle Sacche e aggiorna i corrispettivi DatiSacca con enteRichiedente "Scaduta" e dataAffidamento con la data di scadenza
+	 * @throws SaccaNotFoundException 
 	 */
-	public void removeSaccheScadute() {
+	public void removeSaccheScadute() throws SaccaNotFoundException {
 		MongoDataManager mm = new MongoDataManager();
 		List<Sacca> listaSacche = mm.getListaSacche();		
 		
@@ -51,8 +54,9 @@ public class CTT implements CTTFunction {
 	
 	/**Rimuove una Sacca dal Database e setta la dataAffidamento di DatiSacca alla data di scadenza e setta l'enteRichiedente con "Scaduta"
 	 * @param s Sacca da rimuovere dal database delle Sacche
+	 * @throws SaccaNotFoundException 
 	 */
-	private void removeSaccaScaduta(Sacca s) {
+	private void removeSaccaScaduta(Sacca s) throws SaccaNotFoundException {
 		MongoDataManager mm = new MongoDataManager();
 		
 		mm.removeSacca(s.getSeriale());

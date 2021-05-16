@@ -22,6 +22,7 @@
         function print6(){
             if(gruppo_sanguigno.value!=0)
                 document.getElementById("p6").innerHTML = "Tipo di sangue: "+"<span class='textPrint'>" +gruppo_sanguigno.value+"</span>";
+            else document.getElementById("p6").innerHTML = "Tipo di sangue: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
         }
 
     </script>
@@ -51,6 +52,7 @@
         <div class="dateForm">
             <div class="titleDateForm">
                 <p>Dati Sacca</p>
+                <button class="btn" onclick="location.href='MagazziniereCTT.html';"><img class="return" src="assets/img/return.png" /></button>
             </div>
             <div class="containerForm">
                 <form id="myForm">
@@ -75,7 +77,7 @@
                     <div class="form-group row">
                         <label >Tipo di sangue:</label>
                         <div class="col-sm-10 inputForm">
-                            <select id="gruppo_sanguigno" name="gruppo_sanguigno" oninput="print6()" class="custom-select" style="width:364px">
+                            <select id="gruppo_sanguigno" name="gruppo_sanguigno" oninput="print6()" class="form-control" onfocus='this.size=5;' onblur='this.size=1;' onchange='this.size=1; this.blur();' style="width:364px">
                                 <option value='0'>Seleziona il tipo di sangue</option>
                                 <option value="Ap">A+</option>
                                 <option value="Am">A-</option>
@@ -128,13 +130,13 @@
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
                 	    res = this.response;
-                 	    document.getElementById("result").innerHTML = "Evasione Riuscita";
+                 	    document.getElementById("result").innerHTML = "Sacca Aggiunta";
                  	}else {document.getElementById("result").innerHTML = this.response;}
 
                 };
 
                 xhttp.onerror = function(){
-                    document.getElementById("result").innerHTML = "Sacca non esistente";
+                    document.getElementById("result").innerHTML = "[Error 401] Impossibile Aggiungere Sacca ";
                 }
 
                 xhttp.open("POST", url, true);

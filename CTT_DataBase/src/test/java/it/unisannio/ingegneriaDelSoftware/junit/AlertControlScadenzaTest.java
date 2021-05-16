@@ -15,13 +15,14 @@ import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.CTT;
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointRestMagazziniereCTT;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 
 public class AlertControlScadenzaTest {
 	EndPointRestMagazziniereCTT magazz = new EndPointRestMagazziniereCTT();
 	CTT ctt = new CTT();
 	
-	@BeforeClass public static void populateDBSacche() {
+	@BeforeClass public static void populateDBSacche() throws SaccaNotFoundException {
 		
 	    	MongoDataManager mm = new MongoDataManager();
 	    	List<Sacca> listaSacche = new ArrayList<Sacca>();
@@ -600,9 +601,10 @@ public class AlertControlScadenzaTest {
 	
 	/**
 	*Test che dovrebbe restituire una lista con 3 Sacche che stanno per scadere (nel beforeclass ci sono 3 sacche con dataScadenza LocalDate.now().plusDays(2)!)
+	 * @throws SaccaNotFoundException 
 	*/
 	@Test	
-	public void test1(){  	
+	public void test1() throws SaccaNotFoundException{  	
 		assertEquals(3, ctt.alertControlScadenza().size());
 	}
 	

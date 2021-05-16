@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointRestLogin;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -17,6 +16,7 @@ import it.unisannio.ingegneriaDelSoftware.Classes.Cdf;
 import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.RuoloDipendente;
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointRestAmministratoreCTT;
+import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointRestAutentificazione;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 import it.unisannio.ingegneriaDelSoftware.Util.DateUtil;
@@ -106,7 +106,7 @@ public class LoginTest {
 	*/
 	@Test	
 	public void test1(){  	
-		assertEquals(200, new EndPointRestLogin().login("username 008", "008").getStatus());
+		assertEquals(200, new EndPointRestAutentificazione().login("username 008", "008").getStatus());
 	}
 
 	/**
@@ -115,7 +115,7 @@ public class LoginTest {
 	*/
 	@Test	
 	public void test2(){  	
-		assertEquals(200, new EndPointRestLogin().login("username 007", "007").getStatus());
+		assertEquals(200, new EndPointRestAutentificazione().login("username 007", "007").getStatus());
 	}
 	
 	/**
@@ -124,7 +124,7 @@ public class LoginTest {
 	*/
 	@Test	
 	public void test3(){  	
-		assertEquals(403, new EndPointRestLogin().login("username 008", "005").getStatus());
+		assertEquals(403, new EndPointRestAutentificazione().login("username 008", "005").getStatus());
 	}
 	
 	

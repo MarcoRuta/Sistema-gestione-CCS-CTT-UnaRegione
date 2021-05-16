@@ -2,12 +2,13 @@ package it.unisannio.ingegneriaDelSoftware.Interfaces;
 
 import java.util.List;
 
-import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;;
+import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaNotFoundException;;
 
 
 public interface CTTFunction {
 
-	List<Sacca> alertControlScadenza();
+	List<Sacca> alertControlScadenza() throws SaccaNotFoundException;
 	
-	void removeSaccheScadute();
+	void removeSaccheScadute() throws SaccaNotFoundException;
 }

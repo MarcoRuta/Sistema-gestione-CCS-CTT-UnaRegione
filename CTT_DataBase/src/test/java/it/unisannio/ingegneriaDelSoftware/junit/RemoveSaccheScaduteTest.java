@@ -12,6 +12,7 @@ import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.CTT;
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointRestMagazziniereCTT;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 
 public class RemoveSaccheScaduteTest {
@@ -19,7 +20,7 @@ public class RemoveSaccheScaduteTest {
 	EndPointRestMagazziniereCTT magazz = new EndPointRestMagazziniereCTT();
 	MongoDataManager mm = new MongoDataManager();
 	
-	@BeforeClass public static void populateDBSacche() {
+	@BeforeClass public static void populateDBSacche() throws SaccaNotFoundException {
 		
     	MongoDataManager mm = new MongoDataManager();
     	List<Sacca> listaSacche = new ArrayList<Sacca>();
@@ -601,15 +602,17 @@ public class RemoveSaccheScaduteTest {
 	
 	/**
 	 * Test che restituisce 40, il numero di tutte le sacche caricate
+	 * @throws SaccaNotFoundException 
 	 */
-	@Test public void test1() {
+	@Test public void test1() throws SaccaNotFoundException {
 		assertEquals(40, mm.getListaSacche().size());
 	}
 
 	/**
-	 * Test che restituisce 35, il numero di tutte le sacche caricate a meno di quelle scadute
+	 * Test che restituisce 32, il numero di tutte le sacche caricate a meno di quelle scadute
+	 * @throws SaccaNotFoundException 
 	 */
-	@Test public void test2() {
+	@Test public void test2() throws SaccaNotFoundException {
 		ctt.removeSaccheScadute();
 		assertEquals(32, mm.getListaSacche().size());
 	}

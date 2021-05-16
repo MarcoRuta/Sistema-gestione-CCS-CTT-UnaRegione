@@ -10,6 +10,8 @@ import it.unisannio.ingegneriaDelSoftware.Interfaces.DataManager;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 import it.unisannio.ingegneriaDelSoftware.Util.DateUtil;
 import it.unisannio.ingegneriaDelSoftware.Classes.*;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaNotFoundException;
+
 import static com.mongodb.client.model.Filters.*;
 import org.bson.Document;
 
@@ -32,8 +34,9 @@ public class MongoDataManager implements DataManager {
 	/**Aggiunge una Sacca al database delle sacche solo se essa non è gia presente nel
 	 * DB delle sacche
 	 * @param s Sacca da aggiungere al db
+	 * @throws SaccaNotFoundException 
 	 */
-	public void createSacca(Sacca s) {
+	public void createSacca(Sacca s) throws SaccaNotFoundException {
 		assert !(this.containsSacca(s.getSeriale())):"Sacca gia presente nel DB";
 	    MongoDatabase database = mongoClient.getDatabase(Constants.DB_NAME);
 	    MongoCollection<Document> collection = database.getCollection(Constants.COLLECTION_SACCHE);
@@ -68,8 +71,9 @@ public class MongoDataManager implements DataManager {
 	
 	/**Rimuove una Sacca dal DataBase identificata tramite il Seriale
 	 * @param ser Seriale della sacca da rimuovere dal db delle sacche
+	 * @throws SaccaNotFoundException 
 	 */
-	public void removeSacca(Seriale ser) {
+	public void removeSacca(Seriale ser) throws SaccaNotFoundException {
 		assert this.containsSacca(ser):"Non è possibile rimuovere una sacca non presente nel DB";
 		MongoDatabase database = mongoClient.getDatabase(Constants.DB_NAME);
 		MongoCollection<Document> collection = database.getCollection(Constants.COLLECTION_SACCHE);
@@ -82,20 +86,21 @@ public class MongoDataManager implements DataManager {
 	/**Restituisce una Sacca ricercata sul database dalle Sacche tramite il Seriale
 	 * @param ser Seriale della Sacca da ricercare
 	 * @return null se la Sacca non è stata trovata; la Sacca se essa è stata trovata
+	 * @throws SaccaNotFoundException 
 	 */
-	public Sacca getSacca(Seriale ser) {
+	public Sacca getSacca(Seriale ser) throws SaccaNotFoundException {
 		MongoDatabase database = mongoClient.getDatabase(Constants.DB_NAME);
 		MongoCollection<Document> collection = database.getCollection(Constants.COLLECTION_SACCHE);
-		Sacca s = null;
-		
+				
 		for (Document current : collection.find(eq(Constants.ELEMENT_SERIALE, ser.getSeriale()))) {
-			s = new Sacca(Seriale.getSeriale(current.getString(Constants.ELEMENT_SERIALE)),
+			Sacca s = new Sacca(Seriale.getSeriale(current.getString(Constants.ELEMENT_SERIALE)),
 				GruppoSanguigno.valueOf(current.getString(Constants.ELEMENT_GRUPPO)),
 				DateUtil.convertDateToLocalDate(current.getDate(Constants.ELEMENT_DATAPRODUZIONE)),
 				DateUtil.convertDateToLocalDate(current.getDate(Constants.ELEMENT_DATASCADENZA)),
 				current.getBoolean(Constants.ELEMENT_PRENOTATO));
+			return s;
 		}
-		return s;	
+		throw new SaccaNotFoundException("La sacca ricercata"+ ser.getSeriale() +"non è stata trovata");
 	}
 
 	
@@ -123,8 +128,9 @@ public class MongoDataManager implements DataManager {
 	
 	/** Restituisce una lista contenente tutte le Sacche presenti in magazzino
 	 * @return la lista delle Sacche presenti in magazzino
+	 * @throws SaccaNotFoundException 
 	 */
-	public List<Sacca> getListaSacche(){
+	public List<Sacca> getListaSacche() throws SaccaNotFoundException{
 		MongoDatabase database = mongoClient.getDatabase(Constants.DB_NAME);
 	    MongoCollection<Document> collection = database.getCollection(Constants.COLLECTION_SACCHE);
         List<Sacca> listaSacche = new ArrayList<Sacca>();
@@ -151,8 +157,9 @@ public class MongoDataManager implements DataManager {
 	
 	/**Cambia lo stato di prenotazione di una Sacca identificata tramite il Seriale
 	 * @param seriale Seriale della Sacca da ricercare
+	 * @throws SaccaNotFoundException 
 	 */
-	public void setPrenotatoSacca(Seriale seriale) {
+	public void setPrenotatoSacca(Seriale seriale) throws SaccaNotFoundException {
 		assert this.containsSacca(seriale):"Non puoi aggiornare lo stato di una sacca che non esiste";
 		MongoDatabase database = mongoClient.getDatabase(Constants.DB_NAME);
 		MongoCollection<Document> collection = database.getCollection(Constants.COLLECTION_SACCHE);
@@ -273,7 +280,6 @@ public class MongoDataManager implements DataManager {
 	}
 
 
-
 	/**Restituisce la lista dei Dipendenti del CTT presenti nel database
 	 * @return la lista dei Dipendenti del CTT
 	 */
@@ -288,8 +294,9 @@ public class MongoDataManager implements DataManager {
     }
 
 	/**@param seriale il seriale della sacca che si vuole cercare
-     * @return true se la sacca è contenuta*/
-    public boolean containsSacca(Seriale seriale){
+     * @return true se la sacca è contenuta
+	 * @throws SaccaNotFoundException */
+    public boolean containsSacca(Seriale seriale) throws SaccaNotFoundException{
         Sacca unSacca = this.getSacca(seriale);
         return unSacca != null?true:false;
     }

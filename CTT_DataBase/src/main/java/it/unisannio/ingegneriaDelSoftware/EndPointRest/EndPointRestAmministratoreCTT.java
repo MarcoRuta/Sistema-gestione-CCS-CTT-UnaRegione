@@ -9,8 +9,8 @@ import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.Classes.RuoloDipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointAmministratoreCTT;
-import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointLogin;
 import it.unisannio.ingegneriaDelSoftware.Util.DateUtil;
 
 
@@ -56,8 +56,9 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT{
 	/**Restituisce la lista delle Sacche di un determinato Gruppo sanguigno, presenti del database delle Sacche
 	 * @param g Gruppo sanguigno delle Sacche che si vogliono ricercare
 	 * @return la lista di Sacche di un determinato Gruppo sanguigno
+	 * @throws SaccaNotFoundException 
 	 */
-	public List<Sacca> reportStatisticoSacche(GruppoSanguigno gs){	
+	public List<Sacca> reportStatisticoSacche(GruppoSanguigno gs) throws SaccaNotFoundException{	
 		MongoDataManager mm = new MongoDataManager();
 		List<Sacca> saccheGS = new ArrayList<Sacca>();
 		

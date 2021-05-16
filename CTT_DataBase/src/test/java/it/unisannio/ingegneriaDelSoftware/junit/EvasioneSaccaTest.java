@@ -15,11 +15,12 @@ import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
 import it.unisannio.ingegneriaDelSoftware.Classes.Seriale;
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointRestMagazziniereCTT;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 
 
 public class EvasioneSaccaTest {
-	@BeforeClass public static void populateDBSacche() {
+	@BeforeClass public static void populateDBSacche() throws SaccaNotFoundException {
 		
     	MongoDataManager mm = new MongoDataManager();
     	List<Sacca> listaSacche = new ArrayList<Sacca>();
@@ -603,20 +604,22 @@ public class EvasioneSaccaTest {
 	
 	/**
 	 * Test che dovrebbe restituire una lista di Sacche con 21 elementi
+	 * @throws SaccaNotFoundException 
 	 * @throws ParseException 
 	*/
-	@Test public void test1() {
+	@Test public void test1() throws SaccaNotFoundException {
 		assertEquals(40,mongo.getListaSacche().size());
 	}
 	
 	
 	/**
 	 * Test che dovrebbe restituire null, siccome la Sacca viene rimossa
+	 * @throws SaccaNotFoundException 
 	 * @throws ParseException
 	 *
 	*/
 	@Test 
-	public void test2() {
+	public void test2() throws SaccaNotFoundException {
 		magazz.evasioneSacca("CTT001-00000009","Cardarelli","Benevento,via dei caduti");
 		assertNull(mongo.getSacca(Seriale.getSeriale("CTT001-00000009")));
 	}
@@ -624,9 +627,10 @@ public class EvasioneSaccaTest {
 	
 	/**
 	 * Test che dovrebbe restituire una lista di Sacche con 39 elementi
+	 * @throws SaccaNotFoundException 
 	 * @throws ParseException
 	 */
-	@Test public void test3() {
+	@Test public void test3() throws SaccaNotFoundException {
 		assertEquals(39,mongo.getListaSacche().size());
 	}
 

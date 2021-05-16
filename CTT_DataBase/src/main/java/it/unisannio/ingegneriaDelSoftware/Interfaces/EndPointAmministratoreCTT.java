@@ -9,6 +9,7 @@ import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.Classes.RuoloDipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaNotFoundException;
 
 
 public interface EndPointAmministratoreCTT {
@@ -19,7 +20,7 @@ public interface EndPointAmministratoreCTT {
 	
 	List<Dipendente> reportOperatoriCTT(RuoloDipendente ruolo);
 
-	List<Sacca> reportStatisticoSacche(GruppoSanguigno g);
+	List<Sacca> reportStatisticoSacche(GruppoSanguigno g) throws SaccaNotFoundException;
 	
 	List<DatiSacca> ReportLocaleSaccheInviateERicevuteCTT(Date dataInizio, Date dataFine);
 
