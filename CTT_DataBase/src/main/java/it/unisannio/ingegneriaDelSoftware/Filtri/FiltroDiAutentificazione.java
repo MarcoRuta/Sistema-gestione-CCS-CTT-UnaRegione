@@ -19,20 +19,36 @@ import java.security.Principal;
 import java.util.*;
 
 
+/**
+ * Filtro di autentificazione, è eseguito per ogni class resource o method resource in cui è presente
+ * l'anntoazione @Secured. Esso è eseguito dopo il matching della risorsa da parte dall'api di jersey.
+ * Ha una priorita Priorities.AUTHENTICATION che viene eseguita prima di qualsiasi altra Priorities
+ * in quanto ha un valore intero più basso delle altre priorità
+ * Questo filtro preleva i cookie dalla richieste del browser e verifica che ci sia il cookie con l'accesso token
+ * se esso non è presente il filtro impedisce alla richiesta di arrivare alla risorsa prestabilita
+ * nel momento in cui il token è presente ed è valido il filtro sovrascrive il Security context con i dati dell'user
+ * associato al token*/
 @Provider
 @Secured
-//So, a request filter with priority defined with @Priority(1000)
-//will be executed before another request filter with priority defined as @Priority(2000).
 @Priority(Priorities.AUTHENTICATION)
 public class FiltroDiAutentificazione implements ContainerRequestFilter {
     private List<String>tokens = new ArrayList<>();
 
+    /**
+     * Instead of injecting values directly into field the value can be injected into the setter method which will initialize the field.
+     * This injection can be used only with @Context annotation.
+     * resourceInfo contiente i dati relativi alla resource che è stata richiesta attraverso la richiesta intercettata*/
     @Context
     private ResourceInfo resourceInfo;
+
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
         DataManager dataManager = new MongoDataManager();
+        /**Container request filter context  provides request-specific information for the filter,
+         * such as request URI, message headers, message entity or request-scoped properties.
+         * cookies contiene tutti i cookie della richiesta.
+         */
         Map<String, Cookie> cookies = requestContext.getCookies();
         //If no authorization information present; block access
         if(cookies == null || cookies.isEmpty() ) {
@@ -62,6 +78,9 @@ public class FiltroDiAutentificazione implements ContainerRequestFilter {
             String ruolo = dataManager.getDipendente(username,password).getRuolo().toString();
 
             //savrascrivo il securityContext
+            /**The SecurityContext is a class of Spring Security.
+             * The SecurityContext is used to store the details of the currently authenticated user,
+             * also known as a principle*/
             final SecurityContext currentSecurityContext = requestContext.getSecurityContext();
             requestContext.setSecurityContext(new SecurityContext() {
 
@@ -82,13 +101,13 @@ public class FiltroDiAutentificazione implements ContainerRequestFilter {
 
                 @Override
                 public String getAuthenticationScheme() {
-                    return "";
+                    return SecurityContext.BASIC_AUTH;
                 }
             });
 
         } catch (DipendenteNotFoundException e) {
             requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
-                    .entity("Token di accesso non valido").build());
+                    .entity("Token di accesso non valido. Effettuare nuovamente il Login").build());
             return;
         }
 

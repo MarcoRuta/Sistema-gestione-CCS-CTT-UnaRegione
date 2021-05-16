@@ -11,12 +11,12 @@ import it.unisannio.ingegneriaDelSoftware.Classes.DatiSacca;
 import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.CTT;
-import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointMagazziniereCTT;
+import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointRestMagazziniereCTT;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 
 public class RemoveSaccheScaduteTest {
 	CTT ctt = new CTT();
-	EndPointMagazziniereCTT magazz = new EndPointMagazziniereCTT();
+	EndPointRestMagazziniereCTT magazz = new EndPointRestMagazziniereCTT();
 	MongoDataManager mm = new MongoDataManager();
 	
 	@BeforeClass public static void populateDBSacche() {

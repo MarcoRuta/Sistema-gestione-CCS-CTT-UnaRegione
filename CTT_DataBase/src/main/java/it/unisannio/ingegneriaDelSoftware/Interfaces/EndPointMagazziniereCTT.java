@@ -4,7 +4,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-public interface MagazziniereCTTDataManager {
+public interface EndPointMagazziniereCTT {
 
 	/**@param username Username del magazziniere che si logga nel sistema
 	 * @param password Password del magazziniere che si logga nel sistema*/

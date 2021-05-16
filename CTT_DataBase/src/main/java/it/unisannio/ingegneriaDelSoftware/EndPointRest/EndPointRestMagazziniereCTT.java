@@ -3,9 +3,9 @@ package it.unisannio.ingegneriaDelSoftware.EndPointRest;
 import it.unisannio.ingegneriaDelSoftware.Classes.*;
 import it.unisannio.ingegneriaDelSoftware.Annotazioni.Secured;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
-import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaGiaPresenteException;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.DataManager;
-import it.unisannio.ingegneriaDelSoftware.Interfaces.MagazziniereCTTDataManager;
+import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointMagazziniereCTT;
+import it.unisannio.ingegneriaDelSoftware.Util.DateUtil;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Singleton;
@@ -15,7 +15,6 @@ import javax.ws.rs.core.Response;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +23,7 @@ import java.util.List;
 @Singleton
 @Secured
 @RolesAllowed("MagazziniereCTT")
-public class EndPointMagazziniereCTT implements MagazziniereCTTDataManager {
+public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 
 	/**
 	 * @param seriale seriale della sacca da evadere
@@ -80,17 +79,16 @@ public class EndPointMagazziniereCTT implements MagazziniereCTTDataManager {
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public Response aggiuntaSaccaMagazzino(@FormParam("gruppo_sanguigno") String gruppo_sanguigno,
 										   @FormParam("data_scadenza") String data_scadenza,
-										   @FormParam("data_produzione") String data_produzion,
+										   @FormParam("data_produzione") String data_produzione,
 										   @FormParam("ente_donatore") String ente_donatore) {
 		DataManager mm = new MongoDataManager();
 		try {
 			Sacca unaSacca = new Sacca(GruppoSanguigno.valueOf(gruppo_sanguigno),
-					LocalDate.parse(data_produzion, DateTimeFormatter.ofPattern("yyyy-MM-dd")),
-					LocalDate.parse(data_scadenza, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-			//controllo che non ci sia una sacca con lo stesso seriale nel DB
-			if (mm.containsSacca(unaSacca.getSeriale())) throw new SaccaGiaPresenteException("Impossibile avere delle sacche con lo stesso seriale");
+					DateUtil.dateParser(data_produzione),
+					DateUtil.dateParser(data_scadenza));
 			mm.createSacca(unaSacca);
-			DatiSacca datiSacca = new DatiSacca(unaSacca.getSeriale(), unaSacca.getGruppoSanguigno(), LocalDate.now(), null, ente_donatore, null,null);
+			DatiSacca datiSacca = new DatiSacca(unaSacca.getSeriale(), unaSacca.getGruppoSanguigno(),
+					LocalDate.now(), null, ente_donatore, null,null);
 			mm.createDatiSacca(datiSacca);
 			//update Seriale settings
 			Seriale.updateSettings();
@@ -121,20 +119,6 @@ public class EndPointMagazziniereCTT implements MagazziniereCTTDataManager {
 			return Response
 					.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity("Non è stato possibile creare l'uri per la nuova risorsa")
-					.build();
-		}catch (IllegalArgumentException illegalArgumentException){
-			//The request could not be understood by the server due to malformed syntax.
-			// The client SHOULD NOT repeat the request without modifications.
-			return Response
-					.status(Response.Status.BAD_REQUEST)
-					.entity("Dati non corretti, impossibile aggiungere la sacca al Magazzino\n"+illegalArgumentException.getMessage())
-					.build();
-		} catch (SaccaGiaPresenteException e) {
-			//The request could not be understood by the server due to malformed syntax.
-			// The client SHOULD NOT repeat the request without modifications.
-			return Response
-					.status(Response.Status.BAD_REQUEST)
-					.entity(e.getMessage())
 					.build();
 		}
 	}

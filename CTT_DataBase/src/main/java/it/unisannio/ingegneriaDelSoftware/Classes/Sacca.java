@@ -20,6 +20,7 @@ public class Sacca {
 		assert gs != null: "Il gruppo sanguigno non può essere null";
 		assert dataProduzione != null: "La data di produzione non può essere null";
 		assert dataScadenza != null: "la data di scadenza non può essere null";
+		assert dataProduzione.isBefore(dataScadenza): "La data di produzione non può essere precedente a quella di scadenza";
 
 		this.seriale = new Seriale();
 		this.gruppo = gs;

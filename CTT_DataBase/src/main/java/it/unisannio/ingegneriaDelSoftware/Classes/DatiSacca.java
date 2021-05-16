@@ -24,11 +24,11 @@ public class DatiSacca {
 	
 
 	/** costruttore invocato quando la sacca è inserita nel Magazzino
-	 * @param dataArrivo  data in cui la sacca è arrivata
+	 * @param dataArrivo  data in cui la sacca è arrivata in magazzino, non può essere temporalmente dopo la data di affidamento
 	 * @param enteDonatore  ente da cui proviene la sacca
 	 * @param seriale seriale della sacca
 	 * @param gruppoSanguigno gruppo sanguigno della sacca
-	 * @param dataAffidamento  data nella quale viene affidata la sacca. Se la sacca non è stata affidata può essere settato a null
+	 * @param dataAffidamento  data nella quale viene affidata la sacca. Se la sacca non è stata affidata può essere settato a null. Non puo essere inferiore alla data di arrivo
 	 * @param enteRichiedente  ente che ha richiesto la saccca. Se la sacca non è stata affidata può essere settato a null*/
 	public DatiSacca(Seriale seriale, GruppoSanguigno gruppoSanguigno, LocalDate dataArrivo, LocalDate dataAffidamento, String enteDonatore, String enteRichiedente, String indirizzoEnte) {
 		assert seriale != null: "Il seriale non può essere nullo";
@@ -43,6 +43,7 @@ public class DatiSacca {
 		this.enteDonatore = enteDonatore;
 		this.enteRichiedente = Optional.ofNullable(enteRichiedente);
 		this.indirizzoEnte = Optional.ofNullable(indirizzoEnte);
+
 	}
 
 	/**@return  il seriale della sacca*/
@@ -62,7 +63,6 @@ public class DatiSacca {
 
 	/**@return  restituisce la data di affidamento se presente, altrimenti restituisce una data con giorno,mese,anno settati a 0*/
 	public LocalDate getDataAffidamento() {
-
 		return dataAffidamento.isPresent()? dataAffidamento.get(): LocalDate.of(1,1,1);
 	}
 
@@ -72,7 +72,6 @@ public class DatiSacca {
 
 	/**@return  restituisce l'ente richiedente se presente, altrimenti restituisce una stringa vuota*/
 	public String getEnteRichiedente() {
-
 		return enteRichiedente.isPresent()?enteRichiedente.get():"";
 	}
 	
@@ -81,9 +80,10 @@ public class DatiSacca {
 		return indirizzoEnte.isPresent()?indirizzoEnte.get():"";
 	}
 	
-	/**@param dataAffidamento  data in cui e stata affidata la sacca, non può essere null*/
+	/**@param dataAffidamento  data in cui e stata affidata la sacca, non può essere null e non puo essere inferiore alla data di arrivo*/
 	public void setDataAffidamento(LocalDate dataAffidamento) {
 		assert dataAffidamento != null: "La data di affidamento non può essere null";
+		assert !(dataAffidamento.isBefore(this.dataArrivo)):"La data di arrivo non puo essere inferiore alla data di affidamento";
 		this.dataAffidamento = Optional.of(dataAffidamento);
 	}
 	
@@ -95,8 +95,9 @@ public class DatiSacca {
 	
 
 	/**@param indirizzoEnte l'indirizzo dell'ente che ha richiesto la sacca. Non può essere null*/
-	public void setIndirizzoEnte(Optional<String> indirizzoEnte) {
-		this.indirizzoEnte = indirizzoEnte;
+	public void setIndirizzoEnte(String indirizzoEnte) {
+		assert indirizzoEnte != null: "L'indirizzo dell'ente non puo essere null";
+		this.indirizzoEnte = Optional.of(indirizzoEnte);
 	}
 	
 	@Override

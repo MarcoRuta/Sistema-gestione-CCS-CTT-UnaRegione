@@ -11,15 +11,15 @@ import it.unisannio.ingegneriaDelSoftware.Classes.DatiSacca;
 import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
 import it.unisannio.ingegneriaDelSoftware.Classes.Seriale;
-import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointMagazziniereCTT;
+import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointRestMagazziniereCTT;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
-import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointOperatoreCTT;
+import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointRestOperatoreCTT;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaLocaleNotFoundException;
 
 
 public class RicercaSaccaLocaleTest {
-	EndPointMagazziniereCTT magazz = new EndPointMagazziniereCTT();
-	EndPointOperatoreCTT oper = new EndPointOperatoreCTT();
+	EndPointRestMagazziniereCTT magazz = new EndPointRestMagazziniereCTT();
+	EndPointRestOperatoreCTT oper = new EndPointRestOperatoreCTT();
 	
 	@BeforeClass public static void populateDBSacche() {
 		

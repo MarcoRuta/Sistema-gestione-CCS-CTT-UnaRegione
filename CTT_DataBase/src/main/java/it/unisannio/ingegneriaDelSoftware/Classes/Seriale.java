@@ -18,6 +18,7 @@ public class Seriale {
 	private static int lastAssigned;
 	private final String seriale;
 
+	/**Costruisco il seriale a partire da configurazioni presenti in /localsettings/serial_settings.xml*/
 	static {
 		Properties loadProps = new Properties();
 	    try {
@@ -33,13 +34,14 @@ public class Seriale {
 	    lastAssigned = Integer.valueOf(loadProps.getProperty(TAG_LAST_ASSIGNED));
 	}
 	
-	
+	/**
+	 * costruisco un seriale*/
 	public Seriale() {
 
 		seriale = radice+"-"+(new DecimalFormat("00000000")).format(++lastAssigned);
 	}
 	
-	/*
+	/**
 	 * @pre ser deve essere un seriale corretto
 	 * !null
 	 * 17 caratteri

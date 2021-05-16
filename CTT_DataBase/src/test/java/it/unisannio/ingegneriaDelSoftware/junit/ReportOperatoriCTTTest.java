@@ -15,20 +15,20 @@ import org.junit.Test;
 import it.unisannio.ingegneriaDelSoftware.Classes.Cdf;
 import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.RuoloDipendente;
-import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointAmministratoreCTT;
+import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointRestAmministratoreCTT;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
-import it.unisannio.ingegneriaDelSoftware.Util.DateConverter;
+import it.unisannio.ingegneriaDelSoftware.Util.DateUtil;
 
 public class ReportOperatoriCTTTest {
 			
 	@BeforeClass public static void populateDBDipendenti() throws ParseException {
-		EndPointAmministratoreCTT amm = new EndPointAmministratoreCTT();
+		EndPointRestAmministratoreCTT amm = new EndPointRestAmministratoreCTT();
 		List<Dipendente> listaDipendenti = new ArrayList<Dipendente>();
 	        
 	 	Cdf cdf = new Cdf("122hfotndj13ht5f");
         Date datadinascita = Constants.sdf.parse("10-07-2000");
-        LocalDate ld = DateConverter.convertDateToLocalDate(datadinascita);
+        LocalDate ld = DateUtil.convertDateToLocalDate(datadinascita);
         RuoloDipendente ruolo = RuoloDipendente.OperatoreCTT;
         String username = "username 002";
         String password = "002";
@@ -37,7 +37,7 @@ public class ReportOperatoriCTTTest {
         
         cdf = new Cdf("123456789qwrrtyy");
         datadinascita = Constants.sdf.parse("12-01-1999");
-        ld = DateConverter.convertDateToLocalDate(datadinascita);
+        ld = DateUtil.convertDateToLocalDate(datadinascita);
         ruolo = RuoloDipendente.AmministratoreCTT;
         username = "username 003";
         password = "003";
@@ -46,7 +46,7 @@ public class ReportOperatoriCTTTest {
         
         cdf = new Cdf("123456789swertyy");
         datadinascita = Constants.sdf.parse("10-12-1996");
-        ld = DateConverter.convertDateToLocalDate(datadinascita);
+        ld = DateUtil.convertDateToLocalDate(datadinascita);
         ruolo = RuoloDipendente.OperatoreCTT;
         username = "username 004";
         password = "004";
@@ -55,7 +55,7 @@ public class ReportOperatoriCTTTest {
         
         cdf = new Cdf("123456781qwertyy");
         datadinascita = Constants.sdf.parse("29-01-1998");
-        ld = DateConverter.convertDateToLocalDate(datadinascita);
+        ld = DateUtil.convertDateToLocalDate(datadinascita);
         ruolo = RuoloDipendente.MagazziniereCTT;
         username = "username 005";
         password = "005";
@@ -64,7 +64,7 @@ public class ReportOperatoriCTTTest {
         
         cdf = new Cdf("123456789djkshnd");
         datadinascita = Constants.sdf.parse("10-04-1992");
-        ld = DateConverter.convertDateToLocalDate(datadinascita);
+        ld = DateUtil.convertDateToLocalDate(datadinascita);
         ruolo = RuoloDipendente.MagazziniereCTT;
         username = "username 006";
         password = "006";
@@ -73,7 +73,7 @@ public class ReportOperatoriCTTTest {
         
         cdf = new Cdf("123456789qwedety");
         datadinascita = Constants.sdf.parse("20-10-1982");
-        ld = DateConverter.convertDateToLocalDate(datadinascita);
+        ld = DateUtil.convertDateToLocalDate(datadinascita);
         ruolo = RuoloDipendente.OperatoreCTT;
         username = "username 007";
         password = "007";
@@ -82,7 +82,7 @@ public class ReportOperatoriCTTTest {
         
         cdf = new Cdf("123456789dfgrhty");
         datadinascita = Constants.sdf.parse("12-12-2001");
-        ld = DateConverter.convertDateToLocalDate(datadinascita);
+        ld = DateUtil.convertDateToLocalDate(datadinascita);
         ruolo = RuoloDipendente.MagazziniereCTT;
         username = "username 008";
         password = "008";
@@ -95,7 +95,7 @@ public class ReportOperatoriCTTTest {
         }       
 	}
 	
-	EndPointAmministratoreCTT amm = new EndPointAmministratoreCTT();
+	EndPointRestAmministratoreCTT amm = new EndPointRestAmministratoreCTT();
 		
 	
 	/**

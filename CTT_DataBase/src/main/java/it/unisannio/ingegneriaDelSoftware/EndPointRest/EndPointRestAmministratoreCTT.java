@@ -9,23 +9,12 @@ import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.Classes.RuoloDipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
-import it.unisannio.ingegneriaDelSoftware.Interfaces.AmministratoreCTTDataManager;
-import it.unisannio.ingegneriaDelSoftware.Interfaces.DipendenteCTT;
-import it.unisannio.ingegneriaDelSoftware.Util.DateConverter;
+import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointAmministratoreCTT;
+import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointLogin;
+import it.unisannio.ingegneriaDelSoftware.Util.DateUtil;
 
 
-public class EndPointAmministratoreCTT implements AmministratoreCTTDataManager, DipendenteCTT{
-
-	/**Login è l'operazione con la quale AmministratoreCTT accede al sistema
-	 * @param username Username che usa AmministratoreCTT per entrare nel sistema
-	 * @param password Password che usa AmministratoreCTT per entrare nel sistema
-	 * @return true se username e password corrispondono; false altrimenti
-	 */
-	public boolean login(String username, String password) {
-		MongoDataManager mm = new MongoDataManager();
-		if(mm.getDipendente(username, password)!= null) return true;
-		else return false;
-	}
+public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT{
 
 	
 	/**Aggiunge un Dipendente al DataBase
@@ -95,8 +84,8 @@ public class EndPointAmministratoreCTT implements AmministratoreCTTDataManager, 
     	Date dataAffidamento = null;
 	    
 	    for (DatiSacca datiSacca : listaDati) {
-	    	 dataArrivo = DateConverter.convertLocalDateToDate(datiSacca.getDataArrivo());
-	    	 dataAffidamento = DateConverter.convertLocalDateToDate(datiSacca.getDataAffidamento());
+	    	 dataArrivo = DateUtil.convertLocalDateToDate(datiSacca.getDataArrivo());
+	    	 dataAffidamento = DateUtil.convertLocalDateToDate(datiSacca.getDataAffidamento());
 	    	     	 
 	    	if((dataArrivo.after(dataInizio) && dataArrivo.before(dataFine))
 	    			|| (dataAffidamento.after(dataInizio) && dataAffidamento.before(dataFine))) {

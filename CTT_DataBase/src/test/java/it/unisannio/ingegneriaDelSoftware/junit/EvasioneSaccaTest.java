@@ -1,6 +1,8 @@
 package it.unisannio.ingegneriaDelSoftware.junit;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -12,7 +14,7 @@ import it.unisannio.ingegneriaDelSoftware.Classes.DatiSacca;
 import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
 import it.unisannio.ingegneriaDelSoftware.Classes.Seriale;
-import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointMagazziniereCTT;
+import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointRestMagazziniereCTT;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 
 
@@ -596,7 +598,7 @@ public class EvasioneSaccaTest {
         }
 	}
 	
-	EndPointMagazziniereCTT magazz = new EndPointMagazziniereCTT();
+	EndPointRestMagazziniereCTT magazz = new EndPointRestMagazziniereCTT();
 	MongoDataManager mongo = new MongoDataManager();
 	
 	/**
@@ -610,17 +612,18 @@ public class EvasioneSaccaTest {
 	
 	/**
 	 * Test che dovrebbe restituire null, siccome la Sacca viene rimossa
-	 * @throws ParseException 
+	 * @throws ParseException
+	 *
 	*/
 	@Test 
 	public void test2() {
 		magazz.evasioneSacca("CTT001-00000009","Cardarelli","Benevento,via dei caduti");
-		assertEquals(null,mongo.getSacca(new Seriale("CTT001-00000009")));
+		assertNull(mongo.getSacca(new Seriale("CTT001-00000009")));
 	}
 	
 	
 	/**
-	 * Test che dovrebbe restituire una lista di Sacche con 20 elementi
+	 * Test che dovrebbe restituire una lista di Sacche con 39 elementi
 	 * @throws ParseException
 	 */
 	@Test public void test3() {
@@ -628,8 +631,11 @@ public class EvasioneSaccaTest {
 	}
 
 
+
 	@AfterClass public static void dropDBSacche() {
 		MongoDataManager mm = new MongoDataManager();
 		mm.dropDB();
 	}
+
+
 }

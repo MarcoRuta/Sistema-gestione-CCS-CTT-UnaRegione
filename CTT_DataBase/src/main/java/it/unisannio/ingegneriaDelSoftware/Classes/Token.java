@@ -17,8 +17,12 @@ public class Token {
     }
     private String token;
 
-    private static final SecureRandom secureRandom = new SecureRandom(); //threadsafe
-    private static final Base64.Encoder base64Encoder = Base64.getUrlEncoder(); //threadsafe
+    /**
+     *java.security.SecureRandom is a class that provides a cryptographically strong random number generator.
+     * Da una sequenza di interi che è meno prevedibile rispetto alla classe java.util.Random*/
+    private static final SecureRandom secureRandom = new SecureRandom();
+    /**Una classe java che si occupa di effettuare un Encoding in Base64*/
+    private static final Base64.Encoder base64Encoder = Base64.getUrlEncoder();
 
     /**@param usernamePassword  username + password dell'utente loggato senza alcuno spazione
      * @return  token  */
@@ -61,6 +65,7 @@ public class Token {
         return this.token;
     }
 
+    /**costruttore privato per il FlyWeight pattern*/
     private Token(){
         byte[] randomBytes = new byte[24];
         secureRandom.nextBytes(randomBytes);

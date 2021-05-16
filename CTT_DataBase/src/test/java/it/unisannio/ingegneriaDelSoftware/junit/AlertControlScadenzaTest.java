@@ -14,11 +14,11 @@ import it.unisannio.ingegneriaDelSoftware.Classes.DatiSacca;
 import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.CTT;
-import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointMagazziniereCTT;
+import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointRestMagazziniereCTT;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 
 public class AlertControlScadenzaTest {
-	EndPointMagazziniereCTT magazz = new EndPointMagazziniereCTT();
+	EndPointRestMagazziniereCTT magazz = new EndPointRestMagazziniereCTT();
 	CTT ctt = new CTT();
 	
 	@BeforeClass public static void populateDBSacche() {

@@ -31,6 +31,7 @@ public class Constants {
 	public static final String ELEMENT_PASSWORD = "password";
 	
 	public static SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+	public static final String DATEFORMAT = "yyyy-MM-dd";
 
 
 }

@@ -11,7 +11,7 @@ import it.unisannio.ingegneriaDelSoftware.Classes.RuoloDipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
 
 
-public interface AmministratoreCTTDataManager {
+public interface EndPointAmministratoreCTT {
 	
 	void addDipendente(Dipendente d);	
 

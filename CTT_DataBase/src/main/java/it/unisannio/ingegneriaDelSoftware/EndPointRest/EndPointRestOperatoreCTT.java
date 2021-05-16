@@ -10,24 +10,12 @@ import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaLocaleNotFoundException;
-import it.unisannio.ingegneriaDelSoftware.Interfaces.DipendenteCTT;
-import it.unisannio.ingegneriaDelSoftware.Interfaces.OperatoreCTTDataManager;
+import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointLogin;
+import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointOperatoreCTT;
 import it.unisannio.ingegneriaDelSoftware.Util.ScadenzeComparator;
 
-public class EndPointOperatoreCTT implements OperatoreCTTDataManager, DipendenteCTT {
-	
-	/**Login è l'operazione con la quale OperatoreCTT accede al sistema
-	 * @param username Username che usa OperatoreCTT per entrare nel sistema
-	 * @param password Password che usa OperatoreCTT per entrare nel sistema
-	 * @return true se Username e Password corrispondono; false altrimenti
-	 */
-	public boolean login(String username, String password) {
-		MongoDataManager mm = new MongoDataManager();
-		if(mm.getDipendente(username, password)!= null) return true;
-		else return false;
-	}
-	
-	
+public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT{
+
 	/**Restituisce la sacca del GruppoSanguigno richiesto con Data di scadenza più vicina nel DataBase locale.
      * @param gs Gruppo sanguigno ricercato
      * @param dataArrivoMassima Data entro la quale la Sacca non deve scadere e deve arrivare all'Ente richiedente
@@ -36,7 +24,7 @@ public class EndPointOperatoreCTT implements OperatoreCTTDataManager, Dipendente
 	 * @throws  
      */
 	public Sacca ricercaSaccaLocale(GruppoSanguigno gs, LocalDate dataArrivoMassima, String enteRichiedente, String indirizzoEnte){
-		EndPointOperatoreCTT ms = new EndPointOperatoreCTT();
+		EndPointRestOperatoreCTT ms = new EndPointRestOperatoreCTT();
 		MongoDataManager mm = new MongoDataManager();
 		
 		Sacca s = null;

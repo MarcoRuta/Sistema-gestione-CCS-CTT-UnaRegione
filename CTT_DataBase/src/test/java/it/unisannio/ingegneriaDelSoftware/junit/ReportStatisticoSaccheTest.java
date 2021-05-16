@@ -13,12 +13,12 @@ import it.unisannio.ingegneriaDelSoftware.Classes.DatiSacca;
 import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
 import it.unisannio.ingegneriaDelSoftware.Classes.Seriale;
-import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointAmministratoreCTT;
+import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointRestAmministratoreCTT;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 
 
 public class ReportStatisticoSaccheTest {
-	EndPointAmministratoreCTT amm = new EndPointAmministratoreCTT();
+	EndPointRestAmministratoreCTT amm = new EndPointRestAmministratoreCTT();
 	
 	@BeforeClass public static void populateDBSacche() {
 		

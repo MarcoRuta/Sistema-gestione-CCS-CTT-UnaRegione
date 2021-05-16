@@ -8,9 +8,9 @@ import java.util.List;
 import it.unisannio.ingegneriaDelSoftware.Classes.*;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.*;
-import it.unisannio.ingegneriaDelSoftware.Util.DateConverter;;
+import it.unisannio.ingegneriaDelSoftware.Util.DateUtil;;
 
-public class CTT implements CTTDataManager{
+public class CTT implements CTTFunction {
 	
 	/**Restituisce una lista di tutte le sacche che scadono entro 72 ore
 	 * @return la lista di sacche non ancora scadute ma che scadono entro 72 ore da oggi
@@ -24,8 +24,8 @@ public class CTT implements CTTDataManager{
         long dataScadenza72 = dataScadenza + 259200000;
 
         for (Sacca sacca : listaSacche){
-            if(DateConverter.convertLocalDateToDate(sacca.getDataScadenza()).getTime()>(dataScadenza) 
-            		&& DateConverter.convertLocalDateToDate(sacca.getDataScadenza()).getTime()<(dataScadenza72)) {
+            if(DateUtil.convertLocalDateToDate(sacca.getDataScadenza()).getTime()>(dataScadenza)
+            		&& DateUtil.convertLocalDateToDate(sacca.getDataScadenza()).getTime()<(dataScadenza72)) {
 
             	saccheInScadenza.add(sacca);
             }

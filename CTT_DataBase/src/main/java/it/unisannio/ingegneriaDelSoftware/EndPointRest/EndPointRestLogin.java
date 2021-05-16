@@ -4,6 +4,7 @@ import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.Token;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.DataManager;
+import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointLogin;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Cookie;
@@ -12,7 +13,7 @@ import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 
 @Path("/login")
-public class EndPointLogin {
+public class EndPointRestLogin implements EndPointLogin {
 
     /**
      * Login è l'operazione con la quale un generico dipendente del ctt accede al sistema

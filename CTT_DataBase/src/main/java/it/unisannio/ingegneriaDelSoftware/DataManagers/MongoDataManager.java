@@ -8,7 +8,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Updates;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.DataManager;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
-import it.unisannio.ingegneriaDelSoftware.Util.DateConverter;
+import it.unisannio.ingegneriaDelSoftware.Util.DateUtil;
 import it.unisannio.ingegneriaDelSoftware.Classes.*;
 import static com.mongodb.client.model.Filters.*;
 import org.bson.Document;
@@ -29,33 +29,36 @@ public class MongoDataManager implements DataManager {
     }
 
 	
-	/**Aggiunge una Sacca al database delle sacche
+	/**Aggiunge una Sacca al database delle sacche solo se essa non è gia presente nel
+	 * DB delle sacche
 	 * @param s Sacca da aggiungere al db
 	 */
 	public void createSacca(Sacca s) {
+		assert !(this.containsSacca(s.getSeriale())):"Sacca gia presente nel DB";
 	    MongoDatabase database = mongoClient.getDatabase(Constants.DB_NAME);
 	    MongoCollection<Document> collection = database.getCollection(Constants.COLLECTION_SACCHE);
 	    
 	    Document sacca = new Document(Constants.ELEMENT_SERIALE, s.getSeriale().getSeriale())
                 .append(Constants.ELEMENT_GRUPPO, s.getGruppoSanguigno().toString())
-                .append(Constants.ELEMENT_DATAPRODUZIONE, DateConverter.convertLocalDateToDate(s.getDataProduzione()))
-                .append(Constants.ELEMENT_DATASCADENZA, DateConverter.convertLocalDateToDate(s.getDataScadenza()))
+                .append(Constants.ELEMENT_DATAPRODUZIONE, DateUtil.convertLocalDateToDate(s.getDataProduzione()))
+                .append(Constants.ELEMENT_DATASCADENZA, DateUtil.convertLocalDateToDate(s.getDataScadenza()))
                 .append(Constants.ELEMENT_PRENOTATO, s.isPrenotato());
 	    collection.insertOne(sacca);
 	}
 
 	
-	/**Aggiunge un DatiSacca al database dei datiSacca
+	/**Aggiunge un DatiSacca al database dei datiSacca solo se il dati sacca non è gia presente
 	 * @param ds datiSacca da aggiungere al db
 	 */
 	public void createDatiSacca(DatiSacca ds) {
+		assert !(this.containsDatiSacca(ds.getSeriale())):"Dati Sacca già presente nel DB";
 	    MongoDatabase database = mongoClient.getDatabase(Constants.DB_NAME);
 	    MongoCollection<Document> collection = database.getCollection(Constants.COLLECTION_DATISACCHE);
 	    
 	    Document datiSacca = new Document(Constants.ELEMENT_SERIALE, ds.getSeriale().getSeriale())
 	    		.append(Constants.ELEMENT_GRUPPO, ds.getGruppoSanguigno().toString())
-                .append(Constants.ELEMENT_DATAARRIVO, DateConverter.convertLocalDateToDate(ds.getDataArrivo()))
-                .append(Constants.ELEMENT_DATAAFFIDAMENTO, DateConverter.convertLocalDateToDate(ds.getDataAffidamento()))
+                .append(Constants.ELEMENT_DATAARRIVO, DateUtil.convertLocalDateToDate(ds.getDataArrivo()))
+                .append(Constants.ELEMENT_DATAAFFIDAMENTO, DateUtil.convertLocalDateToDate(ds.getDataAffidamento()))
                 .append(Constants.ELEMENT_ENTEDONATORE, ds.getEnteDonatore())
                 .append(Constants.ELEMENT_ENTERICHIEDENTE, ds.getEnteRichiedente())
                 .append(Constants.ELEMENT_INDIRIZZOENTE, ds.getIndirizzoEnte());
@@ -87,8 +90,8 @@ public class MongoDataManager implements DataManager {
 		for (Document current : collection.find(eq(Constants.ELEMENT_SERIALE, ser.getSeriale()))) {
 			s = new Sacca( new Seriale(current.getString(Constants.ELEMENT_SERIALE)),
 				GruppoSanguigno.valueOf(current.getString(Constants.ELEMENT_GRUPPO)),
-				DateConverter.convertDateToLocalDate(current.getDate(Constants.ELEMENT_DATAPRODUZIONE)),
-				DateConverter.convertDateToLocalDate(current.getDate(Constants.ELEMENT_DATASCADENZA)),
+				DateUtil.convertDateToLocalDate(current.getDate(Constants.ELEMENT_DATAPRODUZIONE)),
+				DateUtil.convertDateToLocalDate(current.getDate(Constants.ELEMENT_DATASCADENZA)),
 				current.getBoolean(Constants.ELEMENT_PRENOTATO));
 		}
 		return s;	
@@ -107,8 +110,8 @@ public class MongoDataManager implements DataManager {
 		for (Document current : collection.find(eq(Constants.ELEMENT_SERIALE,ser.getSeriale()))) {
 			ds = new DatiSacca(new Seriale(current.getString(Constants.ELEMENT_SERIALE)),
 					GruppoSanguigno.valueOf(current.getString(Constants.ELEMENT_GRUPPO)),
-					DateConverter.convertDateToLocalDate(current.getDate(Constants.ELEMENT_DATAARRIVO)),
-					DateConverter.convertDateToLocalDate(current.getDate(Constants.ELEMENT_DATAAFFIDAMENTO)),
+					DateUtil.convertDateToLocalDate(current.getDate(Constants.ELEMENT_DATAARRIVO)),
+					DateUtil.convertDateToLocalDate(current.getDate(Constants.ELEMENT_DATAAFFIDAMENTO)),
 					current.getString(Constants.ELEMENT_ENTEDONATORE),
 					current.getString(Constants.ELEMENT_ENTERICHIEDENTE),
 					current.getString(Constants.ELEMENT_INDIRIZZOENTE));
@@ -125,14 +128,8 @@ public class MongoDataManager implements DataManager {
 	    MongoCollection<Document> collection = database.getCollection(Constants.COLLECTION_SACCHE);
         List<Sacca> listaSacche = new ArrayList<Sacca>();
         
-        for (Document current : collection.find()){
-                Sacca s = new Sacca(new Seriale(current.getString(Constants.ELEMENT_SERIALE)),
-                        GruppoSanguigno.valueOf(current.getString(Constants.ELEMENT_GRUPPO)),
-                        DateConverter.convertDateToLocalDate(current.getDate(Constants.ELEMENT_DATAPRODUZIONE)),
-                        DateConverter.convertDateToLocalDate(current.getDate(Constants.ELEMENT_DATASCADENZA)),
-                        current.getBoolean(Constants.ELEMENT_PRENOTATO));
-                listaSacche.add(s);
-            }
+        for (Document current : collection.find())
+                listaSacche.add(this.getSacca(new Seriale(current.getString(Constants.ELEMENT_SERIALE))));
         return listaSacche;
 	}
 	
@@ -145,16 +142,8 @@ public class MongoDataManager implements DataManager {
 	    MongoCollection<Document> collection = database.getCollection(Constants.COLLECTION_DATISACCHE);
 	    List<DatiSacca> datiSacche = new ArrayList<DatiSacca>();
 	   
-	    for (Document current : collection.find()) {	       
-			DatiSacca ds = new DatiSacca(new Seriale(current.getString(Constants.ELEMENT_SERIALE)),
-					GruppoSanguigno.valueOf(current.getString(Constants.ELEMENT_GRUPPO)),
-					DateConverter.convertDateToLocalDate(current.getDate(Constants.ELEMENT_DATAARRIVO)),
-					DateConverter.convertDateToLocalDate(current.getDate(Constants.ELEMENT_DATAAFFIDAMENTO)),
-					current.getString(Constants.ELEMENT_ENTEDONATORE),
-					current.getString(Constants.ELEMENT_ENTERICHIEDENTE),	
-					current.getString(Constants.ELEMENT_INDIRIZZOENTE));	
-	    	datiSacche.add(ds);
-		}	    
+	    for (Document current : collection.find())
+	    	datiSacche.add(this.getDatiSacca(new Seriale(current.getString(Constants.ELEMENT_SERIALE))));
 		return datiSacche;		
 	}
 	  	
@@ -218,21 +207,22 @@ public class MongoDataManager implements DataManager {
 		MongoCollection<Document> collection = database.getCollection(Constants.COLLECTION_DATISACCHE);
 		collection.updateOne(
 				eq(Constants.ELEMENT_SERIALE,seriale.getSeriale()),
-				Updates.set(Constants.ELEMENT_DATAAFFIDAMENTO,DateConverter.convertLocalDateToDate(dataAffidamento)));
+				Updates.set(Constants.ELEMENT_DATAAFFIDAMENTO, DateUtil.convertLocalDateToDate(dataAffidamento)));
 	}
 
 	
-	/**Aggiungere un Dipendente al database dei Dipendenti
+	/**Aggiungere un Dipendente al database dei Dipendenti solo se esso non è stato gia aggiunto
 	 * @param d Dipendente da aggiungere al database dei Dipendenti
 	 */
 	public void addDipendente(Dipendente d) {
+		assert !(this.containsDipendente(d.getCdf())):"Dipendente già presente nel DB";
 		MongoDatabase database = mongoClient.getDatabase(Constants.DB_NAME);
 		MongoCollection<Document> collection = database.getCollection(Constants.COLLECTION_DIPENDENTI);
 	    
 	    Document unDipendente = new Document(Constants.ELEMENT_CDF, d.getCdf().getCodiceFiscale())
                 .append(Constants.ELEMENT_NOME, d.getNome())
                 .append(Constants.ELEMENT_COGNOME, d.getCognome())
-                .append(Constants.ELEMENT_DATADINASCITA, DateConverter.convertLocalDateToDate(d.getDataDiNascita()))
+                .append(Constants.ELEMENT_DATADINASCITA, DateUtil.convertLocalDateToDate(d.getDataDiNascita()))
                 .append(Constants.ELEMENT_RUOLO, d.getRuolo().toString())
                 .append(Constants.ELEMENT_USERNAME, d.getUsername())
                 .append(Constants.ELEMENT_PASSWORD, d.getPassword());
@@ -260,11 +250,11 @@ public class MongoDataManager implements DataManager {
 		MongoDatabase database = mongoClient.getDatabase(Constants.DB_NAME);
 	    MongoCollection<Document> collection = database.getCollection(Constants.COLLECTION_DIPENDENTI);
 	        
-	    for (Document current : collection.find(eq(Constants.ELEMENT_CDF, cdf))) {
+	    for (Document current : collection.find(eq(Constants.ELEMENT_CDF, cdf.getCodiceFiscale()))) {
 	        		  Dipendente dip = new Dipendente(new Cdf(current.getString(Constants.ELEMENT_CDF)),
 	    				current.getString(Constants.ELEMENT_NOME),
 	    				current.getString(Constants.ELEMENT_COGNOME),
-	    				DateConverter.convertDateToLocalDate(current.getDate(Constants.ELEMENT_DATADINASCITA)),
+	    				DateUtil.convertDateToLocalDate(current.getDate(Constants.ELEMENT_DATADINASCITA)),
 	    				RuoloDipendente.valueOf(current.getString(Constants.ELEMENT_RUOLO)),
 	    				current.getString(Constants.ELEMENT_USERNAME),
 	    				current.getString(Constants.ELEMENT_PASSWORD));
@@ -288,7 +278,7 @@ public class MongoDataManager implements DataManager {
 	    		Dipendente dip = new Dipendente(new Cdf(current.getString(Constants.ELEMENT_CDF)),
 	    				current.getString(Constants.ELEMENT_NOME),
 	    				current.getString(Constants.ELEMENT_COGNOME),
-	    				DateConverter.convertDateToLocalDate(current.getDate(Constants.ELEMENT_DATADINASCITA)),
+	    				DateUtil.convertDateToLocalDate(current.getDate(Constants.ELEMENT_DATADINASCITA)),
 	    				RuoloDipendente.valueOf(current.getString(Constants.ELEMENT_RUOLO)),
 	    				current.getString(Constants.ELEMENT_USERNAME),
 	    				current.getString(Constants.ELEMENT_PASSWORD));
@@ -308,16 +298,8 @@ public class MongoDataManager implements DataManager {
 	    MongoCollection<Document> collection = database.getCollection(Constants.COLLECTION_DIPENDENTI);
         List<Dipendente> dipendenti = new ArrayList<Dipendente>();
 
-        for (Document current : collection.find()) {
-                Dipendente dip = new Dipendente(new Cdf(current.getString(Constants.ELEMENT_CDF)),
-                        current.getString(Constants.ELEMENT_NOME),
-                        current.getString(Constants.ELEMENT_COGNOME),
-                        DateConverter.convertDateToLocalDate(current.getDate(Constants.ELEMENT_DATADINASCITA)),
-                        RuoloDipendente.valueOf(current.getString(Constants.ELEMENT_RUOLO)),
-                        current.getString(Constants.ELEMENT_USERNAME),
-                        current.getString(Constants.ELEMENT_PASSWORD));
-               dipendenti.add(dip);
-        }        
+        for (Document current : collection.find())
+               dipendenti.add(this.getDipendente(new Cdf(current.getString(Constants.ELEMENT_CDF))));
         return dipendenti;
     }
 
