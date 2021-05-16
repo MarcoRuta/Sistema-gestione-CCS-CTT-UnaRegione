@@ -70,6 +70,7 @@ public class MongoDataManager implements DataManager {
 	 * @param ser Seriale della sacca da rimuovere dal db delle sacche
 	 */
 	public void removeSacca(Seriale ser) {
+		assert this.containsSacca(ser):"Non è possibile rimuovere una sacca non presente nel DB";
 		MongoDatabase database = mongoClient.getDatabase(Constants.DB_NAME);
 		MongoCollection<Document> collection = database.getCollection(Constants.COLLECTION_SACCHE);
 		    
@@ -152,6 +153,7 @@ public class MongoDataManager implements DataManager {
 	 * @param seriale Seriale della Sacca da ricercare
 	 */
 	public void setPrenotatoSacca(Seriale seriale) {
+		assert this.containsSacca(seriale):"Non puoi aggiornare lo stato di una sacca che non esiste";
 		MongoDatabase database = mongoClient.getDatabase(Constants.DB_NAME);
 		MongoCollection<Document> collection = database.getCollection(Constants.COLLECTION_SACCHE);
 		
@@ -159,26 +161,14 @@ public class MongoDataManager implements DataManager {
 				eq(Constants.ELEMENT_SERIALE,seriale.getSeriale()),
 				Updates.set(Constants.ELEMENT_PRENOTATO, true));
 	}
-	
-	
-	/** Modifica il parametro dataArrivo di una DatiSacca identificata tramite Seriale nel database dei DatiSacca
-	 * @param seriale Seriale della sacca da modificare
-	 * @param dataArrivo Data di arrivo aggiornata
-	 */
-	public void setDataArrivoDatiSacca(Seriale seriale, LocalDate dataArrivo) {
-		MongoDatabase database = mongoClient.getDatabase(Constants.DB_NAME);
-		MongoCollection<Document> collection = database.getCollection(Constants.COLLECTION_DATISACCHE);
-		collection.updateOne(
-				eq(Constants.ELEMENT_SERIALE,seriale.getSeriale()),
-				Updates.set(Constants.ELEMENT_DATAARRIVO, dataArrivo));
-	}
-    	
+
 	
 	/**Modifica il parametro enteRichiedente di una DatiSacca identificata tramite Seriale nel database dei DatiSacca
 	 * @param seriale Seriale della Sacca da modificare
 	 * @param enteRichiedente Ente a cui sarà affidata la Sacca
 	 */
 	public void setEnteRichiedenteDatiSacca(Seriale seriale, String enteRichiedente) {
+		assert this.containsDatiSacca(seriale):"Non puoi cambiare l'ente richiedente di una sacca non presente nel DB";
 		MongoDatabase database = mongoClient.getDatabase(Constants.DB_NAME);
 		MongoCollection<Document> collection = database.getCollection(Constants.COLLECTION_DATISACCHE);
 		collection.updateOne(
@@ -191,6 +181,7 @@ public class MongoDataManager implements DataManager {
 	 * @param indirizzoEnte indirizzo dell'ente a cui sarà affidata la Sacca
 	 */
 	public void setIndirizzoEnteDatiSacca(Seriale seriale, String indirizzoEnte) {
+		assert this.containsDatiSacca(seriale):"Non puoi cambiare l'indirizzo dell'ente richiedente di una sacca non presente nel DB";
 		MongoDatabase database = mongoClient.getDatabase(Constants.DB_NAME);
 		MongoCollection<Document> collection = database.getCollection(Constants.COLLECTION_DATISACCHE);
 		collection.updateOne(
@@ -203,6 +194,7 @@ public class MongoDataManager implements DataManager {
 	 * @param dataAffidamento Data in cui è stata affidata la Sacca
 	 */
 	public void setDataAffidamentoDatiSacca(Seriale seriale, LocalDate dataAffidamento) {
+		assert this.containsDatiSacca(seriale):"Non puoi cambiare la data di affidamento di una sacca non presente nel DB";
 		MongoDatabase database = mongoClient.getDatabase(Constants.DB_NAME);
 		MongoCollection<Document> collection = database.getCollection(Constants.COLLECTION_DATISACCHE);
 		collection.updateOne(
@@ -234,6 +226,7 @@ public class MongoDataManager implements DataManager {
 	 * @param cdf Codice fiscale del Dipendente da eliminare
 	 */
 	public void removeDipendente(Cdf cdf) {
+		assert this.containsDipendente(cdf):"Non puoi eliminare un dipendente non presente nel DB";
 		MongoDatabase database = mongoClient.getDatabase(Constants.DB_NAME);
 	    MongoCollection<Document> collection = database.getCollection(Constants.COLLECTION_DIPENDENTI);
 	    

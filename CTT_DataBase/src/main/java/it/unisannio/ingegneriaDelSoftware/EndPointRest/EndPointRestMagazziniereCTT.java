@@ -143,4 +143,5 @@ public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 		return serialiSacca;
 
 	}
+
 }

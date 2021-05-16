@@ -22,8 +22,6 @@ public interface DataManager {
 	boolean containsSacca(Seriale seriale);
 	
 	void setPrenotatoSacca(Seriale ser);
-	
-	void setDataArrivoDatiSacca(Seriale seriale, LocalDate dataArrivo);
 
 	void setEnteRichiedenteDatiSacca(Seriale seriale, String enteRichiedente);
 
