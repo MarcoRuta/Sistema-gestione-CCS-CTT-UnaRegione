@@ -319,6 +319,7 @@ public class MongoDataManager implements DataManager {
 		return dipendenti;
 	}
 
+
 	/**@param seriale il seriale della sacca che si vuole cercare
 	 * @return true se la sacca è contenuta
 	 */

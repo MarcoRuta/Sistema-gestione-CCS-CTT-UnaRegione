@@ -74,5 +74,5 @@ public interface EndPointAmministratoreCTT {
 
 	/**Metodo tramite il quale è possibile accedere alla lista di dipendenti che lavorano al CTT
 	 * @return  la lista di dipendenti che lavorano al CTT*/
-	public List<Cdf> getDipendenti();
+	public List<Dipendente> getDipendenti();
 }

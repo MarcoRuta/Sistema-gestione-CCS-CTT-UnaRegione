@@ -33,7 +33,7 @@ public class EndPointLogout {
                     .build();
         } catch (TokenNotFoundException exp) {
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("Impossibile rimuovere il Token" + exp.getMessage())
+                    .entity("Impossibile rimuovere il Token, " + exp.getMessage())
                     .build();
         }
     }

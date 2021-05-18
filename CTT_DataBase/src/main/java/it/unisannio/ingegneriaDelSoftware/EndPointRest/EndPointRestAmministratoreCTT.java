@@ -220,16 +220,13 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 	/**Metodo tramite il quale è possibile accedere alla lista di dipendenti che lavorano al CTT
 	 * @return  la lista di dipendenti che lavorano al CTT*/
 	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.TEXT_PLAIN)
 	@Path("/dipendenti")
-	public List<Cdf> getDipendenti(){
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Dipendente> getDipendenti(){
+		
 		DataManager dataManager = new MongoDataManager();
-		List<Dipendente> dipendenti = dataManager.getListaDipendenti();
-		List<Cdf> cdfs = new ArrayList<>();
-		for (Dipendente dipendente:dipendenti)
-			cdfs.add(dipendente.getCdf());
-		return cdfs;
+		return dataManager.getListaDipendenti();
+		
 	}
 
 	/**Restituisce una lista di dati sacca che sono arrivate dopo di dataInizioReport oppure sono state affidate dopo prima
