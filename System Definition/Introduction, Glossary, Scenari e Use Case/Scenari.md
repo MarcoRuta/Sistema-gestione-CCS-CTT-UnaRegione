@@ -748,7 +748,7 @@
             </td>
             <td>
         <p>
-        1.	Il personale medico contatta il CTT003 per tre sacca di sangue compatibile con il tipo A+ che verrà trasfusa in data “30-03-2021”;
+        1.	Il personale medico contatta il CTT003 per tre sacche di sangue compatibile con il tipo A+ che verrà trasfusa in data “30-03-2021”;
       <p>
         2.	Pietro l’operatore del CTT003 riceve la richiesta;
       <p>

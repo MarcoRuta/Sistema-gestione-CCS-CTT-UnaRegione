@@ -877,7 +877,7 @@
                 <p style="font-style: 16px">Use case name:</p>
             </td>
             <td>
-                <p>RicercaSacca</p>
+                <p>RicercaSacche</p>
             </td>
         </tr>
         <tr>
@@ -896,7 +896,7 @@
                 <p>1.	A seguito di una richiesta proveniente dall’esterno, l’OperatoreCTT tramite TerminaleOperatoreCTT clicca su RicercaSaccaButton.</p>
                 <p align="right">2.	Il Sistema CTT risponde con un RicercaSaccaForm in cui richiede i dati necessari per effettuare la ricerca, il numero di sacche richieste, l'ente richiedente, il suo indirizzo, e la priorità di quest’ultima.</p>
                 <p>3.	L’OperatoreCTT compila RicercaSaccaForm fornendo tutte le informazioni sulla sacca di sangue da ricercare e lo sottomette.</p>
-                <p align="right">4.	Il Sistema CTT restituisce una QueryResult per informare del risultato della ricerca. A seguito di un QueryResult positivo il SistemaCTT modifica lo stato della sacca in “prenotata”, crea una NotificaEvasioneSacca contenente l’ente richiedente ed il seriale della sacca e la inoltra sul terminaleMagazziniereCTT</p>
+                <p align="right">4.	Il Sistema CTT restituisce una QueryResult per informare del risultato della ricerca. A seguito di un QueryResult positivo il SistemaCTT modifica lo stato delle sacche in “prenotate”, crea una NotificaEvasioneSacca contenente l’ente richiedente ed il seriale delle sacche da inviare e la inoltra sul terminaleMagazziniereCTT</p>
             </td>
         </tr>
         <tr>
