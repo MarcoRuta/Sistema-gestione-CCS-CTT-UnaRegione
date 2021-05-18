@@ -30,7 +30,7 @@
     <link rel="stylesheet" href="assets/css/formStyles.css">
 </head>
 
-<body style="background-color: #ffffff;" onload="keepSacche();">
+<body style="background-color: #ffffff;" onload="start();">
     
     <div class="titlePage">
         <div>
@@ -99,14 +99,30 @@
             var res;
             var obj;
             var xhttp = new XMLHttpRequest();
+            var token = sessionStorage.getItem("token");
+            var ruolo = sessionStorage.getItem("ruolo");
+
+            function start(){
+                verificoToken();
+                keepSacche();
+            }
+
+
+
+
+            verificoToken = function(){
+               if(token == null || ruolo != 'MagazziniereCTT'){
+                alert("E' necessario effettuare il login per accedere a questa risorsa");
+                window.location.href='Login.html';
+               }
+            }
             
             function loadDoc(){
                             	
-                var url = "http://127.0.0.1:8080/rest/CTT/evasione/" + numsacca.value;
+                var url = "http://127.0.0.1:8080/rest/magazziniere/evasione/" + numsacca.value;
                 var indirizzorichiedente = indirizzo.value;
                 var enterichiedente = ente.value;
                 var params = 'enterichiedente='+enterichiedente+'&indirizzo='+indirizzorichiedente;
-
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
                 	    res = this.response;
@@ -125,6 +141,8 @@
 
                 xhttp.open("PUT", url, true);
                 xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhttp.setRequestHeader('Authorization', 'Basic '+token);
+                xhttp.withCredentials = true;
                 xhttp.send(params);
 
             }
@@ -132,7 +150,7 @@
             function keepSacche(){
                            
                 xhttp = new XMLHttpRequest(); 	
-                url = "http://127.0.0.1:8080/rest/CTT/sacche";
+                url = "http://127.0.0.1:8080/rest/magazziniere/sacche";
 
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
@@ -143,6 +161,8 @@
                 };
                 
                 xhttp.open("GET", url, true);
+                xhttp.setRequestHeader('Authorization', 'Basic '+token);
+                xhttp.withCredentials = true;
                 xhttp.send();
                 
             }

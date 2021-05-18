@@ -17,11 +17,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-
 import it.unisannio.ingegneriaDelSoftware.Exceptions.DipendenteNotFoundException;
-
-
-import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import it.unisannio.ingegneriaDelSoftware.Classes.Cdf;
@@ -185,9 +181,11 @@ public class AddDipendenteTest {
 		assertEquals(Status.BAD_REQUEST.getStatusCode(), responseaddDip.getStatus());
 	}
 	
-	
+	/*
 	@AfterClass public static void dropDBDipendenti() {
 		MongoDataManager mm = new MongoDataManager();
-		mm.dropDB();
+		//mm.dropDB();
 	}
+
+	 */
 }

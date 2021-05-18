@@ -27,6 +27,7 @@ import java.util.List;
 @RolesAllowed("MagazziniereCTT")
 public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 
+	
 	/**Metodo attivato dal magazziniere quando vuole inserire una sacca nel DB
 	 * Esso crea datiSacca e Sacca
 	 * @param gruppo_sanguigno il gruppo sanguigno della sacca

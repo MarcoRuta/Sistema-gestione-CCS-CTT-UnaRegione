@@ -5,29 +5,28 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Singleton;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.PUT;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
+import it.unisannio.ingegneriaDelSoftware.EndPointNotifiche.EndPointNotificheMagazziniere;
 import it.unisannio.ingegneriaDelSoftware.Annotazioni.Secured;
 import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
-import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaLocaleNotFoundException;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.NotificaNonCreataException;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaNotFoundException;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccheInLocaleNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointOperatoreCTT;
 import it.unisannio.ingegneriaDelSoftware.Util.DateUtil;
 import it.unisannio.ingegneriaDelSoftware.Util.ScadenzeComparator;
 
-//#######################################come mai si chiama CTT invece che OperatoreCTT come tutti gli altri?? LRM
-@Path("/CTT")
+
+@Path("/operatore")
 @Singleton
 @Secured
 @RolesAllowed("OperatoreCTT")
@@ -40,35 +39,72 @@ public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT{
 	 * @return la Sacca con le caratteristiche richieste
 	 * @throws SaccaNotFoundException Eccezione che si verifica quando la sacca inserita non viene trovata
 	 */
-	@PUT
+	@GET
 	@Path("/ricerca")
 	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public Response ricercaSaccaLocale(@FormParam("gruppoSanguigno") String gruppoSanguigno,
-									   @FormParam("dataArrivoMassima") String dataArrivoMassima,
-									   @FormParam("enteRichiedente") String enteRichiedente,
-									   @FormParam("indirizzoEnte") String indirizzoEnte) throws SaccaNotFoundException{
-		MongoDataManager mm = new MongoDataManager();
-		Sacca s = null;
+	public Response ricercaSaccaLocale(@QueryParam("gruppoSanguigno") String gruppoSanguigno,
+									   @QueryParam("numeroSacche") String numeroSacche,
+									   @QueryParam("dataArrivoMassima") String dataArrivoMassima,
+									   @QueryParam("enteRichiedente") String enteRichiedente,
+									   @QueryParam("indirizzoEnte") String indirizzoEnte,
+									   @QueryParam("priorità") String priorita){
 		try {
-			s = ricercaSacca(GruppoSanguigno.valueOf(gruppoSanguigno), DateUtil.dateParser(dataArrivoMassima));
+			MongoDataManager mm = new MongoDataManager();
+			List<Sacca> saccheTrovate = new ArrayList<Sacca>();
+			int numSacche = Integer.parseInt(numeroSacche);
+			saccheTrovate = ricercaSacca(GruppoSanguigno.valueOf(gruppoSanguigno), DateUtil.dateParser(dataArrivoMassima));
 
-			if(s==null) s = ricercaSaccaCompatibile(GruppoSanguigno.valueOf(gruppoSanguigno), DateUtil.dateParser(dataArrivoMassima));
+			if(saccheTrovate.size() < numSacche) {
+				saccheTrovate.addAll(ricercaSaccaCompatibile(
+						GruppoSanguigno.valueOf(gruppoSanguigno), (DateUtil.dateParser(dataArrivoMassima))));
+			}
+			 
+			 //Nel caso in cui la richiesta non è stata soddisfatta completamente localmente, si crea una notifica di evasione diretta al magazziniere contenente i dati relativi all'evasione
+			 //Viene lanciata anche una SaccheInLocaleNotFoundException, che causerà l'inoltro della query di ricerca presso il CCS
+			if(numSacche > saccheTrovate.size()) {
+				
+				List<String> seriali = new ArrayList<String>();
+			   
+			   for(Sacca s : saccheTrovate) {
+				   mm.setPrenotatoSacca(s.getSeriale());
+				   seriali.add(s.getSeriale().getSeriale());
 			
-			mm.setPrenotatoSacca(s.getSeriale());
+			   }
+			   if(EndPointNotificheMagazziniere.aggiungiNotificaEvasione(seriali, enteRichiedente, indirizzoEnte) == 0) throw new NotificaNonCreataException("Non è stato possibile creare la notifica");
+ 
+				throw new SaccheInLocaleNotFoundException("Non è stato possibile soddisfare completamente la richiesta in locale, verrà contattato il CCS");
+			 }
 			
+			//Nel caso in cui la richiesta è stata soddisfatta completamente localmente, si crea una notifica di evasione diretta al magazziniere contenente i dati relativi all'evasione
+			else {
+				
+				 List<String> seriali = new ArrayList<String>();
+					
+				  for(int i = 0; i < numSacche; i++) {
+					  seriali.add(saccheTrovate.get(i).getSeriale().getSeriale());
+					  mm.setPrenotatoSacca(saccheTrovate.get(i).getSeriale());	
+				  }
+				  if(EndPointNotificheMagazziniere.aggiungiNotificaEvasione(seriali, enteRichiedente, indirizzoEnte) == 0) throw new NotificaNonCreataException("Non è stato possibile creare la notifica");
+			}
+			
+
 			return Response
-					.status(Response.Status.OK)
-					.entity(s)
+					.status(Response.Status.OK) //In questo caso sono state trovate tutte le sacche, va inviata risposta 200 OK 
+					.entity(saccheTrovate)//Va gestito l'inoltro della notifica di evasione sacche presso l'interfaccia REST del magazziniere 
 					.build();
-		}catch (SaccaLocaleNotFoundException e) {
-			return Response //in realtà deve avviare RicercaSaccaGlobale e passare i parametri enteRichiedente e indirizzoEnte
+		}catch (SaccheInLocaleNotFoundException e) {
+			return Response //in realtà deve avviare RicercaSaccaGlobale e passare i parametri al CCS
 					.status(Response.Status.NOT_FOUND)
-					.entity("Sacca non presente nel Database")
+					.entity(e.getMessage())
 					.build();
 		}catch(DateTimeParseException|IllegalArgumentException e) {
 			return Response
 					.status(Response.Status.BAD_REQUEST)
+					.entity(e.getMessage())
+					.build();
+		}catch(NotificaNonCreataException e) {
+			return Response
+					.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(e.getMessage())
 					.build();
 		}
@@ -82,18 +118,15 @@ public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT{
 	 * @return null se la Sacca non è stata trovata; la Sacca se essa è stata trovata
 	 * @throws SaccaNotFoundException
 	 */
-	private Sacca ricercaSacca(GruppoSanguigno gs, LocalDate dataArrivoMassima) throws SaccaNotFoundException {
-		assert(gs!=null);
-		assert(dataArrivoMassima!=null);
-
+	private List<Sacca> ricercaSacca(GruppoSanguigno gs, LocalDate dataArrivoMassima) throws SaccaNotFoundException {
+		assert(gs!=null) : "Il gruppo sanguigno non può essere nullo!";
+		assert(dataArrivoMassima!=null) : "la data di arrivo non può essere nulla!";
+		
+		
 		MongoDataManager mm = new MongoDataManager();
 		List<Sacca> saccheTrovate = new ArrayList<Sacca>();
-		try {
-			List<Sacca> listaSacche = mm.getListaSacche();
+		List<Sacca> listaSacche = mm.getListaSacche();
 			
-
-			Sacca selez = null;
-
 			for (Sacca sacca : listaSacche)
 				if(!sacca.isPrenotato() && sacca.getGruppoSanguigno().equals(gs)
 						&& sacca.getDataScadenza().isAfter(dataArrivoMassima)
@@ -101,12 +134,9 @@ public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT{
 					saccheTrovate.add(sacca);
 
 			saccheTrovate.sort(new ScadenzeComparator());
-			if(!saccheTrovate.isEmpty()) selez = saccheTrovate.get(0);
+			
 
-			return selez;
-		}catch (AssertionError e) {
-			return null;
-		}
+			return saccheTrovate;
 		
 	}
 
@@ -117,14 +147,14 @@ public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT{
 	 * @return null se la Sacca non è stata trovata; la Sacca se essa è stata trovata
 	 * @throws SaccaNotFoundException
 	 */
-	private Sacca ricercaSaccaCompatibile(GruppoSanguigno gs, LocalDate dataArrivoMassima) throws SaccaNotFoundException {
+	private List<Sacca> ricercaSaccaCompatibile(GruppoSanguigno gs, LocalDate dataArrivoMassima) throws SaccaNotFoundException {
 
 		MongoDataManager mm = new MongoDataManager();
-		List<Sacca> saccheTrovate = new ArrayList<Sacca>();
-		try {
+			
+			List<Sacca> saccheTrovate = new ArrayList<Sacca>();
 			List<Sacca> listaSacche = mm.getListaSacche();
 
-			Sacca selez = null;
+			
 
 			Iterator<GruppoSanguigno> i = GruppoSanguigno.puoRicevereDa(gs);
 			while(i.hasNext()) {
@@ -138,11 +168,7 @@ public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT{
 			}
 
 			saccheTrovate.sort(new ScadenzeComparator());
-			if(!saccheTrovate.isEmpty()) selez = saccheTrovate.get(0);
-
-			return selez;		
-		}catch (AssertionError e) {
-			return null;
-		}
+			return saccheTrovate;
+				
 	}
 }

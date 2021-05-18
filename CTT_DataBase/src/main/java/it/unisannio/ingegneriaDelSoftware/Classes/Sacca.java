@@ -20,7 +20,8 @@ public class Sacca {
 		assert gs != null: "Il gruppo sanguigno non può essere null";
 		assert dataProduzione != null: "La data di produzione non può essere null";
 		assert dataScadenza != null: "la data di scadenza non può essere null";
-		assert dataProduzione.isBefore(dataScadenza): "La data di produzione non può essere precedente a quella di scadenza";
+		if (dataScadenza.isBefore(dataProduzione))throw new AssertionError( "La data di produzione non può essere precedente a quella di scadenza");
+		if(dataScadenza.isBefore(LocalDate.now()))	throw new AssertionError("La sacca è gia scaduta");
 
 		this.seriale = new Seriale();
 		this.gruppo = gs;
@@ -37,6 +38,8 @@ public class Sacca {
 		assert gs != null: "Il gruppo sanguigno non può essere null";
 		assert dataProduzione != null: "La data di produzione non può essere null";
 		assert dataScadenza != null: "la data di scadenza non può essere null";
+		if (dataScadenza.isBefore(dataProduzione))throw new AssertionError( "La data di produzione non può essere precedente a quella di scadenza");
+		if(dataScadenza.isBefore(LocalDate.now()))	throw new AssertionError("La sacca è gia scaduta");
 
 		this.seriale = new Seriale();
 		this.gruppo = gs;
@@ -55,6 +58,8 @@ public class Sacca {
 		assert dataProduzione != null: "La data di produzione non può essere null";
 		assert dataScadenza != null: "la data di scadenza non può essere null";
 		assert ser!= null: "Il seriale non puo essere null";
+		if (dataScadenza.isBefore(dataProduzione))throw new AssertionError( "La data di produzione non può essere precedente a quella di scadenza");
+		if(dataScadenza.isBefore(LocalDate.now()))	throw new AssertionError("La sacca è gia scaduta");
 
 		this.seriale = ser;
 		this.gruppo = gs;
@@ -72,6 +77,8 @@ public class Sacca {
 		assert dataProduzione != null: "La data di produzione non può essere null";
 		assert dataScadenza != null: "la data di scadenza non può essere null";
 		assert ser!= null: "Il seriale non puo essere null";
+		if (dataScadenza.isBefore(dataProduzione))throw new AssertionError( "La data di produzione non può essere precedente a quella di scadenza");
+		if(dataScadenza.isBefore(LocalDate.now()))	throw new AssertionError("La sacca è gia scaduta");
 
 		this.seriale = ser;
 		this.gruppo = gs;

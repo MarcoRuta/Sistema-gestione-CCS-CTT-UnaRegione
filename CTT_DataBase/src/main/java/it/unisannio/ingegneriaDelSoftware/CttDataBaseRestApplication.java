@@ -1,10 +1,7 @@
 package it.unisannio.ingegneriaDelSoftware;
 
 
-import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointLogout;
-import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointRestAmministratoreCTT;
-import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointRestAutentificazione;
-import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointRestMagazziniereCTT;
+import it.unisannio.ingegneriaDelSoftware.EndPointRest.*;
 import it.unisannio.ingegneriaDelSoftware.Filtri.FiltroDiAutorizzazione;
 import it.unisannio.ingegneriaDelSoftware.Filtri.FiltroDiAutentificazione;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -33,6 +30,8 @@ public class CttDataBaseRestApplication extends ResourceConfig {
 		register(EndPointLogout.class);
 		//Endpoint Amministratore
 		register(EndPointRestAmministratoreCTT.class);
+		//Endpoint Operatore
+		register(EndPointRestOperatoreCTT.class);
 	}
 
 	public static void main(String[] args) {

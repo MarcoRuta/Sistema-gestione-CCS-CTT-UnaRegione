@@ -8,9 +8,7 @@ import it.unisannio.ingegneriaDelSoftware.Exceptions.DipendenteNotFoundException
 import it.unisannio.ingegneriaDelSoftware.Interfaces.DataManager;
 import javax.annotation.security.PermitAll;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 
 @Path("/autentificazione")
@@ -34,7 +32,7 @@ public class EndPointRestAutentificazione {
             Dipendente unDipendente = mm.getDipendente(username, password);
             String token =  Token.getToken(username + ":" + password).getValue();
             //Cookie aCookie = new Cookie("access_token", Token.getToken(username + ":" + password).getValue());
-            User aUser = new User(token,username,unDipendente.getRuolo().toString());
+            User aUser = new User(token,unDipendente.getRuolo().toString(),unDipendente.getNome(), unDipendente.getCognome());
             return Response.status(Response.Status.OK)
                     .entity(aUser)
                     //.cookie(new NewCookie(aCookie, "token di accesso", 60 * 60 * 8, false))

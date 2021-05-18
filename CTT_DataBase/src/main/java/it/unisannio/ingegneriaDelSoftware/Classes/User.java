@@ -5,23 +5,48 @@ import java.util.Objects;
 /**A user bean class*/
 public class User {
     private String token;
-    private String username;
     private String ruolo;
+    private String nome;
+    private String cognome;
 
-    public User(String token, String username, String ruolo){
+    public User(String token, String ruolo, String nome, String cognome){
         this.ruolo = ruolo;
-        this.username = username;
         this.token = token;
+        this.nome = nome;
+        this.cognome = cognome;
     }
     public User(){};
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "token='" + token + '\'' +
-                ", username='" + username + '\'' +
-                ", ruolo='" + ruolo + '\'' +
-                '}';
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public void setRuolo(String ruolo) {
+        this.ruolo = ruolo;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public String getRuolo() {
+        return ruolo;
+    }
+
+    public String getCognome() {
+        return cognome;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setCognome(String cognome) {
+        this.cognome = cognome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     @Override
@@ -29,35 +54,21 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return token.equals(user.token) && username.equals(user.username) && ruolo.equals(user.ruolo);
+        return token.equals(user.token) && ruolo.equals(user.ruolo) && nome.equals(user.nome) && cognome.equals(user.cognome);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(token, username, ruolo);
+        return Objects.hash(token, ruolo, nome, cognome);
     }
 
-    public String getRuolo() {
-        return ruolo;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setRuolo(String ruolo) {
-        this.ruolo = ruolo;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
+    @Override
+    public String toString() {
+        return "User{" +
+                "token='" + token + '\'' +
+                ", ruolo='" + ruolo + '\'' +
+                ", nome='" + nome + '\'' +
+                ", cognome='" + cognome + '\'' +
+                '}';
     }
 }

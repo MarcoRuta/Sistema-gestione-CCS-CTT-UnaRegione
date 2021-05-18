@@ -1,11 +1,11 @@
 package it.unisannio.ingegneriaDelSoftware.Exceptions;
 
-public class SaccaLocaleNotFoundException extends RuntimeException{
+public class SaccheInLocaleNotFoundException extends RuntimeException{
     private static final long serialVersionUID = 1L;
     
-    public SaccaLocaleNotFoundException() {}
+    public SaccheInLocaleNotFoundException() {}
     
-    public SaccaLocaleNotFoundException (String message) {
+    public SaccheInLocaleNotFoundException (String message) {
         super(message);
     }
 }
