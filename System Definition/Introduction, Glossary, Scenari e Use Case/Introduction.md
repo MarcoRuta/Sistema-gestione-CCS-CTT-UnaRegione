@@ -38,9 +38,9 @@ Il sistema software dovrà possedere le caratteristiche di seguito indicate:
 
 ### 1.1 Osservazioni
 
--	Se un CTT avvisa il CCS che non ha una sacca di un determinato gruppo sanguigno, il CCS deve essere in grado di scegliere da quale CTT recuperare la sacca, basandosi su criteri di vicinanza e di priorità delle richieste.
+-	Se un CTT avvisa il CCS che non ha abbastanza sacche per poter soddisfare una richiesta, il CCS deve essere in grado di scegliere da quale CTT recuperare le sacche, basandosi su criteri di vicinanza e di priorità delle richieste.
 
-Riguardo invio e ricezione di sacche di sangue, bisogna specificare chi si occupa dell’aggiornamento del database. È necessaria la figura del magazziniere che si occupa di aggiungere/rimuovere le sacche dal database solo quando fisicamente arrivano/lasciano il magazzino, in modo da evitare problemi di inconsistenza.
+Riguardo evasione e ricezione di sacche di sangue, bisogna specificare chi si occupa dell’aggiornamento del database. È necessaria la figura del magazziniere che si occupa di aggiungere/rimuovere le sacche dal database solo quando fisicamente arrivano/lasciano il magazzino, in modo da evitare problemi di inconsistenza.
 
 -	CTT devono funzionare localmente, quindi devono gestire i loro DB autonomamente ed in maniera indipendente dal CCS a cui sono collegati, dunque nel momento in cui una sacca è in scadenza, sarà il CTT che la contiene a notificare il CCS, il quale si occupa di inoltrare a tutti i CTT che possono ricevere tale sacca una notifica. Non può occuparsi il CCS della gestione delle scadenze, altrimenti i CTT non si accorgerebbero di sacche scadure in caso di assenza di connessione.
 
@@ -105,11 +105,11 @@ _AmministratoreCCS_ → aggiunge/rimuove CTT e può eseguire report statistici s
 
 -	I CTT devono funzionare localmente, quindi devono gestire i loro DB autonomamente ed in maniera indipendente dal CCS a cui sono collegati. Gli scenari di invio e ricezione per renderli possibili anche in assenza di rete (purchè la richiesta sia stata effettuata in precendenza al problema di rete).
 
--	L’operazione di invio sacca presso un CTT viene sempre inizializzata dalla lettura di una notifica, inviata dal sistema CTT o CCS sul terminale magazziniereCTT. Nella notifica è specificato il seriale della sacca presente in magazzino e i dati dell’ente richiedente. 
+-	L’operazione di evasione sacche presso un CTT viene sempre inizializzata dalla lettura di una notifica, inviata dal sistema CTT o CCS sul terminale magazziniereCTT. Nella notifica è specificato il seriale delle sacche da evadere e i dati dell’ente richiedente. 
 
 -	L’operazione di ricezione sacca presso un CTT viene inizializzata dal magazziniere quando arriva fisicamente un carico di sacche dall’esterno. Il magazziniere si occupa di inserire i dati presenti sull’etichetta della sacca sul sistema in modo da poter aggiornare il database.
 
--	L’operazione di ricerca sacca avviene sempre a seguito di una richiesta proveniente dall’esterno (non è possibile per un CTT ordinare sacche senza necessità), se la sacca è presente nel database del CTT da cui si effettua la ricerca, attraverso una notifica si avverte il magazziniere di inviare tale sacca all’ente richiedente. Se la sacca non è presente nel database del CTT da cui si effettua la ricerca, attraverso una notifica si avverte il CCS di estendere la ricerca a tutti i database dei CTT presenti in rete. Il CCS dopo aver individuato la sacca, attraverso una notifica avverte il magazziniere del CTT che la possiede di inviare tale sacca all’ente richiedente.
+-	L’operazione di ricerca sacca avviene sempre a seguito di una richiesta proveniente dall’esterno (non è possibile per un CTT ordinare sacche senza necessità), se le sacche richieste sono presenti nel database del CTT da cui si effettua la ricerca, attraverso una notifica si avverte il magazziniere di inviare tali sacche all’ente richiedente. Se nel database locale non sono presenti abbastanza sacche per poter soddisfare la richiesta, attraverso una notifica si avverte il CCS di estendere la ricerca a tutti i database dei CTT presenti in rete. Il CCS dopo aver individuato le sacche, attraverso una notifica avverte i magazzinieri dei CTT che le possiedono di inviare tali sacche direttamente all’ente richiedente.
 
 -	Abbiamo deciso che per garantire la massima operatività offline, sono i CTT ad occuparsi del controllo delle sacche in scadenza per poi, connessione permettendo, avvisare il CCS. In questo modo in caso di una sacca scaduta presso un CTT, il CTT stesso avviserà i magazzinieri di smaltire tale sacca. Usiamo data di scadenza piuttosto che data di produzione perche non siamo sicuri che la durata (di vita) sia la stessa per sacche dello stesso tipo.
 
@@ -124,11 +124,11 @@ _AmministratoreCCS_ → aggiunge/rimuove CTT e può eseguire report statistici s
 
 -	La divisione in ruoli è stata necessaria per garantire una buona distribuzione delle attività all’interno dei CTT.
 
--	Il CCS è una rete che interconnette i magazzini dei diversi CTT e che raccoglie dati dai vari CTT per fornire dei report statistici globali. Il CCS deve gestire una comunicazione in broadcast verso i CTT in modo da avvisarli in caso di sacche in scadenza e permettere la fruizione di tali sacche. Il CCS deve riuscire a fornire al singolo CTT una visione “estesa” del suo magazzino, in caso di una ricerca sacca in locale fallita esso inoltra tale ricerca a tutti gli altri CTT in modo da soddisfarla. Dal punto di vista del “cliente”, ovvero degli enti esterni che richiedono sacche presso i CTT, a seguito di una richiesta o il CTT a cui si è fatta domanda o un altro CTT della rete invieranno la sacca richiesta entro una data compatibile.
+-	Il CCS è una rete che interconnette i magazzini dei diversi CTT e che raccoglie dati dai vari CTT per fornire dei report statistici globali. Il CCS deve gestire una comunicazione in broadcast verso i CTT in modo da avvisarli in caso di sacche in scadenza e permettere la fruizione di tali sacche. Il CCS deve riuscire a fornire al singolo CTT una visione “estesa” del suo magazzino, in caso di una ricerca sacche in locale fallita esso inoltra tale ricerca a tutti gli altri CTT in modo da soddisfarla. Dal punto di vista del “cliente”, ovvero degli enti esterni che richiedono sacche presso i CTT, a seguito di una richiesta o il CTT a cui si è fatta domanda o un altro CTT della rete invieranno la sacca richiesta entro una data compatibile.
 
 -	Il CCS può ricevere richieste prioritarie o meno:
-	in caso di richieste prioritarie fornisce al CTT richiedente una sacca proveniente dal CTT più vicino;
-	in caso di richieste non prioritarie fornisce al CTT richiedente una sacca proveniente dal CTT che in magazzino ha il maggior numero di sacche di quel tipo. Delle richieste che arrivano al CCS è noto: il tipo di sangue richiesto, la data di affidamento e l’ente richiedente, il CCS in base a questa informazioni sceglie quale sacca inviare.
+	in caso di richieste prioritarie fornisce all'ente richiedente le sacche proveniente dai CTT più vicini a quello da cui è partita la richiesta.
+	in caso di richieste non prioritarie fornisce all'ente richiedente sacche provenienti dai CTT che hanno molte sacche di quel tipo in magazzino. Delle richieste che arrivano al CCS è noto: il tipo di sangue richiesto, la data di affidamento e l’ente richiedente (con il suo indirizzo), il CCS in base a questa informazioni sceglie le sacche da inviare.
      
 
 -	Dobbiamo pensare che CTT e CSS sono degli strumenti che gestiscono solamente le sacche nei magazzini e i loro spostamenti, non l’utilizzo o il prelievo delle sacche ma solo la ricezione e l’affidamento di sacche da e ad enti esterni.

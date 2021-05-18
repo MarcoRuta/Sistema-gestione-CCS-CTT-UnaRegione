@@ -1,4 +1,4 @@
-# Use Cases
+﻿# Use Cases
 
 ## Aggiunta/RimozioneCTT
 
@@ -134,7 +134,7 @@
                 <p style="font-style: 16px">Partecipating actors:</p>
             </td>
             <td>
-                <p>InizializzaReportStatisticiCCS</p>
+                <p>AmministratoreCCS</p>
             </td>
         </tr>
         <tr>
@@ -894,7 +894,7 @@
             </td>
             <td width="900px">
                 <p>1.	A seguito di una richiesta proveniente dall’esterno, l’OperatoreCTT tramite TerminaleOperatoreCTT clicca su RicercaSaccaButton.</p>
-                <p align="right">2.	Il Sistema CTT risponde con un RicercaSaccaForm in cui richiede i dati necessari per effettuare la ricerca, l ente richiedente e la priorità di quest’ultima.</p>
+                <p align="right">2.	Il Sistema CTT risponde con un RicercaSaccaForm in cui richiede i dati necessari per effettuare la ricerca, il numero di sacche richieste, l'ente richiedente, il suo indirizzo, e la priorità di quest’ultima.</p>
                 <p>3.	L’OperatoreCTT compila RicercaSaccaForm fornendo tutte le informazioni sulla sacca di sangue da ricercare e lo sottomette.</p>
                 <p align="right">4.	Il Sistema CTT restituisce una QueryResult per informare del risultato della ricerca. A seguito di un QueryResult positivo il SistemaCTT modifica lo stato della sacca in “prenotata”, crea una NotificaEvasioneSacca contenente l’ente richiedente ed il seriale della sacca e la inoltra sul terminaleMagazziniereCTT</p>
             </td>
@@ -954,9 +954,9 @@
             <td width="900px">
                 <p align="right">1.	A seguito di un QueryResult negativo, Il Sistema CTT spedisce la richiesta al CCS tramite NotificaRichiestaSacca.</p>
                 <p align="right">2.	Il Sistema CCS riceve la NotificaRichiestaSacca ed inoltra la query ai vari CTT ognuno dei quali fornisce una lista di sacche compatibili.</p>
-                <p align="right">3.	Il sistema CCS seleziona la sacca di sangue compatibile con scadenza più vicina.</p>
+                <p align="right">3.	Il sistema CCS seleziona le sacche di sangue compatibili con scadenza più vicina.</p>
                 <p align="right">4.	Terminata la ricerca ,il sistema CCS invia una NotificaSaccaTrovata al CTT richiedente e una NotificaEvasioneSacca al CTT mittente.</p>
-                <p align="right">5.	Il sistemaCTT che possiede la sacca modifica lo stato della sacca in “prenotata”.</p>
+                <p align="right">5.	Il sistemaCTT che possiede le sacche modifica lo stato di ognuna di esse in “prenotata”.</p>
             </td>
         </tr>
         <tr>
@@ -964,7 +964,7 @@
                 <p style="font-style: 16px">Entry condition:</p>
             </td>
             <td>
-                <p>Questo use case <<'Extends'>> RicercaSacca e viene inizializzato dall’operatore nel caso in cui non dovesse essere disponibile nel DataBase locale la sacca di sangue richiesta con priorità bassa.</p>
+                <p>Questo use case <<'Extends'>> RicercaSacca e viene inizializzato dall’operatore nel caso in cui non dovesse essere disponibile nel DataBase locale le sacche di sangue richieste con priorità bassa.</p>
             </td>
         </tr>
         <tr>
@@ -1014,9 +1014,9 @@
             <td width="900px">
                 <p align="right">1.	A seguito di un QueryResult negativo, Il Sistema CTT spedisce la richiesta al CCS tramite NotificaRichiestaAltaPrioritàSacca.</p>
                 <p align="right">2.	Il Sistema CCS riceve la NotificaRichiestaAltaPriorità ed inoltra la query ai vari CTT ognuno dei quali fornisce una lista di sacche compatibili.</p>
-                <p align="right">3.	Il sistema CCS seleziona la sacca di sangue compatibile più vicina al richiedente.</p>
+                <p align="right">3.	Il sistema CCS seleziona le sacche di sangue compatibili più vicine al richiedente.</p>
                 <p align="right">4.	Terminata la ricerca, il sistema CCS invia una NotificaSaccaTrovata al CTT richiedente e una NotificaEvasioneSacca al TerminaleMagazziniereCTT mittente.</p>
-                <p align="right">5.	Il sistemaCTT che possiede la sacca modifica lo stato della sacca in “prenotata”.</p>
+                <p align="right">5.	Il sistemaCTT che possiede le sacche modifica lo stato di ognuna di esse in “prenotata”.</p>
             </td>
         </tr>
         <tr>
@@ -1024,7 +1024,7 @@
                 <p style="font-style: 16px">Entry condition:</p>
             </td>
             <td>
-                <p>Questo use case <<'Extends'>> RicercaSaccaAltaPriorità e viene inizializzato dall’OperatoreCTT nel caso in cui non dovese essere disponibile nel DataBase locale la sacca di sangue richiesta con priorità elevata.</p>
+                <p>Questo use case <<'Extends'>> RicercaSaccaAltaPriorità e viene inizializzato dall’OperatoreCTT nel caso in cui non dovese essere disponibile nel DataBase locale le sacche di sangue richieste con priorità elevata.</p>
             </td>
         </tr>
         <tr>
@@ -1075,8 +1075,8 @@
             <td width="900px">
                 <p>1. Il MagazziniereCTT, dopo aver visto la notifica EvasioneSacca sul suo terminale clicca su EvasioneSaccaButton</p>
                 <p align="right">2.  Il SistemaCTT mostra sul TerminaleMagazziniereCTT EvasioneSaccaForm.</p>
-                <p>3.  Il MagazziniereCTT compila EvasioneSaccaForm inserendo il seriale relativo alla sacca da inviare l’ente richiedente e la data di affidamento.</p>
-                <p align="right">4. Il SistemaCTT genera un documento stampabile con i dati da applicare sulla sacca.</p> 
+                <p>3.  Il MagazziniereCTT compila EvasioneSaccaForm inserendo il seriale relativo ad ogni sacca da inviare l’ente richiedente e la data di affidamento.</p>
+                <p align="right">4. Il SistemaCTT genera un documento stampabile con i dati da applicare sulle sacche.</p> 
                 <p align="right">5.  Il SistemaCTT crea un MessaggioCorrettaEvasioneSacca e lo mostra sul TerminaleMagazziniereCTT.</p>
             </td>
         </tr>
@@ -1085,7 +1085,7 @@
                 <p style="font-style: 16px">Entry condition:</p>
             </td>
             <td>
-                <p>Il SistemaCCS inoltra sul terminale dell’operatore CTT una richiesta di trasferimento sacca presso un altro CTT.</p>
+                <p>Il SistemaCCS inoltra sul terminale dell’operatore CTT una richiesta di trasferimento sacche presso un altro CTT.</p>
             </td>
         </tr>
         <tr>
@@ -1459,3 +1459,6 @@
 </div>
 
 <div style="Height: 30px"></div>
+
+
+

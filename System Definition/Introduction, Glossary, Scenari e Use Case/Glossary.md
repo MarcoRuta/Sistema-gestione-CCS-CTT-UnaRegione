@@ -159,42 +159,34 @@
     <table>
         <tr>
             <td width="420px">
-                <p style="font-size: 16px">NotificaEvasioneSacca:</p>
+                <p style="font-size: 16px">NotificaEvasioneSacche:</p>
             </td>
             <td width="900px">
-                <p>Per “NotificaEvasioneSacca” si intende l’oggetto creato dal CCS nella ricerca globale o dall’operatore CTT nella ricerca locale, per informare il CTT mittente con i dati dell’ente a cui inviare la sacca ed i dati della sacca da inviare.</p>
+                <p>Per “NotificaEvasioneSacche” si intende l’oggetto creato dal CCS nella ricerca globale o dall’operatore CTT nella ricerca locale, per informare il CTT mittente con i dati dell’ente a cui inviare le sacche ed i dati delle sacche da inviare.</p>
             </td>
         </tr>
         <tr>
             <td>
-                <p style="font-size: 16px">EvasioneSaccaButton:</p>
+                <p style="font-size: 16px">EvasioneSaccheButton:</p>
             </td>
             <td>
-                <p>Per “EvasioneSaccaButton” si intende un bottone presente sul TerminaleMagazziniereCTT. Esso è utilizzato nel momento in cui il MagazziniereCTT riceve notifica per l’evasione di una sacca da parte del CCT di cui è dipendente. Cliccandolo viene visualizzato l’EvasioneSaccaForm.</p>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <p style="font-size: 16px">EvasioneSaccaControl:</p>
-            </td>
-            <td>
-                <p>Per “EvasioneSaccaControl” si intende un control object che gestisce la funzionalità di EvasioneSacca sul TerminaleMagazziniereCTT. Questo oggetto è creato quando il MagazziniereCTT clicca su EvasioneSaccaButton. Esso crea EvasioneSaccaForm e lo presenta al MagazziniereCTT. Dopo aver sottomesso il form, questo oggetto raccoglie le informazioni da quest’ultimo, crea una MessaggioCorrettaEvasioneSacca la inoltra sul TerminaleMagazziniereCTT , aggiorna i datiSacca aggiungendo l’ente richidente e la data di arrivo,  ed infine cancella la sacca dal database.</p>
+                <p>Per “EvasioneSaccheButton” si intende un bottone presente sul TerminaleMagazziniereCTT. Esso è utilizzato nel momento in cui il MagazziniereCTT riceve notifica per l’evasione di sacche da parte del CCT di cui è dipendente. Cliccandolo viene visualizzato l’EvasioneSaccheForm.</p>
             </td>
         </tr>
         <tr>
             <td>
-                <p style="font-size: 16px">EvasioneSaccaForm:</p>
+                <p style="font-size: 16px">EvasioneSaccheControl:</p>
             </td>
             <td>
-                <p>Per “EvasioneSaccaForm” si intende un modulo da compilare con i dati relativi ad una sacca da eliminare. Questo form è presentato al MagazziniereCTT sul TerminaleMagazziniereCTT quando viene cliccato EvasioneSaccaButton. EvasioneSaccaForm contiene tutti i dati necessari affinché una sacca possa essere eliminata dal database attivo e aggiornata la sua istanza nel dataBase passivo ed un pulsante per sottomettere il form completo.</p>
+                <p>Per “EvasioneSaccheControl” si intende un control object che gestisce la funzionalità di EvasioneSacche sul TerminaleMagazziniereCTT. Questo oggetto è creato quando il MagazziniereCTT clicca su EvasioneSaccheButton. Esso crea "LetteraDiEvasione" e lo presenta al MagazziniereCTT. Dopo aver stampato la lettera di evasione, questo oggetto crea una MessaggioCorrettaEvasioneSacca e la inoltra sul TerminaleMagazziniereCTT , aggiorna i datiSacca aggiungendo l’ente richidente e la data di arrivo,  ed infine cancella la sacca dal database.</p>
             </td>
         </tr>
         <tr>
             <td>
-                <p style="font-size: 16px">MessaggioCorrettaEvasioneSacca:</p>
+                <p style="font-size: 16px">MessaggioCorrettaEvasioneSacche:</p>
             </td>
             <td>
-                <p>Per “MessaggioCorrettaEvasioneSacca” si intende un avviso che il sistema inoltra sul TerminaleMagazziniereCTT nel momento in cui una sacca è stata evasa correttamente. Il messaggio contiene l’identificativo della sacca rimossa.</p>
+                <p>Per “MessaggioCorrettaEvasioneSacche” si intende un avviso che il sistema inoltra sul TerminaleMagazziniereCTT nel momento in cui le sacche sono state evase correttamente. Il messaggio contiene l’identificativo delle sacche rimosse.</p>
             </td>
         </tr>
     </table>
@@ -202,31 +194,31 @@
 
 <div style="Height: 30px"></div>
 
-## RicercaSacca:
+## RicercaSacche:
 <div>
     <table>
         <tr>
             <td width="420px">
-                <p style="font-size: 16px">RicercaSaccaButton:</p>
+                <p style="font-size: 16px">RicercaSaccheButton:</p>
             </td>
             <td width="900px">
-                <p>Per “RicercaSaccaButton” si intende un bottone presente sul TerminaleOperatoreCTT. Cliccandolo avvia una procedura di ricerca di una sacca di sangue.</p>
+                <p>Per “RicercaSaccheButton” si intende un bottone presente sul TerminaleOperatoreCTT. Cliccandolo avvia una procedura di ricerca di sacche di sangue.</p>
             </td>
         </tr>
         <tr>
             <td>
-                <p style="font-size: 16px">RicercaSaccaControl:</p>
+                <p style="font-size: 16px">RicercaSaccheControl:</p>
             </td>
             <td>
-                <p>Per “RicercaSaccaControl” si intende un control object che gestisce la funzionalità di RicercaSacca sul TerminaleOperatoreCTT. Questo oggetto viene creato quando l’OperatoreCTT clicca su RicercaSaccaButton. Esso crea RicercaSaccaForm e lo presenta all’ OperatoreCTT. Dopo aver sottomesso il form, questo oggetto raccoglie le informazioni da quest’ultimo, crea una QueryResult.</p>
+                <p>Per “RicercaSaccheControl” si intende un control object che gestisce la funzionalità di RicercaSacche sul TerminaleOperatoreCTT. Questo oggetto viene creato quando l’OperatoreCTT clicca su RicercaSaccheButton. Esso crea RicercaSaccheForm e lo presenta all’ OperatoreCTT. Dopo aver sottomesso il form, questo oggetto raccoglie le informazioni da quest’ultimo, crea una QueryResult.</p>
             </td>
         </tr>
         <tr>
             <td>
-                <p style="font-size: 16px">RicercaSaccaForm:</p>
+                <p style="font-size: 16px">RicercaSaccheForm:</p>
             </td>
             <td>
-                <p>Per “RicercaSaccaForm” si intende un modulo da compilare con i dati necessari per personalizzare una RicercaSacca Query. Questo form è presentato all’ OperatoreCTT sul TerminaleOperatoreCTT quando viene cliccato il  OrdinaGruppiSanguigniPerRichieste Button. OrdinaGruppiSanguigniPerRichiesteForm contiene tutti i dati necessari  (Periodo temporale d’interesse) per personalizzare la Query OrdinaGruppiSanguigniPerRichieste.</p>
+                <p>Per “RicercaSaccheForm” si intende un modulo da compilare con i dati necessari per personalizzare una RicercaSacche Query. Questo form è presentato all’ OperatoreCTT sul TerminaleOperatoreCTT quando viene cliccato il  OrdinaGruppiSanguigniPerRichieste Button. OrdinaGruppiSanguigniPerRichiesteForm contiene tutti i dati necessari  (Periodo temporale d’interesse) per personalizzare la Query OrdinaGruppiSanguigniPerRichieste.</p>
             </td>
         </tr>
         <tr>
@@ -234,47 +226,47 @@
                 <p style="font-size: 16px">QueryResult:</p>
             </td>
             <td>
-                <p>Risultato di della query RicercaSacca effettuata da un OperatoreCTT sul proprio MagazzinoCTT.</p>
+                <p>Risultato di della query RicercaSacche effettuata da un OperatoreCTT sul proprio MagazzinoCTT.</p>
             </td>
         </tr>
         <tr>
             <td>
-                <p style="font-size: 16px">NotificaInvioSaccaManage:</p>
+                <p style="font-size: 16px">NotificaInvioSaccheManage:</p>
             </td>
             <td>
-                <p>Per “NotificaInvioSaccaManage” si intende un control object che gestisce la funzionalità di InvioSacca sul TerminaleMagazziniereCTT. Questo oggetto diventa operativo quando riceve una NotificaInvioSacca. Esso mostra la notifica sul TerminaleMagazziniereCTT. Dopo aver eliminato la sacca dal database attivo invia una NotificaCorrettaEvasioneOrdine sul TerminaleOperatoreCTT. </p>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <p style="font-size: 16px">RicercaSaccaGlobaleManage:</p>
-            </td>
-            <td>
-                <p>Per “RicercaSaccaGlobaleManage” si intende un control object che gestisce la funzionalità di RicercaSacca sul SistemaCCS. Questo oggetto viene creato quando QueryResult non contiene sacche. Esso che inoltra la query precedentemente effettuata in locale a tutti i CTT della rete attraverso interfaccia REST.Tra le sacche compatibili alla ricerca  Esso selezionata quella con scadenza più vicina.Esso crea una NotificaSaccaTrovata (che inoltra  al CTT richiedente) e una NotificaEvasioneSacca (che inoltra al CTT mittente).</p>
+                <p>Per “NotificaInvioSaccheManage” si intende un control object che gestisce la funzionalità di InvioSacche sul TerminaleMagazziniereCTT. Questo oggetto diventa operativo quando riceve una NotificaInvioSacche. Esso mostra la notifica sul TerminaleMagazziniereCTT. Dopo aver eliminato le sacche dal database attivo invia una NotificaCorrettaEvasioneOrdine sul TerminaleOperatoreCTT. </p>
             </td>
         </tr>
         <tr>
             <td>
-                <p style="font-size: 16px">NotificaRichiestaSacca:</p>
+                <p style="font-size: 16px">RicercaSaccheGlobaleManage:</p>
             </td>
             <td>
-                <p>Per “NotificaRichiestaSacca” si intende l’oggetto creato dal RicercaSaccaControl quando viene sottomesso il RicercaScacaForm oppure l’oggetto creato dal AccettaSaccaControl quando viene sottomesso l’AccettaSaccaForm. Una volta creata viene spedita verso il CCS.</p>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <p style="font-size: 16px">NotificaRichiestaAltaPrioritàSacca:</p>
-            </td>
-            <td>
-                <p>Per “NotificaRichiestaAltaPrioritàSacca” si intende l’oggetto creato dal RicercaSaccaControl quando viene sottomesso il RicercaScacaForm specificando una priorità elevata. Una volta creata viene spedita verso il CCS. </p>
+                <p>Per “RicercaSaccheGlobaleManage” si intende un control object che gestisce la funzionalità di RicercaSacche sul SistemaCCS. Questo oggetto viene creato quando QueryResult non contiene sacche. Esso che inoltra la query precedentemente effettuata in locale a tutti i CTT della rete attraverso interfaccia REST.Tra le sacche compatibili alla ricerca  Esso selezionata quella con scadenza più vicina.Esso crea una NotificaSaccheTrovata (che inoltra  al CTT richiedente) e una NotificaEvasioneSacche (che inoltra al CTT mittente).</p>
             </td>
         </tr>
         <tr>
             <td>
-                <p style="font-size: 16px">NotificaSaccaTrovata:</p>
+                <p style="font-size: 16px">NotificaRichiestaSacche:</p>
             </td>
             <td>
-                <p>Per “NotificaSaccaTrovata” si intende una comunicazione inviata dal CCS al TerminaleOperatoreCTT tramite il sistema, per avvertirlo che una determinata sacca è stata assegnata ed arriverà il prima possibile all’ente richiedente. La notifica contiene i dati della sacca (identificativo e dat del CTT che la invierà e la data di arrivo della sacca presso l’ente richiedente).</p>
+                <p>Per “NotificaRichiestaSacche” si intende l’oggetto creato dal RicercaSaccheControl quando viene sottomesso il RicercaSaccheForm oppure l’oggetto creato dal AccettaSaccheControl quando viene sottomesso l’AccettaSaccheForm. Una volta creata viene spedita verso il CCS.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p style="font-size: 16px">NotificaRichiestaAltaPrioritàSacche:</p>
+            </td>
+            <td>
+                <p>Per “NotificaRichiestaAltaPrioritàSacche” si intende l’oggetto creato dal RicercaSaccheControl quando viene sottomesso il RicercaSaccheForm specificando una priorità elevata. Una volta creata viene spedita verso il CCS. </p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p style="font-size: 16px">NotificaSaccheTrovate:</p>
+            </td>
+            <td>
+                <p>Per “NotificaSaccheTrovate” si intende una comunicazione inviata dal CCS al TerminaleOperatoreCTT tramite il sistema, per avvertirlo che delle determinate sacche sono state assegnata ed arriverà il prima possibile all’ente richiedente. La notifica contiene i dati delle sacche (identificativo e dat del CTT che la invierà e la data di arrivo delle sacche presso l’ente richiedente).</p>
             </td>
         </tr>
     </table>
@@ -290,7 +282,7 @@
                 <p style="font-size: 16px">SaccheInScadenzaCTTControl:</p>
             </td>
             <td width="900px">
-                <p>Per “SaccheInScadenzaCTTControl” si intende un control object che periodicamente gestisce la ricerca delle sacche in scadenza nel sistema CTT. Esso crea NotificaSaccaInScadenza e lo inoltra all’ManageAlert.</p>
+                <p>Per “SaccheInScadenzaCTTControl” si intende un control object che periodicamente gestisce la ricerca delle sacche in scadenza nel sistema CTT. Esso crea NotificaSaccheInScadenza e lo inoltra all’ManageAlert.</p>
             </td>
         </tr>
         <tr>
@@ -298,15 +290,15 @@
                 <p style="font-size: 16px">ManageAlert:</p>
             </td>
             <td>
-                <p>Gestisce la funzionalità di inoltro della NotificaSaccaInScadeza tra CTT e CCS. Tramite un algoritmo ricerca tra i CTT connessi quelli che potrebbero ricevere in tempo la sacca ed inoltra loro la notifica. Esso inoltre, non appena riceve una risposta all’alert inoltrato, crea una notificaAffidamentoSacca (che inoltra al CTT richiedente) e una notificaEvasioneSacca (che inoltra al CTT con la sacca in scadenza).</p>
+                <p>Gestisce la funzionalità di inoltro della NotificaSaccheInScadenza tra CTT e CCS. Tramite un algoritmo ricerca tra i CTT connessi quelli che potrebbero ricevere in tempo le sacche ed inoltra loro la notifica. Esso inoltre, non appena riceve una risposta all’alert inoltrato, crea una notificaAffidamentoSacche (che inoltra al CTT richiedente) e una notificaEvasioneSacche (che inoltra al CTT con le sacche in scadenza).</p>
             </td>
         </tr>
         <tr>
             <td>
-                <p style="font-size: 16px">NotificaSaccaInScadenza:</p>
+                <p style="font-size: 16px">NotificaSaccheInScadenza:</p>
             </td>
             <td>
-                <p>Per “NotificaSaccaInScadenza” si intende l’oggetto creato dal SaccheInScadenzaCTTControl  per informare il CCS che nel proprio magazzino è presente una sacca in scadenza.</p>
+                <p>Per “NotificaSaccheInScadenza” si intende l’oggetto creato dal SaccheInScadenzaCTTControl  per informare il CCS che nel proprio magazzino sono presenti sacche in scadenza.</p>
             </td>
         </tr>
     </table>
@@ -343,18 +335,18 @@
         </tr>
         <tr>
             <td>
-                <p style="font-size: 16px">NotificaAffidamentoSacca:</p>
+                <p style="font-size: 16px">NotificaAffidamentoSacche:</p>
             </td>
             <td>
-                <p>Per NotificaAffidamentoSacca si intende un messaggio creato dal ManageAlert per avvertire il CTT che ha risposto all’ alert che la sacca dal esso richiesta arriverà in una determinata data direttamente presso l’ente richiedente.</p>
+                <p>Per NotificaAffidamentoSacche si intende un messaggio creato dal ManageAlert per avvertire il CTT che ha risposto all’alert che le sacche da esso richieste arriveranno in una determinata data direttamente presso l’ente richiedente.</p>
             </td>
         </tr>
         <tr>
             <td>
-                <p style="font-size: 16px">ManageEvasioneSacca:</p>
+                <p style="font-size: 16px">ManageEvasioneSacche:</p>
             </td>
             <td>
-                <p>Per ManageEvasioneSacca si intende il controlObject che gestisce la notifichaEvasioneSacca sul terminale del magazziniere. Esso modifica lo stato della sacca in “prenotata” e mostra la notificaEvasioneSacca proveniente dal CCS sul terminaleMagazziniereCTT.</p>
+                <p>Per ManageEvasioneSacche si intende il controlObject che gestisce la notificaEvasioneSacche sul terminale del magazziniere. Esso modifica lo stato delle sacche in “prenotata” e mostra la notificaEvasioneSacche proveniente dal CCS sul terminaleMagazziniereCTT.</p>
             </td>
         </tr>
     </table>
@@ -367,10 +359,10 @@
     <table>
         <tr>
             <td width="420px">
-                <p style="font-size: 16px">NotificaScadenzaSaccaControl:</p>
+                <p style="font-size: 16px">NotificaScadenzaSaccaControl :</p>
             </td>
             <td width="900px">
-                <p>Gestisce la funzionalità di EvasioneSacca sul TerminaleOperatoreCTT. Questo oggetto è creato quando una sacca nel database attivo è scaduta. Esso crea NotificaScadenzaSacca e la presenta al MagazziniereCTT.</p>
+                <p>Gestisce la funzionalità di EvasioneSacche sul TerminaleOperatoreCTT. Questo oggetto è creato quando una sacca nel database attivo è scaduta. Esso crea NotificaScadenzaSacca e la presenta al MagazziniereCTT.</p>
             </td>
         </tr>
         <tr>
@@ -442,36 +434,36 @@
 
 <div style="Height: 30px"></div>
 
-## AggiuntaNuovoDipendenteCTT
+## AggiuntaNuovoDipendente
 <div>
     <table>
         <tr>
             <td width=420px">
-                <p style="font-size: 16px">AggiuntaNuovoDipendenteCTTButton:</p>
+                <p style="font-size: 16px">AggiuntaNuovoDipendenteButton:</p>
             </td>
             <td width="900px">
-                <p>Per “AggiuntaNuovoDipendenteCTTButton” si intende un bottone presente sul TerminaleAmministratoreCTT. Esso è utilizzato nel momento in cui l’AmministratoreCTT, in seguito ad una assunzione, ha necessità di creare un profilo per un nuovo dipendente del CTT di cui è amministratore. Cliccandolo viene visualizzato l’AggiuntaNuovoDipendenteCTTForm.</p>
+                <p>Per “AggiuntaNuovoDipendenteButton” si intende un bottone presente sul TerminaleAmministratoreCTT. Esso è utilizzato nel momento in cui l’AmministratoreCTT, in seguito ad una assunzione, ha necessità di creare un profilo per un nuovo dipendente del CTT di cui è amministratore. Cliccandolo viene visualizzato l’AggiuntaNuovoDipendenteForm.</p>
             </td>
         </tr>
         <tr>
             <td>
-                <p style="font-size: 16px">AggiuntaNuovoDipendenteCTTControl:</p>
+                <p style="font-size: 16px">AggiuntaNuovoDipendenteControl:</p>
             </td>
             <td>
-                <p>Per “AggiuntaNuovoDipendenteCTTControl” si intende un control object che gestisce la funzionalità di AggiuntaNuovoDipendenteCTT sul TerminaleAmministratoreCTT. Questo oggetto è creato quando l’AmministratoreCTT clicca su AggiuntaNuovoDipendenteButton. Esso crea AggiuntaNuovoDipendenteCTTForm e lo presenta all’AmministratoreCTT. Dopo aver sottomesso il form, questo oggetto raccoglie le informazioni da quest’ultimo, crea un MessaggioCorrettaAggiuntaNuovoDipendenteCTT contenente anche le credenziali del nuovo profilo dipendente e aggiunge il nuovo profilo al database dei dipendenti del CTT.</p>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <p style="font-size: 16px">AggiuntaDipendenteCTTForm:</p>
-            </td>
-            <td>
-                <p>Per “AggiungiDipendenteCTTForm” si intende un modulo da compilare con i dati di un DipendenteCTT. Questo form è presentato all’AmministratoreCTT sul TerminaleAmministratoreCTT quando viene cliccato il AggiuntaNuovoDipendenteCTTButton. AggiuntaNuovoDipendenteCTTForm contiene tutti i dati che contraddistinguono un dipendenteCTT ed un pulsante per sottomettere il form completo.</p>
+                <p>Per “AggiuntaNuovoDipendenteControl” si intende un control object che gestisce la funzionalità di AggiuntaNuovoDipendente sul TerminaleAmministratoreCTT. Questo oggetto è creato quando l’AmministratoreCTT clicca su AggiuntaNuovoDipendenteButton. Esso crea AggiuntaNuovoDipendenteForm e lo presenta all’AmministratoreCTT. Dopo aver sottomesso il form, questo oggetto raccoglie le informazioni da quest’ultimo, crea un MessaggioCorrettaAggiuntaNuovoDipendenteCTT contenente anche le credenziali del nuovo profilo dipendente e aggiunge il nuovo profilo al database dei dipendenti del CTT.</p>
             </td>
         </tr>
         <tr>
             <td>
-                <p style="font-size: 16px">MessaggioCorrettaAggiuntaNuovoDipendenteCTT:</p>
+                <p style="font-size: 16px">AggiuntaDipendenteForm:</p>
+            </td>
+            <td>
+                <p>Per “AggiungiDipendenteForm” si intende un modulo da compilare con i dati di un DipendenteCTT. Questo form è presentato all’AmministratoreCTT sul TerminaleAmministratoreCTT quando viene cliccato il AggiuntaNuovoDipendenteButton. AggiuntaNuovoDipendenteForm contiene tutti i dati che contraddistinguono un dipendente ed un pulsante per sottomettere il form completo.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p style="font-size: 16px">MessaggioCorrettaAggiuntaNuovoDipendente:</p>
             </td>
             <td>
                 <p>Messaggio mostrato sul terminale dell’amministratore del CTT in seguito alla corretta aggiunta di un nuovo dipendente al sistema del CTT (MagazziniereCTT o OperatoreCTT).</p>
@@ -482,36 +474,36 @@
 
 <div style="Height: 30px"></div>
 
-## RimozioneDipendenteCTT
+## RimozioneDipendente
 <div>
     <table>
         <tr>
             <td width="420px">
-                <p style="font-size: 16px">RimozioneDipendenteCTTButton:</p>
+                <p style="font-size: 16px">RimozioneDipendenteButton:</p>
             </td>
             <td width="900px">
-                <p>Per “RimozioneDipendenteCTTButton” si intende un bottone presente sul terminale dell’AmministratoreCTT. Esso è utilizzato nel momento in cui l’AmministratoreCTT, ha necessità di eliminare il profilo di un dipendente del CTT di cui è amministratore. Cliccandolo viene visualizzato il RimozioneDipendenteCTTForm.</p>
+                <p>Per “RimozioneDipendenteButton” si intende un bottone presente sul terminale dell’AmministratoreCTT. Esso è utilizzato nel momento in cui l’AmministratoreCTT, ha necessità di eliminare il profilo di un dipendente del CTT di cui è amministratore. Cliccandolo viene visualizzato il RimozioneDipendenteForm.</p>
             </td>
         </tr>
         <tr>
             <td>
-                <p style="font-size: 16px">RimozioneDipendenteCTTControl:</p>
+                <p style="font-size: 16px">RimozioneDipendenteControl:</p>
             </td>
             <td>
-                <p>Per “RimozioneDipendenteCTTControl” si intende un control object che gestisce la funzionalità di RimozioneDipendenteCTT sul TerminaleAmministratoreCTT. Questo oggetto è creato quando l’AmministratoreCTT clicca su RimozioneDipendenteButton. Esso crea RimozioneDipendenteCTTForm e lo presenta all’AmministratoreCTT. Dopo aver sottomesso il form, questo oggetto raccoglie le informazioni da quest’ultimo, crea un MessaggioCorrettaRimozioneDipendenteCTT e rimuove il profilo dal database dei dipendenti del CTT.</p>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <p style="font-size: 16px">RimozioneDipendenteCTTForm:</p>
-            </td>
-            <td>
-                <p>Per “RimozioneDipendenteCTTForm” si intende un modulo da compilare con i dati di un dipendenteCTT. Questo form è presentato all’AmministratoreCTT sul TerminaleAmministratoreCTT quando viene cliccato il RimozioneDipendenteCTTButton. RimozioneDipendenteCTTForm contiene tutti i dati che contraddistinguono un dipendenteCTT ed un pulsante per sottomettere il form completo.</p>
+                <p>Per “RimozioneDipendenteControl” si intende un control object che gestisce la funzionalità di RimozioneDipendente sul TerminaleAmministratoreCTT. Questo oggetto è creato quando l’AmministratoreCTT clicca su RimozioneDipendenteButton. Esso crea RimozioneDipendenteForm e lo presenta all’AmministratoreCTT. Dopo aver sottomesso il form, questo oggetto raccoglie le informazioni da quest’ultimo, crea un MessaggioCorrettaRimozioneDipendente e rimuove il profilo dal database dei dipendenti del CTT.</p>
             </td>
         </tr>
         <tr>
             <td>
-                <p style="font-size: 16px">MessaggioCorrettaRimozioneDipendenteCTT:</p>
+                <p style="font-size: 16px">RimozioneDipendenteForm:</p>
+            </td>
+            <td>
+                <p>Per “RimozioneDipendenteForm” si intende un modulo da compilare con i dati di un dipendenteCTT. Questo form è presentato all’AmministratoreCTT sul TerminaleAmministratoreCTT quando viene cliccato il RimozioneDipendenteButton. RimozioneDipendenteForm contiene tutti i dati che contraddistinguono un dipendenteCTT ed un pulsante per sottomettere il form completo.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p style="font-size: 16px">MessaggioCorrettaRimozioneDipendente:</p>
             </td>
             <td>
                 <p>Messaggio mostrato sul terminale dell’amministratore del CTT in seguito alla corretta rimozione di un dipendente dal sistema del CTT (MagazziniereCTT o OperatoreCTT).</p>
@@ -883,6 +875,14 @@
             </td>
             <td>
                 <p>Per “Login” si intende l’azione autentificazione di un utente con il sistema attraverso credenziali di accesso personali, Il login può andare a buon fine o meno.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p style="font-style: 30px">LetteraDiEvasione:</p>
+            </td>
+            <td>
+                <p>Per "LetteraDiEvasione" si intende un oggetto contenente tutti i dati relativi alla sacca da evadere e all ente richiedente. Queste lettera verrà affidata al corriere per ultimare l'operazione di evasione con la consegna della sacca</p>
             </td>
         </tr>
         <tr>
