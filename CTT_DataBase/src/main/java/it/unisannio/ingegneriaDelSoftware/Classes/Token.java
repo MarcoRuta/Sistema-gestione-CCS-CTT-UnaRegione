@@ -1,6 +1,7 @@
 package it.unisannio.ingegneriaDelSoftware.Classes;
 
 import it.unisannio.ingegneriaDelSoftware.Exceptions.DipendenteNotFoundException;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.TokenNotFoundException;
 
 import java.security.SecureRandom;
 import java.util.*;
@@ -11,11 +12,9 @@ public class Token {
 
     /**collezione statica di tutti i token che sono generati dal momento dell'accensione del server
      * fino al suo spegnimento*/
-    private static Map<String,Token> tokens;
-    static{
-        tokens= new HashMap<String, Token>();
-    }
-    private String token;
+    private static Map<String,Token> tokens= new HashMap<String, Token>();
+
+    private final String token;
 
     /**
      *java.security.SecureRandom is a class that provides a cryptographically strong random number generator.
@@ -42,8 +41,8 @@ public class Token {
     public static boolean containsToken(String token){
         assert token != null: "il token non puo essere null";
         Collection<Token> tokens = Token.tokens.values();
-        for (Token aToken:tokens)
-            if(aToken.getValue().equals(token))
+        for (Token aToken: tokens)
+            if (aToken.getValue().equals(token))
                 return true;
         return false;
     }
@@ -56,7 +55,7 @@ public class Token {
         for (String usernamePassword : Token.tokens.keySet())
             if (Token.tokens.get(usernamePassword).getValue().equals(token))
                 return usernamePassword;
-        throw new DipendenteNotFoundException("Il toke non è associato a nessun dipendente");
+        throw new DipendenteNotFoundException("Il token non è associato a nessun dipendente");
 
     }
 
@@ -70,6 +69,19 @@ public class Token {
         byte[] randomBytes = new byte[24];
         secureRandom.nextBytes(randomBytes);
         this.token =  base64Encoder.encodeToString(randomBytes);
+    }
+
+    /**Elimina dalla lista dei token il token passatogli come parametro
+     * @param token il token da eliminare
+     */
+    public static void removeToken(String token) throws TokenNotFoundException {
+        if (Token.containsToken(token)) {
+            for (String key : Token.tokens.keySet())
+                if (tokens.get(key).getValue().equals(token)) {
+                    Token.tokens.remove(key);
+                    return;
+                }
+        } else  throw new TokenNotFoundException("Il token non esiste");
     }
 
     @Override

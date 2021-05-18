@@ -16,6 +16,45 @@
             divNot.innerHTML = "";
         }
     </script>
+<script>
+     var token = sessionStorage.getItem("token");
+     var ruolo = sessionStorage.getItem("ruolo");
+
+
+      verificoToken = function(){
+               if(token == null || ruolo != 'MagazziniereCTT'){
+                alert("E' necessario effettuare il login per accedere a questa risorsa");
+                window.location.href='Login.html';
+               }
+            }
+
+
+    logout = function(){
+
+        var xhttp = new XMLHttpRequest();
+        var url ="http://127.0.0.1:8080/rest/sessione/logout";
+        xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200 ) {
+                        window.location.href='Login.html';
+                 	}else {
+                 	    if(this.readyState == 4 && this.status != 200 ){
+                 	        alert(this.response);
+                 	    }
+                 	}
+        };
+
+
+        xhttp.onerror = function(){
+                   alert("impossibile inviare la richiesta");
+        };
+
+
+        xhttp.open("DELETE", url, true);
+        xhttp.send();
+
+    }
+
+    </script>
     
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
@@ -24,7 +63,7 @@
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 
-<body>
+<body onload="verificoToken()">
     
     <div class="titlePage">
         <div>
@@ -56,8 +95,8 @@
             </div>
         
             <div class="col border profile-box" style="height: 300px;background-color: #eef4f7;background-image: url(&quot;assets/img/bg-pattern.png&quot;); margin: 1% 0px;">
-                <img src="assets/img/doctor+pediatrician+icon-1320185104387356300.png" style="width: 220px;margin: 25px 30px;">
-                <div style="height: 40px;width: 180px;margin: -20px 12%;">
+                <img src="assets/img/doctor+pediatrician+icon-1320185104387356300.png" style="width: 220px;margin: 25px 25px;">
+                <div style="height: 40px;width: 180px;margin: -20px 10%;">
                     <span style="font-size: 22px;font-family: muli,sans-serif;">Magazziniere CTT</span>
                 </div>
                 
@@ -69,7 +108,7 @@
                         </div>
                     </div>
                 </div>
-                <div style="height: 200px;width: 400px;margin: -32em 52%;">
+                <div style="height: 200px;width: 400px;margin: -32em 50%;">
                     <div style="width: 60px;">
                         <span style="font-family: muli,sans-serif;font-size: 20px;">Nome:</span>
                     </div>
@@ -82,8 +121,9 @@
                     <div style="height: 30px;width: 200px;margin: 148px 100px;">
                         <p id="surname"></p>
                     </div>
-                    <div style="height: 40px;width: 200px;margin: -95px 15%;">
-                        <button class="btn btn-primary" onclick="location.href='Login.html';" type="button" style="width: 109px;height: 42px;margin: 0px 5%;background-color: #13958d;">Log out</button>
+                    <div style="height: 40px;width: 300px;margin: -95px 0%;">
+                        <button class="btn btn-primary" onclick="location.href='ChangePassword.html';" type="button" style="width: 160px;height: 42px;margin: 0px 0px;background-color: #13958d;">Change Password</button>
+                        <button class="btn btn-primary" onclick="logout()" type="button" style="width: 85px;height: 42px;margin: 0px 5%;">Log out</button>
                     </div>
                 </div>
             

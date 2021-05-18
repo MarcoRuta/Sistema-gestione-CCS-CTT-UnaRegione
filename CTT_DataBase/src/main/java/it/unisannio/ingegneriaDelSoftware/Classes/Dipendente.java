@@ -1,11 +1,13 @@
 package it.unisannio.ingegneriaDelSoftware.Classes;
 
+import org.springframework.util.Assert;
+
 import java.io.PrintStream;
 import java.time.LocalDate;
 import java.util.Objects;
 
 public class Dipendente {
-	
+
 	private final Cdf cdf;
 	private final String nome;
 	private final String cognome;
@@ -17,9 +19,9 @@ public class Dipendente {
 	/**
 	 * @param cdf  il codice fiscale del dipendente
 	 * @param cognome  il cognome del del dipendente
-	 * @param dataDiNascita  la data di nascita del dipendente
+	 * @param dataDiNascita  la data di nascita del dipendente, il dipendente deve avere almeno 18 anni
 	 * @param nome  il nome del dipendente
-	 * @param password  la password del dipendente sul sistema CTT
+	 * @param password  la password del dipendente sul sistema CTT, deve contenere almeno un numero
 	 * @param username  l'username del dipendente sul sistema CTT
 	 * @param ruolo  il ruolo del dipendente nel centro CTT*/
 	public Dipendente(Cdf cdf, String nome, String cognome, LocalDate dataDiNascita, RuoloDipendente ruolo, String username, String password) {
@@ -30,6 +32,9 @@ public class Dipendente {
 		assert ruolo != null: "Il ruolo del dipendente non può essere null";
 		assert username != null: "L'username del dipendente non può essere null";
 		assert password != null: "La password del dipendente non può essere null";
+		if (!dataDiNascita.isBefore(LocalDate.now())) throw new AssertionError("La data di nascita non puo essere superiore o uguale a quella odierna");
+		if (!dataDiNascita.isBefore(LocalDate.now().minusYears(18))) throw new AssertionError(" il Dipendente deve avere almeno 18 anni");
+		if(!password.matches(".*\\d.*")) throw new AssertionError("La password deve contenere almeno un numero");
 
 		this.cdf = cdf;
 		this.nome = nome;
@@ -38,7 +43,7 @@ public class Dipendente {
 		this.ruolo = ruolo;
 		this.username = username;
 		this.password = password;
-	}	
+	}
 	/**@return il codice fiscale del dipendente*/
 	public Cdf getCdf() {
 		return cdf;
@@ -74,8 +79,9 @@ public class Dipendente {
 		return password;
 	}
 
-	/**@param password  la password del dipendente sul sistema CTT*/
+	/**@param password  la password del dipendente sul sistema CTT deve contenere almeno un numero*/
 	public void setPassword(String password) {
+		if(!password.matches(".*\\d.*")) throw new AssertionError("La password deve contenere almeno un numero");
 		assert password!= null: "La password del dipendente non può essere null";
 		this.password = password;
 	}

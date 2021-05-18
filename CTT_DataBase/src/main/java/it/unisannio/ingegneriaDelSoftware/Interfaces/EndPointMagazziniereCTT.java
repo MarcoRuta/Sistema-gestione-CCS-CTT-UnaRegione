@@ -1,35 +1,40 @@
 package it.unisannio.ingegneriaDelSoftware.Interfaces;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
+import it.unisannio.ingegneriaDelSoftware.Classes.Seriale;
+
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 public interface EndPointMagazziniereCTT {
 
-	/**@param username Username del magazziniere che si logga nel sistema
-	 * @param password Password del magazziniere che si logga nel sistema*/
-	//boolean login(String username, String password);
+	/**Metodo attivato dal magazziniere quando riceve una notifica evasione Sacca esso aggiorna i datiSacca e rimuove la Sacca dal DB attivo
+	 *
+	 * @param seriale Seriale della Sacca da evadere
+	 * @param ente_richiedente Ente che richiede la Sacca
+	 * @param indirizzo Indirizzo dell'enteRichiedente
+	 * @return Messaggio di errore in caso di problema di inserimento dati; Etichetta della Sacca in caso di successo
+	 */
+	public Response evasioneSacca(String seriale,
+								  String ente_richiedente,
+								  String indirizzo);
+
+	/**Metodo con il quale il Magazziniere aggiunge una Sacca al DataBase
+	 *
+	 * @param gruppo_sanguigno Gruppo sanguigno della Sacca
+	 * @param data_scadenza Data di scadenza della Sacca
+	 * @param data_produzione Data di produzione della Sacca
+	 * @param ente_donatore Ente di provenienza della Sacca
+	 * @return Messaggio di errore in caso di problema di inserimento dati; Messaggio di corretta aggiunta in caso di successo
+	 */
+	public Response aggiuntaSaccaMagazzino(String gruppo_sanguigno,
+										   String data_scadenza,
+										   String data_produzione,
+										   String ente_donatore);
 
 	/**
-	 * @param seriale Seriale della sacca da evadere
-	 * Metodo attivato dal magazziniere quando riceve una notifica evasione sacca
-	 * esso aggiorna i dati sacca e rimuove la sacca dal DB attivo
-	 * @return */
-	@PUT
-	@Path("/evasione/{seriale}")
-	@Produces(MediaType.TEXT_PLAIN)
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public Response evasioneSacca(@PathParam("seriale") String seriale,
-								  @FormParam("enterichiedente") String ente_richiedente,
-								  @FormParam("indirizzo")String indirizzo);
-
-	/**@return  messaggio corretta aggiunta sacca*/
-	@POST
-	@Path("/aggiuntaSacca")
-	@Produces(MediaType.TEXT_PLAIN)
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public Response aggiuntaSaccaMagazzino(@FormParam("gruppo_sanguigno") String gruppo_sanguigno,
-										   @FormParam("data_scadenza") String data_scadenza,
-										   @FormParam("data_produzione") String data_produzion,
-										   @FormParam("ente_donatore") String ente_donatore);
+	 * Metodo utilizzato per aggiunta automatica del seriale delle sacche
+	 * disponibili nel magazzino per l'evasione
+	 * @return serialiSacca
+	 */
+	public List<Seriale> listaSacca();
 }

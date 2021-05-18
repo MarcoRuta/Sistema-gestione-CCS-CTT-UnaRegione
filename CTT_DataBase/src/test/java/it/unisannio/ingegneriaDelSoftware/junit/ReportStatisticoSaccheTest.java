@@ -5,6 +5,17 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Form;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.NewCookie;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -13,14 +24,12 @@ import it.unisannio.ingegneriaDelSoftware.Classes.DatiSacca;
 import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
 import it.unisannio.ingegneriaDelSoftware.Classes.Seriale;
-import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointRestAmministratoreCTT;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 
 
 public class ReportStatisticoSaccheTest {
-	EndPointRestAmministratoreCTT amm = new EndPointRestAmministratoreCTT();
-	
+	static NewCookie cookie = null;	
 	@BeforeClass public static void populateDBSacche() throws SaccaNotFoundException {
 		
 		MongoDataManager mm = new MongoDataManager();
@@ -1000,7 +1009,15 @@ public class ReportStatisticoSaccheTest {
     	for(DatiSacca datisac : listaDatiSacche) {
         	mm.createDatiSacca(datisac);
         }
-
+    	
+    	Client client = ClientBuilder.newClient();
+		WebTarget login = client.target("http://127.0.0.1:8080/rest/autentificazione");
+		Form form1 = new Form();
+		form1.param("username", "username 003");
+		form1.param("password", "003");
+		
+		Response responselogin = login.request().post(Entity.form(form1));
+		cookie = responselogin.getCookies().get("access_token");
 	}
 	
 	
@@ -1008,8 +1025,15 @@ public class ReportStatisticoSaccheTest {
 	 * Test che dovrebbe restituire una lista di Sacche con 3 elementi, siccome le sacche di GruppoSanguigno Ap presenti nel database delle sacche sono 5
 	 * @throws SaccaNotFoundException 
 	 */
-	@Test public void test1() throws SaccaNotFoundException{
-		assertEquals(5, amm.reportStatisticoSacche(GruppoSanguigno.Ap).size());
+	@Test public void test1(){
+		Client client = ClientBuilder.newClient();
+		WebTarget reportStatisticoSacche = client.target("http://127.0.0.1:8080/rest/amministratore/reportstatisticosacche");
+		Invocation.Builder invocationBuilder = reportStatisticoSacche.request(MediaType.TEXT_PLAIN);
+		invocationBuilder.cookie(cookie);
+//####################################################non so come inserire il parametro
+		Response responseReportStatisticoSacche = invocationBuilder.post(Entity.text(GruppoSanguigno.Am.toString()));
+		
+		assertEquals(Status.OK.getStatusCode(), responseReportStatisticoSacche.getStatus());
 	}
 	
 	
@@ -1017,8 +1041,13 @@ public class ReportStatisticoSaccheTest {
 	 * Test che dovrebbe restituire una lista di Sacche con 3 elementi, siccome le sacche di GruppoSanguigno Am presenti nel database delle sacche sono 5
 	 * @throws SaccaNotFoundException 
 	 */
-	@Test public void test2() throws SaccaNotFoundException{
-		assertEquals(5, amm.reportStatisticoSacche(GruppoSanguigno.Am).size());
+	@Test public void test2() {
+		Client client = ClientBuilder.newClient();
+		WebTarget reportStatisticoSacche = client.target("http://127.0.0.1:8080/rest/amministratore/reportstatisticosacche");
+		Invocation.Builder invocationBuilder = reportStatisticoSacche.request(MediaType.TEXT_PLAIN);
+		invocationBuilder.cookie(cookie);
+		Response responseReportStatisticoSacche = invocationBuilder.post(Entity.text(GruppoSanguigno.Am.toString()));
+		assertEquals(Status.OK.getStatusCode(), responseReportStatisticoSacche.getStatus());
 	}
 	
 	
@@ -1026,8 +1055,13 @@ public class ReportStatisticoSaccheTest {
 	 * Test che dovrebbe restituire una lista di Sacche con 3 elementi, siccome le sacche di GruppoSanguigno ABm presenti nel database delle sacche sono 5
 	 * @throws SaccaNotFoundException 
 	 */
-	@Test public void test3() throws SaccaNotFoundException{
-		assertEquals(5, amm.reportStatisticoSacche(GruppoSanguigno.ABm).size());
+	@Test public void test3() {
+		Client client = ClientBuilder.newClient();
+		WebTarget reportStatisticoSacche = client.target("http://127.0.0.1:8080/rest/amministratore/reportstatisticosacche");
+		Invocation.Builder invocationBuilder = reportStatisticoSacche.request(MediaType.TEXT_PLAIN);
+		invocationBuilder.cookie(cookie);
+		Response responseReportStatisticoSacche = invocationBuilder.post(Entity.text(GruppoSanguigno.ABp.toString()));
+		assertEquals(Status.OK.getStatusCode(), responseReportStatisticoSacche.getStatus());
 	}
 	
 	
@@ -1035,8 +1069,13 @@ public class ReportStatisticoSaccheTest {
 	 * Test che dovrebbe restituire una lista di Sacche con 3 elementi, siccome le sacche di GruppoSanguigno Bp presenti nel database delle sacche sono 5
 	 * @throws SaccaNotFoundException 
 	 */
-	@Test public void test4() throws SaccaNotFoundException{
-		assertEquals(5, amm.reportStatisticoSacche(GruppoSanguigno.Bp).size());
+	@Test public void test4(){
+		Client client = ClientBuilder.newClient();
+		WebTarget reportStatisticoSacche = client.target("http://127.0.0.1:8080/rest/amministratore/reportstatisticosacche");
+		Invocation.Builder invocationBuilder = reportStatisticoSacche.request(MediaType.TEXT_PLAIN);
+		invocationBuilder.cookie(cookie);
+		Response responseReportStatisticoSacche = invocationBuilder.post(Entity.text(GruppoSanguigno.Bp.toString()));
+		assertEquals(Status.OK.getStatusCode(), responseReportStatisticoSacche.getStatus());
 	}
 	
 	
@@ -1044,27 +1083,42 @@ public class ReportStatisticoSaccheTest {
 	 * Test che dovrebbe restituire una lista di Sacche con 3 elementi, siccome le sacche di GruppoSanguigno Bm presenti nel database delle sacche sono 5
 	 * @throws SaccaNotFoundException 
 	 */
-	@Test public void test5() throws SaccaNotFoundException{
-		assertEquals(5, amm.reportStatisticoSacche(GruppoSanguigno.Bm).size());
-	}
+	@Test public void test5() {
+		Client client = ClientBuilder.newClient();
+		WebTarget reportStatisticoSacche = client.target("http://127.0.0.1:8080/rest/amministratore/reportstatisticosacche");
+		Invocation.Builder invocationBuilder = reportStatisticoSacche.request(MediaType.TEXT_PLAIN);
+		invocationBuilder.cookie(cookie);
+		Response responseReportStatisticoSacche = invocationBuilder.post(Entity.text(GruppoSanguigno.Bm.toString()));
+		assertEquals(Status.OK.getStatusCode(), responseReportStatisticoSacche.getStatus());	
+		}
 	
 	
 	/**
 	 * Test che dovrebbe restituire una lista di Sacche con 3 elementi, siccome le sacche di GruppoSanguigno ABp presenti nel database delle sacche sono 5
 	 * @throws SaccaNotFoundException 
 	 */
-	@Test public void test6() throws SaccaNotFoundException{
-		assertEquals(5, amm.reportStatisticoSacche(GruppoSanguigno.ABp).size());
-	}
+	@Test public void test6(){
+		Client client = ClientBuilder.newClient();
+		WebTarget reportStatisticoSacche = client.target("http://127.0.0.1:8080/rest/amministratore/reportstatisticosacche");
+		Invocation.Builder invocationBuilder = reportStatisticoSacche.request(MediaType.TEXT_PLAIN);
+		invocationBuilder.cookie(cookie);
+		Response responseReportStatisticoSacche = invocationBuilder.post(Entity.text(GruppoSanguigno.ABp.toString()));
+		assertEquals(Status.OK.getStatusCode(), responseReportStatisticoSacche.getStatus());	
+		}
 	
 	
 	/**
 	 * Test che dovrebbe restituire una lista di Sacche con 3 elementi, siccome le sacche di GruppoSanguigno ZEROp presenti nel database delle sacche sono 5
 	 * @throws SaccaNotFoundException 
 	 */
-	@Test public void test7() throws SaccaNotFoundException{
-		assertEquals(5, amm.reportStatisticoSacche(GruppoSanguigno.ZEROp).size());
-	}
+	@Test public void test7() {
+		Client client = ClientBuilder.newClient();
+		WebTarget reportStatisticoSacche = client.target("http://127.0.0.1:8080/rest/amministratore/reportstatisticosacche");
+		Invocation.Builder invocationBuilder = reportStatisticoSacche.request(MediaType.TEXT_PLAIN);
+		invocationBuilder.cookie(cookie);
+		Response responseReportStatisticoSacche = invocationBuilder.post(Entity.text(GruppoSanguigno.ZEROp.toString()));
+		assertEquals(Status.OK.getStatusCode(), responseReportStatisticoSacche.getStatus());	
+		}
 	
 	
 	/**
@@ -1072,8 +1126,13 @@ public class ReportStatisticoSaccheTest {
 	 * @throws SaccaNotFoundException 
 	 */
 	@Test public void test8() throws SaccaNotFoundException{
-		assertEquals(5, amm.reportStatisticoSacche(GruppoSanguigno.ZEROm).size());
-	}
+		Client client = ClientBuilder.newClient();
+		WebTarget reportStatisticoSacche = client.target("http://127.0.0.1:8080/rest/amministratore/reportstatisticosacche");
+		Invocation.Builder invocationBuilder = reportStatisticoSacche.request(MediaType.TEXT_PLAIN);
+		invocationBuilder.cookie(cookie);
+		Response responseReportStatisticoSacche = invocationBuilder.post(Entity.text(GruppoSanguigno.ZEROm.toString()));
+		assertEquals(Status.OK.getStatusCode(), responseReportStatisticoSacche.getStatus());	
+		}
 
 
 	@AfterClass public static void dropDBSacche() {

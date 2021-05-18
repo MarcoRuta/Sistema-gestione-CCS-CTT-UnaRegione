@@ -8,6 +8,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Form;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+
+import it.unisannio.ingegneriaDelSoftware.Exceptions.DipendenteNotFoundException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -15,17 +24,14 @@ import org.junit.Test;
 import it.unisannio.ingegneriaDelSoftware.Classes.Cdf;
 import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.RuoloDipendente;
-import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointRestAmministratoreCTT;
-import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointRestAutentificazione;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 import it.unisannio.ingegneriaDelSoftware.Util.DateUtil;
 
 public class LoginTest {
 	
-	
-	@BeforeClass public static void populateDBDipendenti() throws ParseException {
-		EndPointRestAmministratoreCTT amm = new EndPointRestAmministratoreCTT();
+	@BeforeClass public static void populateDBDipendenti() throws ParseException, DipendenteNotFoundException {
+		MongoDataManager mm = new MongoDataManager();
 		List<Dipendente> listaDipendenti = new ArrayList<Dipendente>();
 	        
 	 	Cdf cdf = Cdf.getCDF("122hfotndj13ht5f");
@@ -93,12 +99,10 @@ public class LoginTest {
       
       
         for(Dipendente dip : listaDipendenti) {
-        	amm.addDipendente(dip);
+        	mm.addDipendente(dip);
         }       
 	}
-	
-	EndPointRestAmministratoreCTT amm = new EndPointRestAmministratoreCTT();
-		
+			
 	
 	/**
 	*Test che dovrebbe restituire true in quanto l'utente con
@@ -106,7 +110,14 @@ public class LoginTest {
 	*/
 	@Test	
 	public void test1(){  	
-		assertEquals(200, new EndPointRestAutentificazione().login("username 008", "008").getStatus());
+		Client client = ClientBuilder.newClient();
+		WebTarget login = client.target("http://127.0.0.1:8080/rest/autentificazione");
+		Form form1 = new Form();
+		form1.param("username", "username 003");
+		form1.param("password", "003");
+		
+		Response responselogin = login.request().post(Entity.form(form1));
+		assertEquals(Status.OK.getStatusCode(), responselogin.getStatus());
 	}
 
 	/**
@@ -115,7 +126,14 @@ public class LoginTest {
 	*/
 	@Test	
 	public void test2(){  	
-		assertEquals(200, new EndPointRestAutentificazione().login("username 007", "007").getStatus());
+		Client client = ClientBuilder.newClient();
+		WebTarget login = client.target("http://127.0.0.1:8080/rest/autentificazione");
+		Form form1 = new Form();
+		form1.param("username", "username 004");
+		form1.param("password", "004");
+		
+		Response responselogin = login.request().post(Entity.form(form1));
+		assertEquals(Status.OK.getStatusCode(), responselogin.getStatus());
 	}
 	
 	/**
@@ -124,7 +142,13 @@ public class LoginTest {
 	*/
 	@Test	
 	public void test3(){  	
-		assertEquals(403, new EndPointRestAutentificazione().login("username 008", "005").getStatus());
+		Client client = ClientBuilder.newClient();
+		WebTarget login = client.target("http://127.0.0.1:8080/rest/autentificazione");
+		Form form1 = new Form();
+		form1.param("username", "username 007");
+		form1.param("password", "008");	
+		Response responselogin = login.request().post(Entity.form(form1));
+		assertEquals(Status.FORBIDDEN.getStatusCode(), responselogin.getStatus());
 	}
 	
 	

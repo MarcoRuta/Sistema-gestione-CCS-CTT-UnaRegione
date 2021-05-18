@@ -1,7 +1,5 @@
 package it.unisannio.ingegneriaDelSoftware.Classes;
 
-import it.unisannio.ingegneriaDelSoftware.Exceptions.SerialeNotFoundException;
-
 import java.io.*;
 import java.text.DecimalFormat;
 import java.util.*;

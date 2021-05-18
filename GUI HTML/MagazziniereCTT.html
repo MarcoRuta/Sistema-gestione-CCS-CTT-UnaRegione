@@ -16,6 +16,45 @@
             divNot.innerHTML = "";
         }
     </script>
+<script>
+     var token = sessionStorage.getItem("token");
+     var ruolo = sessionStorage.getItem("ruolo");
+
+
+      verificoToken = function(){
+               if(token == null || ruolo != 'MagazziniereCTT'){
+                alert("E' necessario effettuare il login per accedere a questa risorsa");
+                window.location.href='Login.html';
+               }
+            }
+
+
+    logout = function(){
+
+        var xhttp = new XMLHttpRequest();
+        var url ="http://127.0.0.1:8080/rest/sessione/logout";
+        xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200 ) {
+                        window.location.href='Login.html';
+                 	}else {
+                 	    if(this.readyState == 4 && this.status != 200 ){
+                 	        alert(this.response);
+                 	    }
+                 	}
+        };
+
+
+        xhttp.onerror = function(){
+                   alert("impossibile inviare la richiesta");
+        };
+
+
+        xhttp.open("DELETE", url, true);
+        xhttp.send();
+
+    }
+
+    </script>
     
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
@@ -24,7 +63,7 @@
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 
-<body>
+<body onload="verificoToken()">
     
     <div class="titlePage">
         <div>
@@ -84,7 +123,7 @@
                     </div>
                     <div style="height: 40px;width: 300px;margin: -95px 0%;">
                         <button class="btn btn-primary" onclick="location.href='ChangePassword.html';" type="button" style="width: 160px;height: 42px;margin: 0px 0px;background-color: #13958d;">Change Password</button>
-                        <button class="btn btn-primary" onclick="location.href='Login.html';" type="button" style="width: 85px;height: 42px;margin: 0px 5%;">Log out</button>
+                        <button class="btn btn-primary" onclick="logout()" type="button" style="width: 85px;height: 42px;margin: 0px 5%;">Log out</button>
                     </div>
                 </div>
             

@@ -1,6 +1,8 @@
 package it.unisannio.ingegneriaDelSoftware;
 
 
+import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointLogout;
+import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointRestAmministratoreCTT;
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointRestAutentificazione;
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointRestMagazziniereCTT;
 import it.unisannio.ingegneriaDelSoftware.Filtri.FiltroDiAutorizzazione;
@@ -28,6 +30,9 @@ public class CttDataBaseRestApplication extends ResourceConfig {
 		register(EndPointRestMagazziniereCTT.class);
 		//EndPoint per il login
 		register(EndPointRestAutentificazione.class);
+		register(EndPointLogout.class);
+		//Endpoint Amministratore
+		register(EndPointRestAmministratoreCTT.class);
 	}
 
 	public static void main(String[] args) {

@@ -1,14 +1,11 @@
 package it.unisannio.ingegneriaDelSoftware.Filtri;
 
-import it.unisannio.ingegneriaDelSoftware.Annotazioni.Secured;
-
 import javax.annotation.Priority;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
-import javax.ws.rs.container.PreMatching;
 import javax.ws.rs.container.ResourceInfo;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
@@ -90,7 +87,7 @@ public class FiltroDiAutorizzazione implements ContainerRequestFilter {
      */
     private void refuseRequest(ContainerRequestContext requestContext) {
         requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
-                .entity("You cannot access this resource").build());
+                .entity("Non hai i permessi per accedere a queste risorse").build());
         return;
     }
 }

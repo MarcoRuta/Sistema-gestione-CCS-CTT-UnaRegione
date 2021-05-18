@@ -29,8 +29,8 @@ public class AlertControlScadenzaTest {
 	    	List<DatiSacca> listaDatiSacche = new ArrayList<DatiSacca>();
 	    	
 	    	//Caricamento sul sistema di cinque Sacche di tipo A+, 4 sacche sono arrivate nel magazzino tra il 15-07-2020 e il 02-05-2021 e hanno data di scadenza lontana (2022)
-	    	//Una sacca è arrrivata nel 2018 ed è già scaduta
-	    	//Tutte le sacche sono non prenotate e quindi affidabili ad un ente esterno 
+	    	//Una sacca è arrivata nel 2018 ed è già scaduta
+	    	//Tutte le Sacche sono non prenotate e quindi affidabili ad un ente esterno 
 
 	    	//Prima sacca 
 	    	GruppoSanguigno gs = GruppoSanguigno.Ap;
@@ -99,8 +99,8 @@ public class AlertControlScadenzaTest {
 	    	 listaDatiSacche.add(datisacca); 
 
 	    	//Caricamento sul sistema di cinque Sacche di tipo A-, 4 sacche sono arrivate nel magazzino tra il 15-07-2020 e il 02-05-2021 e hanno data di scadenza lontana
-	    	//Una sacca è arrrivata nel 2018 ed è già scaduta
-	    	//Tutte le sacche sono non prenotate e quindi affidabili ad un ente esterno 
+	    	//Una sacca è arrivata nel 2018 ed è già scaduta
+	    	//Tutte le Sacche sono non prenotate e quindi affidabili ad un ente esterno 
 
 	    	//Prima sacca 
 	    	 gs = GruppoSanguigno.Am;
@@ -169,8 +169,8 @@ public class AlertControlScadenzaTest {
 	    	 listaDatiSacche.add(datisacca); 
 
 	    	//Caricamento sul sistema di cinque Sacche di tipo B+, 4 sacche sono arrivate nel magazzino tra il 15-07-2020 e il 02-05-2021 e hanno data di scadenza lontana
-	    	//Una sacca è arrrivata nel 2018 ed è già scaduta
-	    	//Tutte le sacche sono non prenotate e quindi affidabili ad un ente esterno 
+	    	//Una sacca è arrivata nel 2018 ed è già scaduta
+	    	//Tutte le Sacche sono non prenotate e quindi affidabili ad un ente esterno 
 
 	    	//Prima sacca 
 	    	 gs = GruppoSanguigno.Bp;
@@ -240,8 +240,8 @@ public class AlertControlScadenzaTest {
 
 
 	    	//Caricamento sul sistema di cinque Sacche di tipo B-, 4 sacche sono arrivate nel magazzino tra il 15-07-2020 e il 02-05-2021 e hanno data di scadenza lontana
-	    	//Una sacca è arrrivata nel 2018 ed è già scaduta
-	    	//Tutte le sacche sono non prenotate e quindi affidabili ad un ente esterno 
+	    	//Una sacca è arrivata nel 2018 ed è già scaduta
+	    	//Tutte le Sacche sono non prenotate e quindi affidabili ad un ente esterno 
 
 	    	//Prima sacca 
 	    	 gs = GruppoSanguigno.Bm;
@@ -310,8 +310,8 @@ public class AlertControlScadenzaTest {
 	    	 listaDatiSacche.add(datisacca); 
 
 	    	//Caricamento sul sistema di cinque Sacche di tipo AB+, 4 sacche sono arrivate nel magazzino tra il 15-07-2020 e il 02-05-2021 e hanno data di scadenza lontana
-	    	//Una sacca è arrrivata nel 2018 ed è già scaduta
-	    	//Tutte le sacche sono non prenotate e quindi affidabili ad un ente esterno 
+	    	//Una Sacca è arrivata nel 2018 ed è già scaduta
+	    	//Tutte le Sacche sono non prenotate e quindi affidabili ad un ente esterno 
 
 	    	//Prima sacca 
 	    	 gs = GruppoSanguigno.ABp;
@@ -380,8 +380,8 @@ public class AlertControlScadenzaTest {
 	    	 listaDatiSacche.add(datisacca); 
 
 	    	//Caricamento sul sistema di cinque Sacche di tipo AB-, 4 sacche sono arrivate nel magazzino tra il 15-07-2020 e il 02-05-2021 e hanno data di scadenza lontana
-	    	//Una sacca è arrrivata nel 2018 ed è già scaduta
-	    	//Tutte le sacche sono non prenotate e quindi affidabili ad un ente esterno 
+	    	//Una Sacca è arrivata nel 2018 ed è già scaduta
+	    	//Tutte le Sacche sono non prenotate e quindi affidabili ad un ente esterno 
 
 	    	//Prima sacca 
 	    	 gs = GruppoSanguigno.ABm;
@@ -450,8 +450,8 @@ public class AlertControlScadenzaTest {
 	    	 listaDatiSacche.add(datisacca); 
 
 	    	//Caricamento sul sistema di cinque Sacche di tipo ZERO+, 4 sacche sono arrivate nel magazzino tra il 15-07-2020 e il 02-05-2021 e hanno data di scadenza lontana
-	    	//Una sacca è arrrivata nel 2018 ed è già scaduta
-	    	//Tutte le sacche sono non prenotate e quindi affidabili ad un ente esterno 
+	    	//Una Sacca è arrivata nel 2018 ed è già scaduta
+	    	//Tutte le Sacche sono non prenotate e quindi affidabili ad un ente esterno 
 
 	    	//Prima sacca 
 	    	 gs = GruppoSanguigno.ZEROp;
@@ -520,8 +520,8 @@ public class AlertControlScadenzaTest {
 	    	 listaDatiSacche.add(datisacca); 
 
 	    	//Caricamento sul sistema di cinque Sacche di tipo ZERO-, 4 sacche sono arrivate nel magazzino tra il 15-07-2020 e il 02-05-2021 e hanno data di scadenza lontana
-	    	//Una sacca è arrrivata nel 2018 ed è già scaduta
-	    	//Tutte le sacche sono non prenotate e quindi affidabili ad un ente esterno 
+	    	//Una Sacca è arrivata nel 2018 ed è già scaduta
+	    	//Tutte le Sacche sono non prenotate e quindi affidabili ad un ente esterno 
 
 	    	//Prima sacca 
 	    	 gs = GruppoSanguigno.ZEROm;
@@ -598,6 +598,7 @@ public class AlertControlScadenzaTest {
 	        	mm.createDatiSacca(datisac);
 	        }
 		}
+	
 	
 	/**
 	*Test che dovrebbe restituire una lista con 3 Sacche che stanno per scadere (nel beforeclass ci sono 3 sacche con dataScadenza LocalDate.now().plusDays(2)!)

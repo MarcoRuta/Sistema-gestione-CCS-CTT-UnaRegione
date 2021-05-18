@@ -1,37 +1,54 @@
 package it.unisannio.ingegneriaDelSoftware.junit;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Form;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.NewCookie;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import it.unisannio.ingegneriaDelSoftware.Classes.Cdf;
 import it.unisannio.ingegneriaDelSoftware.Classes.DatiSacca;
+import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
+import it.unisannio.ingegneriaDelSoftware.Classes.RuoloDipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
-import it.unisannio.ingegneriaDelSoftware.Classes.Seriale;
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointRestMagazziniereCTT;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaNotFoundException;
+import it.unisannio.ingegneriaDelSoftware.Util.Constants;
+import it.unisannio.ingegneriaDelSoftware.Util.DateUtil;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 
 
 public class EvasioneSaccaTest {
-	@BeforeClass public static void populateDBSacche() throws SaccaNotFoundException {
-		
-    	MongoDataManager mm = new MongoDataManager();
+	static NewCookie cookie = null;
+	
+	@BeforeClass public static void populateDBSacche() throws SaccaNotFoundException, AssertionError, ParseException {
+		MongoDataManager mm = new MongoDataManager();
     	List<Sacca> listaSacche = new ArrayList<Sacca>();
     	List<DatiSacca> listaDatiSacche = new ArrayList<DatiSacca>();
     	
    	  	
     	//Caricamento sul sistema di cinque Sacche di tipo A+, 4 sacche sono arrivate nel magazzino tra il 15-07-2020 e il 02-05-2021 e hanno data di scadenza lontana (2022)
-    	//Una sacca è arrrivata nel 2018 ed è già scaduta
-    	//Tutte le sacche sono non prenotate e quindi affidabili ad un ente esterno 
+    	//Una sacca è arrivata nel 2018 ed è già scaduta
+    	//Tutte le Sacche sono non prenotate e quindi affidabili ad un ente esterno 
 
-    	//Prima sacca 
+    	//Prima sacca
     	GruppoSanguigno gs = GruppoSanguigno.Ap;
     	LocalDate localDataProduzione = LocalDate.of(2020,04,10);
     	LocalDate localDataScadenza = LocalDate.of(2022,04,10);
@@ -98,8 +115,8 @@ public class EvasioneSaccaTest {
     	 listaDatiSacche.add(datisacca); 
 
     	//Caricamento sul sistema di cinque Sacche di tipo A-, 4 sacche sono arrivate nel magazzino tra il 15-07-2020 e il 02-05-2021 e hanno data di scadenza lontana
-    	//Una sacca è arrrivata nel 2018 ed è già scaduta
-    	//Tutte le sacche sono non prenotate e quindi affidabili ad un ente esterno 
+    	//Una sacca è arrivata nel 2018 ed è già scaduta
+    	//Tutte le Sacche sono non prenotate e quindi affidabili ad un ente esterno 
 
     	//Prima sacca 
     	 gs = GruppoSanguigno.Am;
@@ -168,8 +185,8 @@ public class EvasioneSaccaTest {
     	 listaDatiSacche.add(datisacca); 
 
     	//Caricamento sul sistema di cinque Sacche di tipo B+, 4 sacche sono arrivate nel magazzino tra il 15-07-2020 e il 02-05-2021 e hanno data di scadenza lontana
-    	//Una sacca è arrrivata nel 2018 ed è già scaduta
-    	//Tutte le sacche sono non prenotate e quindi affidabili ad un ente esterno 
+    	//Una sacca è arrivata nel 2018 ed è già scaduta
+    	//Tutte le Sacche sono non prenotate e quindi affidabili ad un ente esterno 
 
     	//Prima sacca 
     	 gs = GruppoSanguigno.Bp;
@@ -239,8 +256,8 @@ public class EvasioneSaccaTest {
 
 
     	//Caricamento sul sistema di cinque Sacche di tipo B-, 4 sacche sono arrivate nel magazzino tra il 15-07-2020 e il 02-05-2021 e hanno data di scadenza lontana
-    	//Una sacca è arrrivata nel 2018 ed è già scaduta
-    	//Tutte le sacche sono non prenotate e quindi affidabili ad un ente esterno 
+    	//Una sacca è arrivata nel 2018 ed è già scaduta
+    	//Tutte le Sacche sono non prenotate e quindi affidabili ad un ente esterno 
 
     	//Prima sacca 
     	 gs = GruppoSanguigno.Bm;
@@ -309,8 +326,8 @@ public class EvasioneSaccaTest {
     	 listaDatiSacche.add(datisacca); 
 
     	//Caricamento sul sistema di cinque Sacche di tipo AB+, 4 sacche sono arrivate nel magazzino tra il 15-07-2020 e il 02-05-2021 e hanno data di scadenza lontana
-    	//Una sacca è arrrivata nel 2018 ed è già scaduta
-    	//Tutte le sacche sono non prenotate e quindi affidabili ad un ente esterno 
+    	//Una sacca è arrivata nel 2018 ed è già scaduta
+    	//Tutte le Sacche sono non prenotate e quindi affidabili ad un ente esterno 
 
     	//Prima sacca 
     	 gs = GruppoSanguigno.ABp;
@@ -379,8 +396,8 @@ public class EvasioneSaccaTest {
     	 listaDatiSacche.add(datisacca); 
 
     	//Caricamento sul sistema di cinque Sacche di tipo AB-, 4 sacche sono arrivate nel magazzino tra il 15-07-2020 e il 02-05-2021 e hanno data di scadenza lontana
-    	//Una sacca è arrrivata nel 2018 ed è già scaduta
-    	//Tutte le sacche sono non prenotate e quindi affidabili ad un ente esterno 
+    	//Una sacca è arrivata nel 2018 ed è già scaduta
+    	//Tutte le Sacche sono non prenotate e quindi affidabili ad un ente esterno 
 
     	//Prima sacca 
     	 gs = GruppoSanguigno.ABm;
@@ -449,8 +466,8 @@ public class EvasioneSaccaTest {
     	 listaDatiSacche.add(datisacca); 
 
     	//Caricamento sul sistema di cinque Sacche di tipo ZERO+, 4 sacche sono arrivate nel magazzino tra il 15-07-2020 e il 02-05-2021 e hanno data di scadenza lontana
-    	//Una sacca è arrrivata nel 2018 ed è già scaduta
-    	//Tutte le sacche sono non prenotate e quindi affidabili ad un ente esterno 
+    	//Una sacca è arrivata nel 2018 ed è già scaduta
+    	//Tutte le Sacche sono non prenotate e quindi affidabili ad un ente esterno 
 
     	//Prima sacca 
     	 gs = GruppoSanguigno.ZEROp;
@@ -519,8 +536,8 @@ public class EvasioneSaccaTest {
     	 listaDatiSacche.add(datisacca); 
 
     	//Caricamento sul sistema di cinque Sacche di tipo ZERO-, 4 sacche sono arrivate nel magazzino tra il 15-07-2020 e il 02-05-2021 e hanno data di scadenza lontana
-    	//Una sacca è arrrivata nel 2018 ed è già scaduta
-    	//Tutte le sacche sono non prenotate e quindi affidabili ad un ente esterno 
+    	//Una sacca è arrivata nel 2018 ed è già scaduta
+    	//Tutte le Sacche sono non prenotate e quindi affidabili ad un ente esterno 
 
     	//Prima sacca 
     	 gs = GruppoSanguigno.ZEROm;
@@ -565,7 +582,7 @@ public class EvasioneSaccaTest {
     	 gs = GruppoSanguigno.ZEROm;
     	 localDataProduzione = LocalDate.of(2020,07,12);
     	 localDataScadenza = LocalDate.of(2022,07,12);
-    	 prenotato = false;
+    	 prenotato = true;
     	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
     	 listaSacche.add(sacca);
     	        
@@ -589,7 +606,6 @@ public class EvasioneSaccaTest {
     	 listaDatiSacche.add(datisacca); 
 
     	
-    	
     	for(Sacca sac : listaSacche) {
         	mm.createSacca(sac);
         }
@@ -597,49 +613,74 @@ public class EvasioneSaccaTest {
     	for(DatiSacca datisac : listaDatiSacche) {
         	mm.createDatiSacca(datisac);
         }
+
+        Dipendente d = new Dipendente(Cdf.getCDF("999hpoindj13ht9f"), "Mario", "Magazz", DateUtil.convertDateToLocalDate(Constants.sdf.parse("10-07-1950")), RuoloDipendente.MagazziniereCTT, "username 999", "999");
+        mm.addDipendente(d);
+    	
+    	Client client = ClientBuilder.newClient();
+		WebTarget login = client.target("http://127.0.0.1:8080/rest/autentificazione");
+		Form form1 = new Form();
+		form1.param("username", "username 999");
+		form1.param("password", "999");
+		
+		Response responselogin = login.request().post(Entity.form(form1));
+		cookie = responselogin.getCookies().get("access_token");  	
 	}
 	
 	EndPointRestMagazziniereCTT magazz = new EndPointRestMagazziniereCTT();
 	MongoDataManager mongo = new MongoDataManager();
 	
+	
 	/**
 	 * Test che dovrebbe restituire una lista di Sacche con 21 elementi
-	 * @throws SaccaNotFoundException 
-	 * @throws ParseException 
 	*/
-	@Test public void test1() throws SaccaNotFoundException {
-		assertEquals(40,mongo.getListaSacche().size());
+	@Test public void test1(){
+		Client client = ClientBuilder.newClient();
+		WebTarget evasioneSacca = client.target("http://127.0.0.1:8080/rest/magazziniere/evasione/CTT001-00000063");
+		Invocation.Builder invocationBuilder = evasioneSacca.request(MediaType.TEXT_PLAIN);
+		invocationBuilder.cookie(cookie);
+		Form form1 = new Form();
+		form1.param("enterichiedente", "Ricky Edente");
+		form1.param("indirizzo", "Caserta, via mazz");
+
+		Response responseEvasioneSacca = invocationBuilder.put(Entity.form(form1));
+		assertEquals(Status.OK.getStatusCode(), responseEvasioneSacca.getStatus());
 	}
 	
 	
 	/**
-	 * Test che dovrebbe restituire null, siccome la Sacca viene rimossa
-	 * @throws SaccaNotFoundException 
-	 * @throws ParseException
-	 *
+	 * Test che dovrebbe restituire una lista di Sacche con 21 elementi
 	*/
-	@Test 
-	public void test2() throws SaccaNotFoundException {
-		magazz.evasioneSacca("CTT001-00000009","Cardarelli","Benevento,via dei caduti");
-		assertNull(mongo.getSacca(Seriale.getSeriale("CTT001-00000009")));
+	@Test public void test2(){
+		Client client = ClientBuilder.newClient();
+		WebTarget evasioneSacca = client.target("http://127.0.0.1:8080/rest/magazziniere/evasione/CTT001-00000999");
+		Invocation.Builder invocationBuilder = evasioneSacca.request(MediaType.TEXT_PLAIN);
+		invocationBuilder.cookie(cookie);
+		Form form1 = new Form();
+		form1.param("enterichiedente", "Paolo Rova");
+		form1.param("indirizzo", "Caserta, via mazz");
+
+		Response responseEvasioneSacca = invocationBuilder.put(Entity.form(form1));
+		assertEquals(Status.BAD_REQUEST.getStatusCode(), responseEvasioneSacca.getStatus());
 	}
-	
+
 	
 	/**
-	 * Test che dovrebbe restituire una lista di Sacche con 39 elementi
-	 * @throws SaccaNotFoundException 
-	 * @throws ParseException
-	 */
-	@Test public void test3() throws SaccaNotFoundException {
-		assertEquals(39,mongo.getListaSacche().size());
+	 * Test che dovrebbe restituire una lista di Sacche con 21 elementi
+	*/
+	@Test public void test3(){
+		Client client = ClientBuilder.newClient();
+		WebTarget getListaSacca = client.target("http://127.0.0.1:8080/rest/magazziniere/sacche");
+		Invocation.Builder invocationBuilder = getListaSacca.request(MediaType.APPLICATION_JSON);
+		invocationBuilder.cookie(cookie);
+
+		Response responseGetListaSacca = invocationBuilder.get();
+		assertEquals(Status.OK.getStatusCode(), responseGetListaSacca.getStatus());
 	}
-
-
+	
 
 	@AfterClass public static void dropDBSacche() {
 		MongoDataManager mm = new MongoDataManager();
 		mm.dropDB();
 	}
-
-
 }

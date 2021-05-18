@@ -2,9 +2,11 @@ package it.unisannio.ingegneriaDelSoftware.Filtri;
 
 import it.unisannio.ingegneriaDelSoftware.Annotazioni.Secured;
 import it.unisannio.ingegneriaDelSoftware.Classes.Token;
+import it.unisannio.ingegneriaDelSoftware.Classes.User;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.DipendenteNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.DataManager;
+import org.glassfish.jersey.inject.hk2.RequestContext;
 
 
 import javax.annotation.Priority;
@@ -32,7 +34,6 @@ import java.util.*;
 @Secured
 @Priority(Priorities.AUTHENTICATION)
 public class FiltroDiAutentificazione implements ContainerRequestFilter {
-    private List<String>tokens = new ArrayList<>();
 
     /**
      * Instead of injecting values directly into field the value can be injected into the setter method which will initialize the field.
@@ -44,34 +45,21 @@ public class FiltroDiAutentificazione implements ContainerRequestFilter {
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
-        DataManager dataManager = new MongoDataManager();
-        /**Container request filter context  provides request-specific information for the filter,
-         * such as request URI, message headers, message entity or request-scoped properties.
-         * cookies contiene tutti i cookie della richiesta.
-         */
-        Map<String, Cookie> cookies = requestContext.getCookies();
-        //If no authorization information present; block access
-        if(cookies == null || cookies.isEmpty() ) {
-            requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
-                        .entity("You cannot access this resource").build());
+       String header = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
+        if(header == null || !tokenValid(header)) {
+            this.refuseRequest(requestContext, "Effettua Prima il login");
             return;
         }
-        //controllo se ho la chiave di accesso altrimenti blocco l'accesso
-       if(!(cookies.containsKey("access_token") )|| cookies.get("access_token")== null){
-           requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
-                   .entity("You cannot access this resource").build());
-           return;
-       }
+        String token = header.substring(SecurityContext.BASIC_AUTH.length()).trim();
+        if(!Token.containsToken(token)){
+            this.refuseRequest(requestContext,"Token non valido effettua nuovamente il l ogin");
+            return;
+        }
 
-       //controllo se sia un token valido
-       if(! (Token.containsToken(cookies.get("access_token").getValue())) ){
-           requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
-                   .entity("Token di accesso non valido, Effettuare nuovamente il login").build());
-           return;
-       }
-       //recupero username e password usando il token
+        //recupero username e password usando il token
         try {
-            String usernamePassword = Token.getDipendenteByToken(cookies.get("access_token").getValue());
+            DataManager dataManager = new MongoDataManager();
+            String usernamePassword = Token.getDipendenteByToken(token);
             StringTokenizer aTokenizer = new StringTokenizer(usernamePassword);
             String username = aTokenizer.nextToken(":");
             String password = aTokenizer.nextToken();
@@ -107,12 +95,21 @@ public class FiltroDiAutentificazione implements ContainerRequestFilter {
 
         } catch (DipendenteNotFoundException e) {
             requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
-                    .entity("Token di accesso non valido. Effettuare nuovamente il Login").build());
+                    .entity("Dipendente non registrato nel DB").build());
             return;
         }
 
 
     }
 
+    private boolean tokenValid(String header) {
+        if (!header.toUpperCase().startsWith(SecurityContext.BASIC_AUTH+" "))
+            return false;
+       return true;
+    }
 
+    private void refuseRequest(ContainerRequestContext requestContext, String message) {
+        requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
+                .entity(message).build());
+    }
 }

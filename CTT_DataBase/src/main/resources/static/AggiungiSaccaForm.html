@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 
-<head>
+<head >
     <script>
         function print2(){
             if(data_produzione.value!="")
@@ -34,7 +34,7 @@
     <link rel="stylesheet" href="assets/css/formStyles.css">
 </head>
 
-<body style="background-color: #ffffff;">
+<body style="background-color: #ffffff;" onload="verificoToken()">
     
     <div class="titlePage">
         <div>
@@ -115,10 +115,12 @@
     </div>
     <script type="application/javascript">
             var xhttp = new XMLHttpRequest();
+            var token = sessionStorage.getItem("token");
+            var ruolo = sessionStorage.getItem("ruolo");
 
             function loadDoc(){
             	
-                var url = "http://127.0.0.1:8080/rest/CTT/aggiuntaSacca";
+                var url = "http://127.0.0.1:8080/rest/magazziniere/aggiuntaSacca";
                 
                 var gp = gruppo_sanguigno.value;
                 var ed = ente_donatore.value;
@@ -126,6 +128,7 @@
                 var dp = data_produzione.value;
                 
                 var params = 'gruppo_sanguigno='+gp+'&data_scadenza='+ds+'&data_produzione='+dp+'&ente_donatore='+ed;
+                xhttp.withCredentials = true;
 
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
@@ -139,10 +142,21 @@
                     document.getElementById("result").innerHTML = "[Error 401] Impossibile Aggiungere Sacca ";
                 }
 
+
                 xhttp.open("POST", url, true);
                 xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhttp.setRequestHeader('Authorization', 'Basic '+token);
+                xhttp.withCredentials = true;
                 xhttp.send(params);
 
+            }
+
+
+            verificoToken = function(){
+                if(token == null || ruolo != 'MagazziniereCTT'){
+                    alert("E' necessario effettuare il login per accedere a questa risorsa");
+                    window.location.href='Login.html';
+               }
             }
     </script>
 

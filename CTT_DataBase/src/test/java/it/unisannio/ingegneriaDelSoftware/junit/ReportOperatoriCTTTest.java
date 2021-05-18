@@ -8,6 +8,18 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Form;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.NewCookie;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+
+import it.unisannio.ingegneriaDelSoftware.Exceptions.DipendenteNotFoundException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -15,15 +27,14 @@ import org.junit.Test;
 import it.unisannio.ingegneriaDelSoftware.Classes.Cdf;
 import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.RuoloDipendente;
-import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointRestAmministratoreCTT;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 import it.unisannio.ingegneriaDelSoftware.Util.DateUtil;
 
 public class ReportOperatoriCTTTest {
-			
-	@BeforeClass public static void populateDBDipendenti() throws ParseException {
-		EndPointRestAmministratoreCTT amm = new EndPointRestAmministratoreCTT();
+	static NewCookie cookie = null;		
+	@BeforeClass public static void populateDBDipendenti() throws ParseException, DipendenteNotFoundException {
+		MongoDataManager mm = new MongoDataManager();
 		List<Dipendente> listaDipendenti = new ArrayList<Dipendente>();
 	        
 	 	Cdf cdf = Cdf.getCDF("122hfotndj13ht5f");
@@ -44,7 +55,7 @@ public class ReportOperatoriCTTTest {
         Dipendente dip3 = new Dipendente(cdf, "Giovanni", "Rana", ld, ruolo, username, password);
         listaDipendenti.add(dip3); 
         
-        cdf =Cdf.getCDF("123456789swertyy");
+        cdf = Cdf.getCDF("123456789swertyy");
         datadinascita = Constants.sdf.parse("10-12-1996");
         ld = DateUtil.convertDateToLocalDate(datadinascita);
         ruolo = RuoloDipendente.OperatoreCTT;
@@ -91,45 +102,73 @@ public class ReportOperatoriCTTTest {
       
       
         for(Dipendente dip : listaDipendenti) {
-        	amm.addDipendente(dip);
-        }       
+        	mm.addDipendente(dip);
+        }  
+        
+        Client client = ClientBuilder.newClient();
+		WebTarget login = client.target("http://127.0.0.1:8080/rest/autentificazione");
+		Form form1 = new Form();
+		form1.param("username", "username 003");
+		form1.param("password", "003");
+		
+		Response responselogin = login.request().post(Entity.form(form1));
+		cookie = responselogin.getCookies().get("access_token");
 	}
-	
-	EndPointRestAmministratoreCTT amm = new EndPointRestAmministratoreCTT();
 		
 	
 	/**
 	 * Test che dovrebbe restituire una lista di Dipendenti con 3 elementi, siccome gli OperatoriCTT presenti nel database dei Dipendenti sono 3
 	*/
 	@Test	
-	public void test1(){  	
-		assertEquals(3, amm.reportOperatoriCTT(RuoloDipendente.OperatoreCTT).size());
-		
+	public void test1() {
+		Client client = ClientBuilder.newClient();		
+		WebTarget reportOperatoriCTT = client.target("http://127.0.0.1:8080/rest/amministratore/reportoperatorictt");
+		Invocation.Builder invocationBuilder = reportOperatoriCTT.request(MediaType.APPLICATION_JSON);
+		invocationBuilder.cookie(cookie);	
+		Response responseReportOperatoriCTT = invocationBuilder.post(Entity.text(RuoloDipendente.OperatoreCTT.toString()));
+		assertEquals(Status.OK.getStatusCode(), responseReportOperatoriCTT.getStatus());		
 	}
 	
-	/**
-	 * Test che dovrebbe restituire una lista di Dipendenti con 3 elementi, siccome gli MagazziniereCTT presenti nel database dei Dipendenti sono 3
-	*/
-	@Test	
-	public void test3(){  	
-		assertEquals(3, amm.reportOperatoriCTT(RuoloDipendente.MagazziniereCTT).size());
-	}
 
-	
 	/**
-	 * Test che dovrebbe restituire una lista di Dipendenti con 1 elemento, siccome gli AmministratoriCTT presenti nel database dei Dipendenti sono 1
+	 * Test che dovrebbe restituire una lista di Dipendenti con 3 elementi, siccome gli OperatoriCTT presenti nel database dei Dipendenti sono 3
 	*/
 	@Test	
-	public void test4(){  	
-		assertEquals(1, amm.reportOperatoriCTT(RuoloDipendente.AmministratoreCTT).size());
+	public void test2() {
+		Client client = ClientBuilder.newClient();
+		WebTarget reportOperatoriCTT = client.target("http://127.0.0.1:8080/rest/amministratore/reportoperatorictt");
+		Invocation.Builder invocationBuilder = reportOperatoriCTT.request(MediaType.APPLICATION_JSON);
+		invocationBuilder.cookie(cookie);	
+		Response responseReportOperatoriCTT = invocationBuilder.post(Entity.text(RuoloDipendente.MagazziniereCTT.toString()));
+		assertEquals(Status.OK.getStatusCode(), responseReportOperatoriCTT.getStatus());		
 	}
 	
+	
 	/**
-	 * Test che dovrebbe restituire una lista di Dipendenti con 0 elementi, siccome gli AmministratoriCCS presenti nel database dei Dipendenti sono 0
-	 */
+	 * Test che dovrebbe restituire una lista di Dipendenti con 3 elementi, siccome gli OperatoriCTT presenti nel database dei Dipendenti sono 3
+	*/
 	@Test	
-	public void test5(){  	
-		assertEquals(0, amm.reportOperatoriCTT(RuoloDipendente.AmministratoreCCS).size());
+	public void test3() {
+		Client client = ClientBuilder.newClient();
+		WebTarget reportOperatoriCTT = client.target("http://127.0.0.1:8080/rest/amministratore/reportoperatorictt");
+		Invocation.Builder invocationBuilder = reportOperatoriCTT.request(MediaType.APPLICATION_JSON);
+		invocationBuilder.cookie(cookie);	
+		Response responseReportOperatoriCTT = invocationBuilder.post(Entity.text(RuoloDipendente.AmministratoreCTT.toString()));
+		assertEquals(Status.OK.getStatusCode(), responseReportOperatoriCTT.getStatus());		
+	}
+	
+	
+	/**
+	 * Test che dovrebbe restituire una lista di Dipendenti con 3 elementi, siccome gli OperatoriCTT presenti nel database dei Dipendenti sono 3
+	*/
+	@Test	
+	public void test4() {
+		Client client = ClientBuilder.newClient();
+		WebTarget reportOperatoriCTT = client.target("http://127.0.0.1:8080/rest/amministratore/reportoperatorictt");
+		Invocation.Builder invocationBuilder = reportOperatoriCTT.request(MediaType.APPLICATION_JSON);
+		invocationBuilder.cookie(cookie);	
+		Response responseReportOperatoriCTT = invocationBuilder.post(Entity.text(RuoloDipendente.AmministratoreCCS.toString()));
+		assertEquals(Status.OK.getStatusCode(), responseReportOperatoriCTT.getStatus());		
 	}
 	
 	

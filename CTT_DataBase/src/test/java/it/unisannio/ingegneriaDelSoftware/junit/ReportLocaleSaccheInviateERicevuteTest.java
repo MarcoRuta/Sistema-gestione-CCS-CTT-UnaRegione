@@ -7,22 +7,32 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Form;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.NewCookie;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import it.unisannio.ingegneriaDelSoftware.Classes.DatiSacca;
 import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
+import it.unisannio.ingegneriaDelSoftware.Classes.RuoloDipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
 import it.unisannio.ingegneriaDelSoftware.Classes.Seriale;
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointRestAmministratoreCTT;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
-import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 
 public class ReportLocaleSaccheInviateERicevuteTest {
-	EndPointRestAmministratoreCTT amm = new EndPointRestAmministratoreCTT();
-	
+	static NewCookie cookie = null;
 	@BeforeClass public static void populateDBSacche() throws SaccaNotFoundException {
 		
 		MongoDataManager mm = new MongoDataManager();
@@ -1004,29 +1014,42 @@ public class ReportLocaleSaccheInviateERicevuteTest {
         }
 	}
 	
+	
 	/**
 	 * Test che dovrebbe restituire una lista di DatiSacca con 1 elemento
 	 * @throws ParseException
 	 */
-	@Test public void test1() throws ParseException {
-		assertEquals(1, amm.ReportLocaleSaccheInviateERicevuteCTT(Constants.sdf.parse("01-01-2021"), Constants.sdf.parse("01-02-2021")).size());
+	@Test public void test1() {
+		Client client = ClientBuilder.newClient();
+//########################################################percorso probabilmente errato siccome manca il form
+		WebTarget ReportLocaleSaccheInviateERicevute = client.target("http://127.0.0.1:8080/rest/amministratore/reportlocalesaccheinviateericevutectt");
+		Invocation.Builder invocationBuilder = ReportLocaleSaccheInviateERicevute.request(MediaType.TEXT_PLAIN);
+		invocationBuilder.cookie(cookie);
+		Form form1 = new Form();
+		form1.param("dataInizio", "2021-01-01");
+		form1.param("dataFine", "2021-12-31");
+		Response responseReportLocaleSaccheInviateERicevute = invocationBuilder.post(Entity.form(form1));
+		assertEquals(Status.OK.getStatusCode(), responseReportLocaleSaccheInviateERicevute.getStatus());	
 	}
 	
-	/**
-	 * Test che dovrebbe restituire una lista di DatiSacca con 14 elementi
-	 * @throws ParseException
-	 */
-	@Test public void test2() throws ParseException {
-		assertEquals(14, amm.ReportLocaleSaccheInviateERicevuteCTT(Constants.sdf.parse("01-01-2021"), Constants.sdf.parse("01-04-2021")).size());
-	}
 	
 	/**
-	 * Test che dovrebbe restituire una lista di DatiSacca con 40 elementi
+	 * Test che dovrebbe restituire una lista di DatiSacca con 1 elemento
 	 * @throws ParseException
 	 */
-	@Test public void test3() throws ParseException {
-		assertEquals(40, amm.ReportLocaleSaccheInviateERicevuteCTT(Constants.sdf.parse("01-01-2021"), Constants.sdf.parse("01-06-2021")).size());
+	@Test public void test2() {
+		Client client = ClientBuilder.newClient();
+//########################################################percorso probabilmente errato siccome manca il form
+		WebTarget ReportLocaleSaccheInviateERicevute = client.target("http://127.0.0.1:8080/rest/amministratore/reportlocalesaccheinviateericevutectt");
+		Invocation.Builder invocationBuilder = ReportLocaleSaccheInviateERicevute.request(MediaType.TEXT_PLAIN);
+		invocationBuilder.cookie(cookie);
+		Form form1 = new Form();
+		form1.param("dataInizio", "01-01-2021");
+		form1.param("dataFine", "31-12-2021");
+		Response responseReportLocaleSaccheInviateERicevute = invocationBuilder.post(Entity.form(form1));
+		assertEquals(Status.BAD_REQUEST.getStatusCode(), responseReportLocaleSaccheInviateERicevute.getStatus());	
 	}
+	
 
 	@AfterClass public static void dropDBSacche() {
 		MongoDataManager mm = new MongoDataManager();

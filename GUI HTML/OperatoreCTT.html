@@ -16,6 +16,18 @@
             divNot.innerHTML = "";
         }
     </script>
+    <script>
+        var token = sessionStorage.getItem("token");
+        var ruolo = sessionStorage.getItem("ruolo");
+
+
+      verificoToken = function(){
+               if(token == null || ruolo != 'OperatoreCTT'){
+                alert("E' necessario effettuare il login per accedere a questa risorsa");
+                window.location.href='Login.html';
+               }
+            }
+    </script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>OperatoreCTTHub</title>
@@ -23,7 +35,7 @@
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 
-<body>
+<body onload="verificoToken()">
     <div class="titlePage">
         <div>
             <span class="fontTitle">
