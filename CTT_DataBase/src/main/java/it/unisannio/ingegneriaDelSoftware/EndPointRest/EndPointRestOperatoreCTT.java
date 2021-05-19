@@ -13,9 +13,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import MosquitoNotificationTry.NotificaEvasionePublisher;
 import it.unisannio.ingegneriaDelSoftware.EndPointNotifiche.EndPointNotificheMagazziniere;
 import it.unisannio.ingegneriaDelSoftware.Annotazioni.Secured;
 import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
+import it.unisannio.ingegneriaDelSoftware.Classes.NotificaEvasione;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.NotificaNonCreataException;
@@ -55,8 +58,10 @@ public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT{
 			saccheTrovate = ricercaSacca(GruppoSanguigno.valueOf(gruppoSanguigno), DateUtil.dateParser(dataArrivoMassima));
 
 			if(saccheTrovate.size() < numSacche) {
+				for(Sacca s : saccheTrovate) s.print(System.err);
 				saccheTrovate.addAll(ricercaSaccaCompatibile(
 						GruppoSanguigno.valueOf(gruppoSanguigno), (DateUtil.dateParser(dataArrivoMassima))));
+				for(Sacca s : saccheTrovate) s.print(System.err);
 			}
 			 
 			 //Nel caso in cui la richiesta non è stata soddisfatta completamente localmente, si crea una notifica di evasione diretta al magazziniere contenente i dati relativi all'evasione
@@ -70,7 +75,7 @@ public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT{
 				   seriali.add(s.getSeriale().getSeriale());
 			
 			   }
-			   if(EndPointNotificheMagazziniere.aggiungiNotificaEvasione(seriali, enteRichiedente, indirizzoEnte) == 0) throw new NotificaNonCreataException("Non è stato possibile creare la notifica");
+			   if(EndPointNotificheMagazziniere.aggiungiNotificaEvasione(seriali, enteRichiedente, indirizzoEnte) == 1) throw new NotificaNonCreataException("Non è stato possibile creare la notifica");
  
 				throw new SaccheInLocaleNotFoundException("Non è stato possibile soddisfare completamente la richiesta in locale, verrà contattato il CCS");
 			 }
@@ -84,7 +89,11 @@ public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT{
 					  seriali.add(saccheTrovate.get(i).getSeriale().getSeriale());
 					  mm.setPrenotatoSacca(saccheTrovate.get(i).getSeriale());	
 				  }
-				  if(EndPointNotificheMagazziniere.aggiungiNotificaEvasione(seriali, enteRichiedente, indirizzoEnte) == 0) throw new NotificaNonCreataException("Non è stato possibile creare la notifica");
+				 
+				  NotificaEvasionePublisher publisher = new NotificaEvasionePublisher();
+				  publisher.setNotifica(new NotificaEvasione(seriali,enteRichiedente,indirizzoEnte));
+				  publisher.run();
+				
 			}
 			
 
@@ -163,7 +172,8 @@ public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT{
 					if(!sacca.isPrenotato()
 							&& sacca.getGruppoSanguigno().equals(grs)
 							&& sacca.getDataScadenza().isAfter(dataArrivoMassima)
-							&& sacca.getDataScadenza().isAfter(LocalDate.now()))
+							&& sacca.getDataScadenza().isAfter(LocalDate.now())
+							&& !grs.equals(gs))
 						saccheTrovate.add(sacca);
 			}
 

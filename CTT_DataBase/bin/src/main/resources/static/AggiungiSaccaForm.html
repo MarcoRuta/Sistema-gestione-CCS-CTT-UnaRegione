@@ -114,9 +114,18 @@
         
     </div>
     <script type="application/javascript">
+    
             var xhttp = new XMLHttpRequest();
             var token = sessionStorage.getItem("token");
             var ruolo = sessionStorage.getItem("ruolo");
+            
+
+            verificoToken = function(){
+                if(token == null || ruolo != 'MagazziniereCTT'){
+                    alert("E' necessario effettuare il login per accedere a questa risorsa");
+                    window.location.href='Login.html';
+               }
+            }
 
             function loadDoc(){
             	
@@ -142,7 +151,8 @@
                     document.getElementById("result").innerHTML = "[Error 401] Impossibile Aggiungere Sacca ";
                 }
 
-
+                setTimeout(reloadPage, 500);
+                
                 xhttp.open("POST", url, true);
                 xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
                 xhttp.setRequestHeader('Authorization', 'Basic '+token);
@@ -150,14 +160,13 @@
                 xhttp.send(params);
 
             }
-
-
-            verificoToken = function(){
-                if(token == null || ruolo != 'MagazziniereCTT'){
-                    alert("E' necessario effettuare il login per accedere a questa risorsa");
-                    window.location.href='Login.html';
-               }
+            
+            function reloadPage() {
+                alert(document.getElementById("result").textContent);
+                location.reload();
             }
+
+
     </script>
 
     <div class="footer"></div>

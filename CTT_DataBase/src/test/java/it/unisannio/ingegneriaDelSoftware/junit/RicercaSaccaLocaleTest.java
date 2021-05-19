@@ -32,7 +32,6 @@ import it.unisannio.ingegneriaDelSoftware.Classes.Seriale;
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointRestMagazziniereCTT;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointRestOperatoreCTT;
-import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaLocaleNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 import it.unisannio.ingegneriaDelSoftware.Util.DateUtil;
@@ -1126,11 +1125,13 @@ public class RicercaSaccaLocaleTest {
 	*Test che dovrebbe restituire SaccaLocaleNotFoundException in quanto si sta cercando una sacca per una data in cui saranno tutte scadute
 	*"CTT001-00000004"
 	 * @throws SaccaNotFoundException 
-	*/
+	
 	@Test(expected = SaccaLocaleNotFoundException.class)
 	public void testA9() throws SaccaNotFoundException {
 		//assertEquals("CTT001-00000004", oper.ricercaSaccaLocale(GruppoSanguigno.Ap.toString(), LocalDate.of(2023,04,10).toString(), "TESTING","TESTING").getEntity());
 	}
+	
+	*/
 	
 	/**
 	*Test che dovrebbe restituire la Sacca di un tipo compatibile a quello ricercato
@@ -1212,15 +1213,7 @@ public class RicercaSaccaLocaleTest {
 		//assertEquals("CTT001-00000036", oper.ricercaSaccaLocale(GruppoSanguigno.Ap.toString(), LocalDate.of(2010,04,10).toString(), "TESTING","TESTING").getEntity());
 	}
 	
-	/**
-	*Test che dovrebbe restituire SaccaLocaleNotFoundException in quanto non sono più presenti sacche del tipo cercato ne di tipo compatibile
-	 * @throws SaccaNotFoundException 
-	*
-	*/
-	@Test(expected = SaccaLocaleNotFoundException.class)
-	public void testB9() throws SaccaNotFoundException {
-		//oper.ricercaSaccaLocale(GruppoSanguigno.Ap.toString(), LocalDate.of(2010,04,10).toString(), "TESTING","TESTING").getEntity();
-	}
+	
 	
 
 

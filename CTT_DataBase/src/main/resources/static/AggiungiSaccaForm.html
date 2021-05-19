@@ -125,7 +125,7 @@
                     alert("E' necessario effettuare il login per accedere a questa risorsa");
                     window.location.href='Login.html';
                }
-            }
+            };
 
             function loadDoc(){
             	
@@ -149,7 +149,7 @@
 
                 xhttp.onerror = function(){
                     document.getElementById("result").innerHTML = "[Error 401] Impossibile Aggiungere Sacca ";
-                }
+                };
 
                 setTimeout(reloadPage, 500);
                 

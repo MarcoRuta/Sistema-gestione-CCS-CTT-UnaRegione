@@ -20,10 +20,16 @@ import javax.ws.rs.core.Response;
 
 import it.unisannio.ingegneriaDelSoftware.Annotazioni.Secured;
 import it.unisannio.ingegneriaDelSoftware.Classes.CTT;
+import it.unisannio.ingegneriaDelSoftware.Classes.Cdf;
 import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
+import it.unisannio.ingegneriaDelSoftware.Classes.RuoloDipendente;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.DataManager;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointAmministratoreCCS;
+import it.unisannio.ingegneriaDelSoftware.Util.DateUtil;
+
+import java.time.format.*;
+
 
 
 @Path("/CCS")
@@ -32,7 +38,76 @@ import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointAmministratoreCCS;
 @RolesAllowed("AmministratoreCCS")
 public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 
+	/**Metodo attivato dall'ammministratore quando deve essere aggiunto un altro amministratore nel sistemaCCS
+	 * @param cdf Dipendente da aggiungere al DataBase
+	 * @param nome Dipendente da aggiungere al DataBase
+	 * @param cognome Dipendente da aggiungere al DataBase
+	 * @param dataDiNascita del Dipendente da aggiungere al DataBase
+	 * @param ruolo del Dipendente da aggiungere al DataBase
+	 * @param username del Dipendente da aggiungere al DataBase
+	 * @param password del Dipendente da aggiungere al DataBase
+	 * @return Response 
+	 */
+	@POST
+	@Path("/aggiuntaAmministratore")
+	@Produces(MediaType.TEXT_PLAIN)
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	public Response addDipendente(@FormParam("cdf")String cdf,
+								  @FormParam("nome")String nome,
+								  @FormParam("cognome")String cognome,
+								  @FormParam("dataDiNascita")String dataDiNascita,
+								  @FormParam("ruolo")String ruolo,
+								  @FormParam("username")String username,
+								  @FormParam("password")String password){
 
+		try {
+			//creo il dataManager
+			MongoDataManager mm = new MongoDataManager();
+			//creo un dipendente
+			Dipendente d = new Dipendente(new Cdf(cdf), nome, cognome, DateUtil.dateParser(dataDiNascita),
+					RuoloDipendente.valueOf(ruolo), username, password);
+			//aggiungo il dipendente al DB
+			mm.addDipendente(d);
+			return Response
+					.status(Response.Status.OK)
+					.entity("Dipendente aggiunto: "+cdf)
+					.build();
+		}catch(DateTimeParseException| IllegalArgumentException | AssertionError e) {
+			//The request could not be understood by the server due to malformed syntax.
+			// The client SHOULD NOT repeat the request without modifications.
+			return Response
+					.status(Response.Status.BAD_REQUEST)
+					.entity(e.getMessage())
+					.build();
+		}
+	}
+
+	/**Rimuove un Dipendente dal DataBase
+	 * @param cdf Codice fiscale del Dipendente da rimuovere dal DataBase
+	 * @return
+	 */
+	@DELETE
+	@Path("/rimozioneAmministratore/{cdf}")
+	@Produces(MediaType.TEXT_PLAIN)
+	@Consumes(MediaType.TEXT_PLAIN)
+	public Response removeDipendente(@PathParam("cdf") String cdf) {
+		try {
+			//creo il data manager
+			MongoDataManager mm = new MongoDataManager();
+			//rimuovo il dipendente dal ctt
+			mm.removeDipendente(cdf);
+			return Response
+					.status(Response.Status.OK)
+					.entity("Dipendente rimosso: " + cdf)
+					.build();
+		}catch (AssertionError ex){
+			//il dipendente che si vuole rimuovere non � presente
+			return Response
+					.status(Response.Status.NOT_FOUND)
+					.entity("Rimozione del Dipendente non riuscita")
+					.build();
+		}
+	}
 
 	/**Metodo attivato dall'Amministratore CCS nel momento in cui va aggiunto un nuovo CTT alla rete
 	 * @param numero il numero identificativo del CTT che si vuole inserire
@@ -69,7 +144,7 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 			return Response
 					// The source resource was successfully copied.
 					// The COPY operation resulted in the creation of a new resource.
-					.status(Response.Status.CREATED)
+					.status(Response.Status.OK)
 					.entity("CTT numero " + ctt.getNumero() + " aggiunto correttamente")
 					.header("Location", new URL("http://127.0.0.1:8080/ctt/"+ctt.getNumero()))
 					.build();
@@ -78,14 +153,14 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 			// The client SHOULD NOT repeat the request without modifications.
 			return Response
 					.status(Response.Status.BAD_REQUEST)
-					.entity("Dati non corretti, impossibile aggiungere la sacca al Magazzino\n"+assertionError.getMessage())
+					.entity(assertionError.getMessage())
 					.build();
 		} catch (MalformedURLException e) {
 			//something has gone wrong on the website's server,
 			// but the server could not be more specific on what the exact problem is.
 			return Response
 					.status(Response.Status.INTERNAL_SERVER_ERROR)
-					.entity("Non è stato possibile creare l'uri per la nuova risorsa")
+					.entity("Non � stato possibile creare l'uri per la nuova risorsa")
 					.build();
 		}
 	}
@@ -131,17 +206,22 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 		return mm.getListaCTT();	
 
 	}
-
-
-	/*
-	 * *Metodo che aggiunge il dipendente al database
+	
+	/**
+	 * Metodo utilizzato per aggiunta automatica dei dipendenti
 	 * 
-	 * @param dip Dipendente da aggiungere
-	 * 
-	 */
-	public void addDipendente(Dipendente dip) {
-		MongoDataManager mm = new MongoDataManager();
-		mm.addDipendente(dip);
+	 * @return */
+	@GET
+	@Path("/dipendenti")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Dipendente> listaDip(){
+
+		DataManager mm = new MongoDataManager();
 		
+		return mm.getListaDip();	
+
 	}
+	
+	
+	
 }

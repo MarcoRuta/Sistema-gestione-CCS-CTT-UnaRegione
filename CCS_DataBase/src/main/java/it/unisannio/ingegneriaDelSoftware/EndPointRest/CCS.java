@@ -11,12 +11,12 @@ import it.unisannio.ingegneriaDelSoftware.Interfaces.*;
 public class CCS implements CCSFunction{
 	
 	/*
-	 * *Metodo che restituisce il CTT più vicino a quello dato
+	 * *Metodo che restituisce il CTT pi� vicino a quello dato
 	 * 
 	 * @param num Numero del CTT dato
-	 * @return CTT più vicino a quello dato
+	 * @return CTT pi� vicino a quello dato
 	 */
-	public CTT CttPiùVicino(int num) throws CTTNotFoundException{
+	public CTT CttPiuVicino(int num) throws CTTNotFoundException{
 		MongoDataManager mm = new MongoDataManager();
 		
 		CTT c = mm.getCTT(num);
@@ -25,7 +25,6 @@ public class CCS implements CCSFunction{
 		
 		List<CTT> listaCTTOrdinata = new ArrayList<CTT>();
 		
-	
 		for (CTT ctt : listaCTT) if (!ctt.equals(c)) listaCTTOrdinata.add(ctt);     
 		
 		CTT min = listaCTTOrdinata.get(0);

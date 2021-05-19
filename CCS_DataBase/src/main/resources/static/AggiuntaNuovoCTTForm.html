@@ -4,9 +4,12 @@
 <head>
     <script>
         function print1(){
-            if(numero_ctt.value!="")
+            if(numero_ctt.value > 0 && numero_ctt.value < 999)
                 document.getElementById("p1").innerHTML = "Numero: "+"<span class='textPrint'>" +numero_ctt.value+"</span>";
-            else document.getElementById("p1").innerHTML = "Numero: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
+            else if(numero_ctt.value < 1 || numero_ctt.value > 999) {
+                numero_ctt.value = "";
+                document.getElementById("p1").innerHTML = "Numero: <span class='errorPrint'>NUMERO NON SUPPORTATO</span>";
+            }
         }
         function print2(){
             if(nome_ctt.value!="")
@@ -57,7 +60,7 @@
     <link rel="stylesheet" href="assets/css/formStyles.css">
 </head>
 
-<body>
+<body onload="verificoToken();">
         <div class="titlePage">
         <div>
             <span class="fontTitle">
@@ -81,13 +84,13 @@
                         <div class="form-group row">
                             <label>Numero:</label>
                             <div class="inputForm">
-                                <input id="numero_ctt" name="numCTT" oninput="print1();" class="form-control" type="number">
+                                <input id="numero_ctt" name="numCTT" onchange="setDenominazione();" oninput="print1();" class="form-control" type="number" min="1" max="999" placeholder="da 1 a 999">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label>Denominazione:</label>
                             <div class="inputForm">
-                                <input id="nome_ctt" name="denom" oninput="print2();" class="form-control" type="text">
+                                <input id="nome_ctt" name="denom" class="form-control" type="text" disabled="disabled">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -121,13 +124,13 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label>Latitude:</label>
+                            <label>Latitudine:</label>
                             <div class="inputForm">
                                 <input id="latitude" name="lat" onchange="controllaLatitude();" oninput="print8();" class="form-control" type="text" placeholder="-90 a 90 gradi">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label>Longitude:</label>
+                            <label>Longitudine:</label>
                             <div class="inputForm">
                                 <input id="longitude" name="lon" onchange="controllaLongitude();" oninput="print9();" class="form-control" type="text" placeholder="-180 a 180 gradi">
                             </div>
@@ -161,6 +164,8 @@
      
     <script type="application/javascript">
         
+		    var token = sessionStorage.getItem("token");
+		    var ruolo = sessionStorage.getItem("ruolo");
             var xhttp = new XMLHttpRequest();
             
             function loadCTT(){
@@ -182,8 +187,12 @@
 
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
-                 	    document.getElementById("result").innerHTML = "CTT Aggiunto";
-                 	}else {document.getElementById("result").innerHTML = this.response;}
+                 	    document.getElementById("result").innerHTML = this.response;
+                        
+                 	}else {
+                         document.getElementById("result").innerHTML = this.response;
+                         
+                        }
 
                 };
 
@@ -191,12 +200,46 @@
                     document.getElementById("result").innerHTML = "[Error 401] Impossibile Aggiungere CTT ";
                 };
 
+                setTimeout(reloadPage, 500);
+                
                 xhttp.open("POST", url, true);
                 xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhttp.setRequestHeader('Authorization', 'Basic '+token);
+                xhttp.withCredentials = true;
                 xhttp.send(params);
+
 
             }
 
+            function reloadPage() {
+                alert(document.getElementById("result").textContent);
+                location.reload();
+            }
+
+            function setDenominazione() {
+
+                var x = document.getElementById("numero_ctt");
+                if(x.value!="") {
+                if(x.value < 10)
+                    document.getElementById("nome_ctt").value = "CTT00" + x.value;
+                else if (x.value < 100)
+                    document.getElementById("nome_ctt").value = "CTT0" + x.value;
+                else
+                    document.getElementById("nome_ctt").value = "CTT" + x.value;
+
+                }
+                else {
+                    document.getElementById("nome_ctt").value = "";
+                }
+                print2();
+            }
+            
+            verificoToken = function(){
+                if(token == null || ruolo != 'AmministratoreCCS'){
+                    alert("E' necessario effettuare il login per accedere a questa risorsa");
+                    window.location.href='Login.html';
+               }
+            }
     </script>   
     <div class="footer"></div>
     <script src="assets/js/jquery.min.js"></script>

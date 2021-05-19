@@ -16,6 +16,7 @@ public class Cdf {
 		assert(cdf.length()==16): "Formato del codice fiscale non valido";
 		this.codiceFiscale = cdf;
 		}
+	
 	/**
 	 * Metodo che restituisce il codice fiscale come stringa
 	 * 

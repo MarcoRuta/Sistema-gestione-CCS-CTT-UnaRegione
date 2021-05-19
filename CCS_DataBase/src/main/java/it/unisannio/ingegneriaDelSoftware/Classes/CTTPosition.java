@@ -5,7 +5,7 @@ import java.io.PrintStream;
 public class CTTPosition {
 		
 	private final String provincia;
-	private final String città;
+	private final String citta;
 	private final String indirizzo;
 	private final double latitudine;
 	private final double longitudine;
@@ -14,21 +14,21 @@ public class CTTPosition {
 	 * Metodo costruttore di CTTPosition
 	 * 
 	 * @param provincia la provincia di appartenenza del CTT
-	 * @param città  la città di appartenenza del CTT
+	 * @param citta la citta di appartenenza del CTT
 	 * @param indirizzo l'indirizzo di appartenenza del CTT
 	 * @param latitudine la latitudine del CTT
 	 * @param longitudine la longitudine del CTT
 	 * 
 	 * */
-	public CTTPosition(String provincia, String città, String indirizzo, double latitudine, double longitudine) {
-		assert provincia != null: "la provincia non può essere null";
-		assert città != null: "la città non può essere null";
-		assert indirizzo != null: "l'indirizzo non può essere null";
-		assert latitudine != 0: "la latitudine non può essere null";
-		assert longitudine != 0: "la longitudine non può essere null";
+	public CTTPosition(String provincia, String citta, String indirizzo, double latitudine, double longitudine) {
+		assert provincia != null: "la provincia non puo essere null";
+		assert citta != null: "la citta non puo essere null";
+		assert indirizzo != null: "l'indirizzo non puo essere null";
+		assert latitudine != 0: "la latitudine non puo essere null";
+		assert longitudine != 0: "la longitudine non puo essere null";
 	
 		this.provincia = provincia;
-		this.città = città;
+		this.citta = citta;
 		this.indirizzo = indirizzo;
 		this.latitudine = latitudine;
 		this.longitudine = longitudine;	
@@ -44,7 +44,7 @@ public class CTTPosition {
 	public String toString() {
 		return "CTTPosition{" +
 				", provincia=" + provincia +
-				", città=" + città +
+				", città=" + citta +
 				", indirizzo=" + indirizzo +
 				", latitudine=" + latitudine +
 				", longitudine=" + longitudine +
@@ -59,7 +59,7 @@ public class CTTPosition {
 	 */
 	public void print(PrintStream ps) {
 		ps.println("Provincia: "+ this.provincia);
-		ps.println("Città: "+ this.città);
+		ps.println("Città: "+ this.citta);
 		ps.println("Indirizzo: "+ this.indirizzo);
 		ps.println("latitudine: "+ this.latitudine);
 		ps.println("longitutidine: "+ this.longitudine);
@@ -77,13 +77,13 @@ public class CTTPosition {
 	}
 	
 	/**
-	 * Metodo che restituisce la città del CTT
+	 * Metodo che restituisce la citta del CTT
 	 * 
-	 * @return città
+	 * @return citta
 	 *
 	 */
-	public String getCittà() {
-		return città;
+	public String getCitta() {
+		return citta;
 	}
 	
 	/**

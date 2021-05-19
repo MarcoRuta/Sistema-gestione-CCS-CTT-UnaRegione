@@ -84,6 +84,7 @@
              
           }
         }
+
         
         function controllaEmail()
         {
@@ -91,7 +92,7 @@
           var pattern = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
         
           // creo una variabile per richiamare con facilità il nostro campo di input
-          var email = document.getElementById("email");
+          var email = document.getElementById("mail");
         
           // utilizzo il metodo search per verificare che il valore inserito nel campo
           // di input rispetti la stringa di verifica (pattern)

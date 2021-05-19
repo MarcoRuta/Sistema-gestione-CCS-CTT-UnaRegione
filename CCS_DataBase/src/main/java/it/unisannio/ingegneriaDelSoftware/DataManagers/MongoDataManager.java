@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 import it.unisannio.ingegneriaDelSoftware.Util.DateConverter;
+import it.unisannio.ingegneriaDelSoftware.Util.DateUtil;
+
 import org.bson.Document;
 
 public class MongoDataManager implements DataManager {
@@ -47,13 +49,14 @@ public class MongoDataManager implements DataManager {
 	 * 
 	 */
 	public void createCTT(CTT c) {
+		if(this.containsCTT(c.getNumero())) throw new AssertionError("Non è possibile aggiungere un CTT avente lo stesso numero di uno gia registrato");
 	    MongoDatabase database = mongoClient.getDatabase(Constants.DB_NAME);
 	    MongoCollection<Document> collection = database.getCollection(Constants.COLLECTION_CTT);
 	    
 	    Document ctt = new Document(Constants.ELEMENT_NUMERO, c.getNumero())
                 .append(Constants.ELEMENT_DENOMINAZIONE, c.getDenominazione())
                 .append(Constants.ELEMENT_PROVINCIA, c.getPosizione().getProvincia())
-                .append(Constants.ELEMENT_CITTA, c.getPosizione().getCittà())
+                .append(Constants.ELEMENT_CITTA, c.getPosizione().getCitta())
                 .append(Constants.ELEMENT_INDIRIZZO, c.getPosizione().getIndirizzo())
                 .append(Constants.ELEMENT_TELEFONO, c.getTelefono())
                 .append(Constants.ELEMENT_EMAIL, c.getEmail())
@@ -144,6 +147,36 @@ public class MongoDataManager implements DataManager {
     }
 	
 	/**
+	 * Metodo che restituisce la lista di tutti i dipendenti presenti nel database del CCS
+	 * @return Lista di tutti i dipendenti
+	 * 
+	 */
+	public List<Dipendente> getListaDip() {
+    	MongoDatabase database = mongoClient.getDatabase(Constants.DB_NAME);
+	    MongoCollection<Document> collection = database.getCollection(Constants.COLLECTION_DIPENDENTI);
+
+        List<Dipendente> listaDip = new ArrayList<Dipendente>();
+        List<Document> ctt = collection.find().into(new ArrayList<Document>());
+        
+
+        for (Document current : ctt){
+            
+        		Dipendente d = new Dipendente(new Cdf(current.getString(Constants.ELEMENT_CDF)), 
+	    				current.getString(Constants.ELEMENT_NOME), 
+	    				current.getString(Constants.ELEMENT_COGNOME),
+	    				DateConverter.convertDateToLocalDate(current.getDate(Constants.ELEMENT_DATADINASCITA)),
+	    				RuoloDipendente.valueOf(current.getString(Constants.ELEMENT_RUOLO)), 
+	    				current.getString(Constants.ELEMENT_USERNAME),
+	    				current.getString(Constants.ELEMENT_PASSWORD));
+
+                listaDip.add(d);
+            
+        }
+        return listaDip;
+    }
+	
+	
+	/**
 	 * Metodo che restituisce un dipendente presente nel database
 	 * 
 	 * @param username Username del dipendente da cercare
@@ -169,8 +202,30 @@ public class MongoDataManager implements DataManager {
 	    }
 	    return dip;
 }
+	
+	/**Cerca e restituisce un Dipendente con un determinato Username e Password, presente all'interno del database dei Dipendenti
+	 * @param cdf cdf del dipendente che si sta ricercando
+	 * @return il Dipendente cercato
+	 */
+	public Dipendente getDipendente(Cdf cdf) {
+		MongoDatabase database = mongoClient.getDatabase(Constants.DB_NAME);
+	    MongoCollection<Document> collection = database.getCollection(Constants.COLLECTION_DIPENDENTI);
+	        
+	    for (Document current : collection.find(eq(Constants.ELEMENT_CDF, cdf.getCodiceFiscale()))) {
+	        		  Dipendente dip = new Dipendente(new Cdf(current.getString(Constants.ELEMENT_CDF)),
+	    				current.getString(Constants.ELEMENT_NOME),
+	    				current.getString(Constants.ELEMENT_COGNOME),
+	    				DateUtil.convertDateToLocalDate(current.getDate(Constants.ELEMENT_DATADINASCITA)),
+	    				RuoloDipendente.valueOf(current.getString(Constants.ELEMENT_RUOLO)),
+	    				current.getString(Constants.ELEMENT_USERNAME),
+	    				current.getString(Constants.ELEMENT_PASSWORD));
+	    		return dip;
+	    	}
+	    	
+		return null;
+	}
 
-	/*
+    /**
 	 * *Metodo che aggiunge il dipendente al database
 	 * 
 	 * @param dip Dipendente da aggiungere
@@ -191,6 +246,18 @@ public class MongoDataManager implements DataManager {
 		
 	}
 	
+	/**Elimina un Dipendente al database dei Dipendenti
+	 * @param cdf Codice fiscale del Dipendente da eliminare
+	 */
+	public void removeDipendente(String cdf) {
+		assert this.containsDipendente(new Cdf(cdf)):"Non puoi eliminare un dipendente non presente nel DB";
+		MongoDatabase database = mongoClient.getDatabase(Constants.DB_NAME);
+	    MongoCollection<Document> collection = database.getCollection(Constants.COLLECTION_DIPENDENTI);
+	    
+	    for (Document current : collection.find(eq(Constants.ELEMENT_CDF, cdf)))
+	    	collection.deleteOne(current);
+	}	
+	
 	/**@param numero il numero del CTT che si vuole cercare
      * @return true se il CTT è contenuto
 	 */
@@ -201,6 +268,14 @@ public class MongoDataManager implements DataManager {
     	}catch(CTTNotFoundException e) {
     		return false;
     	}
+    }
+    
+
+    /**@param cdf il codice fiscale del dipendente che si vuole cercare
+     * @return true se la sacca è contenuta*/
+    public boolean containsDipendente(Cdf cdf){
+        Dipendente unDipendente = this.getDipendente(cdf);
+        return unDipendente != null?true:false;
     }
 	
 }

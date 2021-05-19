@@ -4,6 +4,7 @@ package it.unisannio.ingegneriaDelSoftware.Interfaces;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -18,6 +19,38 @@ import it.unisannio.ingegneriaDelSoftware.Classes.CTT;
 
 
 public interface EndPointAmministratoreCCS {
+	
+	/**Metodo attivato dall'ammministratore quando deve essere aggiunto un altro amministratore nel sistemaCCS
+	 * @param cdf Dipendente da aggiungere al DataBase
+	 * @param nome Dipendente da aggiungere al DataBase
+	 * @param cognome Dipendente da aggiungere al DataBase
+	 * @param dataDiNascita del Dipendente da aggiungere al DataBase
+	 * @param ruolo del Dipendente da aggiungere al DataBase
+	 * @param username del Dipendente da aggiungere al DataBase
+	 * @param password del Dipendente da aggiungere al DataBase
+	 * @return Response 
+	 */
+	@POST
+	@Path("/aggiuntaamministratore")
+	@Produces(MediaType.TEXT_PLAIN)
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	public Response addDipendente(@FormParam("cdf")String cdf,
+								  @FormParam("nome")String nome,
+								  @FormParam("cognome")String cognome,
+								  @FormParam("dataDiNascita")String dataDiNascita,
+								  @FormParam("ruolo")String ruolo,
+								  @FormParam("username")String username,
+								  @FormParam("password")String password);
+
+	/**Rimuove un Dipendente dal DataBase
+	 * @param cdf Codice fiscale del Dipendente da rimuovere dal DataBase
+	 * @return
+	 */
+	@DELETE
+	@Path("/rimozioneamministratore/{cdf}")
+	@Produces(MediaType.TEXT_PLAIN)
+	@Consumes(MediaType.TEXT_PLAIN)
+	public Response removeDipendente(@PathParam("cdf") String cdf);
 	
 	/**
 	 * @param seriale seriale della sacca da evadere
@@ -45,10 +78,10 @@ public interface EndPointAmministratoreCCS {
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	Response removeCTT(@PathParam("numero") String numero);	
 	
-	/**
-	 * Metodo utilizzato per aggiunta automatica dei CTT
+	/**Metodo che restituisce la lista di tutti i CTT presenti nel database
+	 * è un metodo che viene utilizzato per avere una lista dinamica nel RimuoviCTTForm.html attraverso JS
 	 * 
-	 * @return serialiSacca*/
+	 * @return mm*/
 	@GET
 	@Path("/centers")
 	@Produces(MediaType.APPLICATION_JSON)

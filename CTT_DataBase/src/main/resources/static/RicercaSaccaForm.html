@@ -127,7 +127,7 @@
             <div class="outPreview" style="height: 40px;margin: 4% 45px;">
                 <p id = "result"></p>
             </div>
-            <button class="btn btn-primary" type="button" onclick="loadDoc()" style="margin-left: 73.5%; width: 140px;height: 51px;font-family: Calibri light;font-size: 20px;">Conferma</button>
+            <button class="btn btn-primary" type="button" onclick="loadDoc();" style="margin-left: 73.5%; width: 140px;height: 51px;font-family: Calibri light;font-size: 20px;">Conferma</button>
         </div>
         
     </div>
@@ -143,7 +143,7 @@
                 alert("E' necessario effettuare il login per accedere a questa risorsa");
                 window.location.href='Login.html';
                }
-            }
+            };
             
             function loadDoc(){          	
 
@@ -159,7 +159,7 @@
 
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
-                 	    document.getElementById("result").innerHTML = "Ricerca sacca completata in locale, il magazziniere è stato avvisato per evadeere l'ordine";
+                 	    document.getElementById("result").innerHTML = "Ricerca sacca completata in locale, il magazziniere è stato avvisato per evadere l'ordine";
                  	}else{
                        document.getElementById("result").innerHTML = this.response;
                  	}
@@ -169,11 +169,17 @@
                     document.getElementById("result").innerHTML = "Non è stato possibile completare la ricerca in locale, è stato allertato il sistema CCS";
                 };
 
+                setTimeout(reloadPage, 500);
                 
                 xhttp.open("GET", url, true);
                 xhttp.setRequestHeader('Authorization', 'Basic '+token);
                 xhttp.withCredentials = true;
                 xhttp.send();
+            }
+            
+            function reloadPage() {
+                alert(document.getElementById("result").textContent);
+                location.reload();
             }
     </script>
     <div class="footer"></div>

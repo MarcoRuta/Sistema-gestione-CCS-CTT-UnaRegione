@@ -51,7 +51,66 @@ div.titlePage p {
 	width: 300px;
 }
 
-.notification {
+span#urgent {
+	color: red;
+}
+
+.boxProfile {
+	background-color: #eef4f7;
+	background-image: url(&quot;assets/img/bg-pattern.png&quot;); 
+	margin: 1% 0%;
+}
+
+div.col-sm span {
+	font-size: 20px;
+	font-family: muli,sans-serif;
+	padding-left: 14%;
+}
+
+div.col-sm p {
+	font-family: muli,sans-serif;
+	font-size: 20px;
+}
+
+.boxButton {
+	background-color: #eef4f7;
+	margin: 1% 0%;
+	margin-left: 1%;
+}
+
+.containerBtn {
+	width: 670px;
+	margin-left: 5%;
+	margin-top: 8%;
+}
+
+.boxNotification {
+	padding-left: 0px;
+	padding-right: 0px;
+	background-color: #eef4f7;
+	height: 242px;
+}
+
+div.boxNotification h2 {
+	font-family: muli,sans-serif;
+	margin: 10px 30px;
+	text-align: left;
+}	
+
+.btnClear {
+	height: 65px;
+	margin: -3em 83%;
+	width: auto;
+}
+
+.divNot {
+	margin-top: 2%;
+	overflow:auto;
+	max-height:  190px;
+}
+
+
+div.divNot p {
 	overflow: hidden;
   	display: -webkit-box;
   	-webkit-line-clamp: 3;
@@ -59,6 +118,4 @@ div.titlePage p {
 	margin: 10px;
 }
 
-span#urgent {
-	color: red;
-}
+

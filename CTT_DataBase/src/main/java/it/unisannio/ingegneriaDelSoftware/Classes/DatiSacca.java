@@ -140,12 +140,10 @@ public class DatiSacca {
 
 	/**@return etichetta  con i dati della sacca*/
 	public String getEtichettaDatiSacca() {
-		return 	"Gruppo sanguigno: "	+this.gruppo.toString()+ "\n"
-				+"Data di in ingresso: "+this.dataArrivo+"\n"
+		return  "Data di ingresso: "+this.dataArrivo+"\n"
 				+"Data di affidamento: "+this.dataAffidamento.get()+"\n"
-				+"Ente richiedente: "	+this.enteRichiedente.get()+"\n"
-				+"Ente donatore: "		+this.enteDonatore+"\n"
-				+"Indirizzo Ente: "		+this.indirizzoEnte.get();
+				+"Ente donatore: "		+this.enteDonatore + "\n";
+
 	}
 
 

@@ -33,6 +33,12 @@
 	height:192px;
 }
 
+.logoCenter {
+	margin-left: 7%;
+	width:250px;
+	height:250px;
+}
+
 span.fontTitle {
 	color: rgb(255,255,255);
 	font-size: 50px;

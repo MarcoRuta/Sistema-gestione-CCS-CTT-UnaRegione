@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 
-<body onload="verificoToken();">
+<body onload="start();">
     <div class="titlePage">
         <div>
             <span class="fontTitle">
@@ -102,14 +102,26 @@
     <script>
         var token = sessionStorage.getItem("token");
         var ruolo = sessionStorage.getItem("ruolo");
+        var name = sessionStorage.getItem("nome");
+        var surname = sessionStorage.getItem("cognome");
 
 
-         verificoToken = function(){
+        function start() {
+            verificoToken();
+            setPerson();
+        }
+        
+        function setPerson(){
+            document.getElementById("nome").textContent = "Nome: " + name;
+            document.getElementById("cognome").textContent = "Cognome: " + surname;
+        }
+        
+        verificoToken = function(){
                if(token == null || ruolo != 'AmministratoreCTT'){
                 alert("E' necessario effettuare il login per accedere a questa risorsa");
                 window.location.href='Login.html';
                }
-            };
+        };
 
         logout = function(){
 

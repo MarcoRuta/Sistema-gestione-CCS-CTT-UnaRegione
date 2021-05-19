@@ -20,6 +20,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 @Path("/magazziniere")
 @Singleton
@@ -84,24 +85,40 @@ public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 	}
 
 	
-	/**Metodo attivato dal magazziniere quando riceve una notifica evasione Sacca
-	 * esso aggiorna i datiSacca e rimuove la Sacca dal DB attivo
-	 * @param seriale Seriale della Sacca da evadere
-	 * @param ente_richiedente l'ente che ha richiesto la sacca
-	 * @param indirizzo l'indirizzo dell'ente che ha richiesto la sacca
-	 * @return Response 200 ok se la sacca è evasa correttamente oppure BadRequest se i dati sono formattati non correttamente */
+	/**Metodo attivato dal magazziniere quando riceve una notifica evasione sacche
+	 * esso aggiorna i datiSacca e rimuove la Sacca dal DB attivo per ogni sacca presente nell'ordine
+	 * @param listaSeriali Seriale della Sacca da evadere
+	 * @param enteRichiedente l'ente che ha richiesto la sacca
+	 * @param indirizzoEnte l'indirizzo dell'ente che ha richiesto la sacca
+	 * @return Response OK se le sacche sono state rimosse correttamente BAD_REQUEST se si Ã¨ tetntato di evadere sacche non presenti nel DB
+	 * @return Response 
+	 * */
+	 
 	@PUT
-	@Path("/evasione/{seriale}")
+	@Path("/evasione")
 	@Produces(MediaType.TEXT_PLAIN)
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public Response evasioneSacca(@PathParam("seriale") String seriale,
-								  @FormParam("enterichiedente") String ente_richiedente,
-								  @FormParam("indirizzo")String indirizzo){
-		try {
-			//creo il seriale per controllare che sia corretto
-			Seriale unSeriale = Seriale.getSeriale(seriale);
+	@Consumes(MediaType.TEXT_PLAIN)
+	public Response evasioneSacca(@QueryParam("listaSeriali") String listaseriali,					
+								  @QueryParam("enteRichiedente") String ente_richiedente,
+								  @QueryParam("indirizzoEnte")String indirizzo){
+
+			//Prendo dalla stringa listaSeriali la lista deei seriali attraverso una tokenizzazione, i seriali arrivano nel formato SERIALE/SERIALE/SERIALE/..../SERIALE/
+			try {
+			List<Seriale> listaSeriali = new ArrayList<Seriale>();
+			
+		    StringTokenizer st = new StringTokenizer(listaseriali,",");  
+			while (st.hasMoreTokens()) {  
+				 listaSeriali.add(Seriale.getSeriale(st.nextToken()));
+				 	
+			}
+			
 			//creo un data manager pre recuperare i dati
 			DataManager mm = new MongoDataManager();
+			
+			String etichetta = "";
+			
+			for(Seriale unSeriale : listaSeriali) {
+				
 			//recupero un DatiSacca se presente altrimenti si solleva una eccezione DatiSaccaNotFoundException
 			DatiSacca datiSacca = mm.getDatiSacca(unSeriale);
 			//recupero una sacca se presente altrimenti si solleva una eccezione SaccaNotFoundException
@@ -112,12 +129,16 @@ public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 			mm.setIndirizzoEnteDatiSacca(unSeriale,indirizzo);
 			//recupero il DatiSacca aggiornato
 			datiSacca = mm.getDatiSacca(unSeriale);
+			//aggiorno etichetta
+			etichetta = etichetta + unaSacca.getEtichettaSacca()+"\n"+ datiSacca.getEtichettaDatiSacca() +"\n";
 			//rimuovo la sacca
 			mm.removeSacca(unaSacca.getSeriale());
 			//The property set or change succeeded.
+			}
+			
 			return Response
 					.status(Response.Status.OK)
-					.entity(unaSacca.getEtichettaSacca()+"\n"+ datiSacca.getEtichettaDatiSacca())
+					.entity(etichetta + "\nEnte richiedente: " + ente_richiedente + "\nIndirizzo: " + indirizzo)
 					.build();
 		}catch(AssertionError ex){
 			System.err.println("Seertion Error");
@@ -136,7 +157,7 @@ public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 					.build();
 		}
 	}
-	
+		
 	
 	/**
 	 * Metodo utilizzato per aggiunta automatica del seriale delle sacche

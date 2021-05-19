@@ -2,13 +2,6 @@
 <html>
 
 <head>
-    <script>
-        function print1(){
-            if(numctt.value!=0)
-                document.getElementById("p1").innerHTML = "Numero CTT: "+"<span class='textPrint'>" +numctt.value+"</span>";
-            else document.getElementById("p1").innerHTML = "Numero CTT: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
-        }
-    </script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>RimozioneCTTForm</title>
@@ -17,13 +10,14 @@
     <link rel="stylesheet" href="assets/css/formStyles.css">
 </head>
 
-<body onload="keepCTT();">
+<body onload="start();">
     <div class="titlePage">
         <div>
             <span class="fontTitle">
                Rimozione CTT Form            
             </span>
         </div>
+        <div>
             <img class="logoCCS" src="assets/img/LOGO_CCS.svg">
         </div>
     </div>
@@ -40,10 +34,10 @@
                     <div class="form-group row" style="margin: 8% 5%">
                         <label >Numero CTT:</label>
                         <div class="inputForm">
-                                <select id="numctt" name="numCTT" oninput="print1()" class="form-control" onfocus='this.size=5;' onblur='this.size=1;' onchange='this.size=1; this.blur();' style="width: 300px;">
-                                        <option value='0'>Seleziona la sacca da evadere</option>
+                                <select id="numctt" name="numCTT" oninput="printCTT()" class="form-control" onfocus='this.size=5;' onblur='this.size=1;' onchange='this.size=1; this.blur();' style="width: 300px;">
+                                        <option value='0'>Seleziona il CTT da rimuovere</option>
                                 </select>
-                            </div>
+                         </div>
                     </div>
                 </form>
             </div> 
@@ -67,6 +61,20 @@
     
         var obj;
         var xhttp = new XMLHttpRequest();
+        var token = sessionStorage.getItem("token");
+        var ruolo = sessionStorage.getItem("ruolo");
+        
+        function start() {
+        	verificoToken();
+        	keepCTT();
+        }
+        
+        verificoToken = function(){
+            if(token == null || ruolo != 'AmministratoreCCS'){
+                alert("E' necessario effettuare il login per accedere a questa risorsa");
+                window.location.href='Login.html';
+           }
+        }
         
         function removeCTT(){
             
@@ -75,8 +83,10 @@
           
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
-                    document.getElementById("result").innerHTML = "CTT Rimosso";
-                }else {document.getElementById("result").innerHTML = this.response;}
+                    document.getElementById("result").innerHTML = this.response;
+                }else {
+                    document.getElementById("result").innerHTML = this.response;
+                }
 
             };
 
@@ -84,13 +94,24 @@
                 document.getElementById("result").innerHTML = "[Error 401] Impossibile Rimuovere CTT ";
             };
 
+            setTimeout(reloadPage, 500);
+
             xhttp.open("DELETE", url, true);
+            xhttp.setRequestHeader('Authorization', 'Basic '+token);
+            xhttp.withCredentials = true;
             xhttp.send();
 
+
+        }
+
+        function reloadPage() {
+            alert(document.getElementById("result").textContent);
+            location.reload();
         }
         
         function keepCTT(){
-                           
+                
+        	
                 xhttp = new XMLHttpRequest(); 	
                 url = "http://127.0.0.1:8080/rest/CCS/centers";
                 
@@ -107,6 +128,8 @@
                 };
                 
                 xhttp.open("GET", url, true);
+                xhttp.setRequestHeader('Authorization', 'Basic '+token);
+                xhttp.withCredentials = true;
                 xhttp.send();
                 
             }
@@ -117,11 +140,30 @@
                 var option;
                 for(var i=0; i < obj.length; i++) {
                     option = document.createElement('option');
-                    option.appendChild(document.createTextNode(obj[i].posizione.provincia + " - " + obj[i].posizione.città + " - " + obj[i].denominazione));
+                    option.appendChild(document.createTextNode(obj[i].posizione.provincia + " - " + obj[i].posizione.citta + " - " + obj[i].denominazione));
                     option.value=obj[i].numero;
                     x.appendChild(option);
                 }
             }
+        
+        function printCTT() {
+            
+            let x = document.getElementById("numctt");
+            var inner;
+            if(x.getvalue!=0) {
+                inner = "Numero CTT: <span class='textPrint'>" +obj[x.selectedIndex-1].numero+"</span><br>Denominazione: <span class='textPrint'>"+obj[x.selectedIndex-1].denominazione+"</span><br>";
+                inner = inner + "Provincia: <span class='textPrint'>" +obj[x.selectedIndex-1].posizione.provincia+"</span><br>Città: <span class='textPrint'>"+obj[x.selectedIndex-1].posizione.citta+"</span><br>";
+                inner = inner + "Indirizzo: <span class='textPrint'>" +obj[x.selectedIndex-1].posizione.indirizzo+"</span><br>Telefono: <span class='textPrint'>"+obj[x.selectedIndex-1].telefono+"</span><br>";
+                inner = inner + "E-mail: <span class='textPrint'>" +obj[x.selectedIndex-1].email+"</span><br>Latitude: <span class='textPrint'>"+obj[x.selectedIndex-1].posizione.latitudine+"</span><br>";
+                inner = inner + "Longitude: <span class='textPrint'>" +obj[x.selectedIndex-1].posizione.longitudine+"</span>";
+                document.getElementById("p1").innerHTML = inner;
+            }
+            else {
+                document.getElementById("p1").innerHTML = "<span class='errorPrint'>SI PREGA DI SELEZIONARE IL CTT DA RIMUOVERE</span>";
+            }
+
+
+        }
 
     </script>   
         

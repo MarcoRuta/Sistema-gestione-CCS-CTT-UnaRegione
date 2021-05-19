@@ -10,8 +10,10 @@ public class NotificaEvasione implements Notifica {
 	private String enteRichiedente;
 	private String indirizzoEnte;
 	
-	public NotificaEvasione(List<String> listaSeriali, String enteRichiedente, String indirizzoEnte){
-		this.listaSeriali = listaSeriali;
+	public NotificaEvasione() {};
+	
+	public NotificaEvasione(List<String> seriali, String enteRichiedente, String indirizzoEnte){
+		this.listaSeriali = seriali;
 		this.enteRichiedente = enteRichiedente;
 		this.indirizzoEnte = indirizzoEnte;
 	}
@@ -22,6 +24,7 @@ public class NotificaEvasione implements Notifica {
 	public void setListaSeriali(List<String> listaSeriali) {
 		this.listaSeriali = listaSeriali;
 	}
+	
 	public String getEnteRichiedente() {
 		return enteRichiedente;
 	}

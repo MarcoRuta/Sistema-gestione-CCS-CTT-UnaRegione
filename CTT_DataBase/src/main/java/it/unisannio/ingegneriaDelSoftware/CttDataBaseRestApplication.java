@@ -8,20 +8,24 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import MosquitoNotificationTry.NotificaEvasioneSubscriber;
+
 import javax.ws.rs.ApplicationPath;
 
-@SpringBootApplication
+@SpringBootApplication (scanBasePackages = {"WebSocketConfig"})
 @ApplicationPath("/rest")
 public class CttDataBaseRestApplication extends ResourceConfig {
 
-	public CttDataBaseRestApplication() {
+	public CttDataBaseRestApplication() throws Exception {
 
+		NotificaEvasioneSubscriber sub = new NotificaEvasioneSubscriber("tcp://127.0.0.1:1883");
+		sub.subscribe();
+		
 		//Configurazione
 		//Filtro per autorizzazzione
 		register(FiltroDiAutorizzazione.class);
 		//Filtro per Authentificazione
 		register (FiltroDiAutentificazione.class);
-
 
 		//Endpoint del Magazziniere
 		register(EndPointRestMagazziniereCTT.class);

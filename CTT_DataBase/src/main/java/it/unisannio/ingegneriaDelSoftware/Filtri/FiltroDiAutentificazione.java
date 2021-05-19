@@ -51,7 +51,7 @@ public class FiltroDiAutentificazione implements ContainerRequestFilter {
         }
         String token = header.substring(SecurityContext.BASIC_AUTH.length()).trim();
         if(!Token.containsToken(token)){
-            this.refuseRequest(requestContext,"Token non valido effettua nuovamente il l ogin");
+            this.refuseRequest(requestContext,"Token non valido effettua nuovamente il login");
             return;
         }
 
@@ -64,7 +64,7 @@ public class FiltroDiAutentificazione implements ContainerRequestFilter {
             String password = aTokenizer.nextToken();
             String ruolo = dataManager.getDipendente(username,password).getRuolo().toString();
 
-            //savrascrivo il securityContext
+            //sovrascrivo il securityContext
             /**The SecurityContext is a class of Spring Security.
              * The SecurityContext is used to store the details of the currently authenticated user,
              * also known as a principle*/

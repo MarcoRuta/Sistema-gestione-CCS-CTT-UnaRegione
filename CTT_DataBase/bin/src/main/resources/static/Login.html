@@ -58,6 +58,8 @@
                         obj = JSON.parse(this.responseText);
                         sessionStorage.setItem("token", obj.token);
                         sessionStorage.setItem("ruolo",obj.ruolo);
+                        sessionStorage.setItem("nome",obj.nome);
+                        sessionStorage.setItem("cognome", obj.cognome);
                         window.location.href=obj.ruolo+'.html';
                  	}else{
                  	if (this.readyState == 4 && this.status !=200)

@@ -13,26 +13,25 @@ public class CTT{
 	private final CTTPosition posizione;
 	
 	
-
 	/**
 	 * Metodo costruttore di CTT
 	 * 
 	 * @param numero  l'identificativo del CTT
 	 * @param denominazione  il nome del CTT
-	 * @param provincia la provincia in cui è situato il CTT
-	 * @param città la città in cui è situato il CTT
+	 * @param provincia la provincia in cui è  situato il CTT
+	 * @param citta la citta in cui è situato il CTT
 	 * @param indirizzo l'indirizzo del CTT
 	 * @param telefono il numero di telefono del CTT
 	 * @param e_mail l'email ufficiale del CTT
 	 * 
 	 * */
-	public CTT(Integer numero, String denominazione, String provincia, String città, String telefono, String indirizzo, String e_mail, double latitudine, double longitudine) {
-		assert numero != null: "Il numero del CTT non può essere null";
-		assert denominazione != null: "La denominazione non può essere null";
-		assert telefono != null: "il telefono non può essere null";
-		assert e_mail != null: "l'e_mail non può essere null";
+	public CTT(Integer numero, String denominazione, String provincia, String citta, String telefono, String indirizzo, String e_mail, double latitudine, double longitudine) {
+		assert numero != null: "Il numero del CTT non puo essere null";
+		assert denominazione != null: "La denominazione non puo essere null";
+		assert telefono != null: "il telefono non puo essere null";
+		assert e_mail != null: "l'e_mail non puo essere null";
 		
-		this.posizione = new CTTPosition(provincia,città,indirizzo,latitudine,longitudine);
+		this.posizione = new CTTPosition(provincia,citta,indirizzo,latitudine,longitudine);
 		
 		this.numero = numero;
 		this.denominazione = denominazione;
@@ -99,7 +98,7 @@ public class CTT{
 				'}';
 	}
 	
-	/*
+   /**
 	 * Metodo che calcola la distanza tra due punti applicando la formula dell'emisenoverso
 	 * 
 	 * @param CTT Il ctt da cui voglio calcolare la distanza rispetto a quello attuale
