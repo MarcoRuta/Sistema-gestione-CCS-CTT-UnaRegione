@@ -16,18 +16,7 @@
             divNot.innerHTML = "";
         }
     </script>
-    <script>
-        var token = sessionStorage.getItem("token");
-        var ruolo = sessionStorage.getItem("ruolo");
-
-
-      verificoToken = function(){
-               if(token == null || ruolo != 'OperatoreCTT'){
-                alert("E' necessario effettuare il login per accedere a questa risorsa");
-                window.location.href='Login.html';
-               }
-            }
-    </script>
+    
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>OperatoreCTTHub</title>
@@ -35,7 +24,7 @@
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 
-<body onload="verificoToken()">
+<body onload="start();">
     <div class="titlePage">
         <div>
             <span class="fontTitle">
@@ -48,74 +37,117 @@
     </div>
     
     <div class="container">
-        <div class="row row-cols-2">
-            <div class="col border profile-box" style="height: 300px;background-color: #eef4f7;background-image: url(&quot;assets/img/bg-pattern.png&quot;); margin: 1% 0px;">
-                <img src="assets/img/doctor+pediatrician+icon-1320185104387356300.png" style="width: 220px;margin: 25px 25px;">
-                <div style="height: 40px;width: 180px;margin: -20px 12%;">
-                    <span style="font-size: 22px;font-family: muli,sans-serif;">Operatore CTT</span>
-                </div>
-                
-                <div class="border profile-box" style="width: auto; height:190px; background-color: #eef4f7;background-image: url(&quot;assets/img/bg-pattern.png&quot;); margin: 10% -1em;">
-                    <div style="height: 40px;width: 670px;margin: 8% 10%;">
-                        <div style="height: 40px;width: 670px;">
-                            <button class="btn btn-primary" onclick="location.href='RicercaSaccaForm.html';" type="button" style="margin: 0% 20%; background-color: #13958d;width: 179px;">Ricerca sacca</button>
+        
+        <div class="row" style="margin-left:0px; margin-right: 0px">
+            <div class="border col boxProfile" style="background-image: url(&quot;assets/img/bg-pattern.png&quot;);">
+                <div class="row">
+                    <div class="col-sm">
+                        <img src="assets/img/doctor+pediatrician+icon-1320185104387356300.png" style="width: 200px;margin: 5% 7%;">
+                        <span style="padding-left: 22%">Operatore CTT</span>
+                    </div>
+                    <div class="col-sm" style="margin-top: 9%; margin-left: -2em">
+                        <div>
+                            <p id="nome">Nome: </p>
+                        </div>
+                        <div style="margin: 30px 0%;">
+                            <p id="cognome">Cognome: </p>
+                        </div>
+                        <div style="width: 300px;">
+                            <button class="btn btn-primary" onclick="location.href='Login.html';" type="button" style="background-color: #13958d;">Change Password</button>
+                            <button class="btn btn-primary" onclick="logout();" type="button" style="margin: 0% 5%">Log out</button>
                         </div>
                     </div>
                 </div>
-                
-                <div style="height: 200px;width: 400px;margin: -32em 50%;">
-                    <div style="width: 60px;">
-                        <span style="font-family: muli,sans-serif;font-size: 20px;">Nome:</span>
-                    </div>
-                    <div style="margin: 30px 0px;width: 90px;">
-                        <span style="font-size: 20px;font-family: muli,sans-serif;">Cognome:</span>
-                    </div>
-                    <div style="height: 30px;width: 200px;margin: -117px 100px;">
-                        <p id="name"></p>
-                    </div>
-                    <div style="height: 30px;width: 200px;margin: 148px 100px;">
-                        <p id="surname"></p>
-                    </div>
-                    <div style="height: 40px;width: 300px;margin: -95px 0%;">
-                        <button class="btn btn-primary" onclick="location.href='ChangePassword.html';" type="button" style="width: 160px;height: 42px;margin: 0px 0px;background-color: #13958d;">Change Password</button>
-                        <button class="btn btn-primary" onclick="location.href='Login.html';" type="button" style="width: 85px;height: 42px;margin: 0px 5%;">Log out</button>
-                    </div>
+            </div>
+            
+            <div class="border col-sm boxButton" style="background-image: url(&quot;assets/img/bg-pattern.png&quot;);">
+                <div class="containerBtn">
+                        <p style="margin-left: 30%; margin-top: -1.5em "><b>Azioni</b></p>
+                        <div class="row" style="width:75%; margin-top: 5%; margin-left: 16%;">
+                            <div class="col-sm">
+                                <button class="btn btn-primary" onclick="location.href='RicercaSaccaForm.html';" type="button" style="background-color: #13958d; width: 210px;">Ricerca sacca</button>
+                            </div>
+                        </div>
                 </div>
             </div>
-        
-            <div class="col">
-                <div class="border rounded-0 shadow-sm profile-box" style=" height: 96%;background-color: #eef4f7;margin: 2%; background-image: url(&quot;assets/img/bg-pattern.png&quot;);">
-                    <h2 style="font-family: muli,sans-serif;margin: 10px 30px;text-align: left;">Notifiche</h2>
-                    <div style="height: 65px;margin: -3em 63%; width: auto;">
-                        <button class="btn btn-primary" onclick="removeNotification()" type="button" style="background-color: #13958d;width: 177px;">Pulisci notifiche</button>
-                    </div>
-                    <div id="divNot" style="margin-top: 5%; overflow:auto;height:460px;">
-                        <p class="notification"> > Sacca scaduta del gruppo sanguigno A+ del CTT#3</p>
-                        <p class="notification"> > Sacca scaduta del gruppo sanguigno B+ del CTT#6</p>
-                        <p class="notification"><span id="urgent"> > Richiesta di sacca urgente del gruppo sanguigno A- del CTT#10</span></p>
-                        <p class="notification"><span id="urgent"> > Richiesta di sacca urgente del gruppo sanguigno B+ del CTT#11</span></p>
-                        <p class="notification"> > Sacca scaduta del gruppo sanguigno 0- del CTT#1</p>
-                        <p class="notification"> > Sacca scaduta del gruppo sanguigno 0- del CTT#1</p>
-                        <p class="notification"> > Sacca scaduta del gruppo sanguigno 0- del CTT#1</p>
-                        <p class="notification"> > Sacca scaduta del gruppo sanguigno 0- del CTT#1</p>
-                        <p class="notification"> > Sacca scaduta del gruppo sanguigno 0- del CTT#1</p>
-                        <p class="notification"> > Sacca scaduta del gruppo sanguigno 0- del CTT#1</p>
-                        <p class="notification"> > Sacca scaduta del gruppo sanguigno 0- del CTT#1</p>
-                        <p class="notification"> > Sacca scaduta del gruppo sanguigno 0- del CTT#1</p>
-                        <p class="notification"> > Sacca scaduta del gruppo sanguigno 0- del CTT#1</p>
-                        <p class="notification"> > Sacca scaduta del gruppo sanguigno 0- del CTT#1</p>
-                        
-                    </div> 
-                </div>
-                
-            </div>
-       
         </div>
+         
+        <div class="boxNotification col-sm-12 border shadow-sm profile-box" style="background-image: url(&quot;assets/img/bg-pattern.png&quot;);">
+            <h2>Notifiche</h2>
+            <div class="btnClear">
+                <button class="btn btn-primary" onclick="removeNotification();" type="button" style="background-color: #13958d;width: 177px;">Pulisci notifiche</button>
+            </div>
+            <div class="divNot" id="divNot">
+                <p> > Sacca scaduta del gruppo sanguigno A+ del CTT#3</p>
+                <p> > Sacca scaduta del gruppo sanguigno B+ del CTT#6</p>
+                <p><span id="urgent"> > Richiesta di sacca urgente del gruppo sanguigno A- del CTT#10</span></p>
+                <p><span id="urgent"> > Richiesta di sacca urgente del gruppo sanguigno B+ del CTT#11</span></p>
+                <p> > Sacca scaduta del gruppo sanguigno B+ del CTT#6</p>
+                <p> > Sacca scaduta del gruppo sanguigno B+ del CTT#6</p>
+                <p> > Sacca scaduta del gruppo sanguigno B+ del CTT#6</p>
+                <p> > Sacca scaduta del gruppo sanguigno B+ del CTT#6</p>
+                <p> > Sacca scaduta del gruppo sanguigno B+ del CTT#6</p>
+                <p> > Sacca scaduta del gruppo sanguigno B+ del CTT#6</p>
+            </div> 
+        </div> 
     </div>
     
-    <div class="footer">
-        <p></p>
-    </div>
+    <script>
+        var token = sessionStorage.getItem("token");
+        var ruolo = sessionStorage.getItem("ruolo");
+        var name = sessionStorage.getItem("nome");
+        var surname = sessionStorage.getItem("cognome");
+
+        function start(){
+            verificoToken();
+            setPerson();
+        }
+        
+        function setPerson(){
+            document.getElementById("nome").textContent = "Nome: " + name;
+            document.getElementById("cognome").textContent = "Cognome: " + surname;
+        }
+
+        verificoToken = function(){
+                 if(token == null || ruolo != 'OperatoreCTT'){
+                  alert("E' necessario effettuare il login per accedere a questa risorsa");
+                  window.location.href='Login.html';
+                 }
+        };
+
+        logout = function(){
+
+       var xhttp = new XMLHttpRequest();
+       var url ="http://127.0.0.1:8080/rest/autentificazione/logout";
+       xhttp.onreadystatechange = function() {
+                   if (this.readyState == 4 && this.status == 200 ) {
+                        sessionStorage.removeItem("token");
+                        sessionStorage.removeItem("ruolo");
+                        sessionStorage.removeItem("nome");
+                        sessionStorage.removeItem("cognome");
+                        window.location.href='Login.html';
+                   }else {
+                       if(this.readyState == 4 && this.status != 200 ){
+                           alert(this.response);
+                       }
+                   }
+       };
+
+
+        xhttp.onerror = function(){
+                   alert("impossibile inviare la richiesta");
+        };
+
+
+        xhttp.open("DELETE", url, true);
+        xhttp.setRequestHeader('Authorization', 'Basic '+token);
+        xhttp.withCredentials = true;
+        xhttp.send();
+
+        };
+    </script>
+    
+    <div class="footer"></div>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 </body>

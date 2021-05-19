@@ -114,9 +114,18 @@
         
     </div>
     <script type="application/javascript">
+    
             var xhttp = new XMLHttpRequest();
             var token = sessionStorage.getItem("token");
             var ruolo = sessionStorage.getItem("ruolo");
+            
+
+            verificoToken = function(){
+                if(token == null || ruolo != 'MagazziniereCTT'){
+                    alert("E' necessario effettuare il login per accedere a questa risorsa");
+                    window.location.href='Login.html';
+               }
+            };
 
             function loadDoc(){
             	
@@ -133,31 +142,40 @@
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
                 	    res = this.response;
-                 	    document.getElementById("result").innerHTML = "Sacca Aggiunta";
-                 	}else {document.getElementById("result").innerHTML = this.response;}
+                 	    //document.getElementById("result").innerHTML = "Sacca Aggiunta";
+                 	}else {
+                 	res = this.response;
+                 	//document.getElementById("result").innerHTML = this.response;
+                 	}
 
                 };
 
                 xhttp.onerror = function(){
                     document.getElementById("result").innerHTML = "[Error 401] Impossibile Aggiungere Sacca ";
-                }
+                };
 
 
+                
                 xhttp.open("POST", url, true);
                 xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
                 xhttp.setRequestHeader('Authorization', 'Basic '+token);
                 xhttp.withCredentials = true;
                 xhttp.send(params);
+                setTimeout(reloadPage, 500);
 
+            }
+            
+            function reloadPage() {
+                alert(res);
+                //azzero i campi
+                gruppo_sanguigno.value= "";
+                ente_donatore.value= "";
+                data_scadenza.value= "";
+                data_produzione.value= "";
+                location.reload();
             }
 
 
-            verificoToken = function(){
-                if(token == null || ruolo != 'MagazziniereCTT'){
-                    alert("E' necessario effettuare il login per accedere a questa risorsa");
-                    window.location.href='Login.html';
-               }
-            }
     </script>
 
     <div class="footer"></div>

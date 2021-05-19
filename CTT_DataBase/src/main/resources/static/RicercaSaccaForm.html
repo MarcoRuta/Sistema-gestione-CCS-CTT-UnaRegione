@@ -148,6 +148,7 @@
             
             function loadDoc(){          	
 
+
                 var gs = gruppo_sanguigno.value;
                 var df = dataaff.value;
                 var num = numero_sacche.value;
@@ -179,11 +180,14 @@
                 xhttp.setRequestHeader('Authorization', 'Basic '+token);
                 xhttp.withCredentials = true;
                 xhttp.send();
+                
+                
                 setTimeout(reloadPage, 1000);
+                
             }
             
             function reloadPage() {
-                alert(res);
+            	alert(res);
                 gruppo_sanguigno.value = "";
                 dataaff.value= "";
                 numero_sacche.value= "";

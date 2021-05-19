@@ -9,18 +9,28 @@
             else document.getElementById("p1").innerHTML = "Ente richiedente: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
         }
         function print2(){
-            if(dataaff.value!="")
-                document.getElementById("p2").innerHTML = "Data affidamento: "+"<span class='textPrint'>" +dataaff.value+"</span>";
-            else document.getElementById("p2").innerHTML = "Data affidamento: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
+            if(indirizzo.value!=0)
+                document.getElementById("p2").innerHTML = "Indirizzo: "+"<span class='textPrint'>" +indirizzo.value+"</span>";
+            else document.getElementById("p2").innerHTML = "Indirizzo: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
         }
         function print3(){
-            if(gruppo_sanguigno.value!=0)
-                document.getElementById("p3").innerHTML = "Tipo di sangue: "+"<span class='textPrint'>" +gruppo_sanguigno.value+"</span>";
+            if(dataaff.value!="")
+                document.getElementById("p3").innerHTML = "Data affidamento: "+"<span class='textPrint'>" +dataaff.value+"</span>";
+            else document.getElementById("p3").innerHTML = "Data affidamento: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
         }
         function print4(){
+            if(gruppo_sanguigno.value!=0)
+                document.getElementById("p4").innerHTML = "Tipo di sangue: "+"<span class='textPrint'>" +gruppo_sanguigno.value+"</span>";
+        }
+        function print5(){
+            if(numero_sacche.value!="")
+                document.getElementById("p5").innerHTML = "Numero Sacche: "+"<span class='textPrint'>" +numero_sacche.value+"</span>";
+            else document.getElementById("p5").innerHTML = "Numero Sacche: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
+        }
+        function print6(){
             if(document.getElementById("check").checked)
-                document.getElementById("p4").innerHTML = "Priorità:<span class='textPrint'> SI</span>";
-            else document.getElementById("p4").innerHTML = "Priorità:<span class='textPrint'> NO</span>";
+                document.getElementById("p6").innerHTML = "Priorità:<span class='textPrint'> SI</span>";
+            else document.getElementById("p6").innerHTML = "Priorità:<span class='textPrint'> NO</span>";
         }
     </script>
     <meta charset="utf-8">
@@ -31,7 +41,7 @@
     <link rel="stylesheet" href="assets/css/formStyles.css">
 </head>
 
-<body>
+<body onload="verificoToken();">
     <div class="titlePage">
         <div>
             <span class="fontTitle">
@@ -56,18 +66,24 @@
                         <label>Ente richiedente:</label>
                         <div class="col-sm-10 inputForm">
                             <input id="enteRic" onchange="controllaEnteRic();" name="ente_richiedente" oninput="print1();" class="form-control" type="text" placeholder="Donatore">
-                        </div>
+                        </div>  
+                    </div>
+                    <div class="form-group row">
+                            <label>Indirizzo:</label>
+                            <div class="col-sm-10 inputForm">
+                                <input id="indirizzo" name="ind" oninput="print2();" class="form-control" type="text" >
+                            </div>
                     </div>
                     <div class="form-group row">
                         <label>Data affidamento:</label>
                         <div class="col-sm-10 inputForm">
-                            <input id="dataaff" name="data_affidamento" oninput="print2();" class="form-control" type="date">
+                            <input id="dataaff" name="data_affidamento" oninput="print3();" class="form-control" type="date">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label>Tipo di sangue:</label>
                         <div class="col-sm-10 inputForm">
-                            <select id="gruppo_sanguigno" name="gruppo_sanguigno" oninput="print3();" class="form-control" style="width:364px">
+                            <select id="gruppo_sanguigno" name="gruppo_sanguigno" oninput="print4();" class="form-control" style="width:364px">
                                 <option value='0'>Seleziona il tipo di sangue</option>
                                 <option value="Ap">A+</option>
                                 <option value="Am">A-</option>
@@ -80,10 +96,16 @@
                             </select>
                         </div>
                     </div>
+                     <div class="form-group row">
+                            <label>Numero:</label>
+                            <div class="col-sm-10 inputForm">
+                                <input id="numero_sacche" name="numero_sacche" oninput="print5();" class="form-control" type="number">
+                            </div>
+                        </div>
                     <div class="form-group row">
                         <label>Priorità:</label>
                         <div class="col-sm-10 inputForm">
-                            <input id="check" oninput="print4();" class="form-control" type="checkbox" style="width: 30px;height: 30px;">
+                            <input id="check" oninput="print6();" class="form-control" type="checkbox" style="width: 30px;height: 30px;">
                         </div>
                     </div>
                 </form>
@@ -99,13 +121,82 @@
                 <p id="p2"></p>
                 <p id="p3"></p>
                 <p id="p4"></p>
+                <p id="p5"></p>
+                <p id="p6"></p>
             </div>
-            <div class="outPreview" style="height: 40px;margin: 4% 45px;"></div>
-            <button class="btn btn-primary" type="button" style="margin-left: 73.5%; width: 140px;height: 51px;font-family: Calibri light;font-size: 20px;">Conferma</button>
+            <div class="outPreview" style="height: 40px;margin: 4% 45px;">
+                <p id = "result"></p>
+            </div>
+            <button class="btn btn-primary" type="button" onclick="loadDoc();" style="margin-left: 73.5%; width: 140px;height: 51px;font-family: Calibri light;font-size: 20px;">Conferma</button>
         </div>
         
     </div>
-        
+ 
+    <script type="application/javascript">
+
+            var xhttp = new XMLHttpRequest();
+            var token = sessionStorage.getItem("token");
+            var ruolo = sessionStorage.getItem("ruolo");
+            var res;
+
+            verificoToken = function(){
+               if(token == null || ruolo != 'OperatoreCTT'){
+                alert("E' necessario effettuare il login per accedere a questa risorsa");
+                window.location.href='Login.html';
+               }
+            };
+            
+            function loadDoc(){          	
+
+
+                var gs = gruppo_sanguigno.value;
+                var df = dataaff.value;
+                var num = numero_sacche.value;
+                var indirizzorichiedente = indirizzo.value;
+                var enterichiedente = enteRic.value;
+                var pr = check.value;
+                var params = 'gruppoSanguigno='+gs+'&numeroSacche='+num+'&dataArrivoMassima='+df+'&enteRichiedente='+enterichiedente+'&indirizzoEnte='+indirizzorichiedente+'&priorità='+pr;
+                
+                var url = "http://127.0.0.1:8080/rest/operatore/ricerca?"+params;
+
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                 	    res ="Ricerca sacca completata in locale, il magazziniere è stato avvisato per evadere l'ordine";
+                 	    //document.getElementById("result").innerHTML = "Ricerca sacca completata in locale, il magazziniere è stato avvisato per evadere l'ordine";
+                 	}else{
+                       //document.getElementById("result").innerHTML = this.response;
+                       res = this.response;
+                 	}
+                };
+                
+                xhttp.onerror = function(){
+                    //document.getElementById("result").innerHTML = "Non è stato possibile completare la ricerca in locale, è stato allertato il sistema CCS";
+                    res = this.response;
+                };
+
+
+                
+                xhttp.open("GET", url, true);
+                xhttp.setRequestHeader('Authorization', 'Basic '+token);
+                xhttp.withCredentials = true;
+                xhttp.send();
+                
+                
+                setTimeout(reloadPage, 1000);
+                
+            }
+            
+            function reloadPage() {
+            	alert(res);
+                gruppo_sanguigno.value = "";
+                dataaff.value= "";
+                numero_sacche.value= "";
+                indirizzo.value= "";
+                enteRic.value="";
+                check.value="";
+                location.reload();
+            }
+    </script>
     <div class="footer"></div>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>

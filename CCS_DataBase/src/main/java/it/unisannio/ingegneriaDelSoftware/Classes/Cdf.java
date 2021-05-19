@@ -1,39 +1,35 @@
 package it.unisannio.ingegneriaDelSoftware.Classes;
 
-import java.util.Objects;
+import java.util.*;
 
+/**Questo è un FlyWeight*/
 public class Cdf {
 	private String codiceFiscale;
+	private static Map<String, Cdf> cdfs = new HashMap<String,Cdf>();
 
-	/**
-	 * Metodo costruttore del codice fiscale
-	 * 
-	 * @param cdf  Stringa di 16 caratteri
-	 * 
-	 */
-	public Cdf (String cdf) {
-		assert cdf != null: "Il codice fiscale non può essere null";
-		assert(cdf.length()==16): "Formato del codice fiscale non valido";
-		this.codiceFiscale = cdf;
-		}
-	
-	/**
-	 * Metodo che restituisce il codice fiscale come stringa
-	 * 
-	 * @return  codice fiscale
-	 *
-	 */
-	public String getCodiceFiscale() {
 
-		return codiceFiscale;
+	public static Cdf getCDF(String cdf) throws AssertionError{
+		assert cdf != null: "Il cdf non puo essere null";
+		if (Cdf.cdfs.containsKey(cdf))
+			return Cdf.cdfs.get(cdf);
+		Cdf aCdf = new Cdf(cdf);
+		Cdf.cdfs.put(cdf,aCdf);
+		return aCdf;
 	}
 
 	/**
-	 * Metodo che verifica l'uguaglianza tra due codici fiscali
-	 * 
-	 * @return Un boolean true o false a seconda dell'esito del confronto
-	 *
-	 */
+	 * @param cdf  deve essere una stringa di 16 caratteri*/
+    public Cdf(String cdf){
+		assert(cdf.length()==16) :"Il codice Fiscale deve essere di 16 caratteri";
+        this.codiceFiscale = cdf;
+    }
+	
+	/**
+	 * @return  restituisce il codice fiscale come stringa*/
+	public String getCodiceFiscale() {
+		return codiceFiscale;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -42,12 +38,6 @@ public class Cdf {
 		return codiceFiscale.equals(cdf.codiceFiscale);
 	}
 
-	/**
-	 * Metodo che calcola l'hashcode di un codice fiscale
-	 * 
-	 * @return Un intero pari all'hashcode generato
-	 * 
-	 */
 	@Override
 	public int hashCode() {
 		return Objects.hash(codiceFiscale);

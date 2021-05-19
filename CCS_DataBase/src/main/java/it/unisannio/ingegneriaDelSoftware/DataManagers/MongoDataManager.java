@@ -1,9 +1,13 @@
 package it.unisannio.ingegneriaDelSoftware.DataManagers;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Updates;
+
 import it.unisannio.ingegneriaDelSoftware.Interfaces.DataManager;
 import it.unisannio.ingegneriaDelSoftware.Classes.*;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.CTTNotFoundException;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.DipendenteNotFoundException;
+
 import com.mongodb.client.MongoCollection;
 import static com.mongodb.client.model.Filters.*;
 import java.util.ArrayList;
@@ -277,5 +281,18 @@ public class MongoDataManager implements DataManager {
         Dipendente unDipendente = this.getDipendente(cdf);
         return unDipendente != null?true:false;
     }
+    
+    /**Modifica la password di un Dipendente all'interno del DB solo se esso esiste
+	 * @param password la nuova passworda da aggiungere
+	 * @param cdf  il codice fiscale del Dipendente di cui si vuole aggiornare la password
+	 * */
+	public void setPassword(Cdf cdf, String password) throws DipendenteNotFoundException {
+		if (!this.containsDipendente(cdf)) throw new AssertionError( "Non puoi cambiare la password di un utente non esistente");
+		MongoDatabase database = mongoClient.getDatabase(Constants.DB_NAME);
+		MongoCollection<Document> collection = database.getCollection(Constants.COLLECTION_DIPENDENTI);
+		collection.updateOne(
+				eq(Constants.ELEMENT_CDF,cdf.getCodiceFiscale()),
+				Updates.set(Constants.ELEMENT_PASSWORD, password ));
+	}
 	
 }

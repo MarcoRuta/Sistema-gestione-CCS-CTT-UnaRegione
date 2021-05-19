@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="assets/css/formStyles.css">
 </head>
 
-<body style="background-color: #ffffff;">
+<body style="background-color: #ffffff;" onload="verificoToken();">
     
     <div class="titlePage">
         <div>
@@ -30,6 +30,7 @@
               Ordina CTT per richieste form            
             </span>
         </div>
+        <div>
             <img class="logoCCS" src="assets/img/LOGO_CCS.svg">
         </div>
     </div>
@@ -63,7 +64,7 @@
             <div class="titleDateForm">
                 <p>Anteprima</p>
             </div>
-            <div class="outPreview" style="">
+            <div class="outPreview">
                 <p id="p1"></p>
                 <p id="p2"></p>
             </div>
@@ -72,7 +73,21 @@
         </div>
         
     </div>
-        
+     
+    <script type="application/javascript">
+
+    var token = sessionStorage.getItem("token");
+    var ruolo = sessionStorage.getItem("ruolo");
+
+
+     verificoToken = function(){
+           if(token == null || ruolo != 'AmministratoreCCS'){
+            alert("E' necessario effettuare il login per accedere a questa risorsa");
+            window.location.href='Login.html';
+           }
+        }
+    </script> 
+       
     <div class="footer"></div>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>

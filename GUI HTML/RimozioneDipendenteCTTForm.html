@@ -2,91 +2,6 @@
 <html>
 
 <head>
-    <script>
-        function print1(){
-            if(codice.value!="")
-                document.getElementById("p1").innerHTML = "Codice fiscale: "+"<span class='textPrint'>" +codice.value+"</span>";
-            else document.getElementById("p1").innerHTML = "Codice fiscale: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
-        }
-    </script>
-    <script>
-    var token = sessionStorage.getItem("token");
-    var ruolo = sessionStorage.getItem("ruolo");
-
-    rimozione = function(){
-        var xhttp = new XMLHttpRequest();
-        var url ="http://127.0.0.1:8080/rest/amministratore/rimozionedipendente/"+codice.value;
-        xhttp.onreadystatechange = function() {
-                    if (this.readyState == 4 && this.status == 200 ) {
-                        document.getElementById("result").innerHTML = "Dipendente "+codice.value+" rimosso correttamente";
-                 	}else {
-                 	    if(this.readyState == 4 && this.status != 200 ){
-                 	    document.getElementById("result").innerHTML = this.response;
-
-                 	    }
-                 	}
-        };
-
-
-        xhttp.onerror = function(){
-                   alert("impossibile inviare la richiesta");
-        };
-
-
-        xhttp.open("DELETE", url, true);
-        xhttp.setRequestHeader('Authorization', 'Basic '+token);
-        xhttp.withCredentials = true;
-        xhttp.send();
-
-    }
-
-
-
-    function start(){
-    verificoToken();
-    KeepDipendenti();
-    }
-
-     verificoToken = function(){
-               if(token == null || ruolo != 'AmministratoreCTT'){
-                alert("E' necessario effettuare il login per accedere a questa risorsa");
-                window.location.href='Login.html';
-               }
-     }
-
-        function keepDipendenti(){
-
-                xhttp = new XMLHttpRequest();
-                url = "http://127.0.0.1:8080/rest/amministratore/dipendenti";
-
-                xhttp.onreadystatechange = function() {
-                    if (this.readyState == 4 && this.status == 200) {
-                        obj = JSON.parse(this.responseText);
-                        addOption();
-                        }
-
-                };
-
-                xhttp.open("GET", url, true);
-                xhttp.setRequestHeader('Authorization', 'Basic '+token);
-                xhttp.withCredentials = true;
-                xhttp.send();
-
-            }
-
-
-             function addOption() {
-
-                var x = document.getElementById("codice");
-                var option;
-                for(var i=0; i < obj.length; i++) {
-                    option = document.createElement('option');
-                    option.appendChild(document.createTextNode(obj[i].codiceFiscale));
-                    option.value=obj[i].codiceFiscale;
-                    x.appendChild(option);
-                }
-            }
-    </script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>RimozioneDipendenteForm</title>
@@ -119,8 +34,8 @@
                     <div class="form-group row" style="margin: 8% 5%">
                             <label>Codice fiscale:</label>
                             <div class="inputForm">
-                                <select id="codice" name="cdf"  oninput="print1();" class="form-control" onfocus='this.size=5;' onblur='this.size=1;' onchange='this.size=1; this.blur();'style='width: 300px;' >
-                                    <option value='0'>Seleziona la sacca da evadere</option>
+                                <select id="codice" name="cdf"  oninput="printDip();" class="form-control" onfocus='this.size=5;' onblur='this.size=1;' onchange='this.size=1; this.blur();'style='width: 300px;' >
+                                    <option value='0'>Seleziona il dipendente da rimuovere</option>
                                 </select>
                             </div>
                         </div>
@@ -132,6 +47,9 @@
             <div class="titleDateForm">
                 <p>Anteprima</p>
             </div>
+            <div class="outPreview">
+                <p id="p1"></p>
+            </div>
             <div class="outPreview" style="height: 40px;margin: 4% 45px;">
                 <p id = "result"></p>
             </div>
@@ -139,6 +57,116 @@
         </div>
         
     </div>
+    
+    <script>
+    
+    var token = sessionStorage.getItem("token");
+    var ruolo = sessionStorage.getItem("ruolo");
+    var xhttp = new XMLHttpRequest();
+    var obj;
+    var res;
+    
+    	function start(){
+        	verificoToken();
+        	keepDipendenti();
+        }
+
+         verificoToken = function(){
+               if(token == null || ruolo != 'AmministratoreCTT'){
+                  	alert("E' necessario effettuare il login per accedere a questa risorsa");
+                  	window.location.href='Login.html';
+                   }
+         }
+
+
+   	 	rimozione = function(){
+	        xhttp = new XMLHttpRequest();
+	        var url ="http://127.0.0.1:8080/rest/amministratore/rimozionedipendente/"+codice.value;
+	        
+	        xhttp.onreadystatechange = function() {
+	                    if (this.readyState == 4 && this.status == 200 ) {
+	                        res ="Dipendente "+codice.value+" rimosso correttamente"
+	                        //document.getElementById("result").innerHTML = "Dipendente "+codice.value+" rimosso correttamente";
+	                 	}else {
+	                 	    if(this.readyState == 4 && this.status != 200 ){
+	                 	    res =this.response;
+	                 	    //document.getElementById("result").innerHTML = this.response;
+	
+	                 	    }
+	                 	}
+        	};
+
+
+	        xhttp.onerror = function(){
+	                   alert("impossibile inviare la richiesta");
+	        };
+	
+	        setTimeout(reloadPage, 500);
+	
+	        xhttp.open("DELETE", url, true);
+	        xhttp.setRequestHeader('Authorization', 'Basic '+token);
+	        xhttp.withCredentials = true;
+	        xhttp.send();
+
+    	}
+   	 	
+	   	 function reloadPage() {
+	         alert(res);
+	         location.reload();
+	     }
+
+
+        function keepDipendenti(){
+        	
+                xhttp = new XMLHttpRequest();
+                url = "http://127.0.0.1:8080/rest/amministratore/dipendenti";
+
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        obj = JSON.parse(this.responseText);
+                        addOption();
+                        }
+
+                };
+
+                xhttp.open("GET", url, true);
+                xhttp.setRequestHeader('Authorization', 'Basic '+token);
+                xhttp.withCredentials = true;
+                xhttp.send();
+
+            }
+
+
+             function addOption() {
+
+                var x = document.getElementById("codice");
+                var option;
+                for(var i=0; i < obj.length; i++) {
+                    option = document.createElement('option');
+                    option.appendChild(document.createTextNode(obj[i].username + " - " + obj[i].cdf.codiceFiscale));
+                    option.value=obj[i].cdf.codiceFiscale;
+                    x.appendChild(option);
+                }
+            }
+             
+            function printDip() {
+            	    
+         	    let x = document.getElementById("codice");
+         	    var inner;
+         	    if(x.getvalue!=0) {
+         	        inner = "Codice fiscale: <span class='textPrint'>" +obj[x.selectedIndex-1].cdf.codiceFiscale+"</span><br>Nome: <span class='textPrint'>"+obj[x.selectedIndex-1].nome+"</span><br>";
+         	        inner = inner + "Cognome: <span class='textPrint'>" +obj[x.selectedIndex-1].cognome+"</span><br>Data di nascita: <span class='textPrint'>"+obj[x.selectedIndex-1].dataDiNascita+"</span><br>";
+         	        inner = inner + "Username: <span class='textPrint'>" +obj[x.selectedIndex-1].username+"</span><br>Password: <span class='textPrint'>"+obj[x.selectedIndex-1].password+"</span><br>";
+         	        inner = inner + "Ruolo: <span class='textPrint'>" +obj[x.selectedIndex-1].ruolo+"</span>";
+         	        document.getElementById("p1").innerHTML = inner;
+         	    }
+         	    else {
+         	        document.getElementById("p1").innerHTML = "<span class='errorPrint'>SI PREGA DI SELEZIONARE IL DIPENDENTE DA RIMUOVERE</span>";
+         	    }
+
+
+         	}
+    </script>
         
     <div class="footer"></div>
     <script src="assets/js/jquery.min.js"></script>

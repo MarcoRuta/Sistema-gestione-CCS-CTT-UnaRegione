@@ -94,13 +94,14 @@ public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT{
 				  publisher.setNotifica(new NotificaEvasione(seriali,enteRichiedente,indirizzoEnte));
 				  publisher.run();
 				
-			}
+			
 			
 
 			return Response
 					.status(Response.Status.OK) //In questo caso sono state trovate tutte le sacche, va inviata risposta 200 OK 
-					.entity(saccheTrovate)//Va gestito l'inoltro della notifica di evasione sacche presso l'interfaccia REST del magazziniere 
+					.entity("Ricerca sacca completata in locale, il magazziniere è stato avvisato per evadere l'ordine")//Va gestito l'inoltro della notifica di evasione sacche presso l'interfaccia REST del magazziniere 
 					.build();
+			}
 		}catch (SaccheInLocaleNotFoundException e) {
 			return Response //in realtà deve avviare RicercaSaccaGlobale e passare i parametri al CCS
 					.status(Response.Status.NOT_FOUND)

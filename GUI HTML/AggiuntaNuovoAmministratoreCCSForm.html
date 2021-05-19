@@ -4,9 +4,10 @@
 <head>
      <script>
         function print1(){
-            if(codice.value!="")
+            if(codice.value!="") {
                 document.getElementById("p1").innerHTML = "Codice fiscale: "+"<span class='textPrint' style='text-transform:uppercase'>" +codice.value+"</span>";
-            else document.getElementById("p1").innerHTML = "Codice fiscale: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
+            }
+                else document.getElementById("p1").innerHTML = "Codice fiscale: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
         }
         function print2(){
             if(nome.value!="")
@@ -33,31 +34,32 @@
                 document.getElementById("p6").innerHTML = "Password: "+"<span class='textPrint'>" +password.value+"</span>";
              else document.getElementById("p6").innerHTML = "Password: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
         }
-        function print7(){
-            if(rl.value!=0)
-                document.getElementById("p7").innerHTML = "Ruolo: "+"<span class='textPrint'>" +rl.value+"</span>";
-             else document.getElementById("p7").innerHTML = "Ruolo: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
-        }
+        
+      /*  function print7(){
+       	 	if(rl.value!=0)
+        	 document.getElementById("p7").innerHTML = "Ruolo: "+"<span class='textPrint'>" + rl.value+"</span>";
+             else  document.getElementById("p7").innerHTML = "Ruolo: "+"<span class='textPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
+        }*/
         
     </script>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>AggiuntaNuovoDipendente</title>
+    <title>AggiuntaNuovoAmministratore</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/styles.css">
     <link rel="stylesheet" href="assets/css/formStyles.css">
 </head>
 
-<body onload="verificoToken()">
+<body onload = "verificoToken();">
     <div class="titlePage">
         <div>
             <span class="fontTitle">
-                Aggiunta Nuovo Dipentente Form            
+                Aggiunta Nuovo Amministratore Form            
             </span>
         </div>
         <div>
-            <img class="logoCTT" src="assets/img/LOGO_CTT.svg">
+            <img class="logoCTT" src="assets/img/LOGO_CCS.svg">
         </div>
     </div>
     
@@ -66,7 +68,7 @@
         <div class="dateForm">
             <div class="titleDateForm">
                 <p>Inserisci i Dati:</p>
-                <button class="btn" onclick="location.href='AmministratoreCTT.html';"><img class="return" src="assets/img/return.png" /></button>
+                <button class="btn" onclick="location.href='AmministratoreCCS.html';"><img class="return" src="assets/img/return.png" /></button>
             </div>
             <div class="containerForm" style= "overflow: auto; max-height: 440px; max-width: 705px" >
                 <form id="myForm">
@@ -109,12 +111,7 @@
                         <div class="form-group row">
                             <label>Ruolo:</label>
                             <div class="inputForm">
-                                <select class="form-control" id="rl" oninput="print7();" style="height: 40px;width: 364px;">
-                                    <option value='0'>Seleziona il tipo di ruolo</option>
-                                    <option value="AmministratoreCTT">AmministratoreCTT</option>
-                                    <option value="MagazziniereCTT">MagazziniereCTT</option>
-                                    <option value="OperatoreCTT">OperatoreCTT</option>
-                            </select>
+                                <input id="rl" name="rl" class="form-control" type="text" value="AmministratoreCCS" disabled="disabled">
                             </div>
                         </div>
                 </form>
@@ -137,75 +134,66 @@
             <div class="outPreview" style="height: 40px;margin: 4% 45px;">
                 <p id="result"></p>
             </div>
-            <button class="btn btn-primary" type="submit" onclick="addDip()" style="margin-left: 73.5%; width: 140px;height: 51px;font-family: Calibri light;font-size: 20px;">Conferma</button>
+            <button class="btn btn-primary" type="submit" onclick="addAmm();" style="margin-left: 73.5%; width: 140px;height: 51px;font-family: Calibri light;font-size: 20px;">Conferma</button>
         </div>
         
     </div>
     
-    <script>
+     <script type="application/javascript">
+        var xhttp = new XMLHttpRequest();
         var token = sessionStorage.getItem("token");
         var ruolo = sessionStorage.getItem("ruolo");
-        var xhttp = new XMLHttpRequest();
-        var res;
-
-         verificoToken = function(){
-               if(token == null || ruolo != 'AmministratoreCTT'){
+        
+        verificoToken = function(){
+            if(token == null || ruolo != 'AmministratoreCCS'){
                 alert("E' necessario effettuare il login per accedere a questa risorsa");
                 window.location.href='Login.html';
-               }
-            }
+           }
+        }
 
-            function addDip(){
-                var url = "http://127.0.0.1:8080/rest/amministratore/aggiuntadipendente";
+        function addAmm(){
 
-                var cdf = codice.value;
-                var nm = nome.value;
-                var cn = cognome.value;
-                var dn = datanasc.value;
-                var us = username.value;
-                var ps = password.value;
-                var rlo = rl.value;
-                var params = 'cdf='+cdf+'&nome='+nm+'&cognome='+cn+'&dataDiNascita='+dn+'&username='+us+'&password='+ps+'&ruolo='+rlo;
 
-                xhttp.onreadystatechange = function() {
-                    if (this.readyState == 4 && this.status == 200) {
-                        res= "Dipendente "+cdf+" aggiunto correttamente";
-                 	    //document.getElementById("result").innerHTML = "Dipendente "+cdf+" aggiunto correttamente";
-                 	}else {
-                 	if(this.readyState == 4 && this.status != 200){
-                 	    res = this.response;
-                 	    //document.getElementById("result").innerHTML = this.response;
-                 	    }
-                 	}
+            var url = "http://127.0.0.1:8080/rest/CCS/aggiuntaAmministratore";
+            var cd = codice.value;
+            var nm = nome.value;
+            var cn = cognome.value;
+            var dn = datanasc.value;
+            var us = username.value;
+            var ps = password.value;
+            var rlo = rl.value;
 
-                };
+            var params = 'cdf='+cd+'&nome='+nm+'&cognome='+cn+'&dataDiNascita='+dn+'&username='+us+'&password='+ps+'&ruolo='+rlo;
 
-                xhttp.onerror = function(){
-                    document.getElementById("result").innerHTML = "[Error 401] Impossibile Aggiungere Sacca ";
-                }
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+             	    document.getElementById("result").innerHTML = this.response;
+             	}else if(this.readyState == 4 && this.status != 200 ){
+              	    document.getElementById("result").innerHTML = this.response;
+             	    }
 
-                
-                setTimeout(reloadPage, 500);
+            };
 
-                xhttp.open("POST", url, true);
-                xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-                xhttp.setRequestHeader('Authorization', 'Basic '+token);
-                xhttp.withCredentials = true;
-                xhttp.send(params);
-            }
+            xhttp.onerror = function(){
+                document.getElementById("result").innerHTML = "[Error 401] Impossibile Aggiungere Amministratore ";
+            };
+
+
+            setTimeout(reloadPage, 500);
             
-            function reloadPage() {
-                alert(res);
-                codice.value ="";
-                nome.value="";
-                cognome.value="";
-                datanasc.value="";
-                username.value="";
-                password.value="";
-                rl.value="";
-                location.reload();
-            }
+            xhttp.open("POST", url, true);
+            xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhttp.setRequestHeader('Authorization', 'Basic '+token);
+            xhttp.withCredentials = true;
+            xhttp.send(params);
+        }
+        
+        function reloadPage() {
+            alert(document.getElementById("result").textContent);
+            location.reload();
+        }
 
+            
     </script>
         
     <div class="footer"></div>

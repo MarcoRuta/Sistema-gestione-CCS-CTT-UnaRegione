@@ -3,6 +3,7 @@ import java.util.List;
 
 import it.unisannio.ingegneriaDelSoftware.Classes.*;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.CTTNotFoundException;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.DipendenteNotFoundException;
 
 public interface DataManager {
 	
@@ -64,5 +65,11 @@ public interface DataManager {
 	 * @param dip Dipendente da aggiungere
 	 * 
 	 */
-		public void addDipendente(Dipendente dip);
+	public void addDipendente(Dipendente dip);
+	
+	/**Modifica la password di un Dipendente all'interno del DB solo se esso esiste
+	 * @param password la nuova passworda da aggiungere
+	 * @param cdf  il codice fiscale del Dipendente di cui si vuole aggiornare la password
+	 * */
+	public void setPassword(Cdf cdf, String password) throws DipendenteNotFoundException;
 }
