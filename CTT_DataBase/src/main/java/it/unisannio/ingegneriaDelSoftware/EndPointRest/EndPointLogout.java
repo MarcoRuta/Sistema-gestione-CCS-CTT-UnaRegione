@@ -9,6 +9,7 @@ import it.unisannio.ingegneriaDelSoftware.Interfaces.DataManager;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Cookie;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -18,16 +19,15 @@ public class EndPointLogout {
     /**
      * Metodo che effettua il logout, esso elimina il token dell'utente dal server cosi che esso non sia piu autenticato
      *
-     * @param token da rimuovere per effetuare il logout
+     * @param header da rimuovere per effetuare il logout
      */
     @DELETE
     @Path("/logout")
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
-    public Response logOut(@CookieParam("access_token") Cookie token) {
+    public Response logOut(@HeaderParam(HttpHeaders.AUTHORIZATION) String header) {
         try {
-//            DataManager mm = new MongoDataManager();
-            Token.removeToken(token.getValue());
+            Token.removeToken(header.substring("Basic ".length()));
             return Response.status(Response.Status.OK)
                     .entity("Token rimosso correttamente")
                     .build();
