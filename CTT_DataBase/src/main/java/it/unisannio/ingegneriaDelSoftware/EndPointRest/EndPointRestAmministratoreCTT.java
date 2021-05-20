@@ -95,7 +95,8 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 	}
 
 
-	/**Restituisce la lista dei Dipendenti del CTT che occupano il Ruolo scelto
+	/**---------REPORT OPERATORI CTT------------
+	 * Restituisce la lista dei Dipendenti del CTT che occupano il Ruolo scelto
 	 * @param ruolo Ruolo dei Dipendenti da cercare
 	 * @return Response 200 OK e invia la lista dei dipendenti del ruolo selezionato
 	 */
@@ -117,7 +118,8 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 	}
 
 
-	/**Restituisce la lista delle Sacche di un determinato Gruppo sanguigno, presenti del database delle Sacche
+	/**---------REPORT SACCHE DI UN TIPO PRESENTI NEL DATABASE SACCHE------------
+	 * Restituisce la lista delle Sacche di un determinato Gruppo sanguigno, presenti del database delle Sacche
 	 * @param gs Gruppo sanguigno delle Sacche che si vogliono ricercare
 	 * @return Response 200 OK e invia la lista dei datiSacca 400 BAD_REQUEST se i parametri inseriti non sono corretti
 	 */
@@ -139,7 +141,8 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 }
 
 
-	/**Restituisce la lista dei datiSacche relativi alle sacche che sono state caricate o affidate in un determinato arco temporale
+	/**---------REPORT SACCHE INVIATE E RICEVUTE CTT------------
+	 * Restituisce la lista dei datiSacche relativi alle sacche che sono state caricate o affidate in un determinato arco temporale
 	 * @param dataInizio Data inizio dell' arco temporale
 	 * @param dataFine Data fine dell' arco temporale
 	 * @return Response 200 OK e invia la lista dei datiSacca 400 BAD_REQUEST se i parametri inseriti non sono corretti
@@ -168,7 +171,8 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 	}
 
 
-	/**Restituisce il numero di Sacche ricevute e inviate in un arco temporale, per ogni Gruppo sanguigno scelto dall'AmministratoreCTT
+	/**---------REPORT SACCHE INVIATE E RICEVUTE CTT PER OGNI TIPO DI SANGUE SCELTO------------
+	 * Restituisce il numero di Sacche ricevute e inviate in un arco temporale, per ogni Gruppo sanguigno scelto dall'AmministratoreCTT
 	 * @param listaGS Lista dei Gruppi sanguigni scelti dall'AmministratoreCTT, una strigna con gruppo1:gruppo2:gruppo3
 	 * @param dataInizio Data di inizio dell' arco temporale
 	 * @param dataFine Data di fine dell' arco temporale

@@ -95,10 +95,9 @@
       xhttp.onreadystatechange = function() {
           if (this.readyState == 4 && this.status == 200) {
               obj = JSON.parse(this.responseText);
-              alert(table.rows.length);
               
               if(table.rows.length != 1) {
-                for (i = 1; i <= table.rows.length; i++) {
+                while(table.rows.length != 1) {
                      table.deleteRow(1);
                 }
               }
@@ -121,11 +120,7 @@
 	 function addPrint() {
 
       var row;
-      //var inner ="";
-      
-      //alert(table.rows.length);
-      //table.deleteRow(table.rows.length);
-      //if(obj.length != 0) {
+
         for(let i = 0; i < obj.length; i++) {
          
           row = document.createElement('tr');
@@ -138,18 +133,7 @@
           row.cells[2].innerHTML = obj[i].cognome;
           row.cells[3].innerHTML = obj[i].dataDiNascita;
           table.appendChild(row);   
-         /* inner = inner + "CodiceFiscale: " + obj[i].cdf.codiceFiscale + "<br>Nome: " + obj[i].nome + "<br>Cognome: " + obj[i].cognome + "<br>Data Di Nascita: " + obj[i].dataDiNascita + "<br>";
-          inner = inner + "<br>";
-          text.innerHTML = inner ;
-        */
-        //}
       }
-      //else {
-        //alert(table.rows.length);
-        //for (i = 0; i <= table.rows.length; i++) {
-         //   table.deleteRow(table.rows.length);
-        //}
-      //}
       
     }
 	 

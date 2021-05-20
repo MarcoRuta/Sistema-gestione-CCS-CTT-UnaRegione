@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/styles.css">
     <link rel="stylesheet" href="assets/css/formStyles.css">
+    <link rel="stylesheet" href="assets/css/tables.css">
 </head>
 
 <body>
@@ -33,7 +34,7 @@
                 <form id="myForm">
                     <div class="form-group row">
                         <label for="formGroupExampleInput" style="margin: 1% 10%;">Data inizio:</label>
-                        <input id="datein" name="data_in" type="date" oninput="print1();" class="form-control" id="formGroupExampleInput" placeholder="Example input" style="margin-left: 10%;width: 80%;">
+                        <input id="datein" name="data_in" type="date" class="form-control" id="formGroupExampleInput" placeholder="Example input" style="margin-left: 10%;width: 80%;">
                     </div>
                     <div class="form-group row">
                         <label for="formGroupExampleInput2" style="margin: 1% 10%;">Data fine:</label>
@@ -41,7 +42,7 @@
                     </div>
                 </form>
             </div>
-             <button class="btn btn-primary" type="button" style="margin-top: 50%;margin-left: 50%; width: 140px;height: 51px;font-family: Calibri light;font-size: 20px;">Conferma</button>
+             <button class="btn btn-primary" type="submit" onclick="report();" style="margin-top: 50%;margin-left: 50%; width: 140px;height: 51px;font-family: Calibri light;font-size: 20px;">Conferma</button>
         </div>
 
         <div class="previewFormQuery">
@@ -49,11 +50,81 @@
                 <p>Anteprima</p>
             </div>
             <div class="outPreviewQuery">
-                <p id="p1"></p>
+                <table id = "table">
+                    <tr>
+                      <th scope="col"> Seriale Sacca </th>
+                      <th scope="col"> ... </th>
+                      <th scope="col"> ... </th>
+                      <th scope="col"> ... </th>
+                    </tr>
+                </table>
             </div>
         </div>
         
     </div>
+    <script type="text/javascript">
+   
+    var token = sessionStorage.getItem("token");
+    var xhttp = new XMLHttpRequest();
+    var obj;
+    var table = document.getElementById('table');
+
+
+	function report(){
+    
+
+      xhttp = new XMLHttpRequest();
+      var params = "dataInizio=" + datein.value + "&dataFine=" + dateout.value;
+      url = "http://127.0.0.1:8080/rest/amministratore/reportLocaleSaccheInviateERicevute?="+params;
+      alert(url);
+
+      xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+              obj = JSON.parse(this.responseText);
+              alert(obj);
+              if(table.rows.length != 1) {
+                for (i = 1; i <= table.rows.length; i++) {
+                     table.deleteRow(1);
+                }
+              }
+              addPrint();
+              }
+          else if (this.readyState == 4 && this.status != 200) {
+          	alert(this.response);
+          }
+
+      };
+
+      xhttp.open("GET", url, true);
+      xhttp.setRequestHeader('Authorization', 'Basic '+token);
+      xhttp.withCredentials = true;
+      xhttp.send();
+
+    }
+    
+	 
+	 function addPrint() {
+
+      var row;
+
+        for(let i = 0; i < obj.length; i++) {
+         
+          row = document.createElement('tr');
+          row.appendChild(document.createElement('td'));
+          row.appendChild(document.createElement('td'));
+          row.appendChild(document.createElement('td'));
+          row.appendChild(document.createElement('td'));
+          row.cells[0].innerHTML = obj[i].cdf.codiceFiscale;
+          row.cells[1].innerHTML = obj[i].nome;
+          row.cells[2].innerHTML = obj[i].cognome;
+          row.cells[3].innerHTML = obj[i].dataDiNascita;
+          table.appendChild(row);   
+      }
+      
+    }
+	 
+	 
+    </script> 
         
     <div class="footer"></div>
     <script src="assets/js/jquery.min.js"></script>
