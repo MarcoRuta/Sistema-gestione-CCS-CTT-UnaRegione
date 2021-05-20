@@ -8,11 +8,9 @@ import java.util.List;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Form;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.NewCookie;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import org.junit.AfterClass;
@@ -22,26 +20,24 @@ import it.unisannio.ingegneriaDelSoftware.Classes.CTT;
 import it.unisannio.ingegneriaDelSoftware.Classes.Cdf;
 import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.RuoloDipendente;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
-
-
+import it.unisannio.ingegneriaDelSoftware.Classes.User;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManagerBean;
 
 
 public class RemoveCTTRestTest {
 	
-	static NewCookie cookie = null;
-	static WebTarget rimozioneCTT = null;
-	static WebTarget login = null;
+	static String token = null;
+	Client client = ClientBuilder.newClient();
+	WebTarget rimozioneCTT = client.target("http://127.0.0.1:8080/rest/CCS/rimozioneCTT");
+	
 	
 	/**
-	 * Classe per la popolazione del database
-	 * 					
+	 * Classe per la popolazione del database			
 	 * @throws ParseException
 	 */
 	@BeforeClass 
 	public static void setUp() throws ParseException {
 		
-		MongoDataManager amm = new MongoDataManager();
 		List<CTT> listaCTT = new ArrayList<CTT>();
 	        
 		Integer numero = 1;
@@ -129,7 +125,7 @@ public class RemoveCTTRestTest {
         listaCTT.add(CTT007);
       
         for(CTT ctt : listaCTT) {
-        	amm.createCTT(ctt);
+        	MongoDataManagerBean.createCTT(ctt);
         }  
         
         Cdf cdf = new Cdf("122hfotndj13ht5f");
@@ -138,40 +134,37 @@ public class RemoveCTTRestTest {
 	    String username = "admin";
 	    String password = "admin";
 	    Dipendente dip = new Dipendente(cdf, "TestAdmin", "TestAdmin", ld, ruolo, username, password);
-	    amm.addDipendente(dip);
-        
-        Client client = ClientBuilder.newClient();
-		WebTarget login = client.target("http://127.0.0.1:8080/rest/login");
-		Form form = new Form();
-		form.param("username", "admin");
-		form.param("password", "admin");
-		Response responselogin = login.request().post(Entity.form(form));
-		cookie = responselogin.getCookies().get("access_token");
+	    MongoDataManagerBean.createDipendente(dip);
+	    
+	    Client client = ClientBuilder.newClient();
+		WebTarget login = client.target("http://127.0.0.1:8080/rest/autentificazione");
+		Form form1 = new Form();
+		form1.param("username", "admin");
+		form1.param("password", "admin");
+		
+		Response responselogin = login.request().post(Entity.form(form1));
+		User user = responselogin.readEntity(User.class);
+		token = user.getToken();
 	}
 	
 	/**Test del metodo REST rest/CCS/rimozioneCTT
 	 * Questo test deve andare a buon fine in quanto si tenta di eliminare un CTT inserito nel @BeforeClass
 	 */
-	@Test public void testRimozioneCTTCorretto(){
-		Client client = ClientBuilder.newClient();
-		WebTarget rimozioneCTT = client.target("http://127.0.0.1:8080/rest/CCS/rimozioneCTT/1");
-		Invocation.Builder invocationBuilder = rimozioneCTT.request(MediaType.TEXT_PLAIN);
-		invocationBuilder.cookie(cookie);
-		Response responseRemoveCTT = invocationBuilder.delete();
-		assertEquals(Status.OK.getStatusCode(), responseRemoveCTT.getStatus());
-	} 	
+	@Test public void testRimozioneCTTCorretto(){	
+
+		Response responseRemCTT = rimozioneCTT.path("1").request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).delete();
+		assertEquals(Status.OK.getStatusCode(), responseRemCTT.getStatus());
+			} 	
 	
 	
 	/**Test del metodo REST rest/CCS/rimozioneCTT
 	 * Questo test non deve andare a buon fine in quanto si tenta di eliminare un CTT non presente nel database
-	 */
+	*/ 
 	@Test public void testRimozioneCTTNonPresente(){
-		Client client = ClientBuilder.newClient();
-		WebTarget rimozioneCTT = client.target("http://127.0.0.1:8080/rest/CCS/rimozioneCTT/8");
-		Invocation.Builder invocationBuilder = rimozioneCTT.request(MediaType.TEXT_PLAIN);
-		invocationBuilder.cookie(cookie);
-		Response responseRemoveCTT = invocationBuilder.delete();
-		assertEquals(Status.BAD_REQUEST.getStatusCode(), responseRemoveCTT.getStatus());
+		
+
+		Response responseRemCTT = rimozioneCTT.path("8").request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).delete();
+		assertEquals(Status.BAD_REQUEST.getStatusCode(), responseRemCTT.getStatus());
 	} 
 	
 	
@@ -181,8 +174,7 @@ public class RemoveCTTRestTest {
 	 * 
 	 */
 	@AfterClass public static void dropDBCTT() {
-		MongoDataManager mm = new MongoDataManager();
-		mm.dropDB();
+		MongoDataManagerBean.dropDB();
 	}
 	
 }

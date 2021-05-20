@@ -10,11 +10,9 @@ import java.util.List;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Form;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.NewCookie;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
@@ -27,14 +25,17 @@ import org.junit.Test;
 import it.unisannio.ingegneriaDelSoftware.Classes.Cdf;
 import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.RuoloDipendente;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
+import it.unisannio.ingegneriaDelSoftware.Classes.User;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManagerBean;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 import it.unisannio.ingegneriaDelSoftware.Util.DateUtil;
 
 public class AggiungiAmministratoreRestTest {	
-		static NewCookie cookie = null;
-		@BeforeClass public static void populateDBDipendenti() throws ParseException, DipendenteNotFoundException {
-			MongoDataManager mm = new MongoDataManager();
+	static String token = null;
+	Client client = ClientBuilder.newClient();
+	WebTarget aggiuntaAmministratore = client.target("http://127.0.0.1:8080/rest/CCS/aggiuntaAmministratore");
+		
+	@BeforeClass public static void populateDBDipendenti() throws ParseException, DipendenteNotFoundException {
 			List<Dipendente> listaDipendenti = new ArrayList<Dipendente>();
 		        
 		 	Cdf cdf = new Cdf("122hfotndj13ht5f");
@@ -102,17 +103,18 @@ public class AggiungiAmministratoreRestTest {
 	      
 	      
 	        for(Dipendente dip : listaDipendenti) {
-	        	mm.addDipendente(dip);
+	        	MongoDataManagerBean.createDipendente(dip);
 	        }  
 	        
-			Client client = ClientBuilder.newClient();
-			WebTarget login = client.target("http://127.0.0.1:8080/rest/login");
+	        Client client = ClientBuilder.newClient();
+			WebTarget login = client.target("http://127.0.0.1:8080/rest/autentificazione");
 			Form form1 = new Form();
 			form1.param("username", "username 003");
 			form1.param("password", "003");
 			
 			Response responselogin = login.request().post(Entity.form(form1));
-			cookie = responselogin.getCookies().get("access_token");
+			User user = responselogin.readEntity(User.class);
+			token = user.getToken();
 		}
 
 		
@@ -121,10 +123,6 @@ public class AggiungiAmministratoreRestTest {
 		 */
 		@Test	
 		public void test1(){
-			Client client = ClientBuilder.newClient();
-			WebTarget aggiuntaDipendente = client.target("http://127.0.0.1:8080/rest/CCS/aggiuntaamministratore");
-			Invocation.Builder invocationBuilder = aggiuntaDipendente.request(MediaType.TEXT_PLAIN);
-			invocationBuilder.cookie(cookie);
 			Form form1 = new Form();
 			form1.param("cdf", "12123gasndj13ht5");
 			form1.param("nome", "mario");
@@ -133,8 +131,8 @@ public class AggiungiAmministratoreRestTest {
 			form1.param("ruolo", RuoloDipendente.AmministratoreCCS.toString());
 			form1.param("username", "username 123");
 			form1.param("password", "123");
-			Response responseaddDip = invocationBuilder.post(Entity.form(form1));
-			assertEquals(Status.OK.getStatusCode(), responseaddDip.getStatus());	
+			Response responseaddAmm = aggiuntaAmministratore.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).post(Entity.form(form1));
+			assertEquals(Status.OK.getStatusCode(), responseaddAmm.getStatus());	
 		}
 		
 		
@@ -143,11 +141,6 @@ public class AggiungiAmministratoreRestTest {
 		 */
 		@Test	
 		public void test2(){
-			
-			Client client = ClientBuilder.newClient();
-			WebTarget aggiuntaDipendente = client.target("http://127.0.0.1:8080/rest/CCS/aggiuntaamministratore");
-			Invocation.Builder invocationBuilder = aggiuntaDipendente.request(MediaType.TEXT_PLAIN);
-			invocationBuilder.cookie(cookie);
 			Form form1 = new Form();
 			form1.param("cdf", "23423mkopoi32ht8");
 			form1.param("nome", "Lucio");
@@ -156,8 +149,8 @@ public class AggiungiAmministratoreRestTest {
 			form1.param("ruolo", RuoloDipendente.AmministratoreCCS.toString());
 			form1.param("username", "username 234");
 			form1.param("password", "234");
-			Response responseaddDip = invocationBuilder.post(Entity.form(form1));
-			assertEquals(Status.OK.getStatusCode(), responseaddDip.getStatus());
+			Response responseaddAmm = aggiuntaAmministratore.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).post(Entity.form(form1));
+			assertEquals(Status.OK.getStatusCode(), responseaddAmm.getStatus());	
 		}
 		
 		
@@ -166,11 +159,6 @@ public class AggiungiAmministratoreRestTest {
 		 */
 		@Test	
 		public void test3(){
-			
-			Client client = ClientBuilder.newClient();
-			WebTarget aggiuntaDipendente = client.target("http://127.0.0.1:8080/rest/CCS/aggiuntaamministratore");
-			Invocation.Builder invocationBuilder = aggiuntaDipendente.request(MediaType.TEXT_PLAIN);
-			invocationBuilder.cookie(cookie);
 			Form form1 = new Form();
 			form1.param("cdf", "23423mkopoi32ht8");
 			form1.param("nome", "Lucio");
@@ -179,13 +167,12 @@ public class AggiungiAmministratoreRestTest {
 			form1.param("ruolo", RuoloDipendente.AmministratoreCCS.toString());
 			form1.param("username", "username 234");
 			form1.param("password", "234");
-			Response responseaddDip = invocationBuilder.post(Entity.form(form1));
-			assertEquals(Status.BAD_REQUEST.getStatusCode(), responseaddDip.getStatus());
+			Response responseaddAmm = aggiuntaAmministratore.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).post(Entity.form(form1));
+			assertEquals(Status.BAD_REQUEST.getStatusCode(), responseaddAmm.getStatus());
 		}
 		
 		
 		@AfterClass public static void dropDBDipendenti() {
-			MongoDataManager mm = new MongoDataManager();
-			mm.dropDB();
+			MongoDataManagerBean.dropDB();
 		}
 	}

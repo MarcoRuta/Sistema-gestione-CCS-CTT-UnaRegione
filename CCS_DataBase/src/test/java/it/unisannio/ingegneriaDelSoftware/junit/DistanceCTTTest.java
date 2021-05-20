@@ -1,26 +1,25 @@
 package it.unisannio.ingegneriaDelSoftware.junit;
+
 import static org.junit.Assert.assertEquals;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import it.unisannio.ingegneriaDelSoftware.Classes.CTT;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManagerBean;
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.CCS;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.CTTNotFoundException;
 
-
+/**
+ * Classe per la popolazione del database
+ * 
+ * @throws ParseException
+ */
 public class DistanceCTTTest {
-	/**
-	 * Classe per la popolazione del database
-	 * 
-	 * @throws ParseException
-	 */
+	
 	@BeforeClass public static void populateDataBaseCTT() {
-		
-		MongoDataManager mongo = new MongoDataManager();
 		
 		List<CTT> listaCTT = new ArrayList<CTT>();
 		
@@ -38,7 +37,7 @@ public class DistanceCTTTest {
 		listaCTT.add(ctt);
 		
 		for(CTT c : listaCTT) {
-			mongo.createCTT(c);
+			MongoDataManagerBean.createCTT(c);
 	    }
 	}
 	
@@ -51,7 +50,7 @@ public class DistanceCTTTest {
 	 */
 	@Test
 	public void test1() throws CTTNotFoundException {
-		assertEquals(3,ccs.CttPiuVicino(4).getNumero());
+		assertEquals(3,ccs.CttPiùVicino(4).getNumero());
 	}
 	
 	/**Test 2
@@ -61,7 +60,7 @@ public class DistanceCTTTest {
 	 */
 	@Test
 	public void test2() throws CTTNotFoundException {
-		assertEquals(2,ccs.CttPiuVicino(1).getNumero());
+		assertEquals(2,ccs.CttPiùVicino(1).getNumero());
 	}
 	
 	/**Test 3
@@ -71,7 +70,7 @@ public class DistanceCTTTest {
 	 */
 	@Test
 	public void test3() throws CTTNotFoundException {
-		assertEquals(3,ccs.CttPiuVicino(2).getNumero());
+		assertEquals(3,ccs.CttPiùVicino(2).getNumero());
 	}
 	
 	/**Test 4
@@ -81,7 +80,7 @@ public class DistanceCTTTest {
 	 */
 	@Test
 	public void test4() throws CTTNotFoundException {
-		assertEquals(4,ccs.CttPiuVicino(3).getNumero());
+		assertEquals(4,ccs.CttPiùVicino(3).getNumero());
 	}
 
 	/**
@@ -89,8 +88,7 @@ public class DistanceCTTTest {
 	 * 
 	 */
 	@AfterClass public static void dropDataBaseCTT() {
-		MongoDataManager mm = new MongoDataManager();
-		mm.dropDB();
+		MongoDataManagerBean.dropDB();
 	}
 	
 }

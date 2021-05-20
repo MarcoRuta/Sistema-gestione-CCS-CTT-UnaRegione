@@ -63,6 +63,7 @@
     var obj;
     var token = sessionStorage.getItem("token");
     var ruolo = sessionStorage.getItem("ruolo");
+    var res;
     
     function start() {
     	verificoToken();
@@ -83,9 +84,11 @@
         
         xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200 ) {
-                        document.getElementById("result").innerHTML = this.response;
+                    	res = this.response;
+                        //document.getElementById("result").innerHTML = this.response;
                  	}else if(this.readyState == 4 && this.status != 200 ) {
-                 	   	document.getElementById("result").innerHTML = this.response;
+                 		res = this.response;
+                 	   	//document.getElementById("result").innerHTML = this.response;
                  	    }
         };
 
@@ -104,7 +107,7 @@
     };
     
     function reloadPage() {
-        alert(document.getElementById("result").textContent);
+        alert(res);
         location.reload();
     }
     

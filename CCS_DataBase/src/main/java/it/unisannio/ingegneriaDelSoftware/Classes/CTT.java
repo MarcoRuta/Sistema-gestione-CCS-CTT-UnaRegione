@@ -2,15 +2,54 @@ package it.unisannio.ingegneriaDelSoftware.Classes;
 
 import java.io.PrintStream;
 import java.util.Objects;
+
+import org.bson.codecs.pojo.annotations.BsonCreator;
+import org.bson.codecs.pojo.annotations.BsonProperty;
+
 import java.lang.Math;
 
 public class CTT{
 	
+	@BsonProperty(useDiscriminator = true)
 	private final Integer numero;
-	private String denominazione;
+	@BsonProperty(useDiscriminator = true)
+	private final String denominazione;
+	@BsonProperty(useDiscriminator = true)
 	private final String telefono;
-	private final String e_mail;
+	@BsonProperty(useDiscriminator = true)
+	private final String email;
+	@BsonProperty(useDiscriminator = true)
 	private final CTTPosition posizione;
+	
+
+	/**
+	 * Metodo costruttore di CTT
+	 * 
+	 * @param numero  l'identificativo del CTT
+	 * @param denominazione  il nome del CTT
+	 * @param provincia la provincia in cui è situato il CTT
+	 * @param città la città in cui è situato il CTT
+	 * @param indirizzo l'indirizzo del CTT
+	 * @param telefono il numero di telefono del CTT
+	 * @param e_mail l'email ufficiale del CTT
+	 * @param latitudine
+	 * @param longitudine
+	 * 
+	 * */
+	public CTT(Integer numero, String denominazione, String provincia, String città, String telefono, String indirizzo, String email, double latitudine, double longitudine) {
+		assert numero != null: "Il numero del CTT non può essere null";
+		assert denominazione != null: "La denominazione non può essere null";
+		assert telefono != null: "il telefono non può essere null";
+		assert email != null: "l'e_mail non può essere null";
+		
+		this.posizione = new CTTPosition(provincia,città,indirizzo,latitudine,longitudine);
+		
+		this.numero = numero;
+		this.denominazione = denominazione;
+		this.telefono = telefono;
+		this.email = email;
+	
+	}
 	
 	
 	/**
@@ -18,28 +57,29 @@ public class CTT{
 	 * 
 	 * @param numero  l'identificativo del CTT
 	 * @param denominazione  il nome del CTT
-	 * @param provincia la provincia in cui è  situato il CTT
-	 * @param citta la citta in cui è situato il CTT
-	 * @param indirizzo l'indirizzo del CTT
 	 * @param telefono il numero di telefono del CTT
 	 * @param e_mail l'email ufficiale del CTT
-	 * 
+	 * @param latitudine
+	 * @param longitudine
 	 * */
-	public CTT(Integer numero, String denominazione, String provincia, String citta, String telefono, String indirizzo, String e_mail, double latitudine, double longitudine) {
-		assert numero != null: "Il numero del CTT non puo essere null";
-		assert denominazione != null: "La denominazione non puo essere null";
-		assert telefono != null: "il telefono non puo essere null";
-		assert e_mail != null: "l'e_mail non puo essere null";
-		
-		this.posizione = new CTTPosition(provincia,citta,indirizzo,latitudine,longitudine);
+	@BsonCreator
+	public CTT(@BsonProperty("numero")Integer numero, 
+			@BsonProperty("denominazione")String denominazione, 
+			@BsonProperty("telefono")String telefono, 
+			@BsonProperty("email")String email, 
+			@BsonProperty("posizione")CTTPosition posizione) {
+		assert numero != null: "Il numero del CTT non può essere null";
+		assert denominazione != null: "La denominazione non può essere null";
+		assert telefono != null: "il telefono non può essere null";
+		assert email != null: "l'e_mail non può essere null";
 		
 		this.numero = numero;
 		this.denominazione = denominazione;
 		this.telefono = telefono;
-		this.e_mail = e_mail;
-	
+		this.email = email;
+		this.posizione = posizione;
 	}
-
+	
 
 	/**
 	 * Metodo che stampa le informazioni di un CTT
@@ -52,10 +92,11 @@ public class CTT{
 		ps.println("Numero: "+ this.numero);
 		ps.println("Denominazione: "+ this.denominazione);
 		ps.println("Telefono: "+ this.telefono);
-		ps.println("e-mail: "+ this.e_mail);
+		ps.println("email: "+ this.email);
 		this.getPosizione().print(ps);
 	}
 
+	
 	/**
 	 * Metodo che verifica l'uguaglianza tra due CTT
 	 * 
@@ -70,6 +111,7 @@ public class CTT{
 		return numero.equals(ctt.numero);
 	}
 
+	
 	/**
 	 * Metodo che calcola l'hashcode di un CTT
 	 * 
@@ -81,6 +123,7 @@ public class CTT{
 		return Objects.hash(numero);
 	}
 
+	
 	/**
 	 * Metodo che concatena in un'unica stringa le informazioni di un CTT
 	 *  * 
@@ -93,12 +136,13 @@ public class CTT{
 				"numero=" + numero +
 				", denominazione=" + denominazione +
 				", telefono=" + telefono +
-				", e_mail=" + e_mail +
-				posizione.toString() +
+				", email=" + email +
+				", "+posizione.toString() +
 				'}';
 	}
 	
-   /**
+	
+	/*
 	 * Metodo che calcola la distanza tra due punti applicando la formula dell'emisenoverso
 	 * 
 	 * @param CTT Il ctt da cui voglio calcolare la distanza rispetto a quello attuale
@@ -117,6 +161,7 @@ public class CTT{
 		return distanza;
 	}
 
+	
 	/**
 	 * Metodo che restituisce l'identificativo del CTT
 	 * 
@@ -126,6 +171,7 @@ public class CTT{
 	public int getNumero() {
 		return numero;
 	}
+	
 	
 	/**
 	 * Metodo che restituisce la denominazione del CTT
@@ -148,6 +194,7 @@ public class CTT{
 		return telefono;
 	}
 	
+	
 	/**
 	 * Metodo che restituisce l'email del CTT
 	 * 
@@ -155,8 +202,9 @@ public class CTT{
 	 *
 	 */
 	public String getEmail() {
-		return e_mail;
+		return email;
 	}
+	
 	
 	/**
 	 * Metodo che restituisce l'ubicazione del CTT

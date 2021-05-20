@@ -10,7 +10,7 @@ public class Constants {
 	public static final String ELEMENT_NUMERO = "numero";
 	public static final String ELEMENT_DENOMINAZIONE = "denominazione";
 	public static final String ELEMENT_PROVINCIA = "provincia";
-	public static final String ELEMENT_CITTA = "città";
+	public static final String ELEMENT_CITTA = "citta";
 	public static final String ELEMENT_INDIRIZZO = "indirizzo";
 	public static final String ELEMENT_TELEFONO = "telefono";
 	public static final String ELEMENT_EMAIL = "e_mail";

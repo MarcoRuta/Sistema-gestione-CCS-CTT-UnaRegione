@@ -2,9 +2,8 @@ package it.unisannio.ingegneriaDelSoftware.Filtri;
 
 import it.unisannio.ingegneriaDelSoftware.Annotazioni.Secured;
 import it.unisannio.ingegneriaDelSoftware.Classes.Token;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManagerBean;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.DipendenteNotFoundException;
-import it.unisannio.ingegneriaDelSoftware.Interfaces.DataManager;
 import javax.annotation.Priority;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
@@ -30,6 +29,7 @@ import java.util.*;
 @Secured
 @Priority(Priorities.AUTHENTICATION)
 public class FiltroDiAutentificazione implements ContainerRequestFilter {
+	
 	/**
      * Instead of injecting values directly into field the value can be injected into the setter method which will initialize the field.
      * This injection can be used only with @Context annotation.
@@ -53,14 +53,13 @@ public class FiltroDiAutentificazione implements ContainerRequestFilter {
 
         //recupero username e password usando il token
         try {
-            DataManager dataManager = new MongoDataManager();
             String usernamePassword = Token.getDipendenteByToken(token);
             StringTokenizer aTokenizer = new StringTokenizer(usernamePassword);
             String username = aTokenizer.nextToken(":");
             String password = aTokenizer.nextToken();
-            String ruolo = dataManager.getDipendente(username,password).getRuolo().toString();
+            String ruolo = MongoDataManagerBean.getDipendente(username,password).getRuolo().toString();
 
-            //savrascrivo il securityContext
+            //sovrascrivo il securityContext
             /**The SecurityContext is a class of Spring Security.
              * The SecurityContext is used to store the details of the currently authenticated user,
              * also known as a principle*/
@@ -107,6 +106,5 @@ public class FiltroDiAutentificazione implements ContainerRequestFilter {
         requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
                 .entity(message).build());
     }
-
 
 }

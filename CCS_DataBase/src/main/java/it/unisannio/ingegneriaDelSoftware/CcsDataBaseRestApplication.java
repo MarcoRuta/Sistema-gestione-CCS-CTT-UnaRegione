@@ -13,16 +13,18 @@ import javax.ws.rs.ApplicationPath;
 public class CcsDataBaseRestApplication extends ResourceConfig {
 
 	public CcsDataBaseRestApplication() {
-		//Configurazione
+		/**####Configurazione#####*/
 				
 		//Filtro per Authentificazione
 		register (FiltroDiAutentificazione.class);
 		
+		//EndPoint per il login
+		register(EndPointRestAutentificazione.class);
+		
 		//Endpoint del Magazziniere
 		register(EndPointRestAmministratoreCCS.class);
 
-		//EndPoint per il login
-		register(EndPointRestAutentificazione.class);
+	
 	}
 
 	public static void main(String[] args) {

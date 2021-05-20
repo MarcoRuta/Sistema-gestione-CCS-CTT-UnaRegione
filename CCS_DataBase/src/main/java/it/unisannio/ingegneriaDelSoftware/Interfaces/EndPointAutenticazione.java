@@ -13,12 +13,15 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import it.unisannio.ingegneriaDelSoftware.Exceptions.DipendenteNotFoundException;
+
 public interface EndPointAutenticazione {
 
 	/**
      * Login è l'operazione con la quale un generico dipendente del ctt accede al sistema
      *
      * @return il ruolo con il quale si è registrati
+	 * @throws DipendenteNotFoundException 
      * 
      * 
      */
@@ -26,7 +29,7 @@ public interface EndPointAutenticazione {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(@FormParam("username") String username,
-                          @FormParam("password") String password);
+                          @FormParam("password") String password) throws DipendenteNotFoundException;
 	
 	/**
      * Metodo che effettua il logout, esso elimina il token dell'utente dal server cosi che esso non sia piu autenticato
