@@ -13,10 +13,10 @@ import org.junit.Test;
 import it.unisannio.ingegneriaDelSoftware.Classes.DatiSacca;
 import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManagerBean;
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.CTT;
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointRestMagazziniereCTT;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaNotFoundException;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 
 public class AlertControlScadenzaTest {
 	EndPointRestMagazziniereCTT magazz = new EndPointRestMagazziniereCTT();
@@ -24,7 +24,7 @@ public class AlertControlScadenzaTest {
 	
 	@BeforeClass public static void populateDBSacche() throws SaccaNotFoundException {
 		
-	    	MongoDataManager mm = new MongoDataManager();
+	    	
 	    	List<Sacca> listaSacche = new ArrayList<Sacca>();
 	    	List<DatiSacca> listaDatiSacche = new ArrayList<DatiSacca>();
 	    	
@@ -40,7 +40,7 @@ public class AlertControlScadenzaTest {
 	    	Sacca sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
 	    	listaSacche.add(sacca);
 	    	        
-	    	LocalDate localDataArrivo = LocalDate.of(2020,07,15);
+	    	LocalDate localDataArrivo = LocalDate.of(2021,07,15);
 	    	String enteDonatore = "AVIS - Benevento";
 	    	DatiSacca datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
 	    	listaDatiSacche.add(datisacca); 
@@ -88,7 +88,7 @@ public class AlertControlScadenzaTest {
 	    	//La sacca scaduta
 	    	 gs = GruppoSanguigno.Ap;
 	    	 localDataProduzione = LocalDate.of(2018,06,10);
-	    	 localDataScadenza = LocalDate.of(2020,06,10);
+	    	 localDataScadenza = LocalDate.of(2023,06,10);
 	    	 prenotato = false;
 	    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
 	    	 listaSacche.add(sacca);
@@ -158,7 +158,7 @@ public class AlertControlScadenzaTest {
 	    	//La sacca scaduta
 	    	 gs = GruppoSanguigno.Am;
 	    	 localDataProduzione = LocalDate.of(2018,06,10);
-	    	 localDataScadenza = LocalDate.of(2020,06,10);
+	    	 localDataScadenza = LocalDate.of(2023,06,10);
 	    	 prenotato = false;
 	    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
 	    	 listaSacche.add(sacca);
@@ -228,7 +228,7 @@ public class AlertControlScadenzaTest {
 	    	//La sacca scaduta
 	    	 gs = GruppoSanguigno.Bp;
 	    	 localDataProduzione = LocalDate.of(2018,06,10);
-	    	 localDataScadenza = LocalDate.of(2020,06,10);
+	    	 localDataScadenza = LocalDate.of(2023,06,10);
 	    	 prenotato = false;
 	    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
 	    	 listaSacche.add(sacca);
@@ -299,7 +299,7 @@ public class AlertControlScadenzaTest {
 	    	//La sacca scaduta
 	    	 gs = GruppoSanguigno.Bm;
 	    	 localDataProduzione = LocalDate.of(2018,06,10);
-	    	 localDataScadenza = LocalDate.of(2020,06,10);
+	    	 localDataScadenza = LocalDate.of(2022,06,10);
 	    	 prenotato = false;
 	    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
 	    	 listaSacche.add(sacca);
@@ -369,7 +369,7 @@ public class AlertControlScadenzaTest {
 	    	//La sacca scaduta
 	    	 gs = GruppoSanguigno.ABp;
 	    	 localDataProduzione = LocalDate.of(2018,06,10);
-	    	 localDataScadenza = LocalDate.of(2020,06,10);
+	    	 localDataScadenza = LocalDate.of(2023,06,10);
 	    	 prenotato = false;
 	    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
 	    	 listaSacche.add(sacca);
@@ -439,7 +439,7 @@ public class AlertControlScadenzaTest {
 	    	//La sacca scaduta
 	    	 gs = GruppoSanguigno.ABm;
 	    	 localDataProduzione = LocalDate.of(2018,06,10);
-	    	 localDataScadenza = LocalDate.of(2020,06,10);
+	    	 localDataScadenza = LocalDate.of(2022,06,10);
 	    	 prenotato = false;
 	    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
 	    	 listaSacche.add(sacca);
@@ -509,7 +509,7 @@ public class AlertControlScadenzaTest {
 	    	//La sacca scaduta
 	    	 gs = GruppoSanguigno.ZEROp;
 	    	 localDataProduzione = LocalDate.of(2018,06,10);
-	    	 localDataScadenza = LocalDate.of(2020,06,10);
+	    	 localDataScadenza = LocalDate.of(2023,06,10);
 	    	 prenotato = false;
 	    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
 	    	 listaSacche.add(sacca);
@@ -579,7 +579,7 @@ public class AlertControlScadenzaTest {
 	    	//La sacca scaduta
 	    	 gs = GruppoSanguigno.ZEROm;
 	    	 localDataProduzione = LocalDate.of(2018,06,10);
-	    	 localDataScadenza = LocalDate.of(2020,06,10);
+	    	 localDataScadenza = LocalDate.of(2022,06,10);
 	    	 prenotato = false;
 	    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
 	    	 listaSacche.add(sacca);
@@ -591,11 +591,11 @@ public class AlertControlScadenzaTest {
 
 	    	
 	    	for(Sacca sac : listaSacche) {
-	        	mm.createSacca(sac);
+	    		MongoDataManagerBean.createSacca(sac);
 	        }
 	    	
 	    	for(DatiSacca datisac : listaDatiSacche) {
-	        	mm.createDatiSacca(datisac);
+	    		MongoDataManagerBean.createDatiSacca(datisac);
 	        }
 		}
 	
@@ -610,7 +610,7 @@ public class AlertControlScadenzaTest {
 	}
 	
 	@AfterClass public static void dropDBSacche() {
-		MongoDataManager mm = new MongoDataManager();
-		mm.dropDB();
+		
+		MongoDataManagerBean.dropDB();
 	}
 }

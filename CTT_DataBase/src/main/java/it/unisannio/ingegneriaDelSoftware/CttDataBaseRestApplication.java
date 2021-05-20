@@ -31,7 +31,6 @@ public class CttDataBaseRestApplication extends ResourceConfig {
 		register(EndPointRestMagazziniereCTT.class);
 		//EndPoint per il login
 		register(EndPointRestAutentificazione.class);
-		register(EndPointLogout.class);
 		//Endpoint Amministratore
 		register(EndPointRestAmministratoreCTT.class);
 		//Endpoint Operatore

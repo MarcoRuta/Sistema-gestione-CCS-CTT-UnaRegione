@@ -24,15 +24,15 @@ import it.unisannio.ingegneriaDelSoftware.Classes.DatiSacca;
 import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
 import it.unisannio.ingegneriaDelSoftware.Classes.Seriale;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManagerBean;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaNotFoundException;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
+
 
 
 public class ReportStatisticoSaccheTest {
 	static NewCookie cookie = null;	
 	@BeforeClass public static void populateDBSacche() throws SaccaNotFoundException {
 		
-		MongoDataManager mm = new MongoDataManager();
     	List<Sacca> listaSacche = new ArrayList<Sacca>();
     	List<DatiSacca> listaDatiSacche = new ArrayList<DatiSacca>();
     	
@@ -1003,11 +1003,11 @@ public class ReportStatisticoSaccheTest {
     	                                   
     	    	
     	for(Sacca sac : listaSacche) {
-        	mm.createSacca(sac);
+    		MongoDataManagerBean.createSacca(sac);
         }
     	
     	for(DatiSacca datisac : listaDatiSacche) {
-        	mm.createDatiSacca(datisac);
+    		MongoDataManagerBean.createDatiSacca(datisac);
         }
     	
     	Client client = ClientBuilder.newClient();
@@ -1136,7 +1136,6 @@ public class ReportStatisticoSaccheTest {
 
 
 	@AfterClass public static void dropDBSacche() {
-		MongoDataManager mm = new MongoDataManager();
-		mm.dropDB();
+		MongoDataManagerBean.dropDB();
 	}
 }

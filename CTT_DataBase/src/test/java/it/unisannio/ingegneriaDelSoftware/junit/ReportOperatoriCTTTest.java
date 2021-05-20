@@ -27,14 +27,13 @@ import org.junit.Test;
 import it.unisannio.ingegneriaDelSoftware.Classes.Cdf;
 import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.RuoloDipendente;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManagerBean;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 import it.unisannio.ingegneriaDelSoftware.Util.DateUtil;
 
 public class ReportOperatoriCTTTest {
 	static NewCookie cookie = null;		
 	@BeforeClass public static void populateDBDipendenti() throws ParseException, DipendenteNotFoundException {
-		MongoDataManager mm = new MongoDataManager();
 		List<Dipendente> listaDipendenti = new ArrayList<Dipendente>();
 	        
 	 	Cdf cdf = Cdf.getCDF("122hfotndj13ht5f");
@@ -102,7 +101,7 @@ public class ReportOperatoriCTTTest {
       
       
         for(Dipendente dip : listaDipendenti) {
-        	mm.addDipendente(dip);
+        	MongoDataManagerBean.createDipendente(dip);
         }  
         
         Client client = ClientBuilder.newClient();
@@ -173,7 +172,6 @@ public class ReportOperatoriCTTTest {
 	
 	
 	@AfterClass public static void dropDBDipendenti() {
-		MongoDataManager mm = new MongoDataManager();
-		mm.dropDB();
+		MongoDataManagerBean.dropDB();
 	}
 }

@@ -3,694 +3,83 @@ package it.unisannio.ingegneriaDelSoftware.junit;
 import static org.junit.Assert.assertEquals;
 
 import java.text.ParseException;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Form;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.NewCookie;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
 import it.unisannio.ingegneriaDelSoftware.Classes.Cdf;
-import it.unisannio.ingegneriaDelSoftware.Classes.DatiSacca;
 import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.Classes.RuoloDipendente;
-import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
+import it.unisannio.ingegneriaDelSoftware.Classes.User;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 import it.unisannio.ingegneriaDelSoftware.Util.DateUtil;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManagerBean;
 
 public class AggiuntaSaccaMagazzinoTest {
-	static NewCookie cookie = null;
+	static String token = null;
+	Client client = ClientBuilder.newClient();
+	WebTarget aggiuntaSaccaMagazz = client.target("http://127.0.0.1:8080/rest/magazziniere/aggiuntaSacca");
+
+
+	
 	@BeforeClass public static void populateDBSacche() throws SaccaNotFoundException, ParseException {
 		
-    	MongoDataManager mm = new MongoDataManager();
-    	List<Sacca> listaSacche = new ArrayList<Sacca>();
-    	List<DatiSacca> listaDatiSacche = new ArrayList<DatiSacca>();
     	
-   	  	
-    	//Caricamento sul sistema di cinque Sacche di tipo A+, 4 sacche sono arrivate nel magazzino tra il 15-07-2020 e il 02-05-2021 e hanno data di scadenza lontana (2022)
-    	//Una Sacca è arrivata nel 2018 ed è già scaduta
-    	//Tutte le Sacche sono non prenotate e quindi affidabili ad un ente esterno 
-
-    	//Prima sacca 
-    	GruppoSanguigno gs = GruppoSanguigno.Ap;
-    	LocalDate localDataProduzione = LocalDate.of(2020,04,10);
-    	LocalDate localDataScadenza = LocalDate.of(2022,04,10);
-    	Boolean prenotato = false;
-    	Sacca sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
-    	listaSacche.add(sacca);
-    	        
-    	LocalDate localDataArrivo = LocalDate.of(2020,07,15);
-    	String enteDonatore = "AVIS - Benevento";
-    	DatiSacca datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
-    	listaDatiSacche.add(datisacca); 
-
-    	//Seconda sacca 
-    	 gs = GruppoSanguigno.Ap;
-    	 localDataProduzione = LocalDate.of(2020,05,10);
-    	 localDataScadenza = LocalDate.of(2022,05,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
-    	 listaSacche.add(sacca);
-    	        
-    	 localDataArrivo = LocalDate.of(2021,03,9);
-    	 enteDonatore = "AVIS - Avellino";
-    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
-    	 listaDatiSacche.add(datisacca); 
-
-    	//Terza sacca 
-    	 gs = GruppoSanguigno.Ap;
-    	 localDataProduzione = LocalDate.of(2020,06,10);
-    	 localDataScadenza = LocalDate.of(2022,06,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
-    	 listaSacche.add(sacca);
-    	        
-    	 localDataArrivo = LocalDate.of(2021,05,02);
-    	 enteDonatore = "AVIS - Napoli_Centrale";
-    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
-    	 listaDatiSacche.add(datisacca); 
-
-    	//Quarta sacca
-    	 gs = GruppoSanguigno.Ap;
-    	 localDataProduzione = LocalDate.of(2020,07,12);
-    	 localDataScadenza = LocalDate.of(2022,07,12);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
-    	 listaSacche.add(sacca);
-    	        
-    	 localDataArrivo = LocalDate.of(2021,05,02);
-    	 enteDonatore = "AVIS - Napoli_Nord";
-    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
-    	 listaDatiSacche.add(datisacca); 
+   
 
 
-    	//La sacca scaduta
-    	 gs = GruppoSanguigno.Ap;
-    	 localDataProduzione = LocalDate.of(2018,06,10);
-    	 localDataScadenza = LocalDate.of(2020,06,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
-    	 listaSacche.add(sacca);
-    	        
-    	 localDataArrivo = LocalDate.of(2021,05,02);
-    	 enteDonatore = "AVIS - Napoli_Sud";
-    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
-    	 listaDatiSacche.add(datisacca); 
-
-    	//Caricamento sul sistema di cinque Sacche di tipo A-, 4 sacche sono arrivate nel magazzino tra il 15-07-2020 e il 02-05-2021 e hanno data di scadenza lontana
-    	//Una sacca è arrivata nel 2018 ed è già scaduta
-    	//Tutte le Sacche sono non prenotate e quindi affidabili ad un ente esterno 
-
-    	//Prima sacca 
-    	 gs = GruppoSanguigno.Am;
-    	 localDataProduzione = LocalDate.of(2020,04,10);
-    	 localDataScadenza = LocalDate.of(2022,04,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
-    	 listaSacche.add(sacca);
-    	        
-    	 localDataArrivo = LocalDate.of(2020,07,15);
-    	 enteDonatore = "AVIS - Benevento";
-    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
-    	 listaDatiSacche.add(datisacca); 
-
-    	//Seconda sacca 
-    	 gs = GruppoSanguigno.Am;
-    	 localDataProduzione = LocalDate.of(2020,05,10);
-    	 localDataScadenza = LocalDate.of(2022,05,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
-    	 listaSacche.add(sacca);
-    	        
-    	 localDataArrivo = LocalDate.of(2021,03,9);
-    	 enteDonatore = "AVIS - Avellino";
-    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
-    	 listaDatiSacche.add(datisacca); 
-
-    	//Terza sacca 
-    	 gs = GruppoSanguigno.Am;
-    	 localDataProduzione = LocalDate.of(2020,06,10);
-    	 localDataScadenza = LocalDate.of(2022,06,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
-    	 listaSacche.add(sacca);
-    	        
-    	 localDataArrivo = LocalDate.of(2021,05,02);
-    	 enteDonatore = "AVIS - Napoli_Centrale";
-    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
-    	 listaDatiSacche.add(datisacca); 
-
-    	//Quarta sacca
-    	 gs = GruppoSanguigno.Am;
-    	 localDataProduzione = LocalDate.of(2020,07,12);
-    	 localDataScadenza = LocalDate.of(2022,07,12);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
-    	 listaSacche.add(sacca);
-    	        
-    	 localDataArrivo = LocalDate.of(2021,05,02);
-    	 enteDonatore = "AVIS - Napoli_Nord";
-    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
-    	 listaDatiSacche.add(datisacca); 
-
-
-    	//La sacca scaduta
-    	 gs = GruppoSanguigno.Am;
-    	 localDataProduzione = LocalDate.of(2018,06,10);
-    	 localDataScadenza = LocalDate.of(2020,06,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
-    	 listaSacche.add(sacca);
-    	        
-    	 localDataArrivo = LocalDate.of(2021,05,02);
-    	 enteDonatore = "AVIS - Napoli_Sud";
-    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
-    	 listaDatiSacche.add(datisacca); 
-
-    	//Caricamento sul sistema di cinque Sacche di tipo B+, 4 sacche sono arrivate nel magazzino tra il 15-07-2020 e il 02-05-2021 e hanno data di scadenza lontana
-    	//Una sacca è arrivata nel 2018 ed è già scaduta
-    	//Tutte le Sacche sono non prenotate e quindi affidabili ad un ente esterno 
-
-    	//Prima sacca 
-    	 gs = GruppoSanguigno.Bp;
-    	 localDataProduzione = LocalDate.of(2020,04,10);
-    	 localDataScadenza = LocalDate.of(2022,04,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
-    	 listaSacche.add(sacca);
-    	        
-    	 localDataArrivo = LocalDate.of(2020,07,15);
-    	 enteDonatore = "AVIS - Benevento";
-    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
-    	listaDatiSacche.add(datisacca); 
-
-    	//Seconda sacca 
-    	 gs = GruppoSanguigno.Bp;
-    	 localDataProduzione = LocalDate.of(2020,05,10);
-    	 localDataScadenza = LocalDate.of(2022,05,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
-    	 listaSacche.add(sacca);
-    	        
-    	 localDataArrivo = LocalDate.of(2021,03,9);
-    	 enteDonatore = "AVIS - Avellino";
-    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
-    	 listaDatiSacche.add(datisacca); 
-
-    	//Terza sacca 
-    	 gs = GruppoSanguigno.Bp;
-    	 localDataProduzione = LocalDate.of(2020,06,10);
-    	 localDataScadenza = LocalDate.of(2022,06,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
-    	 listaSacche.add(sacca);
-    	        
-    	 localDataArrivo = LocalDate.of(2021,05,02);
-    	 enteDonatore = "AVIS - Napoli_Centrale";
-    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
-    	 listaDatiSacche.add(datisacca); 
-
-    	//Quarta sacca
-    	 gs = GruppoSanguigno.Bp;
-    	 localDataProduzione = LocalDate.of(2020,07,12);
-    	 localDataScadenza = LocalDate.of(2022,07,12);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
-    	 listaSacche.add(sacca);
-    	        
-    	 localDataArrivo = LocalDate.of(2021,05,02);
-    	 enteDonatore = "AVIS - Napoli_Nord";
-    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
-    	 listaDatiSacche.add(datisacca); 
-
-
-    	//La sacca scaduta
-    	 gs = GruppoSanguigno.Bp;
-    	 localDataProduzione = LocalDate.of(2018,06,10);
-    	 localDataScadenza = LocalDate.of(2020,06,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
-    	 listaSacche.add(sacca);
-    	        
-    	 localDataArrivo = LocalDate.of(2021,05,02);
-    	 enteDonatore = "AVIS - Napoli_Sud";
-    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
-    	 listaDatiSacche.add(datisacca); 
-
-
-    	//Caricamento sul sistema di cinque Sacche di tipo B-, 4 sacche sono arrivate nel magazzino tra il 15-07-2020 e il 02-05-2021 e hanno data di scadenza lontana
-    	//Una sacca è arrivata nel 2018 ed è già scaduta
-    	//Tutte le Sacche sono non prenotate e quindi affidabili ad un ente esterno 
-
-    	//Prima sacca 
-    	 gs = GruppoSanguigno.Bm;
-    	 localDataProduzione = LocalDate.of(2020,04,10);
-    	 localDataScadenza = LocalDate.of(2022,04,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
-    	 listaSacche.add(sacca);
-    	        
-    	 localDataArrivo = LocalDate.of(2020,07,15);
-    	 enteDonatore = "AVIS - Benevento";
-    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
-    	 listaDatiSacche.add(datisacca); 
-
-    	//Seconda sacca 
-    	 gs = GruppoSanguigno.Bm;
-    	 localDataProduzione = LocalDate.of(2020,05,10);
-    	 localDataScadenza = LocalDate.of(2022,05,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
-    	 listaSacche.add(sacca);
-    	        
-    	 localDataArrivo = LocalDate.of(2021,03,9);
-    	 enteDonatore = "AVIS - Avellino";
-    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
-    	 listaDatiSacche.add(datisacca); 
-
-    	//Terza sacca 
-    	 gs = GruppoSanguigno.Bm;
-    	 localDataProduzione = LocalDate.of(2020,06,10);
-    	 localDataScadenza = LocalDate.of(2022,06,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
-    	 listaSacche.add(sacca);
-    	        
-    	 localDataArrivo = LocalDate.of(2021,05,02);
-    	 enteDonatore = "AVIS - Napoli_Centrale";
-    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
-    	 listaDatiSacche.add(datisacca); 
-
-    	//Quarta sacca
-    	 gs = GruppoSanguigno.Bm;
-    	 localDataProduzione = LocalDate.of(2020,07,12);
-    	 localDataScadenza = LocalDate.of(2022,07,12);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
-    	 listaSacche.add(sacca);
-    	        
-    	 localDataArrivo = LocalDate.of(2021,05,02);
-    	 enteDonatore = "AVIS - Napoli_Nord";
-    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
-    	 listaDatiSacche.add(datisacca); 
-
-
-    	//La sacca scaduta
-    	 gs = GruppoSanguigno.Bm;
-    	 localDataProduzione = LocalDate.of(2018,06,10);
-    	 localDataScadenza = LocalDate.of(2020,06,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
-    	 listaSacche.add(sacca);
-    	        
-    	 localDataArrivo = LocalDate.of(2021,05,02);
-    	 enteDonatore = "AVIS - Napoli_Sud";
-    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
-    	 listaDatiSacche.add(datisacca); 
-
-    	//Caricamento sul sistema di cinque Sacche di tipo AB+, 4 sacche sono arrivate nel magazzino tra il 15-07-2020 e il 02-05-2021 e hanno data di scadenza lontana
-    	//Una sacca è arrivata nel 2018 ed è già scaduta
-    	//Tutte le Sacche sono non prenotate e quindi affidabili ad un ente esterno 
-
-    	//Prima sacca 
-    	 gs = GruppoSanguigno.ABp;
-    	 localDataProduzione = LocalDate.of(2020,04,10);
-    	 localDataScadenza = LocalDate.of(2022,04,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
-    	 listaSacche.add(sacca);
-    	        
-    	 localDataArrivo = LocalDate.of(2020,07,15);
-    	 enteDonatore = "AVIS - Benevento";
-    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
-    	listaDatiSacche.add(datisacca); 
-
-    	//Seconda sacca 
-    	 gs = GruppoSanguigno.ABp;
-    	 localDataProduzione = LocalDate.of(2020,05,10);
-    	 localDataScadenza = LocalDate.of(2022,05,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
-    	 listaSacche.add(sacca);
-    	        
-    	 localDataArrivo = LocalDate.of(2021,03,9);
-    	 enteDonatore = "AVIS - Avellino";
-    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
-    	 listaDatiSacche.add(datisacca); 
-
-    	//Terza sacca 
-    	 gs = GruppoSanguigno.ABp;
-    	 localDataProduzione = LocalDate.of(2020,06,10);
-    	 localDataScadenza = LocalDate.of(2022,06,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
-    	 listaSacche.add(sacca);
-    	        
-    	 localDataArrivo = LocalDate.of(2021,05,02);
-    	 enteDonatore = "AVIS - Napoli_Centrale";
-    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
-    	 listaDatiSacche.add(datisacca); 
-
-    	//Quarta sacca
-    	 gs = GruppoSanguigno.ABp;
-    	 localDataProduzione = LocalDate.of(2020,07,12);
-    	 localDataScadenza = LocalDate.of(2022,07,12);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
-    	 listaSacche.add(sacca);
-    	        
-    	 localDataArrivo = LocalDate.of(2021,05,02);
-    	 enteDonatore = "AVIS - Napoli_Nord";
-    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
-    	 listaDatiSacche.add(datisacca); 
-
-
-    	//La sacca scaduta
-    	 gs = GruppoSanguigno.ABp;
-    	 localDataProduzione = LocalDate.of(2018,06,10);
-    	 localDataScadenza = LocalDate.of(2020,06,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
-    	 listaSacche.add(sacca);
-    	        
-    	 localDataArrivo = LocalDate.of(2021,05,02);
-    	 enteDonatore = "AVIS - Napoli_Sud";
-    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
-    	 listaDatiSacche.add(datisacca); 
-
-    	//Caricamento sul sistema di cinque Sacche di tipo AB-, 4 sacche sono arrivate nel magazzino tra il 15-07-2020 e il 02-05-2021 e hanno data di scadenza lontana
-    	//Una sacca è arrivata nel 2018 ed è già scaduta
-    	//Tutte le Sacche sono non prenotate e quindi affidabili ad un ente esterno 
-
-    	//Prima sacca 
-    	 gs = GruppoSanguigno.ABm;
-    	 localDataProduzione = LocalDate.of(2020,04,10);
-    	 localDataScadenza = LocalDate.of(2022,04,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
-    	 listaSacche.add(sacca);
-    	        
-    	 localDataArrivo = LocalDate.of(2020,07,15);
-    	 enteDonatore = "AVIS - Benevento";
-    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
-    	 listaDatiSacche.add(datisacca); 
-
-    	//Seconda sacca 
-    	 gs = GruppoSanguigno.ABm;
-    	 localDataProduzione = LocalDate.of(2020,05,10);
-    	 localDataScadenza = LocalDate.of(2022,05,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
-    	 listaSacche.add(sacca);
-    	        
-    	 localDataArrivo = LocalDate.of(2021,03,9);
-    	 enteDonatore = "AVIS - Avellino";
-    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
-    	 listaDatiSacche.add(datisacca); 
-
-    	//Terza sacca 
-    	 gs = GruppoSanguigno.ABm;
-    	 localDataProduzione = LocalDate.of(2020,06,10);
-    	 localDataScadenza = LocalDate.of(2022,06,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
-    	 listaSacche.add(sacca);
-    	        
-    	 localDataArrivo = LocalDate.of(2021,05,02);
-    	 enteDonatore = "AVIS - Napoli_Centrale";
-    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
-    	 listaDatiSacche.add(datisacca); 
-
-    	//Quarta sacca
-    	 gs = GruppoSanguigno.ABm;
-    	 localDataProduzione = LocalDate.of(2020,07,12);
-    	 localDataScadenza = LocalDate.of(2022,07,12);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
-    	 listaSacche.add(sacca);
-    	        
-    	 localDataArrivo = LocalDate.of(2021,05,02);
-    	 enteDonatore = "AVIS - Napoli_Nord";
-    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
-    	 listaDatiSacche.add(datisacca); 
-
-
-    	//La sacca scaduta
-    	 gs = GruppoSanguigno.ABm;
-    	 localDataProduzione = LocalDate.of(2018,06,10);
-    	 localDataScadenza = LocalDate.of(2020,06,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
-    	 listaSacche.add(sacca);
-    	        
-    	 localDataArrivo = LocalDate.of(2021,05,02);
-    	 enteDonatore = "AVIS - Napoli_Sud";
-    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
-    	 listaDatiSacche.add(datisacca); 
-
-    	//Caricamento sul sistema di cinque Sacche di tipo ZERO+, 4 sacche sono arrivate nel magazzino tra il 15-07-2020 e il 02-05-2021 e hanno data di scadenza lontana
-    	//Una sacca è arrivata nel 2018 ed è già scaduta
-    	//Tutte le Sacche sono non prenotate e quindi affidabili ad un ente esterno 
-
-    	//Prima sacca 
-    	 gs = GruppoSanguigno.ZEROp;
-    	 localDataProduzione = LocalDate.of(2020,04,10);
-    	 localDataScadenza = LocalDate.of(2022,04,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
-    	 listaSacche.add(sacca);
-    	        
-    	 localDataArrivo = LocalDate.of(2020,07,15);
-    	 enteDonatore = "AVIS - Benevento";
-    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
-    	 listaDatiSacche.add(datisacca); 
-
-    	//Seconda sacca 
-    	 gs = GruppoSanguigno.ZEROp;
-    	 localDataProduzione = LocalDate.of(2020,05,10);
-    	 localDataScadenza = LocalDate.of(2022,05,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
-    	 listaSacche.add(sacca);
-    	        
-    	 localDataArrivo = LocalDate.of(2021,03,9);
-    	 enteDonatore = "AVIS - Avellino";
-    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
-    	 listaDatiSacche.add(datisacca); 
-
-    	//Terza sacca 
-    	 gs = GruppoSanguigno.ZEROp;
-    	 localDataProduzione = LocalDate.of(2020,06,10);
-    	 localDataScadenza = LocalDate.of(2022,06,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
-    	 listaSacche.add(sacca);
-    	        
-    	 localDataArrivo = LocalDate.of(2021,05,02);
-    	 enteDonatore = "AVIS - Napoli_Centrale";
-    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
-    	 listaDatiSacche.add(datisacca); 
-
-    	//Quarta sacca
-    	 gs = GruppoSanguigno.ZEROp;
-    	 localDataProduzione = LocalDate.of(2020,07,12);
-    	 localDataScadenza = LocalDate.of(2022,07,12);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
-    	 listaSacche.add(sacca);
-    	        
-    	 localDataArrivo = LocalDate.of(2021,05,02);
-    	 enteDonatore = "AVIS - Napoli_Nord";
-    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
-    	 listaDatiSacche.add(datisacca); 
-
-
-    	//La sacca scaduta
-    	 gs = GruppoSanguigno.ZEROp;
-    	 localDataProduzione = LocalDate.of(2018,06,10);
-    	 localDataScadenza = LocalDate.of(2020,06,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
-    	 listaSacche.add(sacca);
-    	        
-    	 localDataArrivo = LocalDate.of(2021,05,02);
-    	 enteDonatore = "AVIS - Napoli_Sud";
-    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
-    	 listaDatiSacche.add(datisacca); 
-
-    	//Caricamento sul sistema di cinque Sacche di tipo ZERO-, 4 sacche sono arrivate nel magazzino tra il 15-07-2020 e il 02-05-2021 e hanno data di scadenza lontana
-    	//Una sacca è arrivata nel 2018 ed è già scaduta
-    	//Tutte le Sacche sono non prenotate e quindi affidabili ad un ente esterno 
-
-    	//Prima sacca 
-    	 gs = GruppoSanguigno.ZEROm;
-    	 localDataProduzione = LocalDate.of(2020,04,10);
-    	 localDataScadenza = LocalDate.of(2022,04,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
-    	 listaSacche.add(sacca);
-    	        
-    	 localDataArrivo = LocalDate.of(2020,07,15);
-    	 enteDonatore = "AVIS - Benevento";
-    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
-    	 listaDatiSacche.add(datisacca); 
-
-    	//Seconda sacca 
-    	 gs = GruppoSanguigno.ZEROm;
-    	 localDataProduzione = LocalDate.of(2020,05,10);
-    	 localDataScadenza = LocalDate.of(2022,05,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
-    	 listaSacche.add(sacca);
-    	        
-    	 localDataArrivo = LocalDate.of(2021,03,9);
-    	 enteDonatore = "AVIS - Avellino";
-    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
-    	 listaDatiSacche.add(datisacca); 
-
-    	//Terza sacca 
-    	 gs = GruppoSanguigno.ZEROm;
-    	 localDataProduzione = LocalDate.of(2020,06,10);
-    	 localDataScadenza = LocalDate.of(2022,06,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
-    	 listaSacche.add(sacca);
-    	        
-    	 localDataArrivo = LocalDate.of(2021,05,02);
-    	 enteDonatore = "AVIS - Napoli_Centrale";
-    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
-    	 listaDatiSacche.add(datisacca); 
-
-    	//Quarta sacca
-    	 gs = GruppoSanguigno.ZEROm;
-    	 localDataProduzione = LocalDate.of(2020,07,12);
-    	 localDataScadenza = LocalDate.of(2022,07,12);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
-    	 listaSacche.add(sacca);
-    	        
-    	 localDataArrivo = LocalDate.of(2021,05,02);
-    	 enteDonatore = "AVIS - Napoli_Nord";
-    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
-    	 listaDatiSacche.add(datisacca); 
-
-
-    	//La sacca scaduta
-    	 gs = GruppoSanguigno.ZEROm;
-    	 localDataProduzione = LocalDate.of(2018,06,10);
-    	 localDataScadenza = LocalDate.of(2020,06,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
-    	 listaSacche.add(sacca);
-    	        
-    	 localDataArrivo = LocalDate.of(2021,05,02);
-    	 enteDonatore = "AVIS - Napoli_Sud";
-    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
-    	 listaDatiSacche.add(datisacca); 
-
+        Dipendente d = new Dipendente(Cdf.getCDF("999hpoindj13ht9f"), "Mario", "Magazz", DateUtil.convertDateToLocalDate(Constants.sdf.parse("10-07-1950")), RuoloDipendente.MagazziniereCTT, "admin", "admin");
+        MongoDataManagerBean.createDipendente(d);
     	
-    	for(Sacca sac : listaSacche) {
-        	mm.createSacca(sac);
-        }
-    	
-    	for(DatiSacca datisac : listaDatiSacche) {
-        	mm.createDatiSacca(datisac);
-        }
-
-        Dipendente d = new Dipendente(Cdf.getCDF("999hpoindj13ht9f"), "Mario", "Magazz", DateUtil.convertDateToLocalDate(Constants.sdf.parse("10-07-1950")), RuoloDipendente.MagazziniereCTT, "username 999", "999");
-        mm.addDipendente(d);
-    	
-    	Client client = ClientBuilder.newClient();
+        Client client = ClientBuilder.newClient();
 		WebTarget login = client.target("http://127.0.0.1:8080/rest/autentificazione");
 		Form form1 = new Form();
-		form1.param("username", "username 999");
-		form1.param("password", "999");
+		form1.param("username", "admin");
+		form1.param("password", "admin");
 		
 		Response responselogin = login.request().post(Entity.form(form1));
-		cookie = responselogin.getCookies().get("access_token");  	
+		User user = responselogin.readEntity(User.class);
+		token = user.getToken();
 	}
 	
+
 	
-	/**
-	 * Test che dovrebbe restituire una lista di Sacche con 21 elementi
-	 * @throws ParseException
-	 * @throws SaccaNotFoundException 
-	 */
 	@Test public void test1() {
-		Client client = ClientBuilder.newClient();
-		WebTarget aggiuntaSaccaMagazz = client.target("http://127.0.0.1:8080/rest/magazziniere/aggiuntaSacca");
-		Invocation.Builder invocationBuilder = aggiuntaSaccaMagazz.request(MediaType.TEXT_PLAIN);
-		invocationBuilder.cookie(cookie);
 		Form form1 = new Form();
 		form1.param("gruppo_sanguigno", GruppoSanguigno.Ap.toString());
-		form1.param("data_scadenza", "2018-11-10");
+		form1.param("data_scadenza", "2023-11-10");
 		form1.param("data_produzione", "2020-11-12");
-		form1.param("ente_donatore", "Er donatore");
+		form1.param("ente_donatore", "DonatoreProva1");
 
-		Response responseaddSaccaMagazz = invocationBuilder.post(Entity.form(form1));
+		Response responseaddSaccaMagazz = aggiuntaSaccaMagazz.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).post(Entity.form(form1));
 		assertEquals(Status.CREATED.getStatusCode(), responseaddSaccaMagazz.getStatus());
 	}
 	
-	
-	/**
-	 * Test che dovrebbe restituire una lista di Sacche con 22 elementi
-	 * @throws ParseException
-	 * @throws SaccaNotFoundException 
-	 */
-	@Test public void test2() throws ParseException, SaccaNotFoundException {
-		Client client = ClientBuilder.newClient();
-		WebTarget aggiuntaSaccaMagazz = client.target("http://127.0.0.1:8080/rest/magazziniere/aggiuntaSacca");
-		Invocation.Builder invocationBuilder = aggiuntaSaccaMagazz.request(MediaType.TEXT_PLAIN);
-		invocationBuilder.cookie(cookie);
+	@Test public void test2() {
 		Form form1 = new Form();
-		form1.param("gruppo_sanguigno", GruppoSanguigno.Bp.toString());
-		form1.param("data_scadenza", "2017-10-07");
-		form1.param("data_produzione", "2018-10-09");
-		form1.param("ente_donatore", "Er donatore2");
+		form1.param("gruppo_sanguigno", GruppoSanguigno.Ap.toString());
+		form1.param("data_scadenza", "2016-11-10");
+		form1.param("data_produzione", "2016-11-12");
+		form1.param("ente_donatore", "DonatoreProva1");
 
-		Response responseaddSaccaMagazz = invocationBuilder.post(Entity.form(form1));
-		assertEquals(Status.CREATED.getStatusCode(), responseaddSaccaMagazz.getStatus());
-	}
-
-	
-	/**
-	 * Test che dovrebbe restituire una lista di Sacche con 22 elementi
-	 * @throws ParseException
-	 * @throws SaccaNotFoundException 
-	 */
-	@Test public void test3() throws ParseException, SaccaNotFoundException {
-		Client client = ClientBuilder.newClient();
-		WebTarget aggiuntaSaccaMagazz = client.target("http://127.0.0.1:8080/rest/magazziniere/aggiuntaSacca");
-		Invocation.Builder invocationBuilder = aggiuntaSaccaMagazz.request(MediaType.TEXT_PLAIN);
-		invocationBuilder.cookie(cookie);
-		Form form1 = new Form();
-		form1.param("gruppo_sanguigno", GruppoSanguigno.ZEROp.toString());
-		form1.param("data_scadenza", "2018-10-07");
-		form1.param("data_produzione", "20-100-09");
-		form1.param("ente_donatore", "Er donatore3");
-
-		Response responseaddSaccaMagazz = invocationBuilder.post(Entity.form(form1));
+		Response responseaddSaccaMagazz = aggiuntaSaccaMagazz.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).post(Entity.form(form1));
 		assertEquals(Status.BAD_REQUEST.getStatusCode(), responseaddSaccaMagazz.getStatus());
 	}
 	
 	
+
+	
+	
 	@AfterClass public static void dropDBSacche() {
-		MongoDataManager mm = new MongoDataManager();
-		mm.dropDB();
+		MongoDataManagerBean.dropDB();
 	}
 }

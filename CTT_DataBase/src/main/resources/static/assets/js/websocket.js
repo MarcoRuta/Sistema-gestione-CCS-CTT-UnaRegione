@@ -35,7 +35,7 @@
 		
 		    var params = 'listaSeriali='+str +'&enteRichiedente='+obj.enteRichiedente+'&indirizzoEnte='+obj.indirizzoEnte;
 
-		    var url = "http://127.0.0.1:8080/rest/magazziniere/evasione?" + params;
+		    var url = "http://127.0.0.1:8080/rest/magazziniere/evasione";
 		    xhttp.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
 			    res = this.response;
@@ -54,9 +54,10 @@
 	    
 	    
 		    xhttp.open("PUT", url, true);
+		    xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 		    xhttp.setRequestHeader('Authorization', 'Basic '+token);
 		    xhttp.withCredentials = true;
-		    xhttp.send();
+		    xhttp.send(params);
 	
 		};
         

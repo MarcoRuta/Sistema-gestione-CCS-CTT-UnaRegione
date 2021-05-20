@@ -146,6 +146,7 @@
         var token = sessionStorage.getItem("token");
         var ruolo = sessionStorage.getItem("ruolo");
         var xhttp = new XMLHttpRequest();
+        var res;
 
          verificoToken = function(){
                if(token == null || ruolo != 'AmministratoreCTT'){
@@ -168,10 +169,12 @@
 
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
-                 	    document.getElementById("result").innerHTML = "Dipendente "+cdf+" aggiunto correttamente";
+                        res= "Dipendente "+cdf+" aggiunto correttamente";
+                 	    //document.getElementById("result").innerHTML = "Dipendente "+cdf+" aggiunto correttamente";
                  	}else {
                  	if(this.readyState == 4 && this.status != 200){
-                 	    document.getElementById("result").innerHTML = this.response;
+                 	    res = this.response;
+                 	    //document.getElementById("result").innerHTML = this.response;
                  	    }
                  	}
 
@@ -192,7 +195,14 @@
             }
             
             function reloadPage() {
-                alert(document.getElementById("result").textContent);
+                alert(res);
+                codice.value ="";
+                nome.value="";
+                cognome.value="";
+                datanasc.value="";
+                username.value="";
+                password.value="";
+                rl.value="";
                 location.reload();
             }
 

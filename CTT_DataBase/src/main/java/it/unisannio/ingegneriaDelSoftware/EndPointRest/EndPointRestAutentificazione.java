@@ -4,10 +4,9 @@ import it.unisannio.ingegneriaDelSoftware.Classes.Cdf;
 import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.Token;
 import it.unisannio.ingegneriaDelSoftware.Classes.User;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManagerBean;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.DipendenteNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.TokenNotFoundException;
-import it.unisannio.ingegneriaDelSoftware.Interfaces.DataManager;
 import javax.annotation.security.PermitAll;
 import javax.ws.rs.*;
 import javax.ws.rs.core.HttpHeaders;
@@ -31,8 +30,7 @@ public class EndPointRestAutentificazione {
     public Response login(@FormParam("username") String username,
                           @FormParam("password") String password) {
         try {
-            DataManager mm = new MongoDataManager();
-            Dipendente unDipendente = mm.getDipendente(username, password);
+            Dipendente unDipendente = MongoDataManagerBean.getDipendente(username, password);
             String token =  Token.getToken(username + ":" + password).getValue();
             //Cookie aCookie = new Cookie("access_token", Token.getToken(username + ":" + password).getValue());
             User aUser = new User(token,unDipendente.getRuolo().toString(),unDipendente.getNome(), unDipendente.getCognome());
@@ -70,15 +68,17 @@ public class EndPointRestAutentificazione {
     }
 
 
+    /**Metodo che si occupa  di cambiare la password di un utente
+     * @param password  la nuova password
+     * @param cdf  il codice fiscale dell'utente che vuole cambiare password
+     */
     @PUT
     @Path("/cambiopassword/{cdf}")
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
     public Response cambioPassword(@PathParam("cdf")String cdf, String password){
         try{
-            System.out.println("richiesta arrivata");
-            DataManager mm = new MongoDataManager();
-            mm.setPassword(Cdf.getCDF(cdf),password);
+            MongoDataManagerBean.setPassword(Cdf.getCDF(cdf),password);
             return Response.status(Response.Status.OK)
                     .entity("Password cambiata correttamente")
                     .build();

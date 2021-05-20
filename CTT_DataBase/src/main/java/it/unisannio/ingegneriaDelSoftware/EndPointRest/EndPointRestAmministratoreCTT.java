@@ -15,11 +15,9 @@ import it.unisannio.ingegneriaDelSoftware.Annotazioni.Secured;
 import it.unisannio.ingegneriaDelSoftware.Classes.Cdf;
 import it.unisannio.ingegneriaDelSoftware.Classes.DatiSacca;
 import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
-import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.Classes.RuoloDipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
-import it.unisannio.ingegneriaDelSoftware.Interfaces.DataManager;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManagerBean;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointAmministratoreCTT;
 import it.unisannio.ingegneriaDelSoftware.Util.*;
 
@@ -40,7 +38,7 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 	 * @return
 	 */
 	@POST
-	@Path("/aggiuntadipendente")
+	@Path("/aggiuntaDipendente")
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public Response addDipendente(@FormParam("cdf")String cdf,
@@ -52,13 +50,11 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 								  @FormParam("password")String password){
 
 		try {
-			//creo il dataManager
-			MongoDataManager mm = new MongoDataManager();
 			//creo un dipendente
 			Dipendente d = new Dipendente(Cdf.getCDF(cdf), nome, cognome, DateUtil.dateParser(dataDiNascita),
 					RuoloDipendente.valueOf(ruolo), username, password);
 			//aggiungo il dipendente al DB
-			mm.addDipendente(d);
+			MongoDataManagerBean.createDipendente(d);
 			return Response
 					.status(Response.Status.OK)
 					.entity("Corretta aggiunta del Dipendente: "+cdf)
@@ -79,13 +75,12 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 	 * @return
 	 */
 	@DELETE
-	@Path("/rimozionedipendente/{cdf}")
+	@Path("/rimozioneDipendente/{cdf}")
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes(MediaType.TEXT_PLAIN)
 	public Response removeDipendente(@PathParam("cdf") String cdf) {
-		try {			
-			MongoDataManager mm = new MongoDataManager();			
-			mm.removeDipendente(Cdf.getCDF(cdf));
+		try {					
+			MongoDataManagerBean.removeDipendente(Cdf.getCDF(cdf));
 			return Response
 					.status(Response.Status.OK)
 					.entity("Corretta rimozione del Dipendente: " + cdf)
@@ -102,65 +97,65 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 
 	/**Restituisce la lista dei Dipendenti del CTT che occupano il Ruolo scelto
 	 * @param ruolo Ruolo dei Dipendenti da cercare
-	 * @return la lista dei Dipendenti del Ruolo scelto
+	 * @return Response 200 OK e invia la lista dei dipendenti del ruolo selezionato
 	 */
-	@POST
-	@Path("/reportoperatorictt")
+	@GET
+	@Path("/reportOperatoriCtt")
 	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.TEXT_PLAIN)
-	public List<Dipendente> reportOperatoriCTT(String ruolo){
-		MongoDataManager mm = new MongoDataManager();
-		
-		List<Dipendente> dipendenti = mm.getListaDipendenti();
-		List<Dipendente> dipendentiRuolo = new ArrayList<Dipendente>();		
-		
-		for (Dipendente dipendente : dipendenti)
-			if(dipendente.getRuolo().equals(RuoloDipendente.valueOf(ruolo)))
-				dipendentiRuolo.add(dipendente);
-		return dipendentiRuolo;
+	public Response reportOperatoriCTT(@QueryParam("ruolo")String ruolo){
+	
+			List<Dipendente> listaDipendenti = getDipendenti();
+			List<Dipendente> risultatoQuery = new ArrayList<Dipendente>();
+			
+			for(Dipendente d : listaDipendenti)
+				if(d.getRuolo().toString().equals(ruolo)) risultatoQuery.add(d);
+			
+			return Response	 		
+					.status(Response.Status.OK)
+					.entity(risultatoQuery)
+					.build();
 	}
 
 
 	/**Restituisce la lista delle Sacche di un determinato Gruppo sanguigno, presenti del database delle Sacche
 	 * @param gs Gruppo sanguigno delle Sacche che si vogliono ricercare
-	 * @return la lista di Sacche di un determinato Gruppo sanguigno
+	 * @return Response 200 OK e invia la lista dei datiSacca 400 BAD_REQUEST se i parametri inseriti non sono corretti
 	 */
-	@POST
-	@Path("/reportstatisticosacche")
+	@GET
+	@Path("/reportStatisticoSacche")
 	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.TEXT_PLAIN)
-	public List<Sacca> reportStatisticoSacche(String gs){
-		//creo la lista da restituire
-		List<Sacca> saccheGS = new ArrayList<Sacca>();
-		//creo il data manager
-		MongoDataManager mm = new MongoDataManager();
-		//recupero la lista delle sacche dal db
-		List<Sacca> listaSacche = mm.getListaSacche();
-		//seleziono solo quelle di mio interesse
-		for (Sacca sacca : listaSacche)
-			if(sacca.getGruppoSanguigno().equals(GruppoSanguigno.valueOf(gs)))
-				saccheGS.add(sacca);
-		return saccheGS;
-	}
+	public Response reportStatisticoSacche(@QueryParam("gs")String gs){
+
+		List<Sacca> listaSacche = MongoDataManagerBean.getListaSacche();
+		List<Sacca> risultatoQuery = new ArrayList<Sacca>();
+		
+		for(Sacca s : listaSacche)
+			if(s.getGruppoSanguigno().toString().equals(gs)) risultatoQuery.add(s);
+		
+		return Response	 		
+				.status(Response.Status.OK)
+				.entity(risultatoQuery)
+				.build();
+}
 
 
-	/**Restituisce la lista dei datiSacche che sono transitate per un CTT in un determinato arco temporale
+	/**Restituisce la lista dei datiSacche relativi alle sacche che sono state caricate o affidate in un determinato arco temporale
 	 * @param dataInizio Data inizio dell' arco temporale
 	 * @param dataFine Data fine dell' arco temporale
-	 * @return la lista di sacche che sono transitate per un CTT in un determinato arco temporale
+	 * @return Response 200 OK e invia la lista dei datiSacca 400 BAD_REQUEST se i parametri inseriti non sono corretti
 	 */
-	@POST
-	@Path("/reportlocalesaccheinviateericevutectt")
+	@GET
+	@Path("/reportLocaleSaccheInviateERicevute")
 	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public Response ReportLocaleSaccheInviateERicevuteCTT(@FormParam("dataInizio")String dataInizio,
-															@FormParam("dataFine")String dataFine){
+	public Response reportLocaleSaccheInviateERicevuteCTT(@QueryParam("dataInizio")String dataInizio,
+															@QueryParam("dataFine")String dataFine){
 		try {
 			LocalDate dataInizioReport = DateUtil.dateParser(dataInizio);
 			LocalDate dataAffidamentoReport = DateUtil.dateParser(dataFine);
-			return Response
+			List <DatiSacca> risultatoQuery = getDatiSaccaInATemporalAmount(dataInizioReport,dataAffidamentoReport);
+			return Response	 		
 					.status(Response.Status.OK)
-					.entity(this.getDatiSaccaInATemporalAmount(dataInizioReport,dataAffidamentoReport))
+					.entity(risultatoQuery)
 					.build();
 		}catch (DateTimeParseException ex){
 			//The request could not be understood by the server due to malformed syntax.
@@ -177,15 +172,14 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 	 * @param listaGS Lista dei Gruppi sanguigni scelti dall'AmministratoreCTT, una strigna con gruppo1:gruppo2:gruppo3
 	 * @param dataInizio Data di inizio dell' arco temporale
 	 * @param dataFine Data di fine dell' arco temporale
-	 * @return la stringa contenente il numero di Sacche ricevute e inviate in un arco temporale, per ogni Gruppo sanguigno
+	 * @return Response 200 OK e invia la lista dei datiSacca / 400 BAD_REQUEST se i parametri inseriti non sono corretti
 	 */
 	@POST
-	@Path("/ordinagruppisanguigniperrichieste")
+	@Path("/ordinaGruppiSanguigniPerRichieste")
 	@Produces(MediaType.TEXT_PLAIN)
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public Response OrdinaGruppiSanguigniPerRichieste(@FormParam("listaGS") String listaGS,
-														@FormParam("dataInizio")String dataInizio,
-														@FormParam("dataFine")String dataFine) {
+	public Response ordinaGruppiSanguigniPerRichieste(@QueryParam("listaGS") String listaGS,
+														@QueryParam("dataInizio")String dataInizio,
+														@QueryParam("dataFine")String dataFine) {
 		try {
 			String risultatoQuery = "";
 			StringTokenizer aTokenizer = new StringTokenizer(listaGS);
@@ -222,11 +216,8 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 	@GET
 	@Path("/dipendenti")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Dipendente> getDipendenti(){
-		
-		DataManager dataManager = new MongoDataManager();
-		return dataManager.getListaDipendenti();
-		
+	public List<Dipendente> getDipendenti(){		
+		return MongoDataManagerBean.getListaDipendenti();	
 	}
 
 	/**Restituisce una lista di dati sacca che sono arrivate dopo di dataInizioReport oppure sono state affidate dopo prima
@@ -236,10 +227,9 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 	 * @return  lista di sacche che erano nel CTT nell'arco temporale dataInizioReport-dataAffidamentoReport*/
 	private List<DatiSacca> getDatiSaccaInATemporalAmount(LocalDate dataInizioReport, LocalDate dataAffidamentoReport){
 		List<DatiSacca> datiSaccaTransitati = new ArrayList<>();
-		//creo un data manager
-		MongoDataManager mm = new MongoDataManager();
+		
 		//creo la lista dei dati sacca
-		List<DatiSacca> listaDatiSacca = mm.getListaDatiSacche();
+		List<DatiSacca> listaDatiSacca = MongoDataManagerBean.getListaDatiSacche();
 		for (DatiSacca datiSacca : listaDatiSacca)
 			if (datiSacca.getDataArrivo().isAfter(dataInizioReport) || datiSacca.getDataAffidamento().isBefore(dataAffidamentoReport)
 					|| datiSacca.getDataArrivo().isEqual(dataInizioReport) || datiSacca.getDataAffidamento().isEqual(dataAffidamentoReport))

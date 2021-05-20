@@ -33,7 +33,6 @@ public class Dipendente {
 		assert password != null: "La password del dipendente non può essere null";
 		if (!dataDiNascita.isBefore(LocalDate.now())) throw new AssertionError("La data di nascita non puo essere superiore o uguale a quella odierna");
 		if (!dataDiNascita.isBefore(LocalDate.now().minusYears(18))) throw new AssertionError(" il Dipendente deve avere almeno 18 anni");
-		if(!password.matches(".*\\d.*")) throw new AssertionError("La password deve contenere almeno un numero");
 
 		this.cdf = cdf;
 		this.nome = nome;

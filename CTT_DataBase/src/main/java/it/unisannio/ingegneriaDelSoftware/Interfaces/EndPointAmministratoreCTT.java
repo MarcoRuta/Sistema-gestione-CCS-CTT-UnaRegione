@@ -3,9 +3,7 @@ package it.unisannio.ingegneriaDelSoftware.Interfaces;
 
 import javax.ws.rs.core.Response;
 
-import it.unisannio.ingegneriaDelSoftware.Classes.Cdf;
 import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
-import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaNotFoundException;
 import java.util.List;
 
@@ -41,7 +39,7 @@ public interface EndPointAmministratoreCTT {
 	 * @param ruolo Ruolo dei Dipendenti da cercare
 	 * @return la lista dei Dipendenti del Ruolo scelto
 	 */
-	public List<Dipendente> reportOperatoriCTT(String ruolo);
+	public Response reportOperatoriCTT(String ruolo);
 
 	
 	/**Restituisce la lista delle Sacche di un determinato Gruppo sanguigno, presenti del database delle Sacche
@@ -49,7 +47,7 @@ public interface EndPointAmministratoreCTT {
 	 * @return la lista di Sacche di un determinato Gruppo sanguigno
 	 * @throws SaccaNotFoundException
 	 */
-	public List<Sacca> reportStatisticoSacche(String gs);
+	public Response reportStatisticoSacche(String gs);
 
 
 
@@ -58,7 +56,7 @@ public interface EndPointAmministratoreCTT {
 	 * @param dataFine Data fine dell' arco temporale
 	 * @return la lista di sacche che sono transitate per un CTT in un determinato arco temporale
 	 */
-	public Response ReportLocaleSaccheInviateERicevuteCTT(String dataInizio,
+	public Response reportLocaleSaccheInviateERicevuteCTT(String dataInizio,
 														  String dataFine);
 
 
@@ -68,7 +66,7 @@ public interface EndPointAmministratoreCTT {
 	 * @param dataFine Data di fine dell' arco temporale
 	 * @return la stringa contenente il numero di Sacche ricevute e inviate in un arco temporale, per ogni Gruppo sanguigno
 	 */
-	public Response OrdinaGruppiSanguigniPerRichieste(String listaGS,
+	public Response ordinaGruppiSanguigniPerRichieste(String listaGS,
 													  String dataInizio,
 													  String dataFine);
 

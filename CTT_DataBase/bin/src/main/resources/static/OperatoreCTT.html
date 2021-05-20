@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 
-<body onload="verificoToken();">
+<body onload="start();">
     <div class="titlePage">
         <div>
             <span class="fontTitle">
@@ -53,7 +53,7 @@
                             <p id="cognome">Cognome: </p>
                         </div>
                         <div style="width: 300px;">
-                            <button class="btn btn-primary" onclick="location.href='Login.html';" type="button" style="background-color: #13958d;">Change Password</button>
+                            <button class="btn btn-primary" onclick="location.href='ChangePassword.html';" type="button" style="background-color: #13958d;">Change Password</button>
                             <button class="btn btn-primary" onclick="logout();" type="button" style="margin: 0% 5%">Log out</button>
                         </div>
                     </div>
@@ -95,7 +95,18 @@
     <script>
         var token = sessionStorage.getItem("token");
         var ruolo = sessionStorage.getItem("ruolo");
+        var name = sessionStorage.getItem("nome");
+        var surname = sessionStorage.getItem("cognome");
 
+        function start(){
+            verificoToken();
+            setPerson();
+        }
+        
+        function setPerson(){
+            document.getElementById("nome").textContent = "Nome: " + name;
+            document.getElementById("cognome").textContent = "Cognome: " + surname;
+        }
 
         verificoToken = function(){
                  if(token == null || ruolo != 'OperatoreCTT'){
@@ -106,17 +117,21 @@
 
         logout = function(){
 
-        var xhttp = new XMLHttpRequest();
-        var url ="http://127.0.0.1:8080/rest/sessione/logout";
-        xhttp.onreadystatechange = function() {
-                    if (this.readyState == 4 && this.status == 200 ) {
+       var xhttp = new XMLHttpRequest();
+       var url ="http://127.0.0.1:8080/rest/autentificazione/logout";
+       xhttp.onreadystatechange = function() {
+                   if (this.readyState == 4 && this.status == 200 ) {
+                        sessionStorage.removeItem("token");
+                        sessionStorage.removeItem("ruolo");
+                        sessionStorage.removeItem("nome");
+                        sessionStorage.removeItem("cognome");
                         window.location.href='Login.html';
-                 	}else {
-                 	    if(this.readyState == 4 && this.status != 200 ){
-                 	        alert(this.response);
-                 	    }
-                 	}
-        };
+                   }else {
+                       if(this.readyState == 4 && this.status != 200 ){
+                           alert(this.response);
+                       }
+                   }
+       };
 
 
         xhttp.onerror = function(){

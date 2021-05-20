@@ -20,7 +20,7 @@ public class Cdf {
 	/**
 	 * @param cdf  deve essere una stringa di 16 caratteri*/
     private Cdf(String cdf){
-		assert(cdf.length()==16) :"Il codice Fiscale deve essere di 16 caratteri";
+		if(!(cdf.length()==16)) throw new AssertionError("Il codice Fiscale deve essere di 16 caratteri");
         this.codiceFiscale = cdf;
     }
 	

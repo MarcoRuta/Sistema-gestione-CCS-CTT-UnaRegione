@@ -2,13 +2,11 @@ package it.unisannio.ingegneriaDelSoftware.EndPointRest;
 
 import it.unisannio.ingegneriaDelSoftware.Classes.*;
 import it.unisannio.ingegneriaDelSoftware.Annotazioni.Secured;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManagerBean;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.DatiSaccaNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaNotFoundException;
-import it.unisannio.ingegneriaDelSoftware.Interfaces.DataManager;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointMagazziniereCTT;
 import it.unisannio.ingegneriaDelSoftware.Util.DateUtil;
-
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Singleton;
 import javax.ws.rs.*;
@@ -46,18 +44,17 @@ public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 										   @FormParam("ente_donatore") String ente_donatore) {
 
 		try {
-			DataManager mm = new MongoDataManager();
 			//creo la sacca
 			Sacca unaSacca = new Sacca(GruppoSanguigno.valueOf(gruppo_sanguigno),
 					DateUtil.dateParser(data_produzione),
 					DateUtil.dateParser(data_scadenza));
 			//inserisco la sacca nel DB
-			mm.createSacca(unaSacca);
+			MongoDataManagerBean.createSacca(unaSacca);
 			//creo un dati sacca
 			DatiSacca datiSacca = new DatiSacca(unaSacca.getSeriale(), unaSacca.getGruppoSanguigno(),
 					LocalDate.now(), null, ente_donatore, null,null);
 			//inserisco datiSacca nel DB
-			mm.createDatiSacca(datiSacca);
+			MongoDataManagerBean.createDatiSacca(datiSacca);
 			//update Seriale settings
 			Seriale.updateSettings();
 			return Response
@@ -87,9 +84,9 @@ public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 	
 	/**Metodo attivato dal magazziniere quando riceve una notifica evasione sacche
 	 * esso aggiorna i datiSacca e rimuove la Sacca dal DB attivo per ogni sacca presente nell'ordine
-	 * @param listaSeriali Seriale della Sacca da evadere
-	 * @param enteRichiedente l'ente che ha richiesto la sacca
-	 * @param indirizzoEnte l'indirizzo dell'ente che ha richiesto la sacca
+	 * @param listaseriali Seriali della Sacca da evadere, i seriali sono separati da una ","
+	 * @param ente_richiedente l'ente che ha richiesto la sacca
+	 * @param indirizzo l'indirizzo dell'ente che ha richiesto la sacca
 	 * @return Response OK se le sacche sono state rimosse correttamente BAD_REQUEST se si Ã¨ tetntato di evadere sacche non presenti nel DB
 	 * @return Response 
 	 * */
@@ -97,65 +94,56 @@ public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 	@PUT
 	@Path("/evasione")
 	@Produces(MediaType.TEXT_PLAIN)
-	@Consumes(MediaType.TEXT_PLAIN)
-	public Response evasioneSacca(@QueryParam("listaSeriali") String listaseriali,					
-								  @QueryParam("enteRichiedente") String ente_richiedente,
-								  @QueryParam("indirizzoEnte")String indirizzo){
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	public Response evasioneSacca(@FormParam("listaSeriali") String listaseriali,					
+								  @FormParam("enteRichiedente") String ente_richiedente,
+								  @FormParam("indirizzoEnte")String indirizzo){
 
-			//Prendo dalla stringa listaSeriali la lista deei seriali attraverso una tokenizzazione, i seriali arrivano nel formato SERIALE/SERIALE/SERIALE/..../SERIALE/
+			//Prendo dalla stringa listaSeriali la lista dei seriali attraverso una tokenizzazione, i seriali arrivano nel formato SERIALE/SERIALE/SERIALE/..../SERIALE/
 			try {
-			List<Seriale> listaSeriali = new ArrayList<Seriale>();
-			
-		    StringTokenizer st = new StringTokenizer(listaseriali,",");  
-			while (st.hasMoreTokens()) {  
-				 listaSeriali.add(Seriale.getSeriale(st.nextToken()));
-				 	
+				List<Seriale> listaSeriali = new ArrayList<Seriale>();
+
+				StringTokenizer st = new StringTokenizer(listaseriali,",");
+				while (st.hasMoreTokens())
+					 listaSeriali.add(Seriale.getSeriale(st.nextToken()));
+				//Etichetta da restituire al client
+				String etichetta = "";
+
+				for(Seriale unSeriale : listaSeriali) {
+
+					//recupero una sacca se presente altrimenti si solleva una eccezione SaccaNotFoundException
+					Sacca unaSacca = MongoDataManagerBean.getSacca(unSeriale);
+					//aggiorno i dati del dati sacca
+					MongoDataManagerBean.setEnteRichiedenteDatiSacca(unSeriale, ente_richiedente);
+					MongoDataManagerBean.setDataAffidamentoDatiSacca(unSeriale, LocalDate.now());
+					MongoDataManagerBean.setIndirizzoEnteDatiSacca(unSeriale,indirizzo);
+					//recupero il DatiSacca aggiornato
+					DatiSacca datiSacca = MongoDataManagerBean.getDatiSacca(unSeriale);
+					//aggiorno etichetta
+					etichetta = etichetta + unaSacca.getEtichettaSacca()+"\n"+ datiSacca.getEtichettaDatiSacca() +"\n";
+					//rimuovo la sacca
+					MongoDataManagerBean.removeSacca(unaSacca.getSeriale());
+					//The property set or change succeeded.
 			}
 			
-			//creo un data manager pre recuperare i dati
-			DataManager mm = new MongoDataManager();
-			
-			String etichetta = "";
-			
-			for(Seriale unSeriale : listaSeriali) {
-				
-			//recupero un DatiSacca se presente altrimenti si solleva una eccezione DatiSaccaNotFoundException
-			DatiSacca datiSacca = mm.getDatiSacca(unSeriale);
-			//recupero una sacca se presente altrimenti si solleva una eccezione SaccaNotFoundException
-			Sacca unaSacca = mm.getSacca(unSeriale);
-			//aggiorno i dati del dati sacca
-			mm.setEnteRichiedenteDatiSacca(unSeriale, ente_richiedente);
-			mm.setDataAffidamentoDatiSacca(unSeriale, LocalDate.now());
-			mm.setIndirizzoEnteDatiSacca(unSeriale,indirizzo);
-			//recupero il DatiSacca aggiornato
-			datiSacca = mm.getDatiSacca(unSeriale);
-			//aggiorno etichetta
-			etichetta = etichetta + unaSacca.getEtichettaSacca()+"\n"+ datiSacca.getEtichettaDatiSacca() +"\n";
-			//rimuovo la sacca
-			mm.removeSacca(unaSacca.getSeriale());
-			//The property set or change succeeded.
+				return Response
+						.status(Response.Status.OK)
+						.entity(etichetta + "\nEnte richiedente: " + ente_richiedente + "\nIndirizzo: " + indirizzo)
+						.build();
+			}catch(AssertionError ex){
+				//The request could not be understood by the server due to malformed syntax.
+				// The client SHOULD NOT repeat the request without modifications.
+				return Response
+						.status(Response.Status.BAD_REQUEST)
+						.entity(ex.getMessage())
+						.build();
+			}catch(SaccaNotFoundException | DatiSaccaNotFoundException ex){
+				//non ho trovato la risorsa
+				return Response
+						.status(Response.Status.BAD_REQUEST)
+						.entity(ex.getMessage())
+						.build();
 			}
-			
-			return Response
-					.status(Response.Status.OK)
-					.entity(etichetta + "\nEnte richiedente: " + ente_richiedente + "\nIndirizzo: " + indirizzo)
-					.build();
-		}catch(AssertionError ex){
-			System.err.println("Seertion Error");
-			//The request could not be understood by the server due to malformed syntax.
-			// The client SHOULD NOT repeat the request without modifications.
-			return Response
-					.status(Response.Status.BAD_REQUEST)
-					.entity(ex.getMessage())
-					.build();
-		}catch(SaccaNotFoundException | DatiSaccaNotFoundException ex){
-			System.err.println("sacca not found exception");
-			//non ho trovato la risorsa
-			return Response
-					.status(Response.Status.BAD_REQUEST)
-					.entity(ex.getMessage())
-					.build();
-		}
 	}
 		
 	
@@ -169,8 +157,7 @@ public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Seriale> listaSacca(){
 
-		DataManager mm = new MongoDataManager();
-		List<Sacca> listaSacche = mm.getListaSacche();
+		List<Sacca> listaSacche = MongoDataManagerBean.getListaSacche();
 		List<Seriale> serialiSacca = new ArrayList<Seriale>();
 
 		for(Sacca s : listaSacche)

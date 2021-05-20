@@ -81,7 +81,21 @@ public class Seriale {
 			e.printStackTrace();
 		}
 	}
-
+	
+	/**aggiorno il file xml di settings per la generazione del seriale alla sua versione originaria*/
+	public static void restartSettings() {
+		Properties saveProps = new Properties();
+		saveProps.setProperty(TAG_RADICE, radice);
+		saveProps.setProperty(TAG_LAST_ASSIGNED, Integer.toString(0));
+		try {
+			FileOutputStream fos = new FileOutputStream("localsettings/serial_settings.xml");
+			saveProps.storeToXML(fos, "");
+			fos.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	@Override
 	public String toString() {
 		return "Seriale{" +

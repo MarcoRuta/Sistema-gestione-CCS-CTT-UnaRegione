@@ -1,11 +1,8 @@
 package WebSocketConfig;
 
-import java.util.ArrayList;
-
 import javax.websocket.EncodeException;
 import javax.websocket.Encoder;
 import javax.websocket.EndpointConfig;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 
 import it.unisannio.ingegneriaDelSoftware.Classes.NotificaEvasione;

@@ -27,10 +27,11 @@ import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.Classes.RuoloDipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManagerBean;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 import it.unisannio.ingegneriaDelSoftware.Util.DateUtil;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
+
 
 
 public class OrdinaGruppiSanguigniPerRichiesteTest {
@@ -38,7 +39,7 @@ public class OrdinaGruppiSanguigniPerRichiesteTest {
 	
 	@BeforeClass public static void populateDBSacche() throws SaccaNotFoundException, AssertionError, ParseException {
 		
-    	MongoDataManager mm = new MongoDataManager();
+   
     	List<Sacca> listaSacche = new ArrayList<Sacca>();
     	List<DatiSacca> listaDatiSacche = new ArrayList<DatiSacca>();
     	
@@ -606,15 +607,15 @@ public class OrdinaGruppiSanguigniPerRichiesteTest {
 
     	
     	for(Sacca sac : listaSacche) {
-        	mm.createSacca(sac);
+    		MongoDataManagerBean.createSacca(sac);
         }
     	
     	for(DatiSacca datisac : listaDatiSacche) {
-        	mm.createDatiSacca(datisac);
+    		MongoDataManagerBean.createDatiSacca(datisac);
         }
 
         Dipendente d = new Dipendente(Cdf.getCDF("999hpoindj13ht9f"), "Mario", "Magazz", DateUtil.convertDateToLocalDate(Constants.sdf.parse("10-07-1950")), RuoloDipendente.AmministratoreCTT, "username 999", "999");
-        mm.addDipendente(d);
+        	MongoDataManagerBean.createDipendente(d);
     	
     	Client client = ClientBuilder.newClient();
 		WebTarget login = client.target("http://127.0.0.1:8080/rest/autentificazione");
@@ -674,7 +675,6 @@ public class OrdinaGruppiSanguigniPerRichiesteTest {
 	
 	
 	@AfterClass public static void dropDBSacche() {
-		MongoDataManager mm = new MongoDataManager();
-		mm.dropDB();
+		MongoDataManagerBean.dropDB();
 	}
 }

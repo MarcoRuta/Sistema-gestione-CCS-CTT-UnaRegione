@@ -52,7 +52,7 @@
                             <p id="cognome">Cognome: </p>
                         </div>
                         <div style="width: 300px;">
-                            <button class="btn btn-primary" onclick="location.href='Login.html';" type="button" style="background-color: #13958d;">Change Password</button>
+                            <button class="btn btn-primary" onclick="location.href='ChangePasswordAfterLogin.html';" type="button" style="background-color: #13958d;">Change Password</button>
                             <button class="btn btn-primary" onclick="logout();" type="button" style="margin: 0% 5%">Log out</button>
                         </div>
                     </div>
@@ -123,7 +123,7 @@
                }
         };
 
-       logout = function(){
+        logout = function(){
 
        var xhttp = new XMLHttpRequest();
        var url ="http://127.0.0.1:8080/rest/autentificazione/logout";

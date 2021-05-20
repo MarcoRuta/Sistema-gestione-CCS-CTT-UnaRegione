@@ -9,11 +9,9 @@ import java.util.List;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Form;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.NewCookie;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
@@ -23,7 +21,8 @@ import org.junit.Test;
 import it.unisannio.ingegneriaDelSoftware.Classes.Cdf;
 import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.RuoloDipendente;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
+import it.unisannio.ingegneriaDelSoftware.Classes.User;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManagerBean;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 import it.unisannio.ingegneriaDelSoftware.Util.DateUtil;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.DipendenteNotFoundException;
@@ -31,9 +30,11 @@ import it.unisannio.ingegneriaDelSoftware.Exceptions.DipendenteNotFoundException
 
 
 public class RemoveDipendenteTest {	
-	static NewCookie cookie = null;
+	static String token = null;
+	Client client = ClientBuilder.newClient();
+
+	
 	@BeforeClass public static void populateDBDipendenti() throws ParseException, DipendenteNotFoundException {
-		MongoDataManager mm = new MongoDataManager();
 		List<Dipendente> listaDipendenti = new ArrayList<Dipendente>();
 	        
 	 	Cdf cdf = Cdf.getCDF("122hfotndj13ht5f");
@@ -101,19 +102,19 @@ public class RemoveDipendenteTest {
       
       
         for(Dipendente dip : listaDipendenti) {
-        	mm.addDipendente(dip);
+        	MongoDataManagerBean.createDipendente(dip);
         }  
         
-		Client client = ClientBuilder.newClient();
+        Client client = ClientBuilder.newClient();
 		WebTarget login = client.target("http://127.0.0.1:8080/rest/autentificazione");
 		Form form1 = new Form();
 		form1.param("username", "username 003");
 		form1.param("password", "003");
 		
 		Response responselogin = login.request().post(Entity.form(form1));
-		cookie = responselogin.getCookies().get("access_token");
+		User user = responselogin.readEntity(User.class);
+		token = user.getToken();
 	}
-		
 	
 
 	/**
@@ -122,12 +123,9 @@ public class RemoveDipendenteTest {
 	@Test	
 	public void test1(){
 		Client client = ClientBuilder.newClient();
-
-		WebTarget rimozioneDipendente = client.target("http://127.0.0.1:8080/rest/amministratore/rimozionedipendente/123456781qwertyy");
-		Invocation.Builder invocationBuilder = rimozioneDipendente.request(MediaType.TEXT_PLAIN);
-		invocationBuilder.cookie(cookie);
-
-		Response responseaddDip = invocationBuilder.delete();
+		WebTarget rimozioneDipendente = client.target("http://127.0.0.1:8080/rest/amministratore/rimozioneDipendente/123456781qwertyy");
+		
+		Response responseaddDip = rimozioneDipendente.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).delete();
 		assertEquals(Status.OK.getStatusCode(), responseaddDip.getStatus());	
 	}
 	
@@ -138,36 +136,32 @@ public class RemoveDipendenteTest {
 	@Test	
 	public void test2(){
 		Client client = ClientBuilder.newClient();
-
-		WebTarget rimozioneDipendente = client.target("http://127.0.0.1:8080/rest/amministratore/rimozionedipendente/123456789swertyy");
-		Invocation.Builder invocationBuilder = rimozioneDipendente.request(MediaType.TEXT_PLAIN);
-		invocationBuilder.cookie(cookie);
-
-		Response responseaddDip = invocationBuilder.delete();
-		assertEquals(Status.OK.getStatusCode(), responseaddDip.getStatus());	
-	}
-	
-	
-	
-	/**
-	 * Test che dovrebbe restituire codice not found
-	*/
-	@Test	
-	public void test3(){
-		Client client = ClientBuilder.newClient();
-
-		WebTarget rimozioneDipendente = client.target("http://127.0.0.1:8080/rest/amministratore/rimozionedipendente/codicenonpresente");
-		Invocation.Builder invocationBuilder = rimozioneDipendente.request(MediaType.TEXT_PLAIN);
-		invocationBuilder.cookie(cookie);
-
-		Response responseaddDip = invocationBuilder.delete();
-//############################non riesco a far uscire questo errore anche inventando dei codici fiscali
+		WebTarget rimozioneDipendente = client.target("http://127.0.0.1:8080/rest/amministratore/rimozioneDipendente/abcdefg");
+		
+		Response responseaddDip = rimozioneDipendente.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).delete();
 		assertEquals(Status.NOT_FOUND.getStatusCode(), responseaddDip.getStatus());	
 	}
 	
 	
+	/**
+	 * Test che dovrebbe restituire una lista di Dipendenti con 7 elementi 
+	*/
+	@Test	
+	public void test3(){
+		Client client = ClientBuilder.newClient();
+		WebTarget rimozioneDipendente = client.target("http://127.0.0.1:8080/rest/amministratore/rimozioneDipendente/123asdpoi9876gfb");
+		
+		Response responseaddDip = rimozioneDipendente.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).delete();
+		assertEquals(Status.NOT_FOUND.getStatusCode(), responseaddDip.getStatus());	
+	}
+	
+	
+	
+	
+
+	
+	
 	@AfterClass public static void dropDBDipendenti() {
-		MongoDataManager mm = new MongoDataManager();
-		mm.dropDB();
+		MongoDataManagerBean.dropDB();
 	}
 }

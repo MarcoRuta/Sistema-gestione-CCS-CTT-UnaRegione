@@ -24,14 +24,17 @@ import org.junit.Test;
 import it.unisannio.ingegneriaDelSoftware.Classes.Cdf;
 import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.RuoloDipendente;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManagerBean;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 import it.unisannio.ingegneriaDelSoftware.Util.DateUtil;
 
 public class LoginTest {
+	Client client = ClientBuilder.newClient();
+	WebTarget login = client.target("http://127.0.0.1:8080/rest/autentificazione");
+
 	
 	@BeforeClass public static void populateDBDipendenti() throws ParseException, DipendenteNotFoundException {
-		MongoDataManager mm = new MongoDataManager();
+		
 		List<Dipendente> listaDipendenti = new ArrayList<Dipendente>();
 	        
 	 	Cdf cdf = Cdf.getCDF("122hfotndj13ht5f");
@@ -99,7 +102,7 @@ public class LoginTest {
       
       
         for(Dipendente dip : listaDipendenti) {
-        	mm.addDipendente(dip);
+        	MongoDataManagerBean.createDipendente(dip);
         }       
 	}
 			
@@ -109,9 +112,7 @@ public class LoginTest {
 	*queste credenziali è presente nel database 
 	*/
 	@Test	
-	public void test1(){  	
-		Client client = ClientBuilder.newClient();
-		WebTarget login = client.target("http://127.0.0.1:8080/rest/autentificazione");
+	public void test1(){  			
 		Form form1 = new Form();
 		form1.param("username", "username 003");
 		form1.param("password", "003");
@@ -126,8 +127,6 @@ public class LoginTest {
 	*/
 	@Test	
 	public void test2(){  	
-		Client client = ClientBuilder.newClient();
-		WebTarget login = client.target("http://127.0.0.1:8080/rest/autentificazione");
 		Form form1 = new Form();
 		form1.param("username", "username 004");
 		form1.param("password", "004");
@@ -142,18 +141,16 @@ public class LoginTest {
 	*/
 	@Test	
 	public void test3(){  	
-		Client client = ClientBuilder.newClient();
-		WebTarget login = client.target("http://127.0.0.1:8080/rest/autentificazione");
 		Form form1 = new Form();
-		form1.param("username", "username 007");
-		form1.param("password", "008");	
+		form1.param("username", "username 012");
+		form1.param("password", "007");
+		
 		Response responselogin = login.request().post(Entity.form(form1));
 		assertEquals(Status.FORBIDDEN.getStatusCode(), responselogin.getStatus());
 	}
 	
 	
 	@AfterClass public static void dropDBDipendenti() {
-		MongoDataManager mm = new MongoDataManager();
-		mm.dropDB();
+		MongoDataManagerBean.dropDB();
 	}
 }
