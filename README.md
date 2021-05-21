@@ -1,9 +1,16 @@
 <p align= "center">
 <img src="https://www.unisannio.it/sites/default/files/emblema.png.pagespeed.ce.L9uvAVRynq.png" alt="Unisannio" width= 50%>
 <p align="center">
-    <img src="https://img.shields.io/badge/java-v8.0-blue" alt="Java">
+    <img src="https://img.shields.io/badge/java-v11.0-blue" alt="Java">
     <img src="https://img.shields.io/badge/Unisannio-Ingegneria%20Del%20Software-blue" alt="Unisannio">
+    <img src = "https://img.shields.io/badge/maven-v4.0-blue">
+    <img src = "https://img.shields.io/badge/junit-v4.13-blue">
+    <img src = "https://img.shields.io/badge/mongo--java--driver-v3.12.8-blue">
+    <img src = "https://img.shields.io/badge/spring%20boot-v2.4.5-blue">
+     <img src = "https://img.shields.io/badge/jersey-v3.0.2-blue">
 </p>
+
+
 
 
 # Progetto Ingegneria del Software 2021
@@ -17,6 +24,15 @@ Progetto di ingegneria del software svolto dal gruppo formato da:
 - Pio Antonio Perugini
 - Donato Guerrera
 - Salvatore Di Maria
+
+
+## Come Contribuire
+- Fai un Fork di questo progetto;
+- Clona il tuo Fork e realizza un nuovo Branch per le funzionalità che vuoi implementare;
+- Crea una Junit suite per le funzionalità implementate;
+- Effettua il push sul tuo repository ed invia una pull-request;
+- Se il codice è corretto sarà effettuato il merging sul main branch;
+
 
 # Sommario
 
