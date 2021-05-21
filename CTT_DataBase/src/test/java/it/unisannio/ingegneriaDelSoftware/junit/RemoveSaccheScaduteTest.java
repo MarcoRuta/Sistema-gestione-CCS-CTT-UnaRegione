@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import static org.junit.Assert.assertEquals;
+
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManagerBean;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -13,16 +15,13 @@ import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.CTT;
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointRestMagazziniereCTT;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaNotFoundException;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 
 public class RemoveSaccheScaduteTest {
 	CTT ctt = new CTT();
 	EndPointRestMagazziniereCTT magazz = new EndPointRestMagazziniereCTT();
-	MongoDataManager mm = new MongoDataManager();
 	
 	@BeforeClass public static void populateDBSacche() throws SaccaNotFoundException {
-		
-    	MongoDataManager mm = new MongoDataManager();
+
     	List<Sacca> listaSacche = new ArrayList<Sacca>();
     	List<DatiSacca> listaDatiSacche = new ArrayList<DatiSacca>();
     	
@@ -591,11 +590,11 @@ public class RemoveSaccheScaduteTest {
     	
     	
     	for(Sacca sac : listaSacche) {
-        	mm.createSacca(sac);
+        	MongoDataManagerBean.createSacca(sac);
         }
     	
     	for(DatiSacca datisac : listaDatiSacche) {
-        	mm.createDatiSacca(datisac);
+        	MongoDataManagerBean.createDatiSacca(datisac);
         }
 	}
 	
@@ -605,7 +604,7 @@ public class RemoveSaccheScaduteTest {
 	 * @throws SaccaNotFoundException 
 	 */
 	@Test public void test1() throws SaccaNotFoundException {
-		assertEquals(40, mm.getListaSacche().size());
+		assertEquals(40, MongoDataManagerBean.getListaSacche().size());
 	}
 
 	/**
@@ -614,12 +613,11 @@ public class RemoveSaccheScaduteTest {
 	 */
 	@Test public void test2() throws SaccaNotFoundException {
 		ctt.removeSaccheScadute();
-		assertEquals(32, mm.getListaSacche().size());
+		assertEquals(32, MongoDataManagerBean.getListaSacche().size());
 	}
 	
 	
 	@AfterClass public static void dropDBSacche() {
-		MongoDataManager mm = new MongoDataManager();
-		mm.dropDB();
+		MongoDataManagerBean.dropDB();
 	}	
 }

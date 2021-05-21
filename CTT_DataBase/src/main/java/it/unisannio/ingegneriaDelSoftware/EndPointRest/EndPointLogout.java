@@ -2,10 +2,9 @@ package it.unisannio.ingegneriaDelSoftware.EndPointRest;
 
 import it.unisannio.ingegneriaDelSoftware.Classes.Cdf;
 import it.unisannio.ingegneriaDelSoftware.Classes.Token;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManagerBean;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.DipendenteNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.TokenNotFoundException;
-import it.unisannio.ingegneriaDelSoftware.Interfaces.DataManager;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.HttpHeaders;
@@ -44,9 +43,7 @@ public class EndPointLogout {
     @Produces(MediaType.TEXT_PLAIN)
     public Response cambioPassword(@PathParam("cdf")String cdf, String password){
         try{
-            System.out.println("richiesta arrivata");
-            DataManager mm = new MongoDataManager();
-            mm.setPassword(Cdf.getCDF(cdf),password);
+            MongoDataManagerBean.setPassword(Cdf.getCDF(cdf),password);
             return Response.status(Response.Status.OK)
                     .entity("Password cambiata correttamente")
                     .build();

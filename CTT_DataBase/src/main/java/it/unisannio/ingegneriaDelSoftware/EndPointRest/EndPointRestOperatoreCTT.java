@@ -17,6 +17,7 @@ import it.unisannio.ingegneriaDelSoftware.Annotazioni.Secured;
 import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.Classes.NotificaEvasione;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManagerBean;
 import it.unisannio.ingegneriaDelSoftware.EndPointNotifiche.NotificheObserver;
 import it.unisannio.ingegneriaDelSoftware.EndPointNotifiche.Observer;
 import it.unisannio.ingegneriaDelSoftware.EndPointNotifiche.Subject;
@@ -59,12 +60,13 @@ public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT, Subject{
 			saccheTrovate = this.aSearcher.search(GruppoSanguigno.valueOf(gruppoSanguigno),
 					numSacche,
 					DateUtil.dateParser(dataArrivoMassima));
-
-			for(Sacca sacca : saccheTrovate) {
-				sacca.setPrenotato();
-				serialiDaEvadere.add(sacca.getSeriale().getSeriale());
+			if(!saccheTrovate.isEmpty()) {
+				for (Sacca sacca : saccheTrovate) {
+					MongoDataManagerBean.setPrenotatoSacca(sacca.getSeriale());
+					serialiDaEvadere.add(sacca.getSeriale().getSeriale());
+				}
+				this.notifyObserver(new NotificaEvasione(serialiDaEvadere, enteRichiedente, indirizzoEnte));
 			}
-			this.notifyObserver(new NotificaEvasione(serialiDaEvadere,enteRichiedente,indirizzoEnte));
 
 			if(saccheTrovate.size()<numSacche) throw new SaccheInLocaleNotFoundException("Verra contattato il CSS");
 
