@@ -6,7 +6,7 @@ import it.unisannio.ingegneriaDelSoftware.Interfaces.Notifica;
 import javax.websocket.EncodeException;
 import javax.websocket.Session;
 import java.io.IOException;
-import java.util.Observable;
+
 
 public class NotificheObserver implements Observer {
 

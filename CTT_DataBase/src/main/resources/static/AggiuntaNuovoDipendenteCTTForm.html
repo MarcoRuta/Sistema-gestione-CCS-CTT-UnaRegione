@@ -137,7 +137,7 @@
             <div class="outPreview" style="height: 40px;margin: 4% 45px;">
                 <p id="result"></p>
             </div>
-            <button class="btn btn-primary" type="submit" onclick="addDip()" style="margin-left: 73.5%; width: 140px;height: 51px;font-family: Calibri light;font-size: 20px;">Conferma</button>
+            <button class="btn btn-primary" type="submit" onclick="addDip();" style="margin-left: 73.5%; width: 140px;height: 51px;font-family: Calibri light;font-size: 20px;">Conferma</button>
         </div>
         
     </div>
@@ -148,14 +148,14 @@
         var xhttp = new XMLHttpRequest();
         var res;
 
-         verificoToken = function(){
+        verificoToken = function(){
                if(token == null || ruolo != 'AmministratoreCTT'){
                 alert("E' necessario effettuare il login per accedere a questa risorsa");
                 window.location.href='Login.html';
                }
-            }
+        };
 
-            function addDip(){
+        function addDip(){
                 var url = "http://127.0.0.1:8080/rest/amministratore/aggiuntaDipendente";
 
                 var cdf = codice.value;
@@ -182,7 +182,7 @@
 
                 xhttp.onerror = function(){
                     document.getElementById("result").innerHTML = "[Error 401] Impossibile Aggiungere Sacca ";
-                }
+                };
 
                 
                 setTimeout(reloadPage, 500);
@@ -192,7 +192,7 @@
                 xhttp.setRequestHeader('Authorization', 'Basic '+token);
                 xhttp.withCredentials = true;
                 xhttp.send(params);
-            }
+        }
             
             function reloadPage() {
                 alert(res);

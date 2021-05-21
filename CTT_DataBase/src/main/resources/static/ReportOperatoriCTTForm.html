@@ -12,7 +12,7 @@
     
 </head>
 
-<body>
+<body onload="verificoToken();">
     <div class="titlePage">
         <div>
             <span class="fontTitle">
@@ -74,11 +74,18 @@
     <script type="text/javascript">
    
     var token = sessionStorage.getItem("token");
+    var ruolo = sessionStorage.getItem("ruolo");
     var xhttp = new XMLHttpRequest();
     var ruolo;
     var obj;
     var table = document.getElementById('table');
-
+  
+    verificoToken = function(){
+               if(token == null || ruolo != 'AmministratoreCTT'){
+                alert("E' necessario effettuare il login per accedere a questa risorsa");
+                window.location.href='Login.html';
+               }
+    };
 
 	 function report(){
     

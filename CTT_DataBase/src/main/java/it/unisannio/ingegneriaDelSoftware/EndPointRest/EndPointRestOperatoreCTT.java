@@ -1,9 +1,7 @@
 package it.unisannio.ingegneriaDelSoftware.EndPointRest;
 
-import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Singleton;
@@ -14,7 +12,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManagerBean;
+
 import it.unisannio.ingegneriaDelSoftware.Annotazioni.Secured;
 import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.Classes.NotificaEvasione;
@@ -28,7 +26,6 @@ import it.unisannio.ingegneriaDelSoftware.Interfaces.Notifica;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Searcher;
 import it.unisannio.ingegneriaDelSoftware.Searcher.CompositionSearcher;
 import it.unisannio.ingegneriaDelSoftware.Util.DateUtil;
-import it.unisannio.ingegneriaDelSoftware.Util.ScadenzeComparator;
 
 
 @Path("/operatore")
@@ -87,7 +84,6 @@ public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT, Subject{
 					.build();
 		}
 	}
-
 
 	@Override
 	public void notifyObserver(Notifica notifica) {

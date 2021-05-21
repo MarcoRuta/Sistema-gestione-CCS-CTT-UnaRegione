@@ -5,6 +5,7 @@
 	var j;
 	var obj;
 	var res;
+
 	
 	var notify = {};
 
@@ -28,7 +29,7 @@
 		
 		 /*####### EVASIONE SACCA ######*/
 		btn.onclick = function() {
-		
+	
 		    var params = 'listaSeriali='+str +'&enteRichiedente='+obj.enteRichiedente+'&indirizzoEnte='+obj.indirizzoEnte;
 
 		    var url = "http://127.0.0.1:8080/rest/magazziniere/evasione";
@@ -58,8 +59,7 @@
 		};
         
 		/*#############################*/
-		document.getElementById("divNot").appendChild(btn);
-		
+
 		
 		if(localStorage.getItem('j') == null) {
 			  j = 0;
@@ -68,9 +68,8 @@
 		
 		localStorage.setItem('bottone' + j, data);
 		localStorage.setItem('j',++j);
-		location.reload();
 	};
-	
+		 	
         /*var console = {};
 
         console.write = function(message) {

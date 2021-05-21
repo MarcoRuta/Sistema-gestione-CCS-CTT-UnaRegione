@@ -8,7 +8,6 @@ import it.unisannio.ingegneriaDelSoftware.Exceptions.TokenNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.DataManager;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;

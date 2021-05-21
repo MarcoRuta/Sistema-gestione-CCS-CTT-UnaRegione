@@ -229,14 +229,15 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 	 * @param dataInizioReport  data dalla quale selezioniamo le sacche
 	 * @param dataAffidamentoReport data oltre la quale non selezioniamo piu le sacche
 	 * @return  lista di sacche che erano nel CTT nell'arco temporale dataInizioReport-dataAffidamentoReport*/
-	private List<DatiSacca> getDatiSaccaInATemporalAmount(LocalDate dataInizioReport, LocalDate dataAffidamentoReport){
+	private List<DatiSacca> getDatiSaccaInATemporalAmount(LocalDate dataInizioReport, LocalDate dataFineReport){
 		List<DatiSacca> datiSaccaTransitati = new ArrayList<>();
 		
 		//creo la lista dei dati sacca
 		List<DatiSacca> listaDatiSacca = MongoDataManagerBean.getListaDatiSacche();
 		for (DatiSacca datiSacca : listaDatiSacca)
-			if (datiSacca.getDataArrivo().isAfter(dataInizioReport) || datiSacca.getDataAffidamento().isBefore(dataAffidamentoReport)
-					|| datiSacca.getDataArrivo().isEqual(dataInizioReport) || datiSacca.getDataAffidamento().isEqual(dataAffidamentoReport))
+			if ((datiSacca.getDataArrivo().isAfter(dataInizioReport) && datiSacca.getDataArrivo().isBefore(dataFineReport))
+					|| (datiSacca.getDataAffidamento().isAfter(dataInizioReport) && datiSacca.getDataAffidamento().isBefore(dataFineReport))
+					|| (datiSacca.getDataArrivo().isEqual(dataInizioReport) && datiSacca.getDataAffidamento().isEqual(dataFineReport)))
 				//se è verificata una delle 4 condizioni aggiungo alla lista
 				datiSaccaTransitati.add(datiSacca);
 		return datiSaccaTransitati;
