@@ -1,12 +1,14 @@
 package it.unisannio.ingegneriaDelSoftware.DataManagers.Codec;
 
 import it.unisannio.ingegneriaDelSoftware.Classes.*;
-import it.unisannio.ingegneriaDelSoftware.Util.DateUtil;
+import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 import org.bson.BsonReader;
 import org.bson.BsonWriter;
 import org.bson.codecs.Codec;
 import org.bson.codecs.DecoderContext;
 import org.bson.codecs.EncoderContext;
+
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 
@@ -18,11 +20,13 @@ public class SaccaCodec implements Codec<Sacca> {
         reader.readStartDocument();
         reader.readObjectId();
         Sacca unaSacca = new Sacca(
-                Seriale.getSeriale(reader.readString("seriale")),
-                GruppoSanguigno.valueOf(reader.readString("gruppo_sanguigno")),
-                DateUtil.dateParser(reader.readString("data_di_produzione")),
-                DateUtil.dateParser(reader.readString("data_di_scadenza")),
-                reader.readBoolean("prenotato"));
+                Seriale.getSeriale(reader.readString(Constants.ELEMENT_SERIALE)),
+                GruppoSanguigno.valueOf(reader.readString(Constants.ELEMENT_GRUPPO)),
+                LocalDate.parse(reader.readString(Constants.ELEMENT_DATAPRODUZIONE),
+                        DateTimeFormatter.ofPattern(Constants.DATEFORMAT)),
+                LocalDate.parse(reader.readString(Constants.ELEMENT_DATASCADENZA),
+                        DateTimeFormatter.ofPattern(Constants.DATEFORMAT)),
+                reader.readBoolean(Constants.ELEMENT_PRENOTATO));
         reader.readEndDocument();
         return unaSacca;
     }
@@ -31,11 +35,11 @@ public class SaccaCodec implements Codec<Sacca> {
     public void encode(BsonWriter writer, Sacca value, EncoderContext encoderContext) {
 
         writer.writeStartDocument();
-        writer.writeString("seriale", value.getSeriale().getSeriale());
-        writer.writeString("gruppo_sanguigno",value.getGruppoSanguigno().toString());
-        writer.writeString("data_di_produzione", DateTimeFormatter.ISO_LOCAL_DATE.format(value.getDataProduzione()));
-        writer.writeString("data_di_scadenza",DateTimeFormatter.ISO_LOCAL_DATE.format(value.getDataScadenza()));
-        writer.writeBoolean("prenotato", value.isPrenotato());
+        writer.writeString(Constants.ELEMENT_SERIALE, value.getSeriale().getSeriale());
+        writer.writeString(Constants.ELEMENT_GRUPPO,value.getGruppoSanguigno().toString());
+        writer.writeString(Constants.ELEMENT_DATAPRODUZIONE, DateTimeFormatter.ISO_LOCAL_DATE.format(value.getDataProduzione()));
+        writer.writeString(Constants.ELEMENT_DATASCADENZA,DateTimeFormatter.ISO_LOCAL_DATE.format(value.getDataScadenza()));
+        writer.writeBoolean(Constants.ELEMENT_PRENOTATO, value.isPrenotato());
         writer.writeEndDocument();
     }
 

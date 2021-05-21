@@ -4,13 +4,13 @@ import it.unisannio.ingegneriaDelSoftware.Classes.DatiSacca;
 import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.Classes.Seriale;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
-import it.unisannio.ingegneriaDelSoftware.Util.DateUtil;
 import org.bson.BsonReader;
 import org.bson.BsonWriter;
 import org.bson.codecs.Codec;
 import org.bson.codecs.DecoderContext;
 import org.bson.codecs.EncoderContext;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 
@@ -24,8 +24,10 @@ public class DatiSaccaCodec implements Codec<DatiSacca> {
         DatiSacca unaSacca = new DatiSacca(
                 Seriale.getSeriale(reader.readString(Constants.ELEMENT_SERIALE)),
                 GruppoSanguigno.valueOf(reader.readString(Constants.ELEMENT_GRUPPO)),
-                DateUtil.dateParser(reader.readString(Constants.ELEMENT_DATAARRIVO)),
-                DateUtil.dateParser(reader.readString(Constants.ELEMENT_DATAAFFIDAMENTO)),
+                LocalDate.parse(reader.readString(Constants.ELEMENT_DATAARRIVO),
+                        DateTimeFormatter.ofPattern(Constants.DATEFORMAT)),
+                LocalDate.parse(reader.readString(Constants.ELEMENT_DATAAFFIDAMENTO),
+                        DateTimeFormatter.ofPattern(Constants.DATEFORMAT)),
                 reader.readString(Constants.ELEMENT_ENTEDONATORE),
                 reader.readString(Constants.ELEMENT_ENTERICHIEDENTE),
                 reader.readString(Constants.ELEMENT_INDIRIZZOENTE));

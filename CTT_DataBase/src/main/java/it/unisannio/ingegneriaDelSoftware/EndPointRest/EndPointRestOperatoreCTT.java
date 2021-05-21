@@ -14,14 +14,19 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import MosquitoNotificationTry.NotificaEvasionePublisher;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManagerBean;
 import it.unisannio.ingegneriaDelSoftware.Annotazioni.Secured;
 import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.Classes.NotificaEvasione;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
+import it.unisannio.ingegneriaDelSoftware.EndPointNotifiche.NotificheObserver;
+import it.unisannio.ingegneriaDelSoftware.EndPointNotifiche.Observer;
+import it.unisannio.ingegneriaDelSoftware.EndPointNotifiche.Subject;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccheInLocaleNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointOperatoreCTT;
+import it.unisannio.ingegneriaDelSoftware.Interfaces.Notifica;
+import it.unisannio.ingegneriaDelSoftware.Interfaces.Searcher;
+import it.unisannio.ingegneriaDelSoftware.Searcher.CompositionSearcher;
 import it.unisannio.ingegneriaDelSoftware.Util.DateUtil;
 import it.unisannio.ingegneriaDelSoftware.Util.ScadenzeComparator;
 
@@ -30,7 +35,10 @@ import it.unisannio.ingegneriaDelSoftware.Util.ScadenzeComparator;
 @Singleton
 @Secured
 @RolesAllowed("OperatoreCTT")
-public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT{
+public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT, Subject{
+
+	private Observer anObserver= new NotificheObserver();
+	public Searcher aSearcher = new CompositionSearcher();
 
 	/**Restituisce la Sacca del GruppoSanguigno richiesto con Data di scadenza più vicina nel DataBase locale.
 	 * @param gruppoSanguigno Gruppo sanguigno ricercato
@@ -49,50 +57,19 @@ public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT{
 									   @QueryParam("priorità") String priorita){
 		try {
 			List<Sacca> saccheTrovate = new ArrayList<Sacca>();
+			List<String> serialiDaEvadere = new ArrayList<>();
 			int numSacche = Integer.parseInt(numeroSacche);
-			saccheTrovate = ricercaSacca(GruppoSanguigno.valueOf(gruppoSanguigno), DateUtil.dateParser(dataArrivoMassima));
+			saccheTrovate = this.aSearcher.search(GruppoSanguigno.valueOf(gruppoSanguigno),
+					numSacche,
+					DateUtil.dateParser(dataArrivoMassima));
 
-			if(saccheTrovate.size() < numSacche) {
-				for(Sacca s : saccheTrovate) s.print(System.err);
-				saccheTrovate.addAll(ricercaSaccaCompatibile(
-						GruppoSanguigno.valueOf(gruppoSanguigno), (DateUtil.dateParser(dataArrivoMassima))));
-				for(Sacca s : saccheTrovate) s.print(System.err);
+			for(Sacca sacca : saccheTrovate) {
+				sacca.setPrenotato();
+				serialiDaEvadere.add(sacca.getSeriale().getSeriale());
 			}
-			 
-			 //Nel caso in cui la richiesta non è stata soddisfatta completamente localmente, si crea una notifica di evasione diretta al magazziniere contenente i dati relativi all'evasione
-			 //Viene lanciata anche una SaccheInLocaleNotFoundException, che causerà l'inoltro della query di ricerca presso il CCS
-			if(numSacche > saccheTrovate.size()) {
-				
-				List<String> seriali = new ArrayList<String>();
-			   
-			   for(Sacca s : saccheTrovate) {
-				   MongoDataManagerBean.setPrenotatoSacca(s.getSeriale());
-				   seriali.add(s.getSeriale().getSeriale());
-			
-			   }
-			      NotificaEvasionePublisher publisher = new NotificaEvasionePublisher();
-				  publisher.setNotifica(new NotificaEvasione(seriali,enteRichiedente,indirizzoEnte));
-				  publisher.run();
-			   
- 
-				throw new SaccheInLocaleNotFoundException("Non è stato possibile soddisfare completamente la richiesta in locale, verrà contattato il CCS");
-			 }
-			
-			//Nel caso in cui la richiesta è stata soddisfatta completamente localmente, si crea una notifica di evasione diretta al magazziniere contenente i dati relativi all'evasione
-			else {
-				
-				 List<String> seriali = new ArrayList<String>();
-					
-				  for(int i = 0; i < numSacche; i++) {
-					  seriali.add(saccheTrovate.get(i).getSeriale().getSeriale());
-					  MongoDataManagerBean.setPrenotatoSacca(saccheTrovate.get(i).getSeriale());
-				  }
-				 
-				  NotificaEvasionePublisher publisher = new NotificaEvasionePublisher();
-				  publisher.setNotifica(new NotificaEvasione(seriali,enteRichiedente,indirizzoEnte));
-				  publisher.run();
-				
-			}
+			this.notifyObserver(new NotificaEvasione(serialiDaEvadere,enteRichiedente,indirizzoEnte));
+
+			if(saccheTrovate.size()<numSacche) throw new SaccheInLocaleNotFoundException("Verra contattato il CSS");
 
 			return Response
 					.status(Response.Status.OK) //In questo caso sono state trovate tutte le sacche, va inviata risposta 200 OK 
@@ -112,51 +89,8 @@ public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT{
 	}
 
 
-	/**Cerca e restituisce una Sacca all'interno del database delle Sacche che non scada entro una dataArrivoMassima
-	 * @param gs Gruppo sanguigno della Sacca che si vuole ricercare
-	 * @param dataArrivoMassima Data entro la quale la Sacca non deve essere scaduta
-	 * @return null se la Sacca non è stata trovata; la Sacca se essa è stata trovata
-	 */
-	private List<Sacca> ricercaSacca(GruppoSanguigno gs, LocalDate dataArrivoMassima){
-		assert(gs!=null) : "Il gruppo sanguigno non può essere nullo!";
-		assert(dataArrivoMassima!=null) : "la data di arrivo non può essere nulla!";
-
-		List<Sacca> saccheTrovate = new ArrayList<Sacca>();
-		List<Sacca> listaSacche = MongoDataManagerBean.getListaSacche();
-			
-		for (Sacca sacca : listaSacche)
-			if(!sacca.isPrenotato() && sacca.getGruppoSanguigno().equals(gs)
-					&& sacca.getDataScadenza().isAfter(dataArrivoMassima)
-					&& sacca.getDataScadenza().isAfter(LocalDate.now()))
-				saccheTrovate.add(sacca);
-
-		saccheTrovate.sort(new ScadenzeComparator());
-		return saccheTrovate;
-	}
-
-
-	/**Cerca e restituisce una Sacca compatibile al gruppo ricercato e che non scada entro una dataArrivoMassima, all'interno del database delle sacche
-	 * @param gs Gruppo sanguigno della Sacca che si vuole ricercare
-	 * @param dataArrivoMassima Data entro la quale la Sacca non deve essere scaduta
-	 * @return lista di sacche trovate ordinate sulla scadenza
-	 */
-	private List<Sacca> ricercaSaccaCompatibile(GruppoSanguigno gs, LocalDate dataArrivoMassima){
-		List<Sacca> saccheTrovate = new ArrayList<Sacca>();
-		List<Sacca> listaSacche = MongoDataManagerBean.getListaSacche();
-
-		Iterator<GruppoSanguigno> i = GruppoSanguigno.puoRicevereDa(gs);
-		while(i.hasNext()) {
-			GruppoSanguigno grs = i.next();
-			for (Sacca sacca : listaSacche)
-				if(!sacca.isPrenotato()
-						&& sacca.getGruppoSanguigno().equals(grs)
-						&& sacca.getDataScadenza().isAfter(dataArrivoMassima)
-						&& sacca.getDataScadenza().isAfter(LocalDate.now())
-						&& !grs.equals(gs))
-					saccheTrovate.add(sacca);
-		}
-
-		saccheTrovate.sort(new ScadenzeComparator());
-		return saccheTrovate;
+	@Override
+	public void notifyObserver(Notifica notifica) {
+		this.anObserver.update(notifica);
 	}
 }

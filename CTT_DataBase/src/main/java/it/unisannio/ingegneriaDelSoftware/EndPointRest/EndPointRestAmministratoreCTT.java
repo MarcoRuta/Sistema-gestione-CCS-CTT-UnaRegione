@@ -178,7 +178,7 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 	 * @param dataFine Data di fine dell' arco temporale
 	 * @return Response 200 OK e invia la lista dei datiSacca / 400 BAD_REQUEST se i parametri inseriti non sono corretti
 	 */
-	@POST
+	@GET
 	@Path("/ordinaGruppiSanguigniPerRichieste")
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response ordinaGruppiSanguigniPerRichieste(@QueryParam("listaGS") String listaGS,

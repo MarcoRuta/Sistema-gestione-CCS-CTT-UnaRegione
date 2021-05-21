@@ -65,13 +65,13 @@
 		document.getElementById("divNot").appendChild(btn);
 		//}
 		
-		if(sessionStorage.getItem('j') == null) {
+		if(localStorage.getItem('j') == null) {
 			  j = 0;
 		}
-		else { j = sessionStorage.getItem('j');}
+		else { j = localStorage.getItem('j');}
 		
-		sessionStorage.setItem('bottone' + j, data);
-		sessionStorage.setItem('j',++j);
+		localStorage.setItem('bottone' + j, data);
+		localStorage.setItem('j',++j);
 	};
 	
 	/*####### CREA PDF FUNCTION ######*/
@@ -101,11 +101,11 @@
         /*####### REMOVE FUNCTION ######*/
 	function removeNotify() {
 		var x = document.activeElement;
-		for(let i = 0; i < sessionStorage.length; i++) {
-			if(sessionStorage.key(i).substring(0,7) == "bottone") {
-				data = sessionStorage.getItem(sessionStorage.key(i));
+		for(let i = 0; i < localStorage.length; i++) {
+			if(localStorage.key(i).substring(0,7) == "bottone") {
+				data = localStorage.getItem(localStorage.key(i));
 				if(JSON.parse(data).listaSeriali[0] == x.value) {
-					sessionStorage.removeItem(sessionStorage.key(i));
+					localStorage.removeItem(localStorage.key(i));
 					location.reload();
 				}
 			}
