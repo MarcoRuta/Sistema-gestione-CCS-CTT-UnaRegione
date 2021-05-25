@@ -21,11 +21,16 @@ public class CompositionSearcher implements Searcher {
     @Override
     public List<Sacca> search(GruppoSanguigno gs, int numeroSacche, LocalDate dataArrivoMassima) {
         List<Sacca> saccheTrovate = searchers.get(0).search(gs,numeroSacche,dataArrivoMassima);
-        if(!(saccheTrovate.size() < numeroSacche))
-            return saccheTrovate;
+        
+        if(saccheTrovate.size() >= numeroSacche)
+            return saccheTrovate.subList(0,numeroSacche);
+        
         saccheTrovate.addAll(this.searchers.get(1).search(gs,numeroSacche,dataArrivoMassima));
-        if(saccheTrovate.size()>numeroSacche)
-            saccheTrovate = saccheTrovate.subList(0,numeroSacche);
+        
+        if(saccheTrovate.size()>=numeroSacche)
+            return saccheTrovate.subList(0,numeroSacche);
+        
+        
         return saccheTrovate;
     }
 }

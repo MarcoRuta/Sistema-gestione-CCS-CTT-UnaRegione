@@ -5,6 +5,7 @@
 	var j;
 	var obj;
 	var res;
+	var host;
 
 	
 	var notify = {};
@@ -31,8 +32,9 @@
 		btn.onclick = function() {
 	
 		    var params = 'listaSeriali='+str +'&enteRichiedente='+obj.enteRichiedente+'&indirizzoEnte='+obj.indirizzoEnte;
-
-		    var url = "http://127.0.0.1:8080/rest/magazziniere/evasione";
+			
+			host = document.location.origin;
+		    var url = host+"/rest/magazziniere/evasione";
 		    xhttp.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
 			    res = this.response;
@@ -98,5 +100,6 @@
                 notify.write(message.data);
             };
         };
- 
-        channel.connect('ws://127.0.0.1:8080/ws/mosquitoTry');
+ 		host = document.location.origin;
+ 		host = host.substring(6);
+        channel.connect('ws://'+host+'/ws/mosquitoTry');

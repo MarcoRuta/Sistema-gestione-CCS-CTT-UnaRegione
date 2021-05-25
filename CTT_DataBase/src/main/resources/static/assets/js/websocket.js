@@ -5,6 +5,7 @@
 	var j;
 	var obj;
 	var res;
+	var host;
 	
 	var notify = {};
 
@@ -30,8 +31,9 @@
 		btn.onclick = function() {
 		
 		    var params = 'listaSeriali='+str +'&enteRichiedente='+obj.enteRichiedente+'&indirizzoEnte='+obj.indirizzoEnte;
-
-		    var url = "http://127.0.0.1:8080/rest/magazziniere/evasione";
+			
+			host = document.location.origin;
+		    var url = host+"/rest/magazziniere/evasione";
 		    xhttp.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
 			    res = this.response;
@@ -68,8 +70,45 @@
 		
 		localStorage.setItem('bottone' + j, data);
 		localStorage.setItem('j',++j);
-		location.reload();
 	};
+	
+	/*####### CREA PDF FUNCTION ######*/
+      function creaPdf() {
+              alert("STO CREANDO IL PDF!");
+              var doc = new jsPDF();
+              /*var host = "http://"+ window.location.hostname;*/
+              
+              doc.setFontSize(25);
+              doc.text(20, 20, "Evasione sacche");
+      
+              doc.setLineWidth(0.5);
+              doc.line(20, 25, 197, 25);
+      
+              doc.setFontSize(20);
+              doc.text(20, 40, res);
+              //doc.text(20,45,indirizzo.value);
+      
+              // Save the PDF
+              doc.save('EvasioneSacche.pdf');
+      }
+      /*#############################*/
+    
+      /*####### REMOVE FUNCTION ######*/
+      function removeNotify() {
+          var x = document.activeElement;
+          for(let i = 0; i < localStorage.length; i++) {
+                  if(localStorage.key(i).substring(0,7) == "bottone") {
+                          data = localStorage.getItem(localStorage.key(i));
+                          if(JSON.parse(data).listaSeriali[0] == x.value) {
+                              localStorage.removeItem(localStorage.key(i));
+                              location.reload();
+                          }
+                      
+                  }
+           }
+          
+      }
+      /*#############################*/
 	
         /*var console = {};
 
@@ -99,5 +138,6 @@
                 notify.write(message.data);
             };
         };
- 
-        channel.connect('ws://127.0.0.1:8080/ws/mosquitoTry');
+ 		host = document.location.origin;
+ 		host = host.substring(6);
+        channel.connect('ws://'+host+'/ws/mosquitoTry');

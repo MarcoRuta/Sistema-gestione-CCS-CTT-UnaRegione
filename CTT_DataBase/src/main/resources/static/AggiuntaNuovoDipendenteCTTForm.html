@@ -156,7 +156,8 @@
         };
 
         function addDip(){
-                var url = "http://127.0.0.1:8080/rest/amministratore/aggiuntaDipendente";
+        	  	var host = document.location.origin;
+                var url = host + "/rest/amministratore/aggiuntaDipendente";
 
                 var cdf = codice.value;
                 var nm = nome.value;

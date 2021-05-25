@@ -84,8 +84,9 @@
     
 
       xhttp = new XMLHttpRequest();
+      var host = document.location.origin;
       var params = "dataInizio=" + datein.value + "&dataFine=" + dateout.value;
-      url = "http://127.0.0.1:8080/rest/amministratore/reportLocaleSaccheInviateERicevute?"+params;
+      url = host + "/rest/amministratore/reportLocaleSaccheInviateERicevute?"+params;
 
 
       xhttp.onreadystatechange = function() {

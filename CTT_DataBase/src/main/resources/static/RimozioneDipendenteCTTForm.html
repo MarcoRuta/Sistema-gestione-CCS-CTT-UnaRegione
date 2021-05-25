@@ -81,7 +81,8 @@
 
    	 	rimozione = function(){
 	        xhttp = new XMLHttpRequest();
-	        var url ="http://127.0.0.1:8080/rest/amministratore/rimozioneDipendente/"+codice.value;
+	        var host = document.location.origin;
+	        var url = host + "/rest/amministratore/rimozioneDipendente/"+codice.value;
 	        
 	        xhttp.onreadystatechange = function() {
 	                    if (this.readyState == 4 && this.status == 200 ) {
@@ -117,9 +118,10 @@
 
 
         function keepDipendenti(){
-        	
+        		
+        	  	host = document.location.origin;
                 xhttp = new XMLHttpRequest();
-                url = "http://127.0.0.1:8080/rest/amministratore/dipendenti";
+                url = host + "/rest/amministratore/dipendenti";
 
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {

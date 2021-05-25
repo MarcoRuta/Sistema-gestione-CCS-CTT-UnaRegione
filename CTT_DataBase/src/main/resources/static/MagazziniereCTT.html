@@ -77,6 +77,8 @@
     var data;
     var str;
     var res;
+    var host;
+    
     
     function start() {
         verificoToken();
@@ -127,7 +129,8 @@
   
               var params = 'listaSeriali='+str +'&enteRichiedente='+obj.enteRichiedente+'&indirizzoEnte='+obj.indirizzoEnte;
               
-              var url = "http://127.0.0.1:8080/rest/magazziniere/evasione?" + params;
+              host = document.location.origin;
+              var url = host+"/rest/magazziniere/evasione?" + params;
               xhttp.onreadystatechange = function() {
                   if (this.readyState == 4 && this.status == 200) {
                       res = this.response;
@@ -200,7 +203,8 @@
       logout = function(){
   
          var xhttp = new XMLHttpRequest();
-         var url ="http://127.0.0.1:8080/rest/autentificazione/logout";
+         host = document.location.origin;
+         var url =host+"/rest/autentificazione/logout";
          xhttp.onreadystatechange = function() {
                      if (this.readyState == 4 && this.status == 200 ) {
                           sessionStorage.removeItem("token");

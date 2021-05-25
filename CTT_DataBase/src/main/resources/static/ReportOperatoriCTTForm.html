@@ -97,7 +97,8 @@
             }
 
       xhttp = new XMLHttpRequest();
-      url = "http://127.0.0.1:8080/rest/amministratore/reportOperatoriCtt?ruolo="+ruolo;
+      var host = document.location.origin;
+      url = host + "/rest/amministratore/reportOperatoriCtt?ruolo="+ruolo;
 
       xhttp.onreadystatechange = function() {
           if (this.readyState == 4 && this.status == 200) {

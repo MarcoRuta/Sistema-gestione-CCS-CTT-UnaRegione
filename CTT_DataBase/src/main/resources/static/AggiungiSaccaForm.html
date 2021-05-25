@@ -128,9 +128,8 @@
             };
 
             function loadDoc(){
-            	
-                var url = "http://127.0.0.1:8080/rest/magazziniere/aggiuntaSacca";
-                
+            	var host = document.location.origin;
+                var url = host + "/rest/magazziniere/aggiuntaSacca";
                 var gp = gruppo_sanguigno.value;
                 var ed = ente_donatore.value;
                 var ds = data_scadenza.value;

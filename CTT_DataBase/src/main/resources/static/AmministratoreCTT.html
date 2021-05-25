@@ -117,7 +117,8 @@
         logout = function(){
 
             var xhttp = new XMLHttpRequest();
-            var url ="http://127.0.0.1:8080/rest/autentificazione/logout";
+            var host = document.location.origin;
+            var url = host + "/rest/autentificazione/logout";
             xhttp.onreadystatechange = function() {
                         if (this.readyState == 4 && this.status == 200 ) {
                              sessionStorage.removeItem("token");
