@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import static org.junit.Assert.assertEquals;
 
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManagerBean;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -34,8 +34,7 @@ public class RemoveSaccheScaduteTest {
     	GruppoSanguigno gs = GruppoSanguigno.Ap;
     	LocalDate localDataProduzione = LocalDate.of(2020,04,10);
     	LocalDate localDataScadenza = LocalDate.of(2022,04,10);
-    	Boolean prenotato = false;
-    	Sacca sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
+    	Sacca sacca = new Sacca(gs, localDataProduzione, localDataScadenza);
     	listaSacche.add(sacca);
     	        
     	LocalDate localDataArrivo = LocalDate.of(2020,07,15);
@@ -47,8 +46,7 @@ public class RemoveSaccheScaduteTest {
     	 gs = GruppoSanguigno.Ap;
     	 localDataProduzione = LocalDate.of(2020,05,10);
     	 localDataScadenza = LocalDate.of(2022,05,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
+    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza);
     	 listaSacche.add(sacca);
     	        
     	 localDataArrivo = LocalDate.of(2021,03,9);
@@ -60,8 +58,7 @@ public class RemoveSaccheScaduteTest {
     	 gs = GruppoSanguigno.Ap;
     	 localDataProduzione = LocalDate.of(2020,06,10);
     	 localDataScadenza = LocalDate.of(2022,06,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
+    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza);
     	 listaSacche.add(sacca);
     	        
     	 localDataArrivo = LocalDate.of(2021,05,02);
@@ -73,8 +70,7 @@ public class RemoveSaccheScaduteTest {
     	 gs = GruppoSanguigno.Ap;
     	 localDataProduzione = LocalDate.of(2020,07,12);
     	 localDataScadenza = LocalDate.of(2022,07,12);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
+    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza);
     	 listaSacche.add(sacca);
     	        
     	 localDataArrivo = LocalDate.of(2021,05,02);
@@ -87,8 +83,7 @@ public class RemoveSaccheScaduteTest {
     	 gs = GruppoSanguigno.Ap;
     	 localDataProduzione = LocalDate.of(2018,06,10);
     	 localDataScadenza = LocalDate.of(2020,06,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
+    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza);
     	 listaSacche.add(sacca);
     	        
     	 localDataArrivo = LocalDate.of(2021,05,02);
@@ -104,8 +99,7 @@ public class RemoveSaccheScaduteTest {
     	 gs = GruppoSanguigno.Am;
     	 localDataProduzione = LocalDate.of(2020,04,10);
     	 localDataScadenza = LocalDate.of(2022,04,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
+    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza);
     	 listaSacche.add(sacca);
     	        
     	 localDataArrivo = LocalDate.of(2020,07,15);
@@ -117,8 +111,7 @@ public class RemoveSaccheScaduteTest {
     	 gs = GruppoSanguigno.Am;
     	 localDataProduzione = LocalDate.of(2020,05,10);
     	 localDataScadenza = LocalDate.of(2022,05,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
+    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza);
     	 listaSacche.add(sacca);
     	        
     	 localDataArrivo = LocalDate.of(2021,03,9);
@@ -130,8 +123,7 @@ public class RemoveSaccheScaduteTest {
     	 gs = GruppoSanguigno.Am;
     	 localDataProduzione = LocalDate.of(2020,06,10);
     	 localDataScadenza = LocalDate.of(2022,06,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
+    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza);
     	 listaSacche.add(sacca);
     	        
     	 localDataArrivo = LocalDate.of(2021,05,02);
@@ -143,8 +135,7 @@ public class RemoveSaccheScaduteTest {
     	 gs = GruppoSanguigno.Am;
     	 localDataProduzione = LocalDate.of(2020,07,12);
     	 localDataScadenza = LocalDate.of(2022,07,12);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
+    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza);
     	 listaSacche.add(sacca);
     	        
     	 localDataArrivo = LocalDate.of(2021,05,02);
@@ -157,8 +148,7 @@ public class RemoveSaccheScaduteTest {
     	 gs = GruppoSanguigno.Am;
     	 localDataProduzione = LocalDate.of(2018,06,10);
     	 localDataScadenza = LocalDate.of(2020,06,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
+    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza);
     	 listaSacche.add(sacca);
     	        
     	 localDataArrivo = LocalDate.of(2021,05,02);
@@ -174,8 +164,7 @@ public class RemoveSaccheScaduteTest {
     	 gs = GruppoSanguigno.Bp;
     	 localDataProduzione = LocalDate.of(2020,04,10);
     	 localDataScadenza = LocalDate.of(2022,04,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
+    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza);
     	 listaSacche.add(sacca);
     	        
     	 localDataArrivo = LocalDate.of(2020,07,15);
@@ -187,8 +176,7 @@ public class RemoveSaccheScaduteTest {
     	 gs = GruppoSanguigno.Bp;
     	 localDataProduzione = LocalDate.of(2020,05,10);
     	 localDataScadenza = LocalDate.of(2022,05,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
+    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza);
     	 listaSacche.add(sacca);
     	        
     	 localDataArrivo = LocalDate.of(2021,03,9);
@@ -200,8 +188,7 @@ public class RemoveSaccheScaduteTest {
     	 gs = GruppoSanguigno.Bp;
     	 localDataProduzione = LocalDate.of(2020,06,10);
     	 localDataScadenza = LocalDate.of(2022,06,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
+    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza);
     	 listaSacche.add(sacca);
     	        
     	 localDataArrivo = LocalDate.of(2021,05,02);
@@ -213,8 +200,7 @@ public class RemoveSaccheScaduteTest {
     	 gs = GruppoSanguigno.Bp;
     	 localDataProduzione = LocalDate.of(2020,07,12);
     	 localDataScadenza = LocalDate.of(2022,07,12);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
+    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza);
     	 listaSacche.add(sacca);
     	        
     	 localDataArrivo = LocalDate.of(2021,05,02);
@@ -227,8 +213,7 @@ public class RemoveSaccheScaduteTest {
     	 gs = GruppoSanguigno.Bp;
     	 localDataProduzione = LocalDate.of(2018,06,10);
     	 localDataScadenza = LocalDate.of(2020,06,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
+    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza);
     	 listaSacche.add(sacca);
     	        
     	 localDataArrivo = LocalDate.of(2021,05,02);
@@ -245,8 +230,7 @@ public class RemoveSaccheScaduteTest {
     	 gs = GruppoSanguigno.Bm;
     	 localDataProduzione = LocalDate.of(2020,04,10);
     	 localDataScadenza = LocalDate.of(2022,04,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
+    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza);
     	 listaSacche.add(sacca);
     	        
     	 localDataArrivo = LocalDate.of(2020,07,15);
@@ -258,8 +242,7 @@ public class RemoveSaccheScaduteTest {
     	 gs = GruppoSanguigno.Bm;
     	 localDataProduzione = LocalDate.of(2020,05,10);
     	 localDataScadenza = LocalDate.of(2022,05,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
+    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza);
     	 listaSacche.add(sacca);
     	        
     	 localDataArrivo = LocalDate.of(2021,03,9);
@@ -271,8 +254,7 @@ public class RemoveSaccheScaduteTest {
     	 gs = GruppoSanguigno.Bm;
     	 localDataProduzione = LocalDate.of(2020,06,10);
     	 localDataScadenza = LocalDate.of(2022,06,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
+    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza);
     	 listaSacche.add(sacca);
     	        
     	 localDataArrivo = LocalDate.of(2021,05,02);
@@ -284,8 +266,7 @@ public class RemoveSaccheScaduteTest {
     	 gs = GruppoSanguigno.Bm;
     	 localDataProduzione = LocalDate.of(2020,07,12);
     	 localDataScadenza = LocalDate.of(2022,07,12);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
+    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza);
     	 listaSacche.add(sacca);
     	        
     	 localDataArrivo = LocalDate.of(2021,05,02);
@@ -298,8 +279,7 @@ public class RemoveSaccheScaduteTest {
     	 gs = GruppoSanguigno.Bm;
     	 localDataProduzione = LocalDate.of(2018,06,10);
     	 localDataScadenza = LocalDate.of(2020,06,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
+    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza);
     	 listaSacche.add(sacca);
     	        
     	 localDataArrivo = LocalDate.of(2021,05,02);
@@ -315,8 +295,7 @@ public class RemoveSaccheScaduteTest {
     	 gs = GruppoSanguigno.ABp;
     	 localDataProduzione = LocalDate.of(2020,04,10);
     	 localDataScadenza = LocalDate.of(2022,04,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
+    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza);
     	 listaSacche.add(sacca);
     	        
     	 localDataArrivo = LocalDate.of(2020,07,15);
@@ -328,8 +307,7 @@ public class RemoveSaccheScaduteTest {
     	 gs = GruppoSanguigno.ABp;
     	 localDataProduzione = LocalDate.of(2020,05,10);
     	 localDataScadenza = LocalDate.of(2022,05,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
+    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza);
     	 listaSacche.add(sacca);
     	        
     	 localDataArrivo = LocalDate.of(2021,03,9);
@@ -341,8 +319,7 @@ public class RemoveSaccheScaduteTest {
     	 gs = GruppoSanguigno.ABp;
     	 localDataProduzione = LocalDate.of(2020,06,10);
     	 localDataScadenza = LocalDate.of(2022,06,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
+    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza);
     	 listaSacche.add(sacca);
     	        
     	 localDataArrivo = LocalDate.of(2021,05,02);
@@ -354,8 +331,7 @@ public class RemoveSaccheScaduteTest {
     	 gs = GruppoSanguigno.ABp;
     	 localDataProduzione = LocalDate.of(2020,07,12);
     	 localDataScadenza = LocalDate.of(2022,07,12);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
+    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza);
     	 listaSacche.add(sacca);
     	        
     	 localDataArrivo = LocalDate.of(2021,05,02);
@@ -368,8 +344,7 @@ public class RemoveSaccheScaduteTest {
     	 gs = GruppoSanguigno.ABp;
     	 localDataProduzione = LocalDate.of(2018,06,10);
     	 localDataScadenza = LocalDate.of(2020,06,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
+    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza);
     	 listaSacche.add(sacca);
     	        
     	 localDataArrivo = LocalDate.of(2021,05,02);
@@ -385,8 +360,7 @@ public class RemoveSaccheScaduteTest {
     	 gs = GruppoSanguigno.ABm;
     	 localDataProduzione = LocalDate.of(2020,04,10);
     	 localDataScadenza = LocalDate.of(2022,04,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
+    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza);
     	 listaSacche.add(sacca);
     	        
     	 localDataArrivo = LocalDate.of(2020,07,15);
@@ -398,8 +372,7 @@ public class RemoveSaccheScaduteTest {
     	 gs = GruppoSanguigno.ABm;
     	 localDataProduzione = LocalDate.of(2020,05,10);
     	 localDataScadenza = LocalDate.of(2022,05,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
+    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza);
     	 listaSacche.add(sacca);
     	        
     	 localDataArrivo = LocalDate.of(2021,03,9);
@@ -411,8 +384,7 @@ public class RemoveSaccheScaduteTest {
     	 gs = GruppoSanguigno.ABm;
     	 localDataProduzione = LocalDate.of(2020,06,10);
     	 localDataScadenza = LocalDate.of(2022,06,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
+    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza);
     	 listaSacche.add(sacca);
     	        
     	 localDataArrivo = LocalDate.of(2021,05,02);
@@ -424,8 +396,7 @@ public class RemoveSaccheScaduteTest {
     	 gs = GruppoSanguigno.ABm;
     	 localDataProduzione = LocalDate.of(2020,07,12);
     	 localDataScadenza = LocalDate.of(2022,07,12);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
+    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza);
     	 listaSacche.add(sacca);
     	        
     	 localDataArrivo = LocalDate.of(2021,05,02);
@@ -438,8 +409,7 @@ public class RemoveSaccheScaduteTest {
     	 gs = GruppoSanguigno.ABm;
     	 localDataProduzione = LocalDate.of(2018,06,10);
     	 localDataScadenza = LocalDate.of(2020,06,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
+    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza);
     	 listaSacche.add(sacca);
     	        
     	 localDataArrivo = LocalDate.of(2021,05,02);
@@ -455,8 +425,7 @@ public class RemoveSaccheScaduteTest {
     	 gs = GruppoSanguigno.ZEROp;
     	 localDataProduzione = LocalDate.of(2020,04,10);
     	 localDataScadenza = LocalDate.of(2022,04,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
+    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza);
     	 listaSacche.add(sacca);
     	        
     	 localDataArrivo = LocalDate.of(2020,07,15);
@@ -468,8 +437,7 @@ public class RemoveSaccheScaduteTest {
     	 gs = GruppoSanguigno.ZEROp;
     	 localDataProduzione = LocalDate.of(2020,05,10);
     	 localDataScadenza = LocalDate.of(2022,05,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
+    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza);
     	 listaSacche.add(sacca);
     	        
     	 localDataArrivo = LocalDate.of(2021,03,9);
@@ -481,8 +449,7 @@ public class RemoveSaccheScaduteTest {
     	 gs = GruppoSanguigno.ZEROp;
     	 localDataProduzione = LocalDate.of(2020,06,10);
     	 localDataScadenza = LocalDate.of(2022,06,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
+    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza);
     	 listaSacche.add(sacca);
     	        
     	 localDataArrivo = LocalDate.of(2021,05,02);
@@ -494,8 +461,7 @@ public class RemoveSaccheScaduteTest {
     	 gs = GruppoSanguigno.ZEROp;
     	 localDataProduzione = LocalDate.of(2020,07,12);
     	 localDataScadenza = LocalDate.of(2022,07,12);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
+    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza);
     	 listaSacche.add(sacca);
     	        
     	 localDataArrivo = LocalDate.of(2021,05,02);
@@ -508,8 +474,7 @@ public class RemoveSaccheScaduteTest {
     	 gs = GruppoSanguigno.ZEROp;
     	 localDataProduzione = LocalDate.of(2018,06,10);
     	 localDataScadenza = LocalDate.of(2020,06,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
+    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza);
     	 listaSacche.add(sacca);
     	        
     	 localDataArrivo = LocalDate.of(2021,05,02);
@@ -525,8 +490,7 @@ public class RemoveSaccheScaduteTest {
     	 gs = GruppoSanguigno.ZEROm;
     	 localDataProduzione = LocalDate.of(2020,04,10);
     	 localDataScadenza = LocalDate.of(2022,04,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
+    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza);
     	 listaSacche.add(sacca);
     	        
     	 localDataArrivo = LocalDate.of(2020,07,15);
@@ -538,8 +502,7 @@ public class RemoveSaccheScaduteTest {
     	 gs = GruppoSanguigno.ZEROm;
     	 localDataProduzione = LocalDate.of(2020,05,10);
     	 localDataScadenza = LocalDate.of(2022,05,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
+    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza);
     	 listaSacche.add(sacca);
     	        
     	 localDataArrivo = LocalDate.of(2021,03,9);
@@ -551,8 +514,7 @@ public class RemoveSaccheScaduteTest {
     	 gs = GruppoSanguigno.ZEROm;
     	 localDataProduzione = LocalDate.of(2020,06,10);
     	 localDataScadenza = LocalDate.of(2022,06,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
+    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza);
     	 listaSacche.add(sacca);
     	        
     	 localDataArrivo = LocalDate.of(2021,05,02);
@@ -564,8 +526,7 @@ public class RemoveSaccheScaduteTest {
     	 gs = GruppoSanguigno.ZEROm;
     	 localDataProduzione = LocalDate.of(2020,07,12);
     	 localDataScadenza = LocalDate.of(2022,07,12);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
+    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza);
     	 listaSacche.add(sacca);
     	        
     	 localDataArrivo = LocalDate.of(2021,05,02);
@@ -578,8 +539,7 @@ public class RemoveSaccheScaduteTest {
     	 gs = GruppoSanguigno.ZEROm;
     	 localDataProduzione = LocalDate.of(2018,06,10);
     	 localDataScadenza = LocalDate.of(2020,06,10);
-    	 prenotato = false;
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza, prenotato);
+    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza);
     	 listaSacche.add(sacca);
     	        
     	 localDataArrivo = LocalDate.of(2021,05,02);
@@ -590,11 +550,11 @@ public class RemoveSaccheScaduteTest {
     	
     	
     	for(Sacca sac : listaSacche) {
-        	MongoDataManagerBean.createSacca(sac);
+        	MongoDataManager.createSacca(sac);
         }
     	
     	for(DatiSacca datisac : listaDatiSacche) {
-        	MongoDataManagerBean.createDatiSacca(datisac);
+        	MongoDataManager.createDatiSacca(datisac);
         }
 	}
 	
@@ -604,7 +564,7 @@ public class RemoveSaccheScaduteTest {
 	 * @throws SaccaNotFoundException 
 	 */
 	@Test public void test1() throws SaccaNotFoundException {
-		assertEquals(40, MongoDataManagerBean.getListaSacche().size());
+		assertEquals(40, MongoDataManager.getListaSacche().size());
 	}
 
 	/**
@@ -613,11 +573,11 @@ public class RemoveSaccheScaduteTest {
 	 */
 	@Test public void test2() throws SaccaNotFoundException {
 		ctt.removeSaccheScadute();
-		assertEquals(32, MongoDataManagerBean.getListaSacche().size());
+		assertEquals(32, MongoDataManager.getListaSacche().size());
 	}
 	
 	
 	@AfterClass public static void dropDBSacche() {
-		MongoDataManagerBean.dropDB();
+		MongoDataManager.dropDB();
 	}	
 }

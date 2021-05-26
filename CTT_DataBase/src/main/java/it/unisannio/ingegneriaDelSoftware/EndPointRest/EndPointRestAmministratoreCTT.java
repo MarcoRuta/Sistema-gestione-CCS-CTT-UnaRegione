@@ -17,7 +17,8 @@ import it.unisannio.ingegneriaDelSoftware.Classes.DatiSacca;
 import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.RuoloDipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManagerBean;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.DipendenteNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointAmministratoreCTT;
 import it.unisannio.ingegneriaDelSoftware.Util.*;
 
@@ -47,26 +48,17 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 								  @FormParam("dataDiNascita")String dataDiNascita,
 								  @FormParam("ruolo")String ruolo,
 								  @FormParam("username")String username,
-								  @FormParam("password")String password){
+								  @FormParam("password")String password) throws DateTimeParseException,IllegalArgumentException,AssertionError{
 
-		try {
-			//creo un dipendente
-			Dipendente d = new Dipendente(Cdf.getCDF(cdf), nome, cognome, DateUtil.dateParser(dataDiNascita),
-					RuoloDipendente.valueOf(ruolo), username, password);
-			//aggiungo il dipendente al DB
-			MongoDataManagerBean.createDipendente(d);
-			return Response
-					.status(Response.Status.OK)
-					.entity("Corretta aggiunta del Dipendente: "+cdf)
-					.build();
-		}catch(DateTimeParseException| IllegalArgumentException | AssertionError e) {
-			//The request could not be understood by the server due to malformed syntax.
-			// The client SHOULD NOT repeat the request without modifications.
-			return Response
-					.status(Response.Status.BAD_REQUEST)
-					.entity(e.getMessage())
-					.build();
-		}
+		//creo un dipendente
+		Dipendente d = new Dipendente(Cdf.getCDF(cdf), nome, cognome, DateUtil.dateParser(dataDiNascita),
+				RuoloDipendente.valueOf(ruolo), username, password);
+		//aggiungo il dipendente al DB
+		MongoDataManager.createDipendente(d);
+		return Response
+				.status(Response.Status.OK)
+				.entity("Corretta aggiunta del Dipendente: "+cdf)
+				.build();
 	}
 
 
@@ -78,20 +70,12 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 	@Path("/rimozioneDipendente/{cdf}")
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes(MediaType.TEXT_PLAIN)
-	public Response removeDipendente(@PathParam("cdf") String cdf) {
-		try {					
-			MongoDataManagerBean.removeDipendente(Cdf.getCDF(cdf));
-			return Response
-					.status(Response.Status.OK)
-					.entity("Corretta rimozione del Dipendente: " + cdf)
-					.build();
-		}catch (AssertionError ex){
-			//il dipendente che si vuole rimuovere non è presente
-			return Response
-					.status(Response.Status.NOT_FOUND)
-					.entity("Rimozione del Dipendente: " + cdf+" non riuscita\n"+ex.getMessage())
-					.build();
-		}
+	public Response removeDipendente(@PathParam("cdf") String cdf) throws DipendenteNotFoundException {
+		MongoDataManager.removeDipendente(Cdf.getCDF(cdf));
+		return Response
+				.status(Response.Status.OK)
+				.entity("Corretta rimozione del Dipendente: " + cdf)
+				.build();
 	}
 
 
@@ -128,7 +112,7 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response reportStatisticoSacche(@QueryParam("gs")String gs){
 
-		List<Sacca> listaSacche = MongoDataManagerBean.getListaSacche();
+		List<Sacca> listaSacche = MongoDataManager.getListaSacche();
 		List<Sacca> risultatoQuery = new ArrayList<Sacca>();
 		
 		for(Sacca s : listaSacche)
@@ -151,23 +135,14 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 	@Path("/reportLocaleSaccheInviateERicevute")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response reportLocaleSaccheInviateERicevuteCTT(@QueryParam("dataInizio")String dataInizio,
-															@QueryParam("dataFine")String dataFine){
-		try {
-			LocalDate dataInizioReport = DateUtil.dateParser(dataInizio);
-			LocalDate dataAffidamentoReport = DateUtil.dateParser(dataFine);
-			List <DatiSacca> risultatoQuery = getDatiSaccaInATemporalAmount(dataInizioReport,dataAffidamentoReport);
-			return Response	 		
-					.status(Response.Status.OK)
-					.entity(risultatoQuery)
-					.build();
-		}catch (DateTimeParseException ex){
-			//The request could not be understood by the server due to malformed syntax.
-			// The client SHOULD NOT repeat the request without modifications.
-			return Response
-					.status(Response.Status.BAD_REQUEST)
-					.entity(ex.getMessage())
-					.build();
-		}
+															@QueryParam("dataFine")String dataFine) throws DateTimeParseException{
+		LocalDate dataInizioReport = DateUtil.dateParser(dataInizio);
+		LocalDate dataAffidamentoReport = DateUtil.dateParser(dataFine);
+		List <DatiSacca> risultatoQuery = getDatiSaccaInATemporalAmount(dataInizioReport,dataAffidamentoReport);
+		return Response
+				.status(Response.Status.OK)
+				.entity(risultatoQuery)
+				.build();
 	}
 
 
@@ -183,36 +158,29 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response ordinaGruppiSanguigniPerRichieste(@QueryParam("listaGS") String listaGS,
 														@QueryParam("dataInizio")String dataInizio,
-														@QueryParam("dataFine")String dataFine) {
-		try {
-			String risultatoQuery = "";
-			StringTokenizer aTokenizer = new StringTokenizer(listaGS);
-			//recupero le sacche nll'arco di tempo di interesse
-			LocalDate dataInizioReport = DateUtil.dateParser(dataInizio);
-			LocalDate dataAffidamentoreport = DateUtil.dateParser(dataFine);
-			List<DatiSacca> listaDatiSaccheInIntervallo = this.getDatiSaccaInATemporalAmount(dataInizioReport, dataAffidamentoreport);
+														@QueryParam("dataFine")String dataFine) throws DateTimeParseException{
+		String risultatoQuery = "";
+		StringTokenizer aTokenizer = new StringTokenizer(listaGS);
+		//recupero le sacche nll'arco di tempo di interesse
+		LocalDate dataInizioReport = DateUtil.dateParser(dataInizio);
+		LocalDate dataAffidamentoreport = DateUtil.dateParser(dataFine);
+		List<DatiSacca> listaDatiSaccheInIntervallo = this.getDatiSaccaInATemporalAmount(dataInizioReport, dataAffidamentoreport);
 
-			// per ogni gruppo sanguigno controllo le sacche che ho avuto di quel tipo in quell'intervalllo
-			while (aTokenizer.hasMoreTokens()) {
-				String gs = aTokenizer.nextToken(":");
-				int contatore = 0;
-				for (DatiSacca ds : listaDatiSaccheInIntervallo)
-					if (gs.equals(ds.getGruppoSanguigno().toString()))
-						contatore++;
-				//aggiorno il risultato
-				risultatoQuery = "Numero di sacche con gruppo sanguigno: " + gs + ": " + contatore;
-				//ora vado al gruppo sanguigno successivo
-			}
-			return Response
-					.status(Response.Status.OK)
-					.entity(risultatoQuery)
-					.build();
-			}catch(DateTimeParseException ex){
-				return Response
-					.status(Response.Status.BAD_REQUEST)
-					.entity(ex.getMessage())
-					.build();
-			}
+		// per ogni gruppo sanguigno controllo le sacche che ho avuto di quel tipo in quell'intervalllo
+		while (aTokenizer.hasMoreTokens()) {
+			String gs = aTokenizer.nextToken(":");
+			int contatore = 0;
+			for (DatiSacca ds : listaDatiSaccheInIntervallo)
+				if (gs.equals(ds.getGruppoSanguigno().toString()))
+					contatore++;
+			//aggiorno il risultato
+			risultatoQuery = "Numero di sacche con gruppo sanguigno: " + gs + ": " + contatore;
+			//ora vado al gruppo sanguigno successivo
+		}
+		return Response
+				.status(Response.Status.OK)
+				.entity(risultatoQuery)
+				.build();
 	}
 
 	/**Metodo tramite il quale è possibile accedere alla lista di dipendenti che lavorano al CTT
@@ -221,23 +189,23 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 	@Path("/dipendenti")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Dipendente> getDipendenti(){		
-		return MongoDataManagerBean.getListaDipendenti();	
+		return MongoDataManager.getListaDipendenti();
 	}
 
 	/**Restituisce una lista di dati sacca che sono arrivate dopo di dataInizioReport oppure sono state affidate dopo prima
 	 * di dataAffidamentoReport
 	 * @param dataInizioReport  data dalla quale selezioniamo le sacche
-	 * @param dataAffidamentoReport data oltre la quale non selezioniamo piu le sacche
+	 * @param dataFineReport data oltre la quale non selezioniamo piu le sacche
 	 * @return  lista di sacche che erano nel CTT nell'arco temporale dataInizioReport-dataAffidamentoReport*/
 	private List<DatiSacca> getDatiSaccaInATemporalAmount(LocalDate dataInizioReport, LocalDate dataFineReport){
 		List<DatiSacca> datiSaccaTransitati = new ArrayList<>();
 		
 		//creo la lista dei dati sacca
-		List<DatiSacca> listaDatiSacca = MongoDataManagerBean.getListaDatiSacche();
+		List<DatiSacca> listaDatiSacca = MongoDataManager.getListaDatiSacche();
 		for (DatiSacca datiSacca : listaDatiSacca)
 			if ((datiSacca.getDataArrivo().isAfter(dataInizioReport) && datiSacca.getDataArrivo().isBefore(dataFineReport))
-					|| (datiSacca.getDataAffidamento().isAfter(dataInizioReport) && datiSacca.getDataAffidamento().isBefore(dataFineReport))
-					|| (datiSacca.getDataArrivo().isEqual(dataInizioReport) && datiSacca.getDataAffidamento().isEqual(dataFineReport)))
+					|| (datiSacca.getDataAffidamento().get().isAfter(dataInizioReport) && datiSacca.getDataAffidamento().get().isBefore(dataFineReport))
+					|| (datiSacca.getDataArrivo().isEqual(dataInizioReport) && datiSacca.getDataAffidamento().get().isEqual(dataFineReport)))
 				//se è verificata una delle 4 condizioni aggiungo alla lista
 				datiSaccaTransitati.add(datiSacca);
 		return datiSaccaTransitati;

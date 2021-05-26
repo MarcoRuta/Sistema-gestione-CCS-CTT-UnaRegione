@@ -1,6 +1,5 @@
 package it.unisannio.ingegneriaDelSoftware.EndPointRest;
 
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.security.RolesAllowed;
@@ -17,7 +16,7 @@ import it.unisannio.ingegneriaDelSoftware.Annotazioni.Secured;
 import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.Classes.NotificaEvasione;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManagerBean;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.EndPointNotifiche.NotificheObserver;
 import it.unisannio.ingegneriaDelSoftware.EndPointNotifiche.Observer;
 import it.unisannio.ingegneriaDelSoftware.EndPointNotifiche.Subject;
@@ -35,7 +34,9 @@ import it.unisannio.ingegneriaDelSoftware.Util.DateUtil;
 @RolesAllowed("OperatoreCTT")
 public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT, Subject{
 
+	/**Il terminale del magazziniere deve essere notificato quando viene creata una notifica*/
 	private Observer anObserver= new NotificheObserver();
+	/**Composite che effettua la ricerca prima in locale con il gruppo sanguigno specificato e poi in locale con i gs compatibili*/
 	public Searcher aSearcher = new CompositionSearcher();
 
 	/**Restituisce la Sacca del GruppoSanguigno richiesto con Data di scadenza più vicina nel DataBase locale.
@@ -52,7 +53,7 @@ public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT, Subject{
 									   @QueryParam("dataArrivoMassima") String dataArrivoMassima,
 									   @QueryParam("enteRichiedente") String enteRichiedente,
 									   @QueryParam("indirizzoEnte") String indirizzoEnte,
-									   @QueryParam("priorità") String priorita){
+									   @QueryParam("priorità") String priorita) {
 		try {
 			List<Sacca> saccheTrovate = new ArrayList<Sacca>();
 			List<String> serialiDaEvadere = new ArrayList<>();
@@ -60,33 +61,30 @@ public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT, Subject{
 			saccheTrovate = this.aSearcher.search(GruppoSanguigno.valueOf(gruppoSanguigno),
 					numSacche,
 					DateUtil.dateParser(dataArrivoMassima));
-			if(!saccheTrovate.isEmpty()) {
+			if (!saccheTrovate.isEmpty()) {
 				for (Sacca sacca : saccheTrovate) {
-					MongoDataManagerBean.setPrenotatoSacca(sacca.getSeriale());
+					MongoDataManager.setPrenotatoSacca(sacca.getSeriale());
 					serialiDaEvadere.add(sacca.getSeriale().getSeriale());
 				}
 				this.notifyObserver(new NotificaEvasione(serialiDaEvadere, enteRichiedente, indirizzoEnte));
 			}
 
-			if(saccheTrovate.size()<numSacche) throw new SaccheInLocaleNotFoundException("Verra contattato il CSS");
+			if (saccheTrovate.size() < numSacche) throw new SaccheInLocaleNotFoundException("Verra contattato il CSS");
 
 			return Response
 					.status(Response.Status.OK) //In questo caso sono state trovate tutte le sacche, va inviata risposta 200 OK 
 					.entity(saccheTrovate)//Va gestito l'inoltro della notifica di evasione sacche presso l'interfaccia REST del magazziniere 
 					.build();
-		}catch (SaccheInLocaleNotFoundException e) {
+		} catch (SaccheInLocaleNotFoundException e) {
 			return Response //in realtà deve avviare RicercaSaccaGlobale e passare i parametri al CCS
 					.status(Response.Status.NOT_FOUND)
-					.entity(e.getMessage())
-					.build();
-		}catch(DateTimeParseException|IllegalArgumentException e) {
-			return Response
-					.status(Response.Status.BAD_REQUEST)
 					.entity(e.getMessage())
 					.build();
 		}
 	}
 
+	/**Il terminale del magazziniere è un subject, esso crea notifiche, le notifiche sono di interesse per
+	 * il terminale magazziniere che deve essere notificato*/
 	@Override
 	public void notifyObserver(Notifica notifica) {
 		this.anObserver.update(notifica);

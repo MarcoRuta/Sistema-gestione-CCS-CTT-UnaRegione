@@ -3,6 +3,7 @@ package it.unisannio.ingegneriaDelSoftware.Interfaces;
 import it.unisannio.ingegneriaDelSoftware.Classes.Seriale;
 
 import javax.ws.rs.core.Response;
+import java.net.MalformedURLException;
 import java.util.List;
 
 public interface EndPointMagazziniereCTT {
@@ -29,7 +30,7 @@ public interface EndPointMagazziniereCTT {
 	public Response aggiuntaSaccaMagazzino(String gruppo_sanguigno,
 										   String data_scadenza,
 										   String data_produzione,
-										   String ente_donatore);
+										   String ente_donatore) throws MalformedURLException;
 
 	/**
 	 * Metodo utilizzato per aggiunta automatica del seriale delle sacche

@@ -1,11 +1,12 @@
 package it.unisannio.ingegneriaDelSoftware.Exceptions;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
-public class DatiSaccaNotFoundException extends RuntimeException{
-    private static final long serialVersionUID = 1L;
-    
-    public DatiSaccaNotFoundException() {}
-    
+public class DatiSaccaNotFoundException extends WebApplicationException {
+
     public DatiSaccaNotFoundException (String message) {
-        super(message);
+        super(Response.status(Response.Status.NOT_FOUND)
+                .entity(message).type(MediaType.TEXT_PLAIN).build());
     }
 }

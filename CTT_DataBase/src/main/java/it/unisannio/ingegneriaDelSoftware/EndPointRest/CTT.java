@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import it.unisannio.ingegneriaDelSoftware.Classes.*;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManagerBean;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.*;
 import it.unisannio.ingegneriaDelSoftware.Util.DateUtil;;
@@ -19,7 +19,7 @@ public class CTT implements CTTFunction {
 	 */
 	public List<Sacca> alertControlScadenza() throws SaccaNotFoundException {
 		
-		List<Sacca> listaSacche = MongoDataManagerBean.getListaSacche();
+		List<Sacca> listaSacche = MongoDataManager.getListaSacche();
 		List<Sacca> saccheInScadenza = new ArrayList<Sacca>();
 		Date oggi = new Date();
 		long dataScadenza = oggi.getTime();
@@ -40,7 +40,7 @@ public class CTT implements CTTFunction {
 	 * @throws SaccaNotFoundException Eccezione che si verifica quando la Sacca inserita non viene trovata
 	 */
 	public void removeSaccheScadute() throws SaccaNotFoundException {
-		List<Sacca> listaSacche = MongoDataManagerBean.getListaSacche();
+		List<Sacca> listaSacche = MongoDataManager.getListaSacche();
 
 		for(Sacca sacca : listaSacche) {
 			if(sacca.getDataScadenza().isBefore(LocalDate.now())) {
@@ -56,9 +56,9 @@ public class CTT implements CTTFunction {
 	 */
 	private void removeSaccaScaduta(Sacca s) throws SaccaNotFoundException {
 
-		MongoDataManagerBean.removeSacca(s.getSeriale());
-		MongoDataManagerBean.setDataAffidamentoDatiSacca(s.getSeriale(), s.getDataScadenza());
-		MongoDataManagerBean.setEnteRichiedenteDatiSacca(s.getSeriale(), "Scaduta");
-		MongoDataManagerBean.setIndirizzoEnteDatiSacca(s.getSeriale(), "Scaduta");
+		MongoDataManager.removeSacca(s.getSeriale());
+		MongoDataManager.setDataAffidamentoDatiSacca(s.getSeriale(), s.getDataScadenza());
+		MongoDataManager.setEnteRichiedenteDatiSacca(s.getSeriale(), "Scaduta");
+		MongoDataManager.setIndirizzoEnteDatiSacca(s.getSeriale(), "Scaduta");
 	}
 }

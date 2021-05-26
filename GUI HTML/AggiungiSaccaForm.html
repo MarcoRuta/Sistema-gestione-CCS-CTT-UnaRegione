@@ -109,7 +109,7 @@
             <div class="outPreview" style="height: 40px;margin: 4% 45px;">
                 <p id="result"></p>
             </div>
-            <button class="btn btn-primary" type="submit" onclick="loadDoc()" style="margin-left: 73.5%; width: 140px;height: 51px;font-family: Calibri light;font-size: 20px;">Conferma</button>
+            <button class="btn btn-primary" type="submit" onclick="loadDoc();" style="margin-left: 73.5%; width: 140px;height: 51px;font-family: Calibri light;font-size: 20px;">Conferma</button>
         </div>
         
     </div>
@@ -128,9 +128,8 @@
             };
 
             function loadDoc(){
-            	
-                var url = "http://127.0.0.1:8080/rest/magazziniere/aggiuntaSacca";
-                
+            	var host = document.location.origin;
+                var url = host + "/rest/magazziniere/aggiuntaSacca";
                 var gp = gruppo_sanguigno.value;
                 var ed = ente_donatore.value;
                 var ds = data_scadenza.value;
@@ -161,6 +160,7 @@
                 xhttp.setRequestHeader('Authorization', 'Basic '+token);
                 xhttp.withCredentials = true;
                 xhttp.send(params);
+                
                 setTimeout(reloadPage, 500);
 
             }
@@ -181,6 +181,7 @@
     <div class="footer"></div>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/websocketSaveNotification.js"></script>
 </body>
 
 </html>

@@ -2,7 +2,7 @@ package it.unisannio.ingegneriaDelSoftware.Filtri;
 
 import it.unisannio.ingegneriaDelSoftware.Annotazioni.Secured;
 import it.unisannio.ingegneriaDelSoftware.Classes.Token;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManagerBean;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.DipendenteNotFoundException;
 import javax.annotation.Priority;
 import javax.ws.rs.Priorities;
@@ -57,7 +57,7 @@ public class FiltroDiAutentificazione implements ContainerRequestFilter {
             StringTokenizer aTokenizer = new StringTokenizer(usernamePassword);
             String username = aTokenizer.nextToken(":");
             String password = aTokenizer.nextToken();
-            String ruolo = MongoDataManagerBean.getDipendente(username,password).getRuolo().toString();
+            String ruolo = MongoDataManager.getDipendente(username,password).getRuolo().toString();
 
             //sovrascrivo il securityContext
             /**The SecurityContext is a class of Spring Security.

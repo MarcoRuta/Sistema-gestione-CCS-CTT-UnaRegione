@@ -22,8 +22,9 @@ public class Dipendente {
 	 * @param nome  il nome del dipendente
 	 * @param password  la password del dipendente sul sistema CTT, deve contenere almeno un numero
 	 * @param username  l'username del dipendente sul sistema CTT
-	 * @param ruolo  il ruolo del dipendente nel centro CTT*/
-	public Dipendente(Cdf cdf, String nome, String cognome, LocalDate dataDiNascita, RuoloDipendente ruolo, String username, String password) {
+	 * @param ruolo  il ruolo del dipendente nel centro CTT
+	 * @throws IllegalArgumentException se il dipendente non ha almeno 18 anni*/
+	public Dipendente(Cdf cdf, String nome, String cognome, LocalDate dataDiNascita, RuoloDipendente ruolo, String username, String password)throws IllegalArgumentException{
 		assert cdf!= null: "Il codice fiscale del dipendente non può essere null";
 		assert nome != null: "Il nome del dipendente non puo essere null";
 		assert cognome != null: "Il cognome del dipendente non può essere null";
@@ -31,8 +32,9 @@ public class Dipendente {
 		assert ruolo != null: "Il ruolo del dipendente non può essere null";
 		assert username != null: "L'username del dipendente non può essere null";
 		assert password != null: "La password del dipendente non può essere null";
-		if (!dataDiNascita.isBefore(LocalDate.now())) throw new AssertionError("La data di nascita non puo essere superiore o uguale a quella odierna");
-		if (!dataDiNascita.isBefore(LocalDate.now().minusYears(18))) throw new AssertionError(" il Dipendente deve avere almeno 18 anni");
+		if (!dataDiNascita.isBefore(LocalDate.now())) throw new IllegalArgumentException("La data di nascita non puo essere superiore o uguale a quella odierna");
+		if (!dataDiNascita.isBefore(LocalDate.now().minusYears(18))) throw new IllegalArgumentException(" il Dipendente deve avere almeno 18 anni");
+		if(!password.matches(".*\\d.*")) throw new IllegalArgumentException("La password deve contenere almeno un numero");
 
 		this.cdf = cdf;
 		this.nome = nome;
@@ -79,7 +81,7 @@ public class Dipendente {
 
 	/**@param password  la password del dipendente sul sistema CTT deve contenere almeno un numero*/
 	public void setPassword(String password) {
-		if(!password.matches(".*\\d.*")) throw new AssertionError("La password deve contenere almeno un numero");
+		if(!password.matches(".*\\d.*")) throw new IllegalArgumentException("La password deve contenere almeno un numero");
 		assert password!= null: "La password del dipendente non può essere null";
 		this.password = password;
 	}

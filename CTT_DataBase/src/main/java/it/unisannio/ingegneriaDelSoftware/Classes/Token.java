@@ -49,6 +49,7 @@ public class Token {
 
     /**@param token il token di autentificazione di un utente
      * @return  username:password dell'utente a cui è associato il token
+     * @throws DipendenteNotFoundException se il token ricercato non è associato a nessun dipendente
      */
     public static String getDipendenteByToken(String token) throws DipendenteNotFoundException {
         assert token != null: "il token non puo essere null";
@@ -73,6 +74,7 @@ public class Token {
 
     /**Elimina dalla lista dei token il token passatogli come parametro
      * @param token il token da eliminare
+     * @throws TokenNotFoundException se il token che si vuole rimuovere non è presente
      */
     public static void removeToken(String token) throws TokenNotFoundException {
         if (Token.containsToken(token)) {

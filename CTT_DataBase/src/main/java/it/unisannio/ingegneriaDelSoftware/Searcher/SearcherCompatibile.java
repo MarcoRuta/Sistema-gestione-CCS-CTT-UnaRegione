@@ -2,7 +2,7 @@ package it.unisannio.ingegneriaDelSoftware.Searcher;
 
 import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManagerBean;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Searcher;
 import it.unisannio.ingegneriaDelSoftware.Util.ScadenzeComparator;
 
@@ -15,7 +15,7 @@ public class SearcherCompatibile implements Searcher {
     @Override
     public List<Sacca> search(GruppoSanguigno gs, int numeroSacche, LocalDate dataArrivoMassima) {
         List<Sacca> saccheTrovate = new ArrayList<Sacca>();
-        List<Sacca> listaSacche = MongoDataManagerBean.getListaSacche();
+        List<Sacca> listaSacche = MongoDataManager.getListaSacche();
 
         Iterator<GruppoSanguigno> i = GruppoSanguigno.puoRicevereDa(gs);
         while(i.hasNext()) {

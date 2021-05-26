@@ -4,6 +4,7 @@
 	background-color: #13958d;
 	background-image: linear-gradient(#005C56,#13958d);
 }
+
 .titleDateForm {
 	width: auto;
 	height: 50px;
@@ -24,9 +25,73 @@ div.titleDateForm button {
 	margin-top: -7.5em;
 }
 
+.dateFormQuery {
+	height: 500px;
+	width: 340px;
+	background-color: #13958d;
+	background-image: linear-gradient(#005C56,#13958d);
+}
+
+div.titleDateFormQuery p {
+	color: rgb(255,255,255);
+	font-size: 34px;
+	text-align: center;
+	height: 40px;
+	font-family: muli,sans-serif;
+}
+
+div.titleDateFormQuery button {
+	color: rgb(255,255,255);
+	font-family: muli,sans-serif;
+	margin-left: 2%;
+	margin-top: 2%;
+}
+
+
+.previewForm {
+	width: 690px;
+	height: 500px;
+	margin: -500px 710px;
+	background-color: #13958d;
+	background-image: linear-gradient(#005C56,#13958d);
+}
+
+.previewFormQuery {
+	width: 1040px;
+	height: 500px;
+	margin: -500px 355px;
+	background-color: #13958d;
+	background-image: linear-gradient(#005C56,#13958d);
+}
+
+.outPreview {
+	height: 250px;
+	width: 600px;
+	margin: auto;
+	background-color: #ffffff;
+	overflow: auto;
+}
+
+div.outPreview p{
+	margin: 0px;
+	font-size: 24px;
+	font-family: muli,sans-serif;
+	padding-left: 5px; 
+}
+
+
+.outPreviewQuery {
+	height: 84%;
+	width: 95%;
+	margin: auto;
+	background-color: #ffffff;
+	overflow: auto;
+}
+
+
 .return {
- 	max-width: 60px;
-	max-height: 50px;
+ 	max-width: 40px;
+	max-height: 30px;
 }
 
 
@@ -79,29 +144,6 @@ div.inputForm input {
 	font-family: Calibri light;
 }
 
-
-.outPreview {
-	height: 250px;
-	width: 600px;
-	margin: auto;
-	background-color: #ffffff;
-	overflow: auto;
-}
-
-div.outPreview p{
-	margin: 0px;
-	font-size: 24px;
-	font-family: muli,sans-serif;
-	padding-left: 5px 
-}
-
-.previewForm {
-	width: 690px;
-	height: 500px;
-	margin: -500px 710px;
-	background-color: #13958d;
-	background-image: linear-gradient(#005C56,#13958d);
-}
 
 .textPrint {
 	color: #13958d;

@@ -1,5 +1,7 @@
 package it.unisannio.ingegneriaDelSoftware.Classes;
 
+import it.unisannio.ingegneriaDelSoftware.Exceptions.InvalidParamException;
+
 import java.io.PrintStream;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -12,34 +14,18 @@ public class Sacca {
 	private final LocalDate dataScadenza;
 	private boolean prenotato;
 
-	/**@param gs il gruppo sanguigno della sacca
-	 * @param dataProduzione  la data di produzione della sacca
-	 * @param dataScadenza  la data di scadenza della sacca
-	 * @param prenotato indica se la sacca è stata prenotata o meno, di default è false*/
-	public Sacca(GruppoSanguigno gs, LocalDate dataProduzione, LocalDate dataScadenza, boolean prenotato) {
-		assert gs != null: "Il gruppo sanguigno non può essere null";
-		assert dataProduzione != null: "La data di produzione non può essere null";
-		assert dataScadenza != null: "la data di scadenza non può essere null";
-		if (dataScadenza.isBefore(dataProduzione))throw new AssertionError( "La data di produzione non può essere precedente a quella di scadenza");
-		if(dataScadenza.isBefore(LocalDate.now()))	throw new AssertionError("La sacca è gia scaduta");
-
-		this.seriale = new Seriale();
-		this.gruppo = gs;
-		this.dataProduzione = dataProduzione;
-		this.dataScadenza = dataScadenza;
-		this.prenotato = prenotato;
-	}
 
 	/**@param gs il gruppo sanguigno della sacca
 	 * @param dataProduzione  la data di produzione della sacca
 	 * @param dataScadenza  la data di scadenza della sacca
+	 * @throws IllegalArgumentException se la data di scadenza è precedente a quella di produzione
 	 */
-	public Sacca(GruppoSanguigno gs, LocalDate dataProduzione, LocalDate dataScadenza) {
+	public Sacca(GruppoSanguigno gs, LocalDate dataProduzione, LocalDate dataScadenza) throws IllegalArgumentException{
 		assert gs != null: "Il gruppo sanguigno non può essere null";
 		assert dataProduzione != null: "La data di produzione non può essere null";
 		assert dataScadenza != null: "la data di scadenza non può essere null";
-		if (dataScadenza.isBefore(dataProduzione))throw new AssertionError( "La data di produzione non può essere precedente a quella di scadenza");
-		if(dataScadenza.isBefore(LocalDate.now()))	throw new AssertionError("La sacca è gia scaduta");
+		if (dataScadenza.isBefore(dataProduzione))throw new IllegalArgumentException( "La data di produzione non può essere precedente a quella di scadenza");
+		if(dataScadenza.isBefore(LocalDate.now()))throw new IllegalArgumentException("La sacca è gia scaduta");
 
 		this.seriale = new Seriale();
 		this.gruppo = gs;
@@ -52,14 +38,16 @@ public class Sacca {
 	 * @param dataProduzione  la data di produzione della sacca
 	 * @param dataScadenza  la data di scadenza della sacca
 	 * @param prenotato indica se la sacca è stata prenotata o meno, di default è false
-	 * @param ser  il seriale della sacca*/
-	public Sacca(Seriale ser, GruppoSanguigno gs, LocalDate dataProduzione, LocalDate dataScadenza, boolean prenotato) {
+	 * @param ser  il seriale della sacca
+	 * @throws IllegalArgumentException se la data di scadenza è precedente a quella di produzione
+	 * */
+	public Sacca(Seriale ser, GruppoSanguigno gs, LocalDate dataProduzione, LocalDate dataScadenza, boolean prenotato) throws IllegalArgumentException{
 		assert gs != null: "Il gruppo sanguigno non può essere null";
 		assert dataProduzione != null: "La data di produzione non può essere null";
 		assert dataScadenza != null: "la data di scadenza non può essere null";
 		assert ser!= null: "Il seriale non puo essere null";
-		if (dataScadenza.isBefore(dataProduzione))throw new AssertionError( "La data di produzione non può essere precedente a quella di scadenza");
-		if(dataScadenza.isBefore(LocalDate.now()))	throw new AssertionError("La sacca è gia scaduta");
+		if (dataScadenza.isBefore(dataProduzione))throw new IllegalArgumentException( "La data di produzione non può essere precedente a quella di scadenza");
+		if(dataScadenza.isBefore(LocalDate.now()))	throw new IllegalArgumentException("La sacca è gia scaduta");
 
 		this.seriale = ser;
 		this.gruppo = gs;
@@ -68,31 +56,7 @@ public class Sacca {
 		this.prenotato = prenotato;
 	}
 
-	/**@param gs il gruppo sanguigno della sacca
-	 * @param dataProduzione  la data di produzione della sacca
-	 * @param dataScadenza  la data di scadenza della sacca
-	 * @param ser  il seriale della sacca*/
-	public Sacca(Seriale ser, GruppoSanguigno gs, LocalDate dataProduzione, LocalDate dataScadenza) {
-		assert gs != null: "Il gruppo sanguigno non può essere null";
-		assert dataProduzione != null: "La data di produzione non può essere null";
-		assert dataScadenza != null: "la data di scadenza non può essere null";
-		assert ser!= null: "Il seriale non puo essere null";
-		if (dataScadenza.isBefore(dataProduzione))throw new AssertionError( "La data di produzione non può essere precedente a quella di scadenza");
-		if(dataScadenza.isBefore(LocalDate.now()))	throw new AssertionError("La sacca è gia scaduta");
 
-		this.seriale = ser;
-		this.gruppo = gs;
-		this.dataProduzione = dataProduzione;
-		this.dataScadenza = dataScadenza;
-		this.prenotato = false;
-	}
-
-	public Sacca() {
-		this.seriale = null;
-		this.gruppo = null;
-		this.dataProduzione = null;
-		this.dataScadenza = null;
-	}
 
 	/**@return  il seriale della sacca*/
 	public Seriale getSeriale() {

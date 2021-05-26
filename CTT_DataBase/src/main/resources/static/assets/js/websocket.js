@@ -5,11 +5,12 @@
 	var j;
 	var obj;
 	var res;
-	var host;
+	var hostWS;
 	
 	var notify = {};
 
 	notify.write = function(data) {
+		
 		
 		var str = "";
 		obj = JSON.parse(data);
@@ -19,21 +20,20 @@
 		}
 
 		str2 = str.substring(0,str.length-1);
-		sr = str2.substring(0,15);
 		var btn = document.createElement("button");
 		btn.className='btn btn-warning';
 		btn.innerHTML = "Sacche: " + str2 + "<br>Ente: " + obj.enteRichiedente + "<br>Indirizzo: " + obj.indirizzoEnte;
 		btn.type = 'submit';
-		btn.value = sr;
+		btn.value = str;
 		btn.style = 'width: 98%; max-height: 280px; vertical-align: baseline; margin: 1%; text-align: left;';
 		
 		 /*####### EVASIONE SACCA ######*/
 		btn.onclick = function() {
-		
-		    var params = 'listaSeriali='+str +'&enteRichiedente='+obj.enteRichiedente+'&indirizzoEnte='+obj.indirizzoEnte;
-			
-			host = document.location.origin;
-		    var url = host+"/rest/magazziniere/evasione";
+
+			var x = document.activeElement;
+		    var params = 'listaSeriali='+ x.value +'&enteRichiedente='+obj.enteRichiedente+'&indirizzoEnte='+obj.indirizzoEnte;
+			hostWS = document.location.origin;
+		    var url = hostWS + "/rest/magazziniere/evasione";
 		    xhttp.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
 			    res = this.response;
@@ -69,8 +69,14 @@
 		else { j = localStorage.getItem('j');}
 		
 		localStorage.setItem('bottone' + j, data);
-		localStorage.setItem('j',++j);
-	};
+    		localStorage.setItem('j',++j);
+
+    		setTimeout(reload,1500);
+    	};
+
+	function reload(){
+		location.reload();
+	}
 	
 	/*####### CREA PDF FUNCTION ######*/
       function creaPdf() {
@@ -96,10 +102,11 @@
       /*####### REMOVE FUNCTION ######*/
       function removeNotify() {
           var x = document.activeElement;
+          let sr = x.value.substring(0,15);
           for(let i = 0; i < localStorage.length; i++) {
                   if(localStorage.key(i).substring(0,7) == "bottone") {
                           data = localStorage.getItem(localStorage.key(i));
-                          if(JSON.parse(data).listaSeriali[0] == x.value) {
+                          if(JSON.parse(data).listaSeriali[0] == sr) {
                               localStorage.removeItem(localStorage.key(i));
                               location.reload();
                           }
@@ -110,13 +117,6 @@
       }
       /*#############################*/
 	
-        /*var console = {};
-
-        console.write = function(message) {
-            var p = document.createElement('p');
-            p.innerHTML = message;
-            document.getElementById('console').appendChild(p);
-        };*/
 
         var channel = {};
         
@@ -138,6 +138,6 @@
                 notify.write(message.data);
             };
         };
- 		host = document.location.origin;
- 		host = host.substring(6);
-        channel.connect('ws://'+host+'/ws/mosquitoTry');
+ 		hostWS = document.location.origin;
+ 		hostWS = hostWS.substring(6);
+        channel.connect('ws://'+hostWS+'/ws/notifiche');

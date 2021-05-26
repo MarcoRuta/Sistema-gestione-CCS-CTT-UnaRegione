@@ -9,8 +9,7 @@ public class NotificaEvasione implements Notifica {
 	private List<String> listaSeriali;
 	private String enteRichiedente;
 	private String indirizzoEnte;
-	
-	public NotificaEvasione() {};
+
 	
 	public NotificaEvasione(List<String> seriali, String enteRichiedente, String indirizzoEnte){
 		this.listaSeriali = seriali;

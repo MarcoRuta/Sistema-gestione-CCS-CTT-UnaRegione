@@ -39,7 +39,7 @@
                             <p id="cognome">Cognome: </p>
                         </div>
                         <div style="width: 300px;">
-                            <button class="btn btn-primary" onclick="location.href='Login.html';" type="button" style="background-color: #13958d;">Change Password</button>
+                            <button class="btn btn-primary" onclick="location.href='ChangePasswordAfterLogin.html';" type="button" style="background-color: #13958d;">Change Password</button>
                             <button class="btn btn-primary" onclick="logout();" type="button" style="margin: 0% 5%">Log out</button>
                         </div>
                     </div>
@@ -60,7 +60,7 @@
          
         <div class="boxNotification col-sm-12 border shadow-sm profile-box" style="background-image: url(&quot;assets/img/bg-pattern.png&quot;);">
             <h2>Notifiche</h2>
-            <div class="divNot" id="divNot">
+            <div class="divNotMag" id="divNot">
             	
             </div> 
         </div> 
@@ -77,6 +77,8 @@
     var data;
     var str;
     var res;
+    var host;
+    
     
     function start() {
         verificoToken();
@@ -97,138 +99,138 @@
      }
 
     function sessionload() {
-                    
-			for(let i = 0; i < sessionStorage.length; i++) {
-                if(sessionStorage.key(i).substring(0,7) == "bottone") {
-                    data = sessionStorage.getItem(sessionStorage.key(i));
+			for(let i = 0; i < localStorage.length; i++) {
+                if(localStorage.key(i).substring(0,7) == "bottone") {
+                    data = localStorage.getItem(localStorage.key(i));
                     addBtn();
                 }
 			}
-	}
+      }
     
     
-    function addBtn() {
-        var obj = JSON.parse(data);
-        str = "";
-        
-        for(var i=0; i < obj.listaSeriali.length; i++) {
-			str = str + obj.listaSeriali[i] + ",";
-		}
-        //for(var i = 0; i < obj.listaSeriali.length ; i++) {
-        str2 = str.substring(0,str.length-1);
-        sr = str2.substring(0,15);
-        var btn = document.createElement("button");
-        btn.className='btn btn-warning';
-        btn.innerHTML = "Sacche: " + str2 + "<br>Ente: " + obj.enteRichiedente + "<br>Indirizzo: " + obj.indirizzoEnte;
-        btn.type = 'submit';
-        btn.value = sr;
-        btn.style = 'width: 98%; max-height: 280px; vertical-align: baseline; margin: 1%; text-align: left;';
-        
-        /*####### EVASIONE SACCA ######*/
-        btn.onclick = function() {
-
-            var params = 'listaSeriali='+str +'&enteRichiedente='+obj.enteRichiedente+'&indirizzoEnte='+obj.indirizzoEnte;
-            
-            var url = "http://127.0.0.1:8080/rest/magazziniere/evasione?" + params;
-            xhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    res = this.response;
-                    setTimeout(creaPdf,1000);
-                    setTimeout(removeNotify,1500);
-                } else if(this.readyState == 4 && this.status != 200) {
-                    //QUALCOSA
-                     alert(this.response);
-                }
+      function addBtn() {
+          var obj = JSON.parse(data);
+          str = "";
+          
+          for(var i=0; i < obj.listaSeriali.length; i++) {
+           str = str + obj.listaSeriali[i] + ",";
+        }
+          str2 = str.substring(0,str.length-1);
+          var btn = document.createElement("button");
+          btn.className='btn btn-warning';
+          btn.innerHTML = "Sacche: " + str2 + "<br>Ente: " + obj.enteRichiedente + "<br>Indirizzo: " + obj.indirizzoEnte;
+          btn.type = 'submit';
+          btn.value = str;
+          btn.style = 'width: 98%; max-height: 280px; vertical-align: baseline; margin: 1%; text-align: left;';
+          
+          /*####### EVASIONE SACCA ######*/
+          btn.onclick = function() {
+ 
+        	  var x = document.activeElement;
+              var params = 'listaSeriali='+ x.value +'&enteRichiedente='+ obj.enteRichiedente +'&indirizzoEnte='+ obj.indirizzoEnte;
+              host = document.location.origin;
+              var url = host+"/rest/magazziniere/evasione?" + params;
+              xhttp.onreadystatechange = function() {
+                  if (this.readyState == 4 && this.status == 200) {
+                      res = this.response;
+                      setTimeout(creaPdf,1000);
+                      setTimeout(removeNotify,1500);
+                  } else if(this.readyState == 4 && this.status != 200) {
+                      //QUALCOSA
+                       alert(this.response);
+                  }
+      
+              };
+              
+              xhttp.onerror = function(){
+                  alert("Sacca non esistente");
+              };
+      
+      
+              xhttp.open("PUT", url, true);
+              xhttp.setRequestHeader('Authorization', 'Basic '+token);
+              xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+              xhttp.withCredentials = true;
+              xhttp.send();
+  
+          };
+          
+          /*#############################*/
+              
+          document.getElementById("divNot").appendChild(btn);
+      }
     
-            };
-            
-            xhttp.onerror = function(){
-                alert("Sacca non esistente");
-            };
+      /*####### CREA PDF FUNCTION ######*/
+      function creaPdf() {
+              alert("STO CREANDO IL PDF!");
+              var doc = new jsPDF();
+              /*var host = "http://"+ window.location.hostname;*/
+              
+              doc.setFontSize(25);
+              doc.text(20, 20, "Evasione sacche");
+      
+              doc.setLineWidth(0.5);
+              doc.line(20, 25, 197, 25);
+      
+              doc.setFontSize(20);
+              doc.text(20, 40, res);
+              //doc.text(20,45,indirizzo.value);
+      
+              // Save the PDF
+              doc.save('EvasioneSacche.pdf');
+      }
+      /*#############################*/
     
-    
-            xhttp.open("PUT", url, true);
-            xhttp.setRequestHeader('Authorization', 'Basic '+token);
-            xhttp.withCredentials = true;
-            xhttp.send();
-
-        };
-        
-        /*#############################*/
-            
-        document.getElementById("divNot").appendChild(btn);
-        //}
-    }
-    
-    /*####### CREA PDF FUNCTION ######*/
-    function creaPdf() {
-            alert("STO CREANDO IL PDF!");
-            var doc = new jsPDF();
-            /*var host = "http://"+ window.location.hostname;*/
-            
-            doc.setFontSize(25);
-            doc.text(20, 20, "Evasione sacche");
-    
-            doc.setLineWidth(0.5);
-            doc.line(20, 25, 197, 25);
-    
-            doc.setFontSize(20);
-            doc.text(20, 40, res);
-            //doc.text(20,45,indirizzo.value);
-    
-            // Save the PDF
-            doc.save('EvasioneSacche.pdf');
-    }
-    /*#############################*/
-    
-    /*####### REMOVE FUNCTION ######*/
-    function removeNotify() {
-        var x = document.activeElement;
-        for(let i = 0; i < sessionStorage.length; i++) {
-                if(sessionStorage.key(i).substring(0,7) == "bottone") {
-                        data = sessionStorage.getItem(sessionStorage.key(i));
-                        if(JSON.parse(data).listaSeriali[0] == x.value) {
-                            sessionStorage.removeItem(sessionStorage.key(i));
-                            location.reload();
-                        }
-                    
-                }
-			}
-        
-    }
-    /*#############################*/
-     
-    /*####### LOGOUT FUNCTION ######*/
-    logout = function(){
-
-       var xhttp = new XMLHttpRequest();
-       var url ="http://127.0.0.1:8080/rest/autentificazione/logout";
-       xhttp.onreadystatechange = function() {
-                   if (this.readyState == 4 && this.status == 200 ) {
-                        sessionStorage.removeItem("token");
-                        sessionStorage.removeItem("ruolo");
-                        sessionStorage.removeItem("nome");
-                        sessionStorage.removeItem("cognome");
-                        window.location.href='Login.html';
-                   }else {
-                       if(this.readyState == 4 && this.status != 200 ){
-                           alert(this.response);
-                       }
-                   }
-       };
-
-
-       xhttp.onerror = function(){
-                  alert("impossibile inviare la richiesta");
-       };
-
-
-       xhttp.open("DELETE", url, true);
-       xhttp.setRequestHeader('Authorization', 'Basic '+token);
-       xhttp.withCredentials = true;
-       xhttp.send();
-
-   };
+      /*####### REMOVE FUNCTION ######*/
+      function removeNotify() {
+          var x = document.activeElement;
+          let sr = x.value.substring(0,15);
+          for(let i = 0; i < localStorage.length; i++) {
+                  if(localStorage.key(i).substring(0,7) == "bottone") {
+                          data = localStorage.getItem(localStorage.key(i));
+                          if(JSON.parse(data).listaSeriali[0] == sr) {
+                              localStorage.removeItem(localStorage.key(i));
+                              location.reload();
+                          }
+                      
+                  }
+           }
+          
+      }
+      /*#############################*/
+       
+      /*####### LOGOUT FUNCTION ######*/
+      logout = function(){
+  
+         var xhttp = new XMLHttpRequest();
+         host = document.location.origin;
+         var url =host+"/rest/autentificazione/logout";
+         xhttp.onreadystatechange = function() {
+                     if (this.readyState == 4 && this.status == 200 ) {
+                          sessionStorage.removeItem("token");
+                          sessionStorage.removeItem("ruolo");
+                          sessionStorage.removeItem("nome");
+                          sessionStorage.removeItem("cognome");
+                          window.location.href='Login.html';
+                     }else {
+                         if(this.readyState == 4 && this.status != 200 ){
+                             alert(this.response);
+                         }
+                     }
+         };
+  
+  
+         xhttp.onerror = function(){
+                    alert("impossibile inviare la richiesta");
+         };
+  
+  
+         xhttp.open("DELETE", url, true);
+         xhttp.setRequestHeader('Authorization', 'Basic '+token);
+         xhttp.withCredentials = true;
+         xhttp.send();
+  
+     };
 
     </script>
     

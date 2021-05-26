@@ -22,7 +22,7 @@ import it.unisannio.ingegneriaDelSoftware.Classes.User;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 import it.unisannio.ingegneriaDelSoftware.Util.DateUtil;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManagerBean;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 
 public class AggiuntaSaccaMagazzinoTest {
 	static String token = null;
@@ -38,7 +38,7 @@ public class AggiuntaSaccaMagazzinoTest {
 
 
         Dipendente d = new Dipendente(Cdf.getCDF("999hpoindj13ht9f"), "Mario", "Magazz", DateUtil.convertDateToLocalDate(Constants.sdf.parse("10-07-1950")), RuoloDipendente.MagazziniereCTT, "admin", "admin");
-        MongoDataManagerBean.createDipendente(d);
+        MongoDataManager.createDipendente(d);
     	
         Client client = ClientBuilder.newClient();
 		WebTarget login = client.target("http://127.0.0.1:8080/rest/autentificazione");
@@ -80,6 +80,6 @@ public class AggiuntaSaccaMagazzinoTest {
 	
 	
 	@AfterClass public static void dropDBSacche() {
-		MongoDataManagerBean.dropDB();
+		MongoDataManager.dropDB();
 	}
 }

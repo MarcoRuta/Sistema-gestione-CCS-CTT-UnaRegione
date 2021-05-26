@@ -4,10 +4,9 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-public class DipendenteNotFoundException extends WebApplicationException {
-
-    public DipendenteNotFoundException (String message) {
-        super(Response.status(Response.Status.NOT_FOUND)
+public class InvalidParamException extends WebApplicationException {
+    public InvalidParamException(String message) {
+        super(Response.status(Response.Status.BAD_REQUEST)
                 .entity(message).type(MediaType.TEXT_PLAIN).build());
     }
 }

@@ -8,12 +8,13 @@ import it.unisannio.ingegneriaDelSoftware.Classes.*;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.Codec.DatiSaccaCodec;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.Codec.DipendenteCodec;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.Codec.SaccaCodec;
-import it.unisannio.ingegneriaDelSoftware.Exceptions.DatiSaccaNotFoundException;
-import it.unisannio.ingegneriaDelSoftware.Exceptions.DipendenteNotFoundException;
-import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaNotFoundException;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.*;
 import it.unisannio.ingegneriaDelSoftware.Util.*;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
+
+import javax.swing.text.html.parser.Entity;
+import javax.ws.rs.core.Response;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Updates.set;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
-public class MongoDataManagerBean {
+public class MongoDataManager {
 
     private static MongoClient mongoClient;
 
@@ -47,21 +48,21 @@ public class MongoDataManagerBean {
 
     /**Metodo che restituisce una MongoCollection<SaccaBean> registrando il codec di base di Mongo per la serializzazione in BSON
      * @return MongoCollection<SaccaBean>*/
-    private static MongoCollection<Sacca> getCollectionSaccaBean(){
+    private static MongoCollection<Sacca> getCollectionSacca(){
         MongoDatabase database = mongoClient.getDatabase(Constants.DB_NAME);
         return  database.getCollection(Constants.COLLECTION_SACCHE,Sacca.class);
     }
 
     /**Metodo che restituisce una MongoCollection<DatiSaccaBean> registrando il codec di base di Mongo per la serializzazione in BSON
      * @return MongoCollection<DatiSaccaBean>*/
-    private static MongoCollection<DatiSacca> getCollectionDatiSaccaBean(){
+    private static MongoCollection<DatiSacca> getCollectionDatiSacca(){
         MongoDatabase database = mongoClient.getDatabase(Constants.DB_NAME);
         return database.getCollection(Constants.COLLECTION_DATISACCHE, DatiSacca.class);
     }
 
     /**Metodo che restituisce una MongoCollection<DipendentiBean> registrando il codec di base di Mongo per la serializzazione in BSON
      * @return MongoCollection<DipendentiBean>*/
-    private static MongoCollection<Dipendente> getCollectionDipendenteBean(){
+    private static MongoCollection<Dipendente> getCollectionDipendente(){
         MongoDatabase database = mongoClient.getDatabase(Constants.DB_NAME);
         return database.getCollection(Constants.COLLECTION_DIPENDENTI, Dipendente.class);
     }
@@ -72,10 +73,11 @@ public class MongoDataManagerBean {
 
     /**Aggiunge una Sacca al database delle sacche solo se essa non è gia presente nel DB delle sacche
      * @param s Sacca da aggiungere al db
+     * @throws SaccaGiaPresenteException se la sacca che si vuole aggiungere è gia presente nel DB
      */
-    public static void createSacca(Sacca s) {
-        if (containsSacca(s.getSeriale())) throw new AssertionError("Sacca gia presente nel DB");
-        MongoCollection<Sacca> collection = getCollectionSaccaBean();
+    public static void createSacca(Sacca s) throws SaccaNotFoundException{
+        if (containsSacca(s.getSeriale())) throw new EntityGiaPresenteException("Sacca con seriale"+s.getSeriale().getSeriale()+"gia presente nel DB");
+        MongoCollection<Sacca> collection = getCollectionSacca();
         collection.insertOne(s);
     }
 
@@ -83,8 +85,8 @@ public class MongoDataManagerBean {
      * @param s DatiSacca da aggiungere al db
      */
     public static void createDatiSacca(DatiSacca s) {
-        if(containsDatiSacca(s.getSeriale())) throw new AssertionError("Dati Sacca già presente nel DB");
-        MongoCollection<DatiSacca> collection = getCollectionDatiSaccaBean();
+        if(containsDatiSacca(s.getSeriale())) throw new EntityGiaPresenteException("Dati Sacca con seriale"+s.getSeriale().getSeriale() +" già presente nel DB");
+        MongoCollection<DatiSacca> collection = getCollectionDatiSacca();
         collection.insertOne(s);
     }
 
@@ -92,8 +94,8 @@ public class MongoDataManagerBean {
      * @param d Dipendente da aggiungere al db
      */
     public static void createDipendente(Dipendente d) {
-        if (containsDipendente(d.getCdf())) throw new AssertionError("Dipendente gia presente");
-        MongoCollection<Dipendente> collection = getCollectionDipendenteBean();
+        if (containsDipendente(d.getCdf())) throw new EntityGiaPresenteException("Dipendente con cdf "+d.getCdf().getCodiceFiscale()+" gia presente nel DB");
+        MongoCollection<Dipendente> collection = getCollectionDipendente();
         collection.insertOne(d);
     }
 
@@ -107,10 +109,10 @@ public class MongoDataManagerBean {
      * @throws SaccaNotFoundException
      */
     public static Sacca getSacca(Seriale ser) throws SaccaNotFoundException {
-        MongoCollection<Sacca> collection = getCollectionSaccaBean();
-       Sacca unBean =collection.find(eq(Constants.ELEMENT_SERIALE, ser.getSeriale())).first();
-       if (unBean != null)
-           return unBean;
+        MongoCollection<Sacca> collection = getCollectionSacca();
+       Sacca unaSacca =collection.find(eq(Constants.ELEMENT_SERIALE, ser.getSeriale())).first();
+       if (unaSacca != null)
+           return unaSacca;
         throw new SaccaNotFoundException("La sacca ricercata"+ ser.getSeriale() +"non è stata trovata");
     }
 
@@ -120,10 +122,10 @@ public class MongoDataManagerBean {
      * @throws DatiSaccaNotFoundException
      */
     public static DatiSacca getDatiSacca(Seriale ser) throws DatiSaccaNotFoundException {
-        MongoCollection<DatiSacca> collection = getCollectionDatiSaccaBean();
-        DatiSacca unBean = collection.find(eq(Constants.ELEMENT_SERIALE,ser.getSeriale())).first();
-        if (unBean != null)
-            return unBean;
+        MongoCollection<DatiSacca> collection = getCollectionDatiSacca();
+        DatiSacca unDatiSacca = collection.find(eq(Constants.ELEMENT_SERIALE,ser.getSeriale())).first();
+        if (unDatiSacca != null)
+            return unDatiSacca;
         throw new DatiSaccaNotFoundException("Il DatiSacca ricercato"+ ser.getSeriale() +"non è stato trovato");
     }
 
@@ -133,10 +135,10 @@ public class MongoDataManagerBean {
      * @throws DipendenteNotFoundException
      */
     public static Dipendente getDipendente(Cdf cdf) throws DipendenteNotFoundException{
-        MongoCollection<Dipendente> collection = getCollectionDipendenteBean();
-        Dipendente unBean = collection.find(eq(Constants.ELEMENT_CDF,cdf.getCodiceFiscale())).first();
-        if(unBean != null)
-            return unBean;
+        MongoCollection<Dipendente> collection = getCollectionDipendente();
+        Dipendente unDipendente = collection.find(eq(Constants.ELEMENT_CDF,cdf.getCodiceFiscale())).first();
+        if(unDipendente != null)
+            return unDipendente;
         throw new DipendenteNotFoundException("Il dipendente ricercato"+ cdf.getCodiceFiscale() +"non è stata trovato");
     }
 
@@ -146,13 +148,13 @@ public class MongoDataManagerBean {
      * @return il Dipendente cercato
      */
     public static Dipendente getDipendente(String username, String password) throws DipendenteNotFoundException{
-        MongoCollection<Dipendente> collection = getCollectionDipendenteBean();
+        MongoCollection<Dipendente> collection = getCollectionDipendente();
 
-       Dipendente unBean = collection.find(and(eq(Constants.ELEMENT_USERNAME, username),
+       Dipendente unDipendente = collection.find(and(eq(Constants.ELEMENT_USERNAME, username),
                eq(Constants.ELEMENT_PASSWORD,password))).first();
-       if(unBean != null)
-           return  unBean;
-        throw new DipendenteNotFoundException("Impossibile trovare il dipedenten associato a username: "+username +" password:"+password);
+       if(unDipendente != null)
+           return  unDipendente;
+        throw new DipendenteNotFoundException("Impossibile trovare il dipendente. Username o Password errati");
     }
 
 
@@ -199,19 +201,21 @@ public class MongoDataManagerBean {
 
     /**Rimuove una Sacca dal DataBase identificata tramite il Seriale, solo se essa è gia presente
      * @param ser Seriale della sacca da rimuovere dal db delle sacche
+     * @throws SaccaNotFoundException se la sacca che si vuole rimuovere non è presente nel DB
      */
-    public static void removeSacca(Seriale ser){
-        if(!containsSacca(ser)) throw new AssertionError("Non è possibile rimuovere una sacca non presente nel DB");
-        MongoCollection<Sacca> collection =getCollectionSaccaBean();
+    public static void removeSacca(Seriale ser) throws SaccaNotFoundException{
+        if(!containsSacca(ser)) throw new SaccaNotFoundException("Non è possibile rimuovere una sacca non presente nel DB.\nSeriale sacca: "+ser.getSeriale());
+        MongoCollection<Sacca> collection =getCollectionSacca();
         collection.deleteOne(eq(Constants.ELEMENT_SERIALE,ser.getSeriale()));
     }
 
     /**Elimina un Dipendente al database dei Dipendenti solo se siste
      * @param cdf Codice fiscale del Dipendente da eliminare
+     * @throws DipendenteNotFoundException se il dipendente che si vuole eliminare non è presente nel DB
      */
-    public static void removeDipendente(Cdf cdf){
-        if (!containsDipendente(cdf)) throw new AssertionError("Dipendente non presente nel db");
-        MongoCollection<Dipendente> collection = getCollectionDipendenteBean();
+    public static void removeDipendente(Cdf cdf) throws DipendenteNotFoundException{
+        if (!containsDipendente(cdf)) throw new DipendenteNotFoundException("Non è possibile rimuovere un Dipendente che non è presente nel db.\nCodiceFiscale del dipendente: "+cdf.getCodiceFiscale());
+        MongoCollection<Dipendente> collection = getCollectionDipendente();
        collection.deleteOne(eq(Constants.ELEMENT_CDF, cdf.getCodiceFiscale()));
     }
 
@@ -223,10 +227,10 @@ public class MongoDataManagerBean {
      * @return la lista dei Dipendenti del CTT
      */
     public static List<Dipendente> getListaDipendenti(){
-        MongoCollection<Dipendente> collection = getCollectionDipendenteBean();
+        MongoCollection<Dipendente> collection = getCollectionDipendente();
         List<Dipendente> dipendenti = new ArrayList<>();
-        for(Dipendente bean : collection.find())
-            dipendenti.add(bean);
+        for(Dipendente unDipendente : collection.find())
+            dipendenti.add(unDipendente);
         return dipendenti;
     }
 
@@ -234,11 +238,11 @@ public class MongoDataManagerBean {
      * @return la lista delle Sacche presenti in magazzino
      */
     public static List<Sacca> getListaSacche(){
-        MongoCollection<Sacca> collection = getCollectionSaccaBean();
+        MongoCollection<Sacca> collection = getCollectionSacca();
         List<Sacca> sacche = new ArrayList<Sacca>();
 
-        for (Sacca unBean : collection.find())
-            sacche.add(unBean);
+        for (Sacca unaSacca : collection.find())
+            sacche.add(unaSacca);
         return sacche;
     }
 
@@ -246,11 +250,11 @@ public class MongoDataManagerBean {
      * @return la lista dei DatiSacca che sono presenti nel database
      */
     public static List<DatiSacca> getListaDatiSacche(){
-        MongoCollection<DatiSacca> collection =getCollectionDatiSaccaBean();
+        MongoCollection<DatiSacca> collection =getCollectionDatiSacca();
         List<DatiSacca> datiSacche = new ArrayList<DatiSacca>();
 
-        for (DatiSacca unBean : collection.find())
-            datiSacche.add(unBean);
+        for (DatiSacca unDatiSacca : collection.find())
+            datiSacche.add(unDatiSacca);
         return datiSacche;
     }
 
@@ -260,10 +264,11 @@ public class MongoDataManagerBean {
 
     /**Cambia lo stato di prenotazione di una Sacca identificata tramite il Seriale solo se essa esiste
      * @param seriale Seriale della Sacca da ricercare
+     * @throws SaccaNotFoundException se la sacca di cui si vuole aggiornare il valore non è presente nel DB
      */
-    public static void setPrenotatoSacca(Seriale seriale){
-        if (!containsSacca(seriale)) throw new AssertionError("Non puoi aggiornare lo stato di una sacca che non esiste");
-        MongoCollection<Sacca> collection = getCollectionSaccaBean();
+    public static void setPrenotatoSacca(Seriale seriale)throws SaccaNotFoundException{
+        if (!containsSacca(seriale)) throw new SaccaNotFoundException("Non puoi aggiornare lo stato di una sacca che non è presente nel DB. Seriale della sacca: "+seriale.getSeriale());
+        MongoCollection<Sacca> collection = getCollectionSacca();
 
         collection.updateOne(
                 eq(Constants.ELEMENT_SERIALE,seriale.getSeriale()),
@@ -274,10 +279,11 @@ public class MongoDataManagerBean {
     /**Modifica il parametro enteRichiedente di una DatiSacca identificata tramite Seriale nel database dei DatiSacca solo se DatiSacca esiste
      * @param seriale Seriale della Sacca da modificare
      * @param enteRichiedente Ente a cui sarà affidata la Sacca
+     * @throws DatiSaccaNotFoundException se il DatiSacca che si vuole aggiornare non è presente nel DB
      */
-    public static void setEnteRichiedenteDatiSacca(Seriale seriale, String enteRichiedente) {
-        if(!containsDatiSacca(seriale)) throw new AssertionError("Non puoi cambiare l'ente richiedente di una sacca non presente nel DB");
-        MongoCollection<DatiSacca> collection = getCollectionDatiSaccaBean();
+    public static void setEnteRichiedenteDatiSacca(Seriale seriale, String enteRichiedente) throws DatiSaccaNotFoundException{
+        if(!containsDatiSacca(seriale)) throw new DatiSaccaNotFoundException("Non puoi settare l'ente richiedente di un DatiSacca non presente nel DB. Seriale del DatiSacca: "+seriale.getSeriale());
+        MongoCollection<DatiSacca> collection = getCollectionDatiSacca();
         collection.updateOne(
                 eq(Constants.ELEMENT_SERIALE, seriale.getSeriale()),
                 set(Constants.ELEMENT_ENTERICHIEDENTE, enteRichiedente));
@@ -286,10 +292,11 @@ public class MongoDataManagerBean {
     /**Modifica il parametro indirizzoEnte di una DatiSacca identificata tramite Seriale nel database dei DatiSacca solo se DatiSacca esiste
      * @param seriale Seriale della Sacca da modificare
      * @param indirizzoEnte indirizzo dell'ente a cui sarà affidata la Sacca
+     * @throws DatiSaccaNotFoundException se il DatiSacca di cui si vuole settare l'indiirzzo dell'ente non è presente nel DB
      */
-    public static void setIndirizzoEnteDatiSacca(Seriale seriale, String indirizzoEnte) {
-        if(!containsDatiSacca(seriale)) throw new DatiSaccaNotFoundException("Non puoi cambiare l'indirizzo dell'ente richiedente di una sacca non presente nel DB");
-        MongoCollection<DatiSacca> collection = getCollectionDatiSaccaBean();
+    public static void setIndirizzoEnteDatiSacca(Seriale seriale, String indirizzoEnte) throws DatiSaccaNotFoundException{
+        if(!containsDatiSacca(seriale)) throw new DatiSaccaNotFoundException("Non puoi cambiare l'indirizzo dell'ente richiedente di una sacca non presente nel DB. Seriale del DatiSacca: "+seriale.getSeriale());
+        MongoCollection<DatiSacca> collection = getCollectionDatiSacca();
         collection.updateOne(
                 eq(Constants.ELEMENT_SERIALE, seriale.getSeriale()),
                 set(Constants.ELEMENT_INDIRIZZOENTE, indirizzoEnte));
@@ -298,10 +305,11 @@ public class MongoDataManagerBean {
     /**Modifica il parametro enteRichiedente di una DatiSacca identificata tramite Seriale nel database dei DatiSacca solo se il DatiSacca esiste
      * @param seriale Seriale della Sacca da ricercare
      * @param dataAffidamento Data in cui è stata affidata la Sacca
+     * @throws DatiSaccaNotFoundException se il DatiSacca di cui si vuole settare la data di affidamento non è presente nel DB
      */
-    public static void setDataAffidamentoDatiSacca(Seriale seriale, LocalDate dataAffidamento) {
-        if (!containsDatiSacca(seriale)) throw new DatiSaccaNotFoundException("Non puoi cambiare la data di affidamento di una sacca non presente nel DB");
-        MongoCollection<DatiSacca> collection = getCollectionDatiSaccaBean();
+    public static void setDataAffidamentoDatiSacca(Seriale seriale, LocalDate dataAffidamento) throws DatiSaccaNotFoundException{
+        if (!containsDatiSacca(seriale)) throw new DatiSaccaNotFoundException("Non puoi cambiare la data di affidamento di una sacca non presente nel DB. Seriale del DatiSacca: "+seriale.getSeriale());
+        MongoCollection<DatiSacca> collection = getCollectionDatiSacca();
         collection.updateOne(
                 eq(Constants.ELEMENT_SERIALE,seriale.getSeriale()),
                 set(Constants.ELEMENT_DATAAFFIDAMENTO, DateTimeFormatter.ISO_LOCAL_DATE.format(dataAffidamento)));
@@ -310,10 +318,11 @@ public class MongoDataManagerBean {
     /**Modifica la password di un Dipendente all'interno del DB solo se esso esiste
      * @param password la nuova passworda da aggiungere
      * @param cdf  il codice fiscale del Dipendente di cui si vuole aggiornare la password
+     * @throws DipendenteNotFoundException se il dipendente di cui si vule cambiare la password non è presente nel DB
      * */
     public static void setPassword(Cdf cdf, String password) throws DipendenteNotFoundException {
-        if (!containsDipendente(cdf)) throw new AssertionError( "Non puoi cambiare la password di un utente non esistente");
-        MongoCollection<Dipendente> collection = getCollectionDipendenteBean();
+        if (!containsDipendente(cdf)) throw new DipendenteNotFoundException( "Non puoi cambiare la password di un utente non presente nel DB. Codice Fiscale del dipendente: "+cdf.getCodiceFiscale());
+        MongoCollection<Dipendente> collection = getCollectionDipendente();
         collection.updateOne(
                 eq(Constants.ELEMENT_CDF,cdf.getCodiceFiscale()),
                 set(Constants.ELEMENT_PASSWORD, password ));

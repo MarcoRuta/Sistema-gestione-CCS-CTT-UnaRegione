@@ -2,7 +2,7 @@ package it.unisannio.ingegneriaDelSoftware.Searcher;
 
 import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManagerBean;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Searcher;
 import it.unisannio.ingegneriaDelSoftware.Util.ScadenzeComparator;
 
@@ -18,7 +18,7 @@ public class SearcherLocale implements Searcher {
         assert(dataArrivoMassima!=null) : "la data di arrivo non può essere nulla!";
 
         List<Sacca> saccheTrovate = new ArrayList<Sacca>();
-        List<Sacca> listaSacche = MongoDataManagerBean.getListaSacche();
+        List<Sacca> listaSacche = MongoDataManager.getListaSacche();
 
         for (Sacca sacca : listaSacche)
             if(!sacca.isPrenotato() && sacca.getGruppoSanguigno().equals(gs)

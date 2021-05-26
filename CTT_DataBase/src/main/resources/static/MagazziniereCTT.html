@@ -116,19 +116,18 @@
            str = str + obj.listaSeriali[i] + ",";
         }
           str2 = str.substring(0,str.length-1);
-          sr = str2.substring(0,15);
           var btn = document.createElement("button");
           btn.className='btn btn-warning';
           btn.innerHTML = "Sacche: " + str2 + "<br>Ente: " + obj.enteRichiedente + "<br>Indirizzo: " + obj.indirizzoEnte;
           btn.type = 'submit';
-          btn.value = sr;
+          btn.value = str;
           btn.style = 'width: 98%; max-height: 280px; vertical-align: baseline; margin: 1%; text-align: left;';
           
           /*####### EVASIONE SACCA ######*/
           btn.onclick = function() {
-  
-              var params = 'listaSeriali='+str +'&enteRichiedente='+obj.enteRichiedente+'&indirizzoEnte='+obj.indirizzoEnte;
-              
+ 
+        	  var x = document.activeElement;
+              var params = 'listaSeriali='+ x.value +'&enteRichiedente='+ obj.enteRichiedente +'&indirizzoEnte='+ obj.indirizzoEnte;
               host = document.location.origin;
               var url = host+"/rest/magazziniere/evasione?" + params;
               xhttp.onreadystatechange = function() {
@@ -185,10 +184,11 @@
       /*####### REMOVE FUNCTION ######*/
       function removeNotify() {
           var x = document.activeElement;
+          let sr = x.value.substring(0,15);
           for(let i = 0; i < localStorage.length; i++) {
                   if(localStorage.key(i).substring(0,7) == "bottone") {
                           data = localStorage.getItem(localStorage.key(i));
-                          if(JSON.parse(data).listaSeriali[0] == x.value) {
+                          if(JSON.parse(data).listaSeriali[0] == sr) {
                               localStorage.removeItem(localStorage.key(i));
                               location.reload();
                           }

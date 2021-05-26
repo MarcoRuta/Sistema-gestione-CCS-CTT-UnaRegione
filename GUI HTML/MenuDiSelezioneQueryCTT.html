@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="assets/css/formStyles.css">
 </head>
 
-<body>
+<body onload="verificoToken();">
     <div class="titlePage">
         <div>
             <span class="fontTitle">
@@ -56,7 +56,17 @@
                 </div>
             </div>
         </div>
-    
+    <script>
+        var token = sessionStorage.getItem("token");
+        var ruolo = sessionStorage.getItem("ruolo");
+        
+        verificoToken = function(){
+               if(token == null || ruolo != 'AmministratoreCTT'){
+                alert("E' necessario effettuare il login per accedere a questa risorsa");
+                window.location.href='Login.html';
+               }
+        };
+    </script>
     <div class="footer"></div>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>

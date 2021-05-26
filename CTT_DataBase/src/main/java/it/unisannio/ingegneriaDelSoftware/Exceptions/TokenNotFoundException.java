@@ -1,11 +1,13 @@
 package it.unisannio.ingegneriaDelSoftware.Exceptions;
 
-public class TokenNotFoundException extends RuntimeException{
-    private static final long serialVersionUID = 1L;
-    
-    public TokenNotFoundException() {}
-    
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+public class TokenNotFoundException extends WebApplicationException {
+
     public TokenNotFoundException (String message) {
-        super(message);
+        super(Response.status(Response.Status.NOT_FOUND)
+                .entity(message).type(MediaType.TEXT_PLAIN).build());
     }
 }

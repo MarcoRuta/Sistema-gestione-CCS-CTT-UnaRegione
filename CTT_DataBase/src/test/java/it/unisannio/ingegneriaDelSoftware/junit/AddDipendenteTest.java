@@ -20,7 +20,7 @@ import org.junit.Test;
 import it.unisannio.ingegneriaDelSoftware.Classes.Cdf;
 import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.RuoloDipendente;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManagerBean;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 import it.unisannio.ingegneriaDelSoftware.Util.DateUtil;
 
@@ -62,7 +62,7 @@ public class AddDipendenteTest {
 
       
         for(Dipendente dip : listaDipendenti) {
-        	MongoDataManagerBean.createDipendente(dip);
+        	MongoDataManager.createDipendente(dip);
         }  
         
 		Client client = ClientBuilder.newClient();
@@ -127,7 +127,7 @@ public class AddDipendenteTest {
 
 	@AfterClass
 	public static void dropDBDipendenti() {
-		MongoDataManagerBean.dropDB();
+		MongoDataManager.dropDB();
 	}
 
 

@@ -124,4 +124,18 @@ div.divNot p {
 	margin: 10px;
 }
 
+.divNotMag {
+	overflow:auto;
+	max-height:  180px;
+}
+
+
+div.divNotMag p {
+	overflow: hidden;
+  	display: -webkit-box;
+  	-webkit-line-clamp: 3;
+  	-webkit-box-orient: vertical;
+	margin: 10px;
+}
+
 

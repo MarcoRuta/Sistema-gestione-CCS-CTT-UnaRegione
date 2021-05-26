@@ -11,7 +11,7 @@ import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
 
-@ServerEndpoint(value = "/ws/mosquitoTry",
+@ServerEndpoint(value = "/ws/notifiche",
         encoders = {NotificaEvasioneEncoder.class},
         decoders = {NotificaEvasioneDecoder.class} )
 

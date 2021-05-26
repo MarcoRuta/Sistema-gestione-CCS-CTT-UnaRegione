@@ -8,7 +8,9 @@ public class Cdf {
 	private static Map<String, Cdf> cdfs = new HashMap<String,Cdf>();
 
 
-	public static Cdf getCDF(String cdf) throws AssertionError{
+	/**Metodo tramite il quale costruiamo una istanza di CDF se non è stata gia istanziata in precedenza
+	 * @param cdf codice fiscale che vogliamo creare*/
+	public static Cdf getCDF(String cdf) throws AssertionError, IllegalArgumentException{
 		assert cdf != null: "Il cdf non puo essere null";
 		if (Cdf.cdfs.containsKey(cdf))
 			return Cdf.cdfs.get(cdf);
@@ -18,9 +20,10 @@ public class Cdf {
 	}
 
 	/**
-	 * @param cdf  deve essere una stringa di 16 caratteri*/
-    private Cdf(String cdf){
-		if(!(cdf.length()==16)) throw new AssertionError("Il codice Fiscale deve essere di 16 caratteri");
+	 * @param cdf  deve essere una stringa di 16 caratteri
+	 * @throws IllegalArgumentException se il codice fiscale non rispetta lo standard del codice fiscale*/
+    private Cdf(String cdf) throws IllegalArgumentException{
+		if(!(cdf.length()==16)) throw new IllegalArgumentException("Il codice Fiscale deve essere di 16 caratteri");
         this.codiceFiscale = cdf;
     }
 	

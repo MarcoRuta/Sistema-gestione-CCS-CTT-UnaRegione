@@ -12,7 +12,7 @@ import org.bson.codecs.EncoderContext;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-
+/**Codec usato per salvare {@link Dipendente} all'interno  del DB*/
 public class DipendenteCodec implements Codec<Dipendente> {
 
     @Override

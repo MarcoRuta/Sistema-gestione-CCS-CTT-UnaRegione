@@ -13,7 +13,7 @@ import org.bson.codecs.EncoderContext;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-
+/**Codec usato per salvare {@link DatiSacca} all'interno  del DB*/
 public class DatiSaccaCodec implements Codec<DatiSacca> {
 
 
@@ -21,13 +21,18 @@ public class DatiSaccaCodec implements Codec<DatiSacca> {
     public DatiSacca decode(BsonReader reader, DecoderContext decoderContext) {
         reader.readStartDocument();
         reader.readObjectId();
-        DatiSacca unaSacca = new DatiSacca(
-                Seriale.getSeriale(reader.readString(Constants.ELEMENT_SERIALE)),
-                GruppoSanguigno.valueOf(reader.readString(Constants.ELEMENT_GRUPPO)),
-                LocalDate.parse(reader.readString(Constants.ELEMENT_DATAARRIVO),
-                        DateTimeFormatter.ofPattern(Constants.DATEFORMAT)),
-                LocalDate.parse(reader.readString(Constants.ELEMENT_DATAAFFIDAMENTO),
-                        DateTimeFormatter.ofPattern(Constants.DATEFORMAT)),
+        //recupero tutti i valori prima della DataDiAffidamento in quanto devo gestire il fatto che essa è optional
+        Seriale seriale = Seriale.getSeriale(reader.readString(Constants.ELEMENT_SERIALE));
+        GruppoSanguigno gs = GruppoSanguigno.valueOf(reader.readString(Constants.ELEMENT_GRUPPO));
+        LocalDate dataArrivo = LocalDate.parse(reader.readString(Constants.ELEMENT_DATAARRIVO),
+                DateTimeFormatter.ofPattern(Constants.DATEFORMAT));
+        String dateBuffer = reader.readString(Constants.ELEMENT_DATAAFFIDAMENTO);
+        //se non ho un valore setto nel DB "" altrimenti salvo il suo valore
+        LocalDate dataAffidamento = dateBuffer.length()==0?null: LocalDate.parse(dateBuffer,
+                DateTimeFormatter.ofPattern(Constants.DATEFORMAT));
+
+        //custruisco la sacca recuperando gli ultimi valori
+        DatiSacca unaSacca = new DatiSacca(seriale,gs,dataArrivo,dataAffidamento,
                 reader.readString(Constants.ELEMENT_ENTEDONATORE),
                 reader.readString(Constants.ELEMENT_ENTERICHIEDENTE),
                 reader.readString(Constants.ELEMENT_INDIRIZZOENTE));
@@ -42,7 +47,10 @@ public class DatiSaccaCodec implements Codec<DatiSacca> {
         writer.writeString(Constants.ELEMENT_SERIALE, value.getSeriale().getSeriale());
         writer.writeString(Constants.ELEMENT_GRUPPO,value.getGruppoSanguigno().toString());
         writer.writeString(Constants.ELEMENT_DATAARRIVO, DateTimeFormatter.ISO_LOCAL_DATE.format(value.getDataArrivo()));
-        writer.writeString(Constants.ELEMENT_DATAAFFIDAMENTO,DateTimeFormatter.ISO_LOCAL_DATE.format(value.getDataAffidamento()));
+        // se la sacca non ha una data di affidamento salvo "" nel DB altrimento salvo il suo valore
+        writer.writeString(Constants.ELEMENT_DATAAFFIDAMENTO,
+                value.getDataAffidamento().isPresent()?
+                        DateTimeFormatter.ISO_LOCAL_DATE.format(value.getDataAffidamento().get()):"");
         writer.writeString(Constants.ELEMENT_ENTEDONATORE, value.getEnteDonatore());
         writer.writeString(Constants.ELEMENT_ENTERICHIEDENTE, value.getEnteRichiedente());
         writer.writeString(Constants.ELEMENT_INDIRIZZOENTE, value.getIndirizzoEnte());
