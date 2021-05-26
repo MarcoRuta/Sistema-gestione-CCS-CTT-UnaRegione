@@ -1,4 +1,4 @@
-package it.unisannio.ingegneriaDelSoftware.EndPointNotifiche;
+package it.unisannio.ingegneriaDelSoftware.Interfaces;
 
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Notifica;
 

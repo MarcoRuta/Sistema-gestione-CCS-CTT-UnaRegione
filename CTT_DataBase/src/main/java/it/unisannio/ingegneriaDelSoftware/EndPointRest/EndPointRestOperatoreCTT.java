@@ -17,9 +17,9 @@ import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.Classes.NotificaEvasione;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
-import it.unisannio.ingegneriaDelSoftware.EndPointNotifiche.NotificheObserver;
-import it.unisannio.ingegneriaDelSoftware.EndPointNotifiche.Observer;
-import it.unisannio.ingegneriaDelSoftware.EndPointNotifiche.Subject;
+import it.unisannio.ingegneriaDelSoftware.NotificheObservers.TerminaleMagazziniereObserver;
+import it.unisannio.ingegneriaDelSoftware.Interfaces.Observer;
+import it.unisannio.ingegneriaDelSoftware.Interfaces.Subject;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccheInLocaleNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointOperatoreCTT;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Notifica;
@@ -35,7 +35,7 @@ import it.unisannio.ingegneriaDelSoftware.Util.DateUtil;
 public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT, Subject{
 
 	/**Il terminale del magazziniere deve essere notificato quando viene creata una notifica*/
-	private Observer anObserver= new NotificheObserver();
+	private Observer anObserver= new TerminaleMagazziniereObserver();
 	/**Composite che effettua la ricerca prima in locale con il gruppo sanguigno specificato e poi in locale con i gs compatibili*/
 	public Searcher aSearcher = new CompositionSearcher();
 
@@ -66,7 +66,7 @@ public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT, Subject{
 					MongoDataManager.setPrenotatoSacca(sacca.getSeriale());
 					serialiDaEvadere.add(sacca.getSeriale().getSeriale());
 				}
-				this.notifyObserver(new NotificaEvasione(serialiDaEvadere, enteRichiedente, indirizzoEnte));
+				this.notifyMagazziniereObserver(new NotificaEvasione(serialiDaEvadere, enteRichiedente, indirizzoEnte));
 			}
 
 			if (saccheTrovate.size() < numSacche) throw new SaccheInLocaleNotFoundException("Verra contattato il CSS");
@@ -86,7 +86,12 @@ public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT, Subject{
 	/**Il terminale del magazziniere è un subject, esso crea notifiche, le notifiche sono di interesse per
 	 * il terminale magazziniere che deve essere notificato*/
 	@Override
-	public void notifyObserver(Notifica notifica) {
+	public void notifyMagazziniereObserver(Notifica notifica) {
 		this.anObserver.update(notifica);
+	}
+
+	@Override
+	public void notifyOperatoreObserver(Notifica notifica) {
+		//do nothing
 	}
 }
