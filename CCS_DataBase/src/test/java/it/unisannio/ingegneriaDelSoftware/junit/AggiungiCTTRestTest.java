@@ -21,7 +21,7 @@ import it.unisannio.ingegneriaDelSoftware.Classes.Cdf;
 import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.RuoloDipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.User;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManagerBean;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 
 public class AggiungiCTTRestTest {
 	
@@ -32,19 +32,20 @@ public class AggiungiCTTRestTest {
 	  @BeforeClass
 	  public static void setUp(){
 		
-		Cdf cdf = new Cdf("122hfotndj13ht5f");
-	    LocalDate ld = LocalDate.of(1998,10,10);
+		Cdf cdf = Cdf.getCDF("KTMFSW67T64I460X");
+	    LocalDate ld = LocalDate.parse("1978-10-10");
 	    RuoloDipendente ruolo = RuoloDipendente.AmministratoreCCS;
 	    String username = "admin";
-	    String password = "admin";
+	    String password = "Adminadmin1";
 	    Dipendente dip = new Dipendente(cdf, "TestAdmin", "TestAdmin", ld, ruolo, username, password);
-	    MongoDataManagerBean.createDipendente(dip);
+	    MongoDataManager mm = MongoDataManager.getInstance();
+	    mm.createDipendente(dip);
 	    
 	    Client client = ClientBuilder.newClient();
 		WebTarget login = client.target("http://127.0.0.1:8080/rest/autentificazione");
 		Form form1 = new Form();
 		form1.param("username", "admin");
-		form1.param("password", "admin");
+		form1.param("password", "Adminadmin1");
 		
 		Response responselogin = login.request().post(Entity.form(form1));
 		User user = responselogin.readEntity(User.class);
@@ -111,8 +112,10 @@ public class AggiungiCTTRestTest {
 	assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), responseaddCTT.getStatus());
 	}
 	  	  
+  
 	@AfterClass public static void drop(){
-	MongoDataManagerBean.dropDB();
+	MongoDataManager mm = MongoDataManager.getInstance();
+	mm.dropDB();
 	}
 	  
 }

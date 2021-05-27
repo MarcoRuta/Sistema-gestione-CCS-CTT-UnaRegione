@@ -17,8 +17,9 @@ public class SearcherLocale implements Searcher {
         assert(gs!=null) : "Il gruppo sanguigno non può essere nullo!";
         assert(dataArrivoMassima!=null) : "la data di arrivo non può essere nulla!";
 
+        MongoDataManager md = MongoDataManager.getInstance();
         List<Sacca> saccheTrovate = new ArrayList<Sacca>();
-        List<Sacca> listaSacche = MongoDataManager.getListaSacche();
+        List<Sacca> listaSacche = md.getListaSacche();
 
         for (Sacca sacca : listaSacche)
             if(!sacca.isPrenotato() && sacca.getGruppoSanguigno().equals(gs)

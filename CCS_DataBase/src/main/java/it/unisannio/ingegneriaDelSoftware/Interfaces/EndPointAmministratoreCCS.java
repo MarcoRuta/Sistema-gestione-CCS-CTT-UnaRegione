@@ -8,7 +8,6 @@ import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -21,56 +20,62 @@ import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
 
 public interface EndPointAmministratoreCCS {
 	
-	/**
-	 * @param seriale seriale della sacca da evadere
-	 * Metodo attivato dal magazziniere quando riceve una notifica evasione sacca
-	 * esso aggiorna i dati sacca e rimuove la sacca dal DB attivo
-	 * @return */
-	@PUT
-	@Path("/evasione/{seriale}")
-	@Produces(MediaType.TEXT_PLAIN)
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	Response addCTT(@FormParam("numero") String numero,
-		   		    @FormParam("denominazione") String denominazione,
-		   	        @FormParam("provincia") String provincia,
-		            @FormParam("citta") String citta, 
-			        @FormParam("indirizzo") String indirizzo,
-			        @FormParam("telefono") String telefono, 
-				    @FormParam("email") String email,
-				    @FormParam("latitude") String latitudine,
-				    @FormParam("longitude") String longitudine);
-	
-	
-	/**@return  messaggio corretta aggiunta sacca*/
+	/**Aggiunge un nuovo CTT al Database dei CTT
+	 * @param numero Il numero identificativo del CTT che si vuole inserire
+	 * @param denominazione La denominazione del CTT che si vuole inserire
+	 * @param provincia La provincia del CTT che si vuole inserire
+	 * @param citta La città del CTT che si vuole inserire
+	 * @param indirizzo L'indirizzo del CTT che si vuole aggiungere
+	 * @param telefono Il telefono del CTT che si vuole aggiungere
+	 * @param email L'email del CTT che si vuole aggiungere
+	 * @param latitudine La latitudine del CTT che si vuole aggiungere
+	 * @param longitudine La longitudine del CTT che si vuole aggiungere
+	 * @return Response */
 	@POST
-	@Path("/aggiuntaSacca")
+	@Path("/aggiuntaCTT")
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	Response removeCTT(@PathParam("numero") String numero);	
+	public Response addCTT(@FormParam("numero_ctt") String numero,
+			   		   @FormParam("nome_ctt") String denominazione,
+			   	       @FormParam("provincia") String provincia,
+			           @FormParam("citta") String citta, 
+				       @FormParam("indirizzo") String indirizzo,
+				       @FormParam("telefono") String telefono, 
+					   @FormParam("email") String email,
+					   @FormParam("latitude") String latitudine,
+					   @FormParam("longitude") String longitudine);
 	
 	
-	/**Metodo che restituisce la lista di tutti i CTT presenti nel database
-	 * è un metodo che viene utilizzato per avere una lista dinamica nel RimuoviCTTForm.html attraverso JS
-	 * 
-	 * @return mm*/
+	/**Rimuove un CTT dal Database dei CTT
+	 * @param numero Il numero identificativo del CTT che si vuole rimuovere
+	 * @return Response */
+	@DELETE
+	@Path("/rimozioneCTT/{numero}")
+	@Produces(MediaType.TEXT_PLAIN)
+	@Consumes(MediaType.TEXT_PLAIN)
+	public Response removeCTT(@PathParam("numero") String numero) ;	
+	
+	
+	/**Restituisce la lista di tutti i CTT presenti nel Database dei CTT, utilizzato per l' aggiunta automatica dei CTT
+	 * @return List<CTT> */
 	@GET
 	@Path("/centers")
 	@Produces(MediaType.APPLICATION_JSON)
-	List<CTT> listaCTT();
+	public List<CTT> listaCTT();
 	
 	
-	/**Metodo attivato dall'ammministratore quando deve essere aggiunto un altro amministratore nel sistemaCCS
-	 * @param cdf Dipendente da aggiungere al DataBase
-	 * @param nome Dipendente da aggiungere al DataBase
-	 * @param cognome Dipendente da aggiungere al DataBase
-	 * @param dataDiNascita del Dipendente da aggiungere al DataBase
-	 * @param ruolo del Dipendente da aggiungere al DataBase
-	 * @param username del Dipendente da aggiungere al DataBase
-	 * @param password del Dipendente da aggiungere al DataBase
+	/**Aggiunge un AmministratoreCCS nel Database dei Dipendenti
+	 * @param cdf Codice fiscale del Dipendente da aggiungere al DataBase
+	 * @param nome Nome del Dipendente da aggiungere al DataBase
+	 * @param cognome Cognome del Dipendente da aggiungere al DataBase
+	 * @param dataDiNascita Data di nascita del Dipendente da aggiungere al DataBase
+	 * @param ruolo Ruolo del Dipendente da aggiungere al DataBase
+	 * @param username Username del Dipendente da aggiungere al DataBase
+	 * @param password Password del Dipendente da aggiungere al DataBase
 	 * @return Response 
 	 */
 	@POST
-	@Path("/aggiuntaamministratore")
+	@Path("/aggiuntaAmministratore")
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public Response addDipendente(@FormParam("cdf")String cdf,
@@ -87,16 +92,16 @@ public interface EndPointAmministratoreCCS {
 	 * @return
 	 */
 	@DELETE
-	@Path("/rimozioneamministratore/{cdf}")
+	@Path("/rimozioneAmministratore/{cdf}")
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes(MediaType.TEXT_PLAIN)
-	public Response removeDipendente(@PathParam("cdf") String cdf);
+	public Response removeDipendente(@PathParam("cdf") String cdf) ;
 	
 	
 	/**
-	 * Metodo utilizzato per aggiunta automatica dei dipendenti
-	 * 
-	 * @return */
+	 * Restituisce la lista di tutti i Dipendenti presenti nel database dei Dipendenti
+	 * @return List<Dipendente> Lista di tutti i Dipendenti
+	 */
 	@GET
 	@Path("/dipendenti")
 	@Produces(MediaType.APPLICATION_JSON)

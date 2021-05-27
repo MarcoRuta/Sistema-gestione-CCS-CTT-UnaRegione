@@ -2,38 +2,24 @@ package it.unisannio.ingegneriaDelSoftware.Classes;
 
 import java.io.PrintStream;
 
-import org.bson.codecs.pojo.annotations.BsonCreator;
-import org.bson.codecs.pojo.annotations.BsonProperty;
-
 public class CTTPosition {
 		
-	@BsonProperty(useDiscriminator = true)
 	private final String provincia;
-	@BsonProperty(useDiscriminator = true)
 	private final String citta;
-	@BsonProperty(useDiscriminator = true)
 	private final String indirizzo;
-	@BsonProperty(useDiscriminator = true)
 	private final double latitudine;
-	@BsonProperty(useDiscriminator = true)
 	private final double longitudine;
 
-	/**
-	 * Metodo costruttore di CTTPosition
+	
+	/**Metodo costruttore di CTTPosition
+	 * @param provincia Provincia di appartenenza del CTT
+	 * @param citta Città di appartenenza del CTT
+	 * @param indirizzo Indirizzo di appartenenza del CTT
+	 * @param latitudine Latitudine del CTT
+	 * @param longitudine Longitudine del CTT
 	 * 
-	 * @param provincia la provincia di appartenenza del CTT
-	 * @param citta  la citta di appartenenza del CTT
-	 * @param indirizzo l'indirizzo di appartenenza del CTT
-	 * @param latitudine la latitudine del CTT
-	 * @param longitudine la longitudine del CTT
-	 * 
-	 * */
-	@BsonCreator
-	public CTTPosition(@BsonProperty("provincia")String provincia,
-						@BsonProperty("citta")String citta,
-						@BsonProperty("indirizzo")String indirizzo,
-						@BsonProperty("latitudine")double latitudine,
-						@BsonProperty("longitudine")double longitudine) {
+	 */
+	public CTTPosition(String provincia, String citta, String indirizzo, double latitudine, double longitudine) {
 		assert provincia != null: "la provincia non può essere null";
 		assert citta != null: "la citta non può essere null";
 		assert indirizzo != null: "l'indirizzo non può essere null";
@@ -47,11 +33,8 @@ public class CTTPosition {
 		this.longitudine = longitudine;	
 	}
 	
-	/**
-	 * Metodo che concatena in un'unica stringa le informazioni della posizione del CTT
-	 *  * 
+	/**Concatena in un'unica stringa le informazioni della posizione del CTT
 	 * @return La stringa concatenata
-	 * 
 	 */
 	@Override
 	public String toString() {
@@ -64,11 +47,8 @@ public class CTTPosition {
 				'}';
 	}
 
-	/**
-	 * Metodo che stampa le informazioni della posizione del CTT
-	 * 
+	/**Stampa le informazioni della posizione del CTT
 	 * @param ps  stream di output su cui stampare i dati della posizione del CTT
-	 * 
 	 */
 	public void print(PrintStream ps) {
 		ps.println("Provincia: "+ this.provincia);
@@ -79,51 +59,36 @@ public class CTTPosition {
 		
 	}
 	
-	/**
-	 * Metodo che restituisce la provincia del CTT
-	 * 
+	/**Restituisce la provincia del CTT
 	 * @return provincia
-	 *
 	 */
 	public String getProvincia() {
 		return provincia;
 	}
 	
-	/**
-	 * Metodo che restituisce la citta del CTT
-	 * 
-	 * @return citta
-	 *
+	/**Restituisce la città del CTT
+	 * @return città
 	 */
 	public String getCitta() {
 		return citta;
 	}
 	
-	/**
-	 * Metodo che restituisce l'indirizzo del CTT
-	 * 
-	 * @return  indirizzo
-	 *
+	/**Restituisce l'indirizzo del CTT
+	 * @return indirizzo
 	 */
 	public String getIndirizzo() {
 		return indirizzo;
 	}
 	
-	/**
-	 * Metodo che restituisce la latitudine del CTT
-	 * 
+	/**Restituisce la latitudine del CTT
 	 * @return latitudine
-	 *
 	 */
 	public double getLatitudine() {
 		return latitudine;
 	}
 	
-	/**
-	 * Metodo che restituisce la longitudine del CTT
-	 * 
+	/**Restituisce la longitudine del CTT
 	 * @return longitudine
-	 *
 	 */
 	public double getLongitudine() {
 		return longitudine;

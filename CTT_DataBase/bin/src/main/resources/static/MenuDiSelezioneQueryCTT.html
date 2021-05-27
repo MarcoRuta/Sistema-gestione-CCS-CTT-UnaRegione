@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>MenuSelezioneQueryCTT</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/formStyles.css">
+</head>
+
+<body onload="verificoToken();">
+    <div class="titlePage">
+        <div>
+            <span class="fontTitle">
+                Menù di Selezione Query CTT            
+            </span>
+        </div>
+        <div>
+            <img class="logoCTT" src="assets/img/LOGO_CTT.svg">
+        </div>
+    </div>
+    
+        <div class="box">
+            <div>
+                <button class="btn" onclick="location.href='AmministratoreCTT.html';"><img class="return" src="assets/img/return.png" /></button>
+            </div>
+            <div class="containerTable">
+                <div class="table-responsive" style="width: 100%;">
+                    <table class="table">
+                        <thead>
+                            <tr></tr>
+                        </thead>
+                        <tbody class="tableStyle">
+                            <tr>
+                                <td>
+                                    <p>Report Operatori Centri trasfusionali Territoriali</p>
+                                </td>
+                                <td><button class="btn btn-primary" onclick="location.href='ReportOperatoriCTTForm.html';" type="button" style="margin: 5px 145px;font-size: 19px;">Seleziona</button></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>Ordina Gruppi Sanguigni per Richieste</p>
+                                </td>
+                                <td><button class="btn btn-primary" onclick="location.href='OrdinaGruppiSanguigniPerRichiesteForm.html';" type="button" style="margin: 5px 145px;font-size: 19px;">Seleziona</button></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>Report Locale Sacche Inviate e Ricevute<br><br></p>
+                                </td>
+                                <td><button class="btn btn-primary" onclick="location.href='ReportLocaleSaccheInviateRicevuteCTTForm.html';" type="button" style="margin: 5px 145px;font-size: 19px;">Seleziona</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    <script>
+        var token = sessionStorage.getItem("token");
+        var ruolo = sessionStorage.getItem("ruolo");
+        
+        verificoToken = function(){
+               if(token == null || ruolo != 'AmministratoreCTT'){
+                alert("E' necessario effettuare il login per accedere a questa risorsa");
+                window.location.href='Login.html';
+               }
+        };
+    </script>
+    <div class="footer"></div>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>

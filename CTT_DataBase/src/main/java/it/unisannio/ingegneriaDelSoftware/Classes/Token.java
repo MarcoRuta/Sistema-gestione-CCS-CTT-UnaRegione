@@ -1,5 +1,6 @@
 package it.unisannio.ingegneriaDelSoftware.Classes;
 
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.DipendenteNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.TokenNotFoundException;
 
@@ -51,11 +52,15 @@ public class Token {
      * @return  username:password dell'utente a cui è associato il token
      * @throws DipendenteNotFoundException se il token ricercato non è associato a nessun dipendente
      */
-    public static String getDipendenteByToken(String token) throws DipendenteNotFoundException {
+    public static Dipendente getDipendenteByToken(String token) throws DipendenteNotFoundException {
         assert token != null: "il token non puo essere null";
         for (String usernamePassword : Token.tokens.keySet())
-            if (Token.tokens.get(usernamePassword).getValue().equals(token))
-                return usernamePassword;
+            if (Token.tokens.get(usernamePassword).getValue().equals(token)) {
+                StringTokenizer tokenizer = new StringTokenizer(usernamePassword);
+                String username = tokenizer.nextToken(":");
+                String password = tokenizer.nextToken();
+                return MongoDataManager.getInstance().getDipendente(username, password);
+            }
         throw new DipendenteNotFoundException("Il token non è associato a nessun dipendente");
 
     }

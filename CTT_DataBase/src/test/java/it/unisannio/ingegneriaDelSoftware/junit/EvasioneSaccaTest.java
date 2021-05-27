@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.client.Client;
@@ -26,7 +27,6 @@ import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
 import it.unisannio.ingegneriaDelSoftware.Classes.User;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
-import it.unisannio.ingegneriaDelSoftware.Util.DateUtil;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 
 
@@ -34,6 +34,7 @@ public class EvasioneSaccaTest {
 	static String token = null;
 	Client client = ClientBuilder.newClient();
 	WebTarget evasioneSacca = client.target("http://127.0.0.1:8080/rest/magazziniere/evasione");
+
 	
 	@BeforeClass public static void populateDBSacche() throws SaccaNotFoundException, AssertionError, ParseException {
 	
@@ -559,26 +560,26 @@ public class EvasioneSaccaTest {
     	 localDataArrivo = LocalDate.of(2021,05,02);
     	 enteDonatore = "AVIS - Napoli_Sud";
     	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
-    	 listaDatiSacche.add(datisacca); 
-   	  	
-    	
-    	
+    	 listaDatiSacche.add(datisacca);
+
+
+    	MongoDataManager md = MongoDataManager.getInstance();
     	for(Sacca sac : listaSacche) {
-    		MongoDataManager.createSacca(sac);
+    		md.createSacca(sac);
         }
     	
     	for(DatiSacca datisac : listaDatiSacche) {
-    		MongoDataManager.createDatiSacca(datisac);
+    		md.createDatiSacca(datisac);
         }
 
-    	Dipendente d = new Dipendente(Cdf.getCDF("999hpoindj13ht9f"), "Mario", "Magazz", DateUtil.convertDateToLocalDate(Constants.sdf.parse("10-07-1950")), RuoloDipendente.MagazziniereCTT, "admin", "admin");
-        MongoDataManager.createDipendente(d);
+    	Dipendente d = new Dipendente(Cdf.getCDF("PVFDTP90P61I426D"), "Mario", "Magazz", LocalDate.parse("1950-07-23", DateTimeFormatter.ofPattern(Constants.DATEFORMAT)), RuoloDipendente.MagazziniereCTT, "admin", "Adminadmin1");
+        md.createDipendente(d);
     	
         Client client = ClientBuilder.newClient();
 		WebTarget login = client.target("http://127.0.0.1:8080/rest/autentificazione");
 		Form form1 = new Form();
 		form1.param("username", "admin");
-		form1.param("password", "admin");
+		form1.param("password", "Adminadmin1");
 		
 		Response responselogin = login.request().post(Entity.form(form1));
 		User user = responselogin.readEntity(User.class);
@@ -586,9 +587,8 @@ public class EvasioneSaccaTest {
 	}
 	
 	
-	
 	/**
-	 * Test che dovrebbe restituire una lista di Sacche con 21 elementi
+	 * Test 
 	*/
 	@Test public void test1(){
 				
@@ -596,8 +596,7 @@ public class EvasioneSaccaTest {
 		form1.param("listaSeriali", "CTT001-00000001,CTT001-00000002,CTT001-00000003,");
 		form1.param("enteRichiedente", "Ospedale Rummo");
 		form1.param("indirizzoEnte", "Benevento, via pacevecchia 12");
-		
-		
+				
 		Response evasioneSaccaMagazz = evasioneSacca.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).put(Entity.form(form1));
 		assertEquals(Status.OK.getStatusCode(), evasioneSaccaMagazz.getStatus());
 	}
@@ -619,7 +618,7 @@ public class EvasioneSaccaTest {
 	
 
 	@AfterClass public static void dropDBSacche() {
-	
-		MongoDataManager.dropDB();
+		MongoDataManager md = MongoDataManager.getInstance();
+		md.dropDB();
 	}
 }

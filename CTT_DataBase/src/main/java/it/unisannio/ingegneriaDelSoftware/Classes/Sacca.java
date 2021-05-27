@@ -4,6 +4,7 @@ import it.unisannio.ingegneriaDelSoftware.Exceptions.InvalidParamException;
 
 import java.io.PrintStream;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Sacca {
@@ -26,6 +27,7 @@ public class Sacca {
 		assert dataScadenza != null: "la data di scadenza non può essere null";
 		if (dataScadenza.isBefore(dataProduzione))throw new IllegalArgumentException( "La data di produzione non può essere precedente a quella di scadenza");
 		if(dataScadenza.isBefore(LocalDate.now()))throw new IllegalArgumentException("La sacca è gia scaduta");
+		if (dataProduzione.isAfter(LocalDate.now())) throw new IllegalArgumentException("Non puoi inserire una sacca non ancora prodotta");
 
 		this.seriale = new Seriale();
 		this.gruppo = gs;
@@ -48,6 +50,7 @@ public class Sacca {
 		assert ser!= null: "Il seriale non puo essere null";
 		if (dataScadenza.isBefore(dataProduzione))throw new IllegalArgumentException( "La data di produzione non può essere precedente a quella di scadenza");
 		if(dataScadenza.isBefore(LocalDate.now()))	throw new IllegalArgumentException("La sacca è gia scaduta");
+		if (dataProduzione.isAfter(LocalDate.now())) throw new IllegalArgumentException("Non puoi inserire una sacca non ancora prodotta");
 
 		this.seriale = ser;
 		this.gruppo = gs;

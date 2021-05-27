@@ -26,11 +26,10 @@ import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
 import it.unisannio.ingegneriaDelSoftware.Classes.User;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaNotFoundException;
-import it.unisannio.ingegneriaDelSoftware.Util.Constants;
-import it.unisannio.ingegneriaDelSoftware.Util.DateUtil;
 
 public class RicercaSaccaLocaleTest {
 
+	static MongoDataManager md = MongoDataManager.getInstance();
 	static String token = null;
 	Client client = ClientBuilder.newClient();
 	WebTarget evasioneSacca = client.target("http://127.0.0.1:8080/rest/operatore/ricerca");
@@ -564,21 +563,21 @@ public class RicercaSaccaLocaleTest {
 	    	                                   
 	    	    	
 	    	for(Sacca sac : listaSacche) {
-	    		MongoDataManager.createSacca(sac);
+	    		md.createSacca(sac);
 	        }
 	    	
 	    	for(DatiSacca datisac : listaDatiSacche) {
-	    		MongoDataManager.createDatiSacca(datisac);
+	    		md.createDatiSacca(datisac);
 	        }
 	    	
-	    	Dipendente d = new Dipendente(Cdf.getCDF("999hpoindj13ht9f"), "Mario", "Magazz", DateUtil.convertDateToLocalDate(Constants.sdf.parse("10-07-1950")), RuoloDipendente.OperatoreCTT, "admin", "admin");
-	        MongoDataManager.createDipendente(d);
+	    	Dipendente d = new Dipendente(Cdf.getCDF("PVFDTP90P61I426D"), "Mario", "Magazz", LocalDate.parse("1955-07-10"), RuoloDipendente.OperatoreCTT, "admin", "Adminadmin1");
+	        md.createDipendente(d);
 	    	
 	        Client client = ClientBuilder.newClient();
 			WebTarget login = client.target("http://127.0.0.1:8080/rest/autentificazione");
 			Form form1 = new Form();
 			form1.param("username", "admin");
-			form1.param("password", "admin");
+			form1.param("password", "Adminadmin1");
 			
 			Response responselogin = login.request().post(Entity.form(form1));
 			User user = responselogin.readEntity(User.class);
@@ -615,7 +614,7 @@ public class RicercaSaccaLocaleTest {
 	}
 
 	@AfterClass public static void dropDBSacche() {
-		MongoDataManager.dropDB();
+		md.dropDB();
 	}
 	
 	

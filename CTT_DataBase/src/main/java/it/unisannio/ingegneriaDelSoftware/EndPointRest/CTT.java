@@ -1,6 +1,7 @@
 package it.unisannio.ingegneriaDelSoftware.EndPointRest;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -9,9 +10,12 @@ import it.unisannio.ingegneriaDelSoftware.Classes.*;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.*;
-import it.unisannio.ingegneriaDelSoftware.Util.DateUtil;;
+import org.apache.tomcat.jni.Local;
+;
 
 public class CTT implements CTTFunction {
+
+	private  MongoDataManager md = MongoDataManager.getInstance();
 
 	/**Restituisce una lista di tutte le sacche che scadono entro 72 ore
 	 * @return la lista di sacche non ancora scadute ma che scadono entro 72 ore da oggi
@@ -19,16 +23,14 @@ public class CTT implements CTTFunction {
 	 */
 	public List<Sacca> alertControlScadenza() throws SaccaNotFoundException {
 		
-		List<Sacca> listaSacche = MongoDataManager.getListaSacche();
+		List<Sacca> listaSacche = md.getListaSacche();
 		List<Sacca> saccheInScadenza = new ArrayList<Sacca>();
-		Date oggi = new Date();
-		long dataScadenza = oggi.getTime();
-		long dataScadenza72 = dataScadenza + 259200000;
+		LocalDate oggi = LocalDate.now();
+		LocalDate scadenzaTra72ore = oggi.plusDays(3);
 
 		for (Sacca sacca : listaSacche){
-			if(DateUtil.convertLocalDateToDate(sacca.getDataScadenza()).getTime()>(dataScadenza)
-					&& DateUtil.convertLocalDateToDate(sacca.getDataScadenza()).getTime()<(dataScadenza72)) {
-
+			if((sacca.getDataScadenza().isEqual(scadenzaTra72ore) ||sacca.getDataScadenza().minusDays(3).isBefore(oggi))
+				&& !(sacca.getDataScadenza().isBefore(oggi))){
 				saccheInScadenza.add(sacca);
 			}
 		}
@@ -40,7 +42,7 @@ public class CTT implements CTTFunction {
 	 * @throws SaccaNotFoundException Eccezione che si verifica quando la Sacca inserita non viene trovata
 	 */
 	public void removeSaccheScadute() throws SaccaNotFoundException {
-		List<Sacca> listaSacche = MongoDataManager.getListaSacche();
+		List<Sacca> listaSacche = md.getListaSacche();
 
 		for(Sacca sacca : listaSacche) {
 			if(sacca.getDataScadenza().isBefore(LocalDate.now())) {
@@ -56,9 +58,9 @@ public class CTT implements CTTFunction {
 	 */
 	private void removeSaccaScaduta(Sacca s) throws SaccaNotFoundException {
 
-		MongoDataManager.removeSacca(s.getSeriale());
-		MongoDataManager.setDataAffidamentoDatiSacca(s.getSeriale(), s.getDataScadenza());
-		MongoDataManager.setEnteRichiedenteDatiSacca(s.getSeriale(), "Scaduta");
-		MongoDataManager.setIndirizzoEnteDatiSacca(s.getSeriale(), "Scaduta");
+		md.removeSacca(s.getSeriale());
+		md.setDataAffidamentoDatiSacca(s.getSeriale(), s.getDataScadenza());
+		md.setEnteRichiedenteDatiSacca(s.getSeriale(), "Scaduta");
+		md.setIndirizzoEnteDatiSacca(s.getSeriale(), "Scaduta");
 	}
 }

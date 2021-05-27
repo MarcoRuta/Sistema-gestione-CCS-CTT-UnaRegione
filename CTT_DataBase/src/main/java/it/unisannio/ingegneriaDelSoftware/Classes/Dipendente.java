@@ -1,12 +1,11 @@
 package it.unisannio.ingegneriaDelSoftware.Classes;
 
-
 import java.io.PrintStream;
 import java.time.LocalDate;
 import java.util.Objects;
 
 public class Dipendente {
-
+	
 	private final Cdf cdf;
 	private final String nome;
 	private final String cognome;
@@ -15,16 +14,17 @@ public class Dipendente {
 	private final String username;
 	private String password;
 
-	/**
-	 * @param cdf  il codice fiscale del dipendente
-	 * @param cognome  il cognome del del dipendente
-	 * @param dataDiNascita  la data di nascita del dipendente, il dipendente deve avere almeno 18 anni
-	 * @param nome  il nome del dipendente
-	 * @param password  la password del dipendente sul sistema CTT, deve contenere almeno un numero
-	 * @param username  l'username del dipendente sul sistema CTT
-	 * @param ruolo  il ruolo del dipendente nel centro CTT
-	 * @throws IllegalArgumentException se il dipendente non ha almeno 18 anni*/
-	public Dipendente(Cdf cdf, String nome, String cognome, LocalDate dataDiNascita, RuoloDipendente ruolo, String username, String password)throws IllegalArgumentException{
+	/**Metodo Costruttore dell'oggetto Dipendente
+	 * @param cdf Codice fiscale del dipendente
+	 * @param cognome Cognome del del dipendente
+	 * @param dataDiNascita Data di nascita del dipendente
+	 * @param nome Nome del dipendente
+	 * @param password Password del dipendente sul sistema CTT
+	 * @param username Username del dipendente sul sistema CTT
+	 * @param ruolo Ruolo del dipendente nel centro CTT
+	 * @throws IllegalArgumentException se il Dipendente non ha almeno 18 anni
+	 */
+	public Dipendente(Cdf cdf, String nome, String cognome, LocalDate dataDiNascita, RuoloDipendente ruolo, String username, String password) {
 		assert cdf!= null: "Il codice fiscale del dipendente non può essere null";
 		assert nome != null: "Il nome del dipendente non puo essere null";
 		assert cognome != null: "Il cognome del dipendente non può essere null";
@@ -32,9 +32,14 @@ public class Dipendente {
 		assert ruolo != null: "Il ruolo del dipendente non può essere null";
 		assert username != null: "L'username del dipendente non può essere null";
 		assert password != null: "La password del dipendente non può essere null";
-		if (!dataDiNascita.isBefore(LocalDate.now())) throw new IllegalArgumentException("La data di nascita non puo essere superiore o uguale a quella odierna");
-		if (!dataDiNascita.isBefore(LocalDate.now().minusYears(18))) throw new IllegalArgumentException(" il Dipendente deve avere almeno 18 anni");
-		if(!password.matches(".*\\d.*")) throw new IllegalArgumentException("La password deve contenere almeno un numero");
+
+		if(dataDiNascita.getYear()>LocalDate.now().getYear()) throw new IllegalArgumentException("La data di nascita non può essere successiva a quella odierna");
+		if (dataDiNascita.isAfter(LocalDate.now())) throw new IllegalArgumentException("La data di nascita non può essere successiva a quella odierna");
+		if (!dataDiNascita.isBefore(LocalDate.now())) throw new IllegalArgumentException("La data di nascita non può essere successiva o coincidente a quella odierna");
+		if (!dataDiNascita.isBefore(LocalDate.now().minusYears(18))) throw new IllegalArgumentException("Il Dipendente deve avere almeno 18 anni");
+		if(dataDiNascita.isBefore(LocalDate.now().minusYears(80))) throw  new IllegalArgumentException("Dipendente troppo anziano, inserisci una data di nascita valida");
+		if(!password.matches("((?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,20})"))
+			throw new IllegalArgumentException("La password deve contenere almeno un numero, una lettera minuscola e una lettera Maiuscola, inoltre deve essere di 8 caratteri");
 
 		this.cdf = cdf;
 		this.nome = nome;
@@ -43,53 +48,76 @@ public class Dipendente {
 		this.ruolo = ruolo;
 		this.username = username;
 		this.password = password;
-	}
-	/**@return il codice fiscale del dipendente*/
+	}	
+	
+	/**Restituisce il codice ficale di un Dipendente
+	 * @return codice fiscale
+	 */
 	public Cdf getCdf() {
 		return cdf;
 	}
 
-	/**@return il nome del dipendente*/
+	/**Restituisce il nome del Dipendente
+	 * @return nome
+	 */
 	public String getNome() {
 		return nome;
 	}
 
-	/**@return il cognome del dipendente*/
+	/**Restituisce il cognome del Dipendente
+	 * @return cognome
+	 */
 	public String getCognome() {
 		return cognome;
 	}
 
-	/**@return la data di nascita del dipendente*/
+	/**Restituisce la data di nascita del Dipendente
+	 * @return data di nascita
+	 */
 	public LocalDate getDataDiNascita() {
 		return dataDiNascita;
 	}
 
-	/**@return il ruolo del dipendente*/
+	/**Restituisce il ruolo del Dipendente
+	 * @return ruolo
+	 */
 	public RuoloDipendente getRuolo() {
 		return ruolo;
 	}
 
-	/**@return l'username del dipendente sul sistema CTT*/
+	/**Restituisce l'username del Dipendente
+	 * @return username
+	 */
 	public String getUsername() {
 		return username;
 	}
 
-	/**@return la password del dipendente sul sistem CTT*/
+	/**Restituisce la password del Dipendente
+	 * @return password
+	 */
 	public String getPassword() {
 		return password;
 	}
 
-	/**@param password  la password del dipendente sul sistema CTT deve contenere almeno un numero*/
+	
+	/**Setta la nuova password del Dipendente
+	 *@param password La nuova password del Dipendente sul sistema CTT che deve contenere almeno un numero
+	 */
 	public void setPassword(String password) {
-		if(!password.matches(".*\\d.*")) throw new IllegalArgumentException("La password deve contenere almeno un numero");
 		assert password!= null: "La password del dipendente non può essere null";
+		if(!password.matches("((?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,20})"))
+			throw new IllegalArgumentException("La password deve contenere almeno un numero, una lettera minuscola, una lettera Maiuscola e deve essere di almeno 8 caratteri");		
 		this.password = password;
 	}
 
-	/**@param ps stream di output su cui stampare i dati del dipendente*/
+	
+	/**
+	 * Stampa le informazioni di un Dipendente 
+	 * @param ps stream di output su cui stampare i dati del Dipendente 
+	 */
 	public void print(PrintStream ps) {
 		ps.println("\n##################################");
-		ps.println("Codice Fiscale: "+this.cdf.getCodiceFiscale());
+		ps.println("Codice Fiscale: "+this.cdf);
 		ps.println("Nome: "+this.nome);
 		ps.println("Cognome: "+this.cognome);
 		ps.println("DataDiNascita: "+this.dataDiNascita);
@@ -98,6 +126,10 @@ public class Dipendente {
 		ps.println("Password: "+this.password);
 	}
 
+	/**
+	 * Concatena in un'unica stringa le informazioni del Dipendente
+	 * @return La stringa concatenata
+	 */
 	@Override
 	public String toString() {
 		return "Dipendente{" +
@@ -111,6 +143,10 @@ public class Dipendente {
 				'}';
 	}
 
+	/**
+	 * Verifica l'uguaglianza tra due Dipendenti
+	 * @return Un boolean true o false a seconda dell'esito del confronto
+	 */
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -119,6 +155,10 @@ public class Dipendente {
 		return cdf.equals(that.cdf);
 	}
 
+	/**
+	 * Calcola l'hashcode di un Dipendente
+	 * @return Un intero pari all'hashcode generato
+	 */
 	@Override
 	public int hashCode() {
 		return Objects.hash(cdf);

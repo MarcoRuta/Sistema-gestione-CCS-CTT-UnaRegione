@@ -10,7 +10,7 @@ import java.util.*;
  * in seguito ad una corretta autentificazione*/
 public class Token {
 
-    /**collezione statica di tutti i token che sono generati dal momento dell'accensione del server
+    /**Collezione statica di tutti i token che sono generati dal momento dell'accensione del server
      * fino al suo spegnimento*/
     private static Map<String,Token> tokens= new HashMap<String, Token>();
 
@@ -18,12 +18,12 @@ public class Token {
 
     /**
      *java.security.SecureRandom is a class that provides a cryptographically strong random number generator.
-     * Da una sequenza di interi che è meno prevedibile rispetto alla classe java.util.Random*/
+     * Dà una sequenza di interi che è meno prevedibile rispetto alla classe java.util.Random*/
     private static final SecureRandom secureRandom = new SecureRandom();
     /**Una classe java che si occupa di effettuare un Encoding in Base64*/
     private static final Base64.Encoder base64Encoder = Base64.getUrlEncoder();
 
-    /**@param usernamePassword  username + password dell'utente loggato senza alcuno spazione
+    /**@param usernamePassword  username + password dell'utente loggato senza alcuno spazio
      * @return  token  */
     public static Token getToken(String usernamePassword){
         assert usernamePassword != null: "Username e password non possono essere null";
@@ -35,8 +35,9 @@ public class Token {
 
     }
 
-    /**@param token il token di autentificazione di un utente
-     * @return  token se presente altrimenti solleva una eccezzone
+    /**Controlla se il token è presente
+     * @param token il token di autentificazione di un utente
+     * @return token se presente, altrimenti solleva una eccezione
      */
     public static boolean containsToken(String token){
         assert token != null: "il token non puo essere null";

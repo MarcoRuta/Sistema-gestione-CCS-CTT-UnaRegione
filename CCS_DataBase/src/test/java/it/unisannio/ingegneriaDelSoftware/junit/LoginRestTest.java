@@ -18,8 +18,7 @@ import org.junit.Test;
 import it.unisannio.ingegneriaDelSoftware.Classes.Cdf;
 import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.RuoloDipendente;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManagerBean;
-
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 
 public class LoginRestTest {
 	
@@ -31,13 +30,14 @@ public class LoginRestTest {
 	  @BeforeClass
 	  public static void setUp(){
 		
-		Cdf cdf = new Cdf("122hfotndj13ht5f");
-	    LocalDate ld = LocalDate.of(1998,10,10);
+		Cdf cdf = Cdf.getCDF("KTMFSW67T64I460X");
+	    LocalDate ld = LocalDate.parse("1978-10-10");
 	    RuoloDipendente ruolo = RuoloDipendente.AmministratoreCCS;
 	    String username = "admin";
-	    String password = "admin";
+	    String password = "Adminadmin1";
 	    Dipendente dip = new Dipendente(cdf, "TestAdmin", "TestAdmin", ld, ruolo, username, password);
-	    MongoDataManagerBean.createDipendente(dip);
+	    MongoDataManager mm = MongoDataManager.getInstance();
+	    mm.createDipendente(dip);
 	  }
 
 	  
@@ -54,12 +54,13 @@ public class LoginRestTest {
 	  public void test2() {
 		  Form form = new Form();
 		  form.param("username", "admin");
-		  form.param("password", "admin");
+		  form.param("password", "Adminadmin1");
 		  Response responseaddCTT = aggiuntaCTT.request().post(Entity.form(form));
 		  assertEquals(Status.OK.getStatusCode(), responseaddCTT.getStatus()); 	 
 	  }
 	  
 	@AfterClass public static void drop(){
-		MongoDataManagerBean.dropDB();
+		MongoDataManager mm = MongoDataManager.getInstance();
+		mm.dropDB();
 	}	  
 }

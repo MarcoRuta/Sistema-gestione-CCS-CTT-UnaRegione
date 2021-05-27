@@ -14,8 +14,9 @@ import java.util.List;
 public class SearcherCompatibile implements Searcher {
     @Override
     public List<Sacca> search(GruppoSanguigno gs, int numeroSacche, LocalDate dataArrivoMassima) {
+        MongoDataManager md = MongoDataManager.getInstance();
         List<Sacca> saccheTrovate = new ArrayList<Sacca>();
-        List<Sacca> listaSacche = MongoDataManager.getListaSacche();
+        List<Sacca> listaSacche = md.getListaSacche();
 
         Iterator<GruppoSanguigno> i = GruppoSanguigno.puoRicevereDa(gs);
         while(i.hasNext()) {

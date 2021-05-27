@@ -15,7 +15,7 @@ public class CcsDataBaseRestApplication extends ResourceConfig {
 	public CcsDataBaseRestApplication() {
 		/**####Configurazione#####*/
 				
-		//Filtro per Authentificazione
+		//Filtro per Autentificazione
 		register (FiltroDiAutentificazione.class);
 		
 		//EndPoint per il login

@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="assets/css/formStyles.css">
 </head>
 
-<body style="background-color: #ffffff;">
+<body style="background-color: #ffffff;" onload="verificoToken();">
     
     <div class="titlePage">
         <div>
@@ -24,9 +24,11 @@
                Disponibilità regionale sacche form            
             </span>
         </div>
+        <div>
             <img class="logoCCS" src="assets/img/LOGO_CCS.svg">
-        </div>
+    	</div>
     </div>
+
     
     <div class="container" style="max-width: 1430px; margin: 1.5% auto;">
         
@@ -62,7 +64,7 @@
             <div class="titleDateForm">
                 <p>Anteprima</p>
             </div>
-            <div class="outPreview" style="">
+            <div class="outPreview">
                  <p id="p1"></p>
             </div>
             <div class="outPreview" style="height: 40px;margin: 4% 45px;">
@@ -72,7 +74,21 @@
         </div>
         
     </div>
-        
+    
+    <script type="application/javascript">
+
+    var token = sessionStorage.getItem("token");
+    var ruolo = sessionStorage.getItem("ruolo");
+
+
+     verificoToken = function(){
+           if(token == null || ruolo != 'AmministratoreCCS'){
+            alert("E' necessario effettuare il login per accedere a questa risorsa");
+            window.location.href='Login.html';
+           }
+        }
+    </script> 
+    
     <div class="footer"></div>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>

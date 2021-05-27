@@ -13,7 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
 import javax.ws.rs.ApplicationPath;
-import java.net.MalformedURLException;
+
 
 @SpringBootApplication (scanBasePackages = {"WebSocketConfig", "ingegneriaDelSoftware"})
 @ApplicationPath("/rest")

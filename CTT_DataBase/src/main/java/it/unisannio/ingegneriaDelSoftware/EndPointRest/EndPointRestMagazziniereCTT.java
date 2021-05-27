@@ -4,7 +4,7 @@ import it.unisannio.ingegneriaDelSoftware.Classes.*;
 import it.unisannio.ingegneriaDelSoftware.Annotazioni.Secured;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointMagazziniereCTT;
-import it.unisannio.ingegneriaDelSoftware.Util.DateUtil;
+import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 
 
 import javax.annotation.security.RolesAllowed;
@@ -15,6 +15,8 @@ import javax.ws.rs.core.Response;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -25,14 +27,15 @@ import java.util.StringTokenizer;
 @RolesAllowed("MagazziniereCTT")
 public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 
+	private MongoDataManager md = MongoDataManager.getInstance();
+
 	
-	/**Metodo attivato dal magazziniere quando vuole inserire una sacca nel DB
-	 * Esso crea datiSacca e Sacca
-	 * @param gruppo_sanguigno il gruppo sanguigno della sacca
-	 * @param data_produzione  la data di produzione della sacca yyyy-MM-dd
-	 * @param data_scadenza la data di scadenza della sacca yyyy-MM-dd
-	 * @param ente_donatore  l'ente che ha donato la sacca
-	 * @return  messaggio corretta aggiunta sacca*/
+	/**Inserisce una Sacca e DatiSacca nel DB
+	 * @param gruppo_sanguigno Il gruppo sanguigno della Sacca
+	 * @param data_produzione La data di produzione della Sacca yyyy-MM-dd
+	 * @param data_scadenza La data di scadenza della Sacca yyyy-MM-dd
+	 * @param ente_donatore L'ente che ha donato la Sacca
+	 * @return messaggio corretta aggiunta Sacca*/
 	@POST
 	@Path("/aggiuntaSacca")
 	@Produces(MediaType.TEXT_PLAIN)
@@ -43,15 +46,15 @@ public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 										   @FormParam("ente_donatore") String ente_donatore) throws MalformedURLException {
 		//creo la sacca
 		Sacca unaSacca = new Sacca(GruppoSanguigno.valueOf(gruppo_sanguigno),
-				DateUtil.dateParser(data_produzione),
-				DateUtil.dateParser(data_scadenza));
+				LocalDate.parse(data_produzione, DateTimeFormatter.ofPattern(Constants.DATEFORMAT)),
+				LocalDate.parse(data_scadenza, DateTimeFormatter.ofPattern(Constants.DATEFORMAT)));
 		//inserisco la sacca nel DB
-		MongoDataManager.createSacca(unaSacca);
+		md.createSacca(unaSacca);
 		//creo un dati sacca
 		DatiSacca datiSacca = new DatiSacca(unaSacca.getSeriale(), unaSacca.getGruppoSanguigno(),
 				LocalDate.now(), null, ente_donatore, null,null);
 		//inserisco datiSacca nel DB
-		MongoDataManager.createDatiSacca(datiSacca);
+		md.createDatiSacca(datiSacca);
 		//update Seriale settings
 		Seriale.updateSettings();
 		// The source resource was successfully copied.
@@ -64,12 +67,11 @@ public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 	}
 
 	
-	/**Metodo attivato dal magazziniere quando riceve una notifica evasione sacche
-	 * esso aggiorna i datiSacca e rimuove la Sacca dal DB attivo per ogni sacca presente nell'ordine
+	/**Aggiorna i datiSacca e rimuove la Sacca dal DB attivo per ogni Sacca presente nell'ordine
 	 * @param listaseriali Seriali della Sacca da evadere, i seriali sono separati da una ","
-	 * @param ente_richiedente l'ente che ha richiesto la sacca
-	 * @param indirizzo l'indirizzo dell'ente che ha richiesto la sacca
-	 * @return Response OK se le sacche sono state rimosse correttamente BAD_REQUEST se si Ã¨ tetntato di evadere sacche non presenti nel DB
+	 * @param ente_richiedente l'ente che ha richiesto la Sacca
+	 * @param indirizzo L'indirizzo dell'ente che ha richiesto la Sacca
+	 * @return Response OK se le Sacche sono state rimosse correttamente, BAD_REQUEST se si tenta di evadere sacche non presenti nel DB
 	 * @return Response 
 	 * */
 	 
@@ -91,19 +93,18 @@ public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 		String etichetta = "";
 
 		for(Seriale unSeriale : listaSeriali) {
-
 			//recupero una sacca se presente altrimenti si solleva una eccezione SaccaNotFoundException
-			Sacca unaSacca = MongoDataManager.getSacca(unSeriale);
+			Sacca unaSacca = md.getSacca(unSeriale);
 			//aggiorno i dati del dati sacca
-			MongoDataManager.setEnteRichiedenteDatiSacca(unSeriale, ente_richiedente);
-			MongoDataManager.setDataAffidamentoDatiSacca(unSeriale, LocalDate.now());
-			MongoDataManager.setIndirizzoEnteDatiSacca(unSeriale,indirizzo);
+			md.setEnteRichiedenteDatiSacca(unSeriale, ente_richiedente);
+			md.setDataAffidamentoDatiSacca(unSeriale, LocalDate.now());
+			md.setIndirizzoEnteDatiSacca(unSeriale,indirizzo);
 			//recupero il DatiSacca aggiornato
-			DatiSacca datiSacca = MongoDataManager.getDatiSacca(unSeriale);
+			DatiSacca datiSacca = md.getDatiSacca(unSeriale);
 			//aggiorno etichetta
 			etichetta = etichetta + unaSacca.getEtichettaSacca()+"\n"+ datiSacca.getEtichettaDatiSacca() +"\n";
 			//rimuovo la sacca
-			MongoDataManager.removeSacca(unaSacca.getSeriale());
+			md.removeSacca(unaSacca.getSeriale());
 			//The property set or change succeeded.
 		}
 			
@@ -117,14 +118,14 @@ public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 	/**
 	 * Metodo utilizzato per aggiunta automatica del seriale delle sacche
 	 * disponibili nel magazzino per l'evasione
-	 * @return serialiSacca
+	 * @return serialiSacca Lista 
 	 */
 	@GET
 	@Path("/sacche")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Seriale> listaSacca(){
 
-		List<Sacca> listaSacche = MongoDataManager.getListaSacche();
+		List<Sacca> listaSacche = md.getListaSacche();
 		List<Seriale> serialiSacca = new ArrayList<Seriale>();
 
 		for(Sacca s : listaSacche)

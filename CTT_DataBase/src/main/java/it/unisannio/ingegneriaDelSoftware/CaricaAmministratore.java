@@ -11,8 +11,8 @@ public class CaricaAmministratore {
 
 	public static void main(String[] args) {
 		
-		Dipendente d = new Dipendente(Cdf.getCDF("RTUMRC98E08B519C"),"Marco","Ruta",LocalDate.now().minusYears(20),RuoloDipendente.AmministratoreCTT,"admin","admin");	
-		MongoDataManager.createDipendente(d);
+		Dipendente d = new Dipendente(Cdf.getCDF("RTUMRC98E08B519C"),"Marco","Ruta",LocalDate.now().minusYears(20),RuoloDipendente.AmministratoreCTT,"admin","Pioantonio3");
+		MongoDataManager.getInstance().createDipendente(d);
 
 	}
 

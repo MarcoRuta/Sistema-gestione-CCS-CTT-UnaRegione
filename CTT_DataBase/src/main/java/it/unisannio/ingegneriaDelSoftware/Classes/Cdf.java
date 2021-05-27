@@ -23,7 +23,7 @@ public class Cdf {
 	 * @param cdf  deve essere una stringa di 16 caratteri
 	 * @throws IllegalArgumentException se il codice fiscale non rispetta lo standard del codice fiscale*/
     private Cdf(String cdf) throws IllegalArgumentException{
-		if(!(cdf.length()==16)) throw new IllegalArgumentException("Il codice Fiscale deve essere di 16 caratteri");
+		if(!(cdf.matches("^[A-Z]{6}[0-9]{2}[A-Z][0-9]{2}[A-Z][0-9]{3}[A-Z]$"))) throw  new IllegalArgumentException("Il codice fiscale non è nel formato corretto");
         this.codiceFiscale = cdf;
     }
 	

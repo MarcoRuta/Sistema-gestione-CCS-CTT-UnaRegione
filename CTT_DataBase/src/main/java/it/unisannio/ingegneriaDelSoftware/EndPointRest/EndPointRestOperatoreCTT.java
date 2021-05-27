@@ -1,5 +1,7 @@
 package it.unisannio.ingegneriaDelSoftware.EndPointRest;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.security.RolesAllowed;
@@ -25,7 +27,7 @@ import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointOperatoreCTT;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Notifica;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Searcher;
 import it.unisannio.ingegneriaDelSoftware.Searcher.CompositionSearcher;
-import it.unisannio.ingegneriaDelSoftware.Util.DateUtil;
+import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 
 
 @Path("/operatore")
@@ -33,6 +35,8 @@ import it.unisannio.ingegneriaDelSoftware.Util.DateUtil;
 @Secured
 @RolesAllowed("OperatoreCTT")
 public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT, Subject{
+
+	private MongoDataManager md = MongoDataManager.getInstance();
 
 	/**Il terminale del magazziniere deve essere notificato quando viene creata una notifica*/
 	private Observer anObserver= new TerminaleMagazziniereObserver();
@@ -60,10 +64,10 @@ public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT, Subject{
 			int numSacche = Integer.parseInt(numeroSacche);
 			saccheTrovate = this.aSearcher.search(GruppoSanguigno.valueOf(gruppoSanguigno),
 					numSacche,
-					DateUtil.dateParser(dataArrivoMassima));
+					LocalDate.parse(dataArrivoMassima, DateTimeFormatter.ofPattern(Constants.DATEFORMAT)));
 			if (!saccheTrovate.isEmpty()) {
 				for (Sacca sacca : saccheTrovate) {
-					MongoDataManager.setPrenotatoSacca(sacca.getSeriale());
+					md.setPrenotatoSacca(sacca.getSeriale());
 					serialiDaEvadere.add(sacca.getSeriale().getSeriale());
 				}
 				this.notifyMagazziniereObserver(new NotificaEvasione(serialiDaEvadere, enteRichiedente, indirizzoEnte));

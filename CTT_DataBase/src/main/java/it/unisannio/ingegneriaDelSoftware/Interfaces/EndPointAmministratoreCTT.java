@@ -17,15 +17,13 @@ public interface EndPointAmministratoreCTT {
 	 * @param dataDiNascita
 	 * @param ruolo
 	 * @param username
-	 * @param password
 	 * @return
 	 */
 	public Response addDipendente(String cdf,
 								  String nome, String cognome,
 								  String dataDiNascita,
 								  String ruolo,
-								  String username,
-								  String password);
+								  String username);
 
 
 	/**Rimuove un Dipendente dal DataBase

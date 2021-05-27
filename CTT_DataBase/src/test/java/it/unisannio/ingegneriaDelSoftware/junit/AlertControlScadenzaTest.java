@@ -15,12 +15,11 @@ import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.CTT;
-import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointRestMagazziniereCTT;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaNotFoundException;
 
 public class AlertControlScadenzaTest {
-	EndPointRestMagazziniereCTT magazz = new EndPointRestMagazziniereCTT();
 	CTT ctt = new CTT();
+	static MongoDataManager md = MongoDataManager.getInstance();
 	
 	@BeforeClass public static void populateDBSacche() throws SaccaNotFoundException {
 
@@ -29,7 +28,7 @@ public class AlertControlScadenzaTest {
 		List<DatiSacca> listaDatiSacche = new ArrayList<DatiSacca>();
 
 		//Caricamento sul sistema di cinque Sacche di tipo A+, 4 sacche sono arrivate nel magazzino tra il 15-07-2020 e il 02-05-2021 e hanno data di scadenza lontana (2022)
-		//Una sacca è arrivata nel 2018 ed è già scaduta
+		//Una Sacca è arrivata nel 2018 ed è già scaduta
 		//Tutte le Sacche sono non prenotate e quindi affidabili ad un ente esterno
 
 		//Prima sacca
@@ -551,11 +550,11 @@ public class AlertControlScadenzaTest {
 
 
 		for(Sacca sac : listaSacche) {
-	    		MongoDataManager.createSacca(sac);
+	    		md.createSacca(sac);
 	        }
 	    	
 	    	for(DatiSacca datisac : listaDatiSacche) {
-	    		MongoDataManager.createDatiSacca(datisac);
+	    		md.createDatiSacca(datisac);
 	        }
 		}
 	
@@ -570,7 +569,6 @@ public class AlertControlScadenzaTest {
 	}
 	
 	@AfterClass public static void dropDBSacche() {
-		
-		MongoDataManager.dropDB();
+		md.dropDB();
 	}
 }

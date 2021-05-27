@@ -4,7 +4,7 @@ import it.unisannio.ingegneriaDelSoftware.Classes.Cdf;
 import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.Token;
 import it.unisannio.ingegneriaDelSoftware.Classes.User;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManagerBean;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.DipendenteNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.TokenNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointAutenticazione;
@@ -16,10 +16,11 @@ import javax.ws.rs.core.Response;
 
 @Path("/autentificazione")
 public class EndPointRestAutentificazione implements EndPointAutenticazione {
-
-	/**
-     * Login è l'operazione con la quale un generico dipendente del ctt accede al sistema
-     * @return il ruolo con il quale si è registrati
+	private MongoDataManager mm = MongoDataManager.getInstance();
+	
+	
+	/**Fa accedere al sistema un Dipedente identificato con Username e Password
+     * @return Response
 	 * @throws DipendenteNotFoundException 
      */
     @POST
@@ -28,7 +29,7 @@ public class EndPointRestAutentificazione implements EndPointAutenticazione {
     public Response login(@FormParam("username") String username,
                           @FormParam("password") String password) {
     	try{
-    		Dipendente unDipendente = MongoDataManagerBean.getDipendente(username, password);
+    		Dipendente unDipendente = mm.getDipendente(username, password);
     		String token =  Token.getToken(username + ":" + password).getValue();
     		User aUser = new User(token,unDipendente.getRuolo().toString(),unDipendente.getNome(), unDipendente.getCognome());
     		return Response.status(Response.Status.OK)
@@ -38,16 +39,14 @@ public class EndPointRestAutentificazione implements EndPointAutenticazione {
     		return Response.status(Response.Status.FORBIDDEN)
     		        .entity(e.getMessage())
     		        .build();
-    	}
-		
+    	}	
     }
 
 
 
     /**
-     * Metodo che effettua il logout, esso elimina il token dell'utente dal server cosi che esso non sia piu autenticato
-     *
-     * @param header da rimuovere per effetuare il logout
+     * Effettua il logout di un Dipendente, eliminando il token dell'utente dal server così che esso non sia più autenticato
+     * @param header Intestazione che contiene il token da rimuovere per effettuare il logout
      */
     @DELETE
     @Path("/logout")
@@ -66,6 +65,11 @@ public class EndPointRestAutentificazione implements EndPointAutenticazione {
         }
     }
     
+    
+    /**Modifica la password di un Dipendente identificato tramite il suo Codice fiscale
+     * @param cdf Il Codice fiscale del Dipendente
+     * @param password La nuova password
+     */
     @PUT
     @Path("/cambiopassword/{cdf}")
     @Consumes(MediaType.TEXT_PLAIN)
@@ -73,7 +77,7 @@ public class EndPointRestAutentificazione implements EndPointAutenticazione {
     public Response cambioPassword(@PathParam("cdf")String cdf, String password){
         try{
             System.out.println("richiesta arrivata");
-            MongoDataManagerBean.setPassword(Cdf.getCDF(cdf),password);
+            mm.setPassword(Cdf.getCDF(cdf),password);
             return Response.status(Response.Status.OK)
                     .entity("Password cambiata correttamente")
                     .build();

@@ -52,7 +52,7 @@
                             <p id="cognome">Cognome: </p>
                         </div>
                         <div style="width: 300px;">
-                            <button class="btn btn-primary" onclick="location.href='ChangePassword.html';" type="button" style="background-color: #13958d;">Change Password</button>
+                            <button class="btn btn-primary" onclick="location.href='ChangePasswordAfterLogin.html';" type="button" style="background-color: #13958d;">Change Password</button>
                             <button class="btn btn-primary" onclick="logout();" type="button" style="margin: 0% 5%">Log out</button>
                         </div>
                     </div>
@@ -72,7 +72,7 @@
                         </div>
                         <div class="row" style="width:75%; margin-top: 5%; margin-left: 16%;">
                             <div class="col-sm">
-                                <button class="btn btn-primary" onclick="location.href='MenuDiSelezioneQueryCTT.html';" type="button" style="background-color: #13958d; width: 210px;">Report statici</button>
+                                <button class="btn btn-primary" onclick="location.href='MenuDiSelezioneQueryCTT.html';" type="button" style="background-color: #13958d; width: 210px;">Report statistici</button>
                             </div>
                         </div>
                 </div>
@@ -85,16 +85,7 @@
                 <button class="btn btn-primary" onclick="removeNotification();" type="button" style="background-color: #13958d;width: 177px;">Pulisci notifiche</button>
             </div>
             <div class="divNot" id="divNot">
-                <p> > Sacca scaduta del gruppo sanguigno A+ del CTT#3</p>
-                <p> > Sacca scaduta del gruppo sanguigno B+ del CTT#6</p>
-                <p><span id="urgent"> > Richiesta di sacca urgente del gruppo sanguigno A- del CTT#10</span></p>
-                <p><span id="urgent"> > Richiesta di sacca urgente del gruppo sanguigno B+ del CTT#11</span></p>
-                <p> > Sacca scaduta del gruppo sanguigno B+ del CTT#6</p>
-                <p> > Sacca scaduta del gruppo sanguigno B+ del CTT#6</p>
-                <p> > Sacca scaduta del gruppo sanguigno B+ del CTT#6</p>
-                <p> > Sacca scaduta del gruppo sanguigno B+ del CTT#6</p>
-                <p> > Sacca scaduta del gruppo sanguigno B+ del CTT#6</p>
-                <p> > Sacca scaduta del gruppo sanguigno B+ del CTT#6</p>
+
             </div> 
         </div> 
     </div>
@@ -125,34 +116,35 @@
 
         logout = function(){
 
-       var xhttp = new XMLHttpRequest();
-       var url ="http://127.0.0.1:8080/rest/autentificazione/logout";
-       xhttp.onreadystatechange = function() {
-                   if (this.readyState == 4 && this.status == 200 ) {
-                        sessionStorage.removeItem("token");
-                        sessionStorage.removeItem("ruolo");
-                        sessionStorage.removeItem("nome");
-                        sessionStorage.removeItem("cognome");
-                        window.location.href='Login.html';
-                   }else {
-                       if(this.readyState == 4 && this.status != 200 ){
-                           alert(this.response);
-                       }
-                   }
-       };
-
-
-            xhttp.onerror = function(){
-                       alert("impossibile inviare la richiesta");
+            var xhttp = new XMLHttpRequest();
+            var host = document.location.origin;
+            var url = host + "/rest/autentificazione/logout";
+            xhttp.onreadystatechange = function() {
+                        if (this.readyState == 4 && this.status == 200 ) {
+                             sessionStorage.removeItem("token");
+                             sessionStorage.removeItem("ruolo");
+                             sessionStorage.removeItem("nome");
+                             sessionStorage.removeItem("cognome");
+                             window.location.href='Login.html';
+                        }else {
+                            if(this.readyState == 4 && this.status != 200 ){
+                                alert(this.response);
+                            }
+                        }
             };
-
-
-            xhttp.open("DELETE", url, true);
-            xhttp.setRequestHeader('Authorization', 'Basic '+token);
-            xhttp.withCredentials = true;
-            xhttp.send();
-
-        };
+     
+     
+                 xhttp.onerror = function(){
+                            alert("impossibile inviare la richiesta");
+                 };
+     
+     
+                 xhttp.open("DELETE", url, true);
+                 xhttp.setRequestHeader('Authorization', 'Basic '+token);
+                 xhttp.withCredentials = true;
+                 xhttp.send();
+ 
+         };
     </script>
     
     <div class="footer"></div>

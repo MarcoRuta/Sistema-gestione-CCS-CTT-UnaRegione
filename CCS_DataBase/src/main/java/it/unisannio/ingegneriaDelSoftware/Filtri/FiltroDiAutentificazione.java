@@ -2,7 +2,7 @@ package it.unisannio.ingegneriaDelSoftware.Filtri;
 
 import it.unisannio.ingegneriaDelSoftware.Annotazioni.Secured;
 import it.unisannio.ingegneriaDelSoftware.Classes.Token;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManagerBean;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.DipendenteNotFoundException;
 import javax.annotation.Priority;
 import javax.ws.rs.Priorities;
@@ -18,8 +18,8 @@ import java.util.*;
 
 /**
  * Filtro di autentificazione, è eseguito per ogni class resource o method resource in cui è presente
- * l'anntoazione @Secured. Esso è eseguito dopo il matching della risorsa da parte dall'api di jersey.
- * Ha una priorita Priorities.AUTHENTICATION che viene eseguita prima di qualsiasi altra Priorities
+ * l'annotazione @Secured. Esso è eseguito dopo il matching della risorsa da parte dall'api di jersey.
+ * Ha una priorità Priorities.AUTHENTICATION che viene eseguita prima di qualsiasi altra Priorities
  * in quanto ha un valore intero più basso delle altre priorità
  * Questo filtro preleva i cookie dalla richieste del browser e verifica che ci sia il cookie con l'accesso token
  * se esso non è presente il filtro impedisce alla richiesta di arrivare alla risorsa prestabilita
@@ -30,13 +30,14 @@ import java.util.*;
 @Priority(Priorities.AUTHENTICATION)
 public class FiltroDiAutentificazione implements ContainerRequestFilter {
 	
+	
 	/**
      * Instead of injecting values directly into field the value can be injected into the setter method which will initialize the field.
      * This injection can be used only with @Context annotation.
-     * resourceInfo contiente i dati relativi alla resource che è stata richiesta attraverso la richiesta intercettata*/
+     * resourceInfo contiene i dati relativi alla resource che è stata richiesta attraverso la richiesta intercettata*/
     @Context
     private ResourceInfo resourceInfo;
-
+    private MongoDataManager mm = MongoDataManager.getInstance();
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
@@ -57,7 +58,7 @@ public class FiltroDiAutentificazione implements ContainerRequestFilter {
             StringTokenizer aTokenizer = new StringTokenizer(usernamePassword);
             String username = aTokenizer.nextToken(":");
             String password = aTokenizer.nextToken();
-            String ruolo = MongoDataManagerBean.getDipendente(username,password).getRuolo().toString();
+            String ruolo = mm.getDipendente(username,password).getRuolo().toString();
 
             //sovrascrivo il securityContext
             /**The SecurityContext is a class of Spring Security.

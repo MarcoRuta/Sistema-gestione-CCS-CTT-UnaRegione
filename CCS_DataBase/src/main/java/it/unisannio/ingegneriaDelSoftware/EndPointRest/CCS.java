@@ -4,28 +4,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.unisannio.ingegneriaDelSoftware.Classes.CTT;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManagerBean;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.CTTNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.*;
 
 public class CCS implements CCSFunction{
 	
-	/*
-	 * *Metodo che restituisce il CTT più vicino a quello dato
-	 * 
+	/*Restituisce il CTT più vicino al CTT identificato tramite numero
 	 * @param num Numero del CTT dato
-	 * @return CTT più vicino a quello dato
+	 * @return CTT più vicino a quello selezionato
 	 */
-	public CTT CttPiùVicino(int num) throws CTTNotFoundException{
-		MongoDataManagerBean mmb = new MongoDataManagerBean();
+	public CTT CttPiuVicino(int num) throws CTTNotFoundException{
+		MongoDataManager mm = MongoDataManager.getInstance();
 		
-		CTT c = mmb.getCTT(num);
-		
-		List<CTT> listaCTT = mmb.getListaCTT();
-		
+		CTT c = mm.getCTT(num);		
+		List<CTT> listaCTT = mm.getListaCTT();		
 		List<CTT> listaCTTOrdinata = new ArrayList<CTT>();
-		
-	
+
 		for (CTT ctt : listaCTT) if (!ctt.equals(c)) listaCTTOrdinata.add(ctt);     
 		
 		CTT min = listaCTTOrdinata.get(0);
@@ -34,6 +29,5 @@ public class CCS implements CCSFunction{
 		
 		return min;
 	}
-	
 	
 }

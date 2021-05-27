@@ -2,29 +2,18 @@ package it.unisannio.ingegneriaDelSoftware.Classes;
 
 import java.io.PrintStream;
 import java.util.Objects;
-
-import org.bson.codecs.pojo.annotations.BsonCreator;
-import org.bson.codecs.pojo.annotations.BsonProperty;
-
 import java.lang.Math;
 
 public class CTT{
 	
-	@BsonProperty(useDiscriminator = true)
 	private final Integer numero;
-	@BsonProperty(useDiscriminator = true)
 	private final String denominazione;
-	@BsonProperty(useDiscriminator = true)
 	private final String telefono;
-	@BsonProperty(useDiscriminator = true)
 	private final String email;
-	@BsonProperty(useDiscriminator = true)
 	private final CTTPosition posizione;
 	
 
-	/**
-	 * Metodo costruttore di CTT
-	 * 
+	/**Metodo Costruttore di CTT
 	 * @param numero  l'identificativo del CTT
 	 * @param denominazione  il nome del CTT
 	 * @param provincia la provincia in cui è situato il CTT
@@ -34,7 +23,6 @@ public class CTT{
 	 * @param e_mail l'email ufficiale del CTT
 	 * @param latitudine
 	 * @param longitudine
-	 * 
 	 * */
 	public CTT(Integer numero, String denominazione, String provincia, String città, String telefono, String indirizzo, String email, double latitudine, double longitudine) {
 		assert numero != null: "Il numero del CTT non può essere null";
@@ -53,25 +41,23 @@ public class CTT{
 	
 	
 	/**
-	 * Metodo costruttore di CTT
-	 * 
+	 * Metodo costruttore di CTT con CTTPosition
 	 * @param numero  l'identificativo del CTT
 	 * @param denominazione  il nome del CTT
 	 * @param telefono il numero di telefono del CTT
 	 * @param e_mail l'email ufficiale del CTT
 	 * @param latitudine
 	 * @param longitudine
-	 * */
-	@BsonCreator
-	public CTT(@BsonProperty("numero")Integer numero, 
-			@BsonProperty("denominazione")String denominazione, 
-			@BsonProperty("telefono")String telefono, 
-			@BsonProperty("email")String email, 
-			@BsonProperty("posizione")CTTPosition posizione) {
+	 */ 
+	public CTT(Integer numero, 
+			String denominazione, 
+			String telefono, 
+			String email, 
+			CTTPosition posizione) {
 		assert numero != null: "Il numero del CTT non può essere null";
 		assert denominazione != null: "La denominazione non può essere null";
-		assert telefono != null: "il telefono non può essere null";
-		assert email != null: "l'e_mail non può essere null";
+		assert telefono != null: "Il telefono non può essere null";
+		assert email != null: "L'email non può essere null";
 		
 		this.numero = numero;
 		this.denominazione = denominazione;
@@ -81,11 +67,8 @@ public class CTT{
 	}
 	
 
-	/**
-	 * Metodo che stampa le informazioni di un CTT
-	 * 
-	 * @param ps  stream di output su cui stampare i dati del CTT
-	 * 
+	/**Stampa le informazioni di un CTT
+	 * @param ps stream di output su cui stampare i dati del CTT
 	 */
 	public void print(PrintStream ps) {
 		ps.println("\n##################################");
@@ -97,11 +80,9 @@ public class CTT{
 	}
 
 	
-	/**
-	 * Metodo che verifica l'uguaglianza tra due CTT
-	 * 
+	/**Verifica l'uguaglianza tra due CTT
+	 * @param o Oggetto CTT con cui effettuare il confronto confrontare
 	 * @return Un boolean true o false a seconda dell'esito del confronto
-	 *
 	 */
 	@Override
 	public boolean equals(Object o) {

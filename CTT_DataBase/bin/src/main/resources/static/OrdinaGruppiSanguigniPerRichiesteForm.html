@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script>
+        function printCheck(){
+            var btns = document.getElementsByName("checkBtn");
+
+            for (var i = 0; i < btns.length; i++) {
+                if (btns[i].checked) {
+                    if(btns[i].id.length == 5) {
+                        let str = btns[i].id.substring(3,5);
+                        str = "label" + str;
+                        document.getElementById(str).style.backgroundColor = '#138496';
+                    }
+                    else if(btns[i].id.length == 6){
+                        let str = btns[i].id.substring(3,6);
+                        str = "label" + str;
+                        document.getElementById(str).style.backgroundColor = '#138496';
+                    }
+                    else {
+                        let str = btns[i].id.substring(3,9);
+                        str = "label" + str;
+                        document.getElementById(str).style.backgroundColor = '#138496';
+                    }
+                }
+                if (!btns[i].checked) {
+                    if(btns[i].id.length == 5) {
+                        let str = btns[i].id.substring(3,5);
+                        str = "label" + str;
+                        document.getElementById(str).style.backgroundColor = '#17a2b8';
+                    }
+                    else if(btns[i].id.length == 6){
+                        let str = btns[i].id.substring(3,6);
+                        str = "label" + str;
+                        document.getElementById(str).style.backgroundColor = '#17a2b8';
+                    }
+                    else {
+                        let str = btns[i].id.substring(3,9);
+                        str = "label" + str;
+                        document.getElementById(str).style.backgroundColor = '#17a2b8';
+                    }
+                    
+                }
+            }
+        }
+    </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>OrdinaGruppiSanguigniPerRichiesteForm</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/formStyles.css">
+</head>
+
+<body>
+     <div class="titlePage">
+        <div>
+            <span class="fontTitle">
+                Ordina gruppi sanguigni per richieste form            
+            </span>
+        </div>
+        <div>
+            <img class="logoCTT" src="assets/img/LOGO_CTT.svg">
+        </div>
+    </div>
+    
+    <div class="container" style="max-width: 1430px; margin: 1.5% auto;">
+        
+        <div class="dateFormQuery">
+            <div class="titleDateFormQuery">
+                <button class="btn" onclick="location.href='MenuDiSelezioneQueryCTT.html';"><img class="return" src="assets/img/return.png" /></button>
+            </div>
+            <div class="containerForm" style="max-height: 450px; overflow: auto">
+                <form id="myForm">
+                    <div class="form-group row">
+                        <label for="formGroupExampleInput" style="margin: 1% 10%;">Data inizio:</label>
+                        <input id="datein" name="data_in" type="date" oninput="print1();" class="form-control" id="formGroupExampleInput" placeholder="Example input" style="margin-left: 10%;width: 80%;">
+                    </div>
+                    <div class="form-group row">
+                        <label for="formGroupExampleInput2" style="margin: 1% 10%;">Data fine:</label>
+                        <input id="dateout" name="data_out" type="date" class="form-control" id="formGroupExampleInput2" placeholder="Another input" style="margin-left: 10%;width: 80%;">
+                    </div>
+                    <div class="row">
+                        <label style="margin: 1% 10%;">Tipo di sangue:</label>
+                    </div>
+                    <div class="row" style="margin-left:10%">
+                        <label id="labelAp" class="btn btn-info" for="btnAp" style="height: auto;">A+</label>
+                        <input name="checkBtn" type="checkbox" onclick="printCheck();" class="btn-check" id="btnAp" value="Ap" visibility: hidden></input>
+                        
+                        <label id="labelAm" class="btn btn-info" for="btnAm" style="height: auto;">A-</label>
+                        <input name="checkBtn" type="checkbox" onclick="printCheck();" class="btn-check" id="btnAm" value="Am" visibility: hidden></input>
+                        
+                        <label id="labelBp" class="btn btn-info" for="btnBp" style="height: auto;">B+</label>
+                        <input name="checkBtn" type="checkbox" onclick="printCheck();" class="btn-check" id="btnBp" value="Bp" visibility: hidden></input>
+                        
+                        <label id="labelBm" class="btn btn-info" for="btnBm" style="height: auto;">B-</label>
+                        <input name="checkBtn" type="checkbox" onclick="printCheck();" class="btn-check" id="btnBm" value="Bm" visibility: hidden></input>
+                        
+                        <label id="labelABp" class="btn btn-info" for="btnABp" style="height: auto;">AB+</label>
+                        <input name="checkBtn" type="checkbox" onclick="printCheck();" class="btn-check" id="btnABp" value="ABp" visibility: hidden></input>
+                        
+                        <label id="labelABm" class="btn btn-info" for="btnABm" style="height: auto;">AB-</label>
+                        <input name="checkBtn" type="checkbox" onclick="printCheck();" class="btn-check" id="btnABm" value="ABm" visibility: hidden></input>
+                        
+                        <label id="labelZEROp" class="btn btn-info" for="btnZEROp" style="height: auto;">0+</label>
+                        <input name="checkBtn" type="checkbox" onclick="printCheck();" class="btn-check" id="btnZEROp" value="ZEROp" visibility: hidden></input>
+                        
+                        <label id="labelZEROm" class="btn btn-info" for="btnZEROm" style="height: auto;">0-</label>
+                        <input name="checkBtn" type="checkbox" onclick="printCheck();" class="btn-check" id="btnZEROm" value="ZEROm" visibility: hidden></input>
+                    </div>
+                </form>
+                <button class="btn btn-primary" type="button" onclick="reportRichiesteSacche();" style="margin-bottom: 5% ;margin-top: 5%;margin-left: 50%; width: 140px;height: 51px;font-family: Calibri light;font-size: 20px;">Conferma</button>
+            </div>
+            
+        </div>
+
+        <div class="previewFormQuery">
+            <div class="titleDateFormQuery">
+                <p>Anteprima</p>
+            </div>
+            <div class="outPreviewQuery">
+                <p id="p1"></p>
+            </div>
+        </div>
+        
+    </div>
+    <script>
+        
+        function reportRichiesteSacche() {
+            var dinit = datein.value;
+            var dend = dateout.value;
+            var btns = document.getElementsByName("checkBtn");
+            var btnsvalues = [];
+
+            for (var i = 0; i < btns.length; i++) {
+                if (btns[i].checked)
+                    btnsvalues.push(btns[i].value.toString());
+            }
+            
+            alert(dinit + "\n" + dend + "\n" + btnsvalues);
+        }
+    </script>   
+    <div class="footer"></div>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>

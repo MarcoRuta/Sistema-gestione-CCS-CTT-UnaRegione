@@ -21,7 +21,7 @@ import it.unisannio.ingegneriaDelSoftware.Classes.Cdf;
 import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.RuoloDipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.User;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManagerBean;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 
 
 public class RemoveCTTRestTest {
@@ -32,7 +32,7 @@ public class RemoveCTTRestTest {
 	
 	
 	/**
-	 * Classe per la popolazione del database			
+	 * Classe per la popolamento del database			
 	 * @throws ParseException
 	 */
 	@BeforeClass 
@@ -124,23 +124,25 @@ public class RemoveCTTRestTest {
         CTT CTT007 = new CTT(numero, denominazione, provincia, citta, telefono, indirizzo, email, latitudine, longitudine);  
         listaCTT.add(CTT007);
       
+        MongoDataManager mm = MongoDataManager.getInstance();
+        
         for(CTT ctt : listaCTT) {
-        	MongoDataManagerBean.createCTT(ctt);
+        	mm.createCTT(ctt);
         }  
         
-        Cdf cdf = new Cdf("122hfotndj13ht5f");
-	    LocalDate ld = LocalDate.of(1998,10,10);
+        Cdf cdf = Cdf.getCDF("KTMFSW67T64I460X");
+	    LocalDate ld = LocalDate.parse("1998-10-10");
 	    RuoloDipendente ruolo = RuoloDipendente.AmministratoreCCS;
 	    String username = "admin";
-	    String password = "admin";
+	    String password = "Adminadmin1";
 	    Dipendente dip = new Dipendente(cdf, "TestAdmin", "TestAdmin", ld, ruolo, username, password);
-	    MongoDataManagerBean.createDipendente(dip);
+	    mm.createDipendente(dip);
 	    
 	    Client client = ClientBuilder.newClient();
 		WebTarget login = client.target("http://127.0.0.1:8080/rest/autentificazione");
 		Form form1 = new Form();
 		form1.param("username", "admin");
-		form1.param("password", "admin");
+		form1.param("password", "Adminadmin1");
 		
 		Response responselogin = login.request().post(Entity.form(form1));
 		User user = responselogin.readEntity(User.class);
@@ -164,17 +166,16 @@ public class RemoveCTTRestTest {
 		
 
 		Response responseRemCTT = rimozioneCTT.path("8").request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).delete();
-		assertEquals(Status.BAD_REQUEST.getStatusCode(), responseRemCTT.getStatus());
+		assertEquals(Status.NOT_FOUND.getStatusCode(), responseRemCTT.getStatus());
 	} 
 	
 	
 
-	/**
-	 * Classe per l'eliminazione del database
-	 * 
+	/**Classe per l'eliminazione del database
 	 */
 	@AfterClass public static void dropDBCTT() {
-		MongoDataManagerBean.dropDB();
+		MongoDataManager mm = MongoDataManager.getInstance();
+		mm.dropDB();
 	}
 	
 }

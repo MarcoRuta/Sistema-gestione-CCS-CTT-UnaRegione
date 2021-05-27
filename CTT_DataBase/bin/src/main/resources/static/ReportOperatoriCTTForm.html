@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>ReportOperatoriCTTForm</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/formStyles.css">
+    <link rel="stylesheet" href="assets/css/tables.css">
+    
+</head>
+
+<body onload="verificoToken();">
+    <div class="titlePage">
+        <div>
+            <span class="fontTitle">
+                Report Operatori CTT Form           
+            </span>
+        </div>
+        <div>
+            <img class="logoCTT" src="assets/img/LOGO_CTT.svg">
+        </div>
+    </div>
+    
+    <div class="container" style="max-width: 1430px; margin: 1.5% auto;">
+        
+        <div class="dateFormQuery">
+            <div class="titleDateFormQuery">
+                <button class="btn" onclick="location.href='MenuDiSelezioneQueryCTT.html';"><img class="return" src="assets/img/return.png" /></button>
+            </div>
+            <div class="containerForm">
+                <form id="myForm">
+                    <div class="form-group col" style="margin: 2% 2%">
+                        <div class="row">
+                            <label>Ruolo dipendente:</label>
+                        </div>
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="list-group" id="list-tab" role="tablist">
+                                    <label id="labelAmm" class="btn btn-info" for="btnAmm" style="height: auto; margin-bottom: 10%;">AmministratoreCTT</label>
+                                    <input name="pressBtn" type="radio" onclick="report();" "class="btn-check" id="btnAmm" value="AmministratoreCTT" visibility: hidden></input>
+                                    <label id="labelMag" class="btn btn-info" for="btnMag" style="height: auto; margin-bottom: 10%;">MagazziniereCTT</label>
+                                    <input name="pressBtn" type="radio" onclick="report();" "class="btn-check" id="btnMag" value="MagazziniereCTT" visibility: hidden></input>    
+                                    <label id="labelOpe" class="btn btn-info" for="btnOpe" style="height: auto;">OperatoreCTT</label>
+                                    <input name="pressBtn" type="radio" onclick="report();" "class="btn-check" id="btnOpe" value="OperatoreCTT" visibility: hidden></input>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>    
+        </div>
+
+        <div class="previewFormQuery">
+            <div class="titleDateFormQuery">
+                <p>Anteprima</p>
+            </div>
+            <div class="outPreviewQuery">
+                <table id = "table">
+                    <tr>
+                      <th scope="col"> Codice Fiscale </th>
+                      <th scope="col"> Nome </th>
+                      <th scope="col"> Cognome </th>
+                      <th scope="col"> Data Di Nascita </th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        
+    </div>
+     
+    <script type="text/javascript">
+   
+    var token = sessionStorage.getItem("token");
+    var ruolo = sessionStorage.getItem("ruolo");
+    var xhttp = new XMLHttpRequest();
+    var ruolo;
+    var obj;
+    var table = document.getElementById('table');
+  
+    verificoToken = function(){
+               if(token == null || ruolo != 'AmministratoreCTT'){
+                alert("E' necessario effettuare il login per accedere a questa risorsa");
+                window.location.href='Login.html';
+               }
+    };
+
+	 function report(){
+    
+      var btns = document.getElementsByName("pressBtn");
+      
+      for (var i = 0; i < btns.length; i++) {
+                if (btns[i].checked)
+                    ruolo = btns[i].value;
+            }
+
+      xhttp = new XMLHttpRequest();
+      var host = document.location.origin;
+      url = host + "/rest/amministratore/reportOperatoriCtt?ruolo="+ruolo;
+
+      xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+              obj = JSON.parse(this.responseText);
+              
+              if(table.rows.length != 1) {
+                while(table.rows.length != 1) {
+                     table.deleteRow(1);
+                }
+              }
+              addPrint();
+              }
+          else if (this.readyState == 4 && this.status != 200) {
+          	alert(this.response);
+          }
+
+      };
+
+      xhttp.open("GET", url, true);
+      xhttp.setRequestHeader('Authorization', 'Basic '+token);
+      xhttp.withCredentials = true;
+      xhttp.send();
+
+  }
+    
+	 
+	 function addPrint() {
+
+      var row;
+
+        for(let i = 0; i < obj.length; i++) {
+         
+          row = document.createElement('tr');
+          row.appendChild(document.createElement('td'));
+          row.appendChild(document.createElement('td'));
+          row.appendChild(document.createElement('td'));
+          row.appendChild(document.createElement('td'));
+          row.cells[0].innerHTML = obj[i].cdf.codiceFiscale;
+          row.cells[1].innerHTML = obj[i].nome;
+          row.cells[2].innerHTML = obj[i].cognome;
+          row.cells[3].innerHTML = obj[i].dataDiNascita;
+          table.appendChild(row);   
+      }
+      
+    }
+	 
+	 
+    </script>   
+    <div class="footer"></div>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+   
+</body>
+
+
+
+
+</html>

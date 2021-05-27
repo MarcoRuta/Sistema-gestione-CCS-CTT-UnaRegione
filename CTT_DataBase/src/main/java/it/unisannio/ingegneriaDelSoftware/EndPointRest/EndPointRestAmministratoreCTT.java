@@ -1,10 +1,12 @@
 package it.unisannio.ingegneriaDelSoftware.EndPointRest;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Singleton;
 import javax.ws.rs.*;
@@ -12,11 +14,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import it.unisannio.ingegneriaDelSoftware.Annotazioni.Secured;
-import it.unisannio.ingegneriaDelSoftware.Classes.Cdf;
-import it.unisannio.ingegneriaDelSoftware.Classes.DatiSacca;
-import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
-import it.unisannio.ingegneriaDelSoftware.Classes.RuoloDipendente;
-import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
+import it.unisannio.ingegneriaDelSoftware.Classes.*;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.DipendenteNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointAmministratoreCTT;
@@ -26,7 +24,9 @@ import it.unisannio.ingegneriaDelSoftware.Util.*;
 @Singleton
 @Secured
 @RolesAllowed("AmministratoreCTT")
+@PermitAll
 public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT {
+	private MongoDataManager md = MongoDataManager.getInstance();
 
 	/**Aggiunge un Dipendente al DataBase
 	 * @param cdf Dipendente da aggiungere al DataBase
@@ -35,8 +35,7 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 	 * @param dataDiNascita
 	 * @param ruolo
 	 * @param username
-	 * @param password
-	 * @return
+	 * @return Response 200 ok, username password e codice fiscale del Dipendente se tutto è andato a buonfine.
 	 */
 	@POST
 	@Path("/aggiuntaDipendente")
@@ -47,31 +46,32 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 								  @FormParam("cognome")String cognome,
 								  @FormParam("dataDiNascita")String dataDiNascita,
 								  @FormParam("ruolo")String ruolo,
-								  @FormParam("username")String username,
-								  @FormParam("password")String password) throws DateTimeParseException,IllegalArgumentException,AssertionError{
+								  @FormParam("username")String username) throws DateTimeParseException,IllegalArgumentException,AssertionError{
 
 		//creo un dipendente
-		Dipendente d = new Dipendente(Cdf.getCDF(cdf), nome, cognome, DateUtil.dateParser(dataDiNascita),
+		String password = PasswordGenerator.getPassword();
+		Dipendente d = new Dipendente(Cdf.getCDF(cdf), nome, cognome,
+				LocalDate.parse(dataDiNascita, DateTimeFormatter.ofPattern(Constants.DATEFORMAT)),
 				RuoloDipendente.valueOf(ruolo), username, password);
 		//aggiungo il dipendente al DB
-		MongoDataManager.createDipendente(d);
+		md.createDipendente(d);
 		return Response
 				.status(Response.Status.OK)
-				.entity("Corretta aggiunta del Dipendente: "+cdf)
+				.entity("Dipendente: "+cdf+"\n"+"username: "+username+"\n"+"password: "+password)
 				.build();
 	}
 
 
 	/**Rimuove un Dipendente dal DataBase
 	 * @param cdf Codice fiscale del Dipendente da rimuovere dal DataBase
-	 * @return
+	 * @return Response 200 OK
 	 */
 	@DELETE
 	@Path("/rimozioneDipendente/{cdf}")
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes(MediaType.TEXT_PLAIN)
 	public Response removeDipendente(@PathParam("cdf") String cdf) throws DipendenteNotFoundException {
-		MongoDataManager.removeDipendente(Cdf.getCDF(cdf));
+		md.removeDipendente(Cdf.getCDF(cdf));
 		return Response
 				.status(Response.Status.OK)
 				.entity("Corretta rimozione del Dipendente: " + cdf)
@@ -112,7 +112,7 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response reportStatisticoSacche(@QueryParam("gs")String gs){
 
-		List<Sacca> listaSacche = MongoDataManager.getListaSacche();
+		List<Sacca> listaSacche = md.getListaSacche();
 		List<Sacca> risultatoQuery = new ArrayList<Sacca>();
 		
 		for(Sacca s : listaSacche)
@@ -126,7 +126,7 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 
 
 	/**---------REPORT SACCHE INVIATE E RICEVUTE CTT------------
-	 * Restituisce la lista dei datiSacche relativi alle sacche che sono state caricate o affidate in un determinato arco temporale
+	 * Restituisce la lista dei DatiSacche relativi alle sacche che sono state caricate o affidate in un determinato arco temporale
 	 * @param dataInizio Data inizio dell' arco temporale
 	 * @param dataFine Data fine dell' arco temporale
 	 * @return Response 200 OK e invia la lista dei datiSacca 400 BAD_REQUEST se i parametri inseriti non sono corretti
@@ -136,8 +136,8 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response reportLocaleSaccheInviateERicevuteCTT(@QueryParam("dataInizio")String dataInizio,
 															@QueryParam("dataFine")String dataFine) throws DateTimeParseException{
-		LocalDate dataInizioReport = DateUtil.dateParser(dataInizio);
-		LocalDate dataAffidamentoReport = DateUtil.dateParser(dataFine);
+		LocalDate dataInizioReport = LocalDate.parse(dataInizio, DateTimeFormatter.ofPattern(Constants.DATEFORMAT));
+		LocalDate dataAffidamentoReport = LocalDate.parse(dataFine, DateTimeFormatter.ofPattern(Constants.DATEFORMAT));
 		List <DatiSacca> risultatoQuery = getDatiSaccaInATemporalAmount(dataInizioReport,dataAffidamentoReport);
 		return Response
 				.status(Response.Status.OK)
@@ -162,8 +162,8 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 		String risultatoQuery = "";
 		StringTokenizer aTokenizer = new StringTokenizer(listaGS);
 		//recupero le sacche nll'arco di tempo di interesse
-		LocalDate dataInizioReport = DateUtil.dateParser(dataInizio);
-		LocalDate dataAffidamentoreport = DateUtil.dateParser(dataFine);
+		LocalDate dataInizioReport = LocalDate.parse(dataInizio, DateTimeFormatter.ofPattern(Constants.DATEFORMAT));
+		LocalDate dataAffidamentoreport = LocalDate.parse(dataFine, DateTimeFormatter.ofPattern(Constants.DATEFORMAT));
 		List<DatiSacca> listaDatiSaccheInIntervallo = this.getDatiSaccaInATemporalAmount(dataInizioReport, dataAffidamentoreport);
 
 		// per ogni gruppo sanguigno controllo le sacche che ho avuto di quel tipo in quell'intervalllo
@@ -183,25 +183,24 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 				.build();
 	}
 
-	/**Metodo tramite il quale è possibile accedere alla lista di dipendenti che lavorano al CTT
-	 * @return  la lista di dipendenti che lavorano al CTT*/
+	/**Metodo tramite il quale è possibile accedere alla lista di Dipendenti contenuti nel database dei Dipendenti 
+	 * @return la lista di dipendenti che lavorano al CTT*/
 	@GET
 	@Path("/dipendenti")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Dipendente> getDipendenti(){		
-		return MongoDataManager.getListaDipendenti();
+		return md.getListaDipendenti();
 	}
 
-	/**Restituisce una lista di dati sacca che sono arrivate dopo di dataInizioReport oppure sono state affidate dopo prima
-	 * di dataAffidamentoReport
-	 * @param dataInizioReport  data dalla quale selezioniamo le sacche
-	 * @param dataFineReport data oltre la quale non selezioniamo piu le sacche
-	 * @return  lista di sacche che erano nel CTT nell'arco temporale dataInizioReport-dataAffidamentoReport*/
+	/**Restituisce una lista di DatiSacca che sono arrivate dopo di dataInizioReport oppure sono state affidate dopo prima di dataAffidamentoReport
+	 * @param dataInizioReport  data dalla quale si selezionano le Sacche
+	 * @param dataFineReport data oltre la quale non si selezionano più le Sacche
+	 * @return lista di Sacche che erano nel CTT nell'arco temporale dataInizioReport-dataAffidamentoReport*/
 	private List<DatiSacca> getDatiSaccaInATemporalAmount(LocalDate dataInizioReport, LocalDate dataFineReport){
 		List<DatiSacca> datiSaccaTransitati = new ArrayList<>();
 		
 		//creo la lista dei dati sacca
-		List<DatiSacca> listaDatiSacca = MongoDataManager.getListaDatiSacche();
+		List<DatiSacca> listaDatiSacca = md.getListaDatiSacche();
 		for (DatiSacca datiSacca : listaDatiSacca)
 			if ((datiSacca.getDataArrivo().isAfter(dataInizioReport) && datiSacca.getDataArrivo().isBefore(dataFineReport))
 					|| (datiSacca.getDataAffidamento().get().isAfter(dataInizioReport) && datiSacca.getDataAffidamento().get().isBefore(dataFineReport))

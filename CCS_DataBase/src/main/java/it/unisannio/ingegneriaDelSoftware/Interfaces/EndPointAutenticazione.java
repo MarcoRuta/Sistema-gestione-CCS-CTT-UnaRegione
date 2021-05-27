@@ -17,24 +17,20 @@ import it.unisannio.ingegneriaDelSoftware.Exceptions.DipendenteNotFoundException
 
 public interface EndPointAutenticazione {
 
-	/**
-     * Login è l'operazione con la quale un generico dipendente del ctt accede al sistema
-     *
-     * @return il ruolo con il quale si è registrati
+	/**Fa accedere al sistema un Dipedente identificato con Username e Password
+     * @return Response
 	 * @throws DipendenteNotFoundException 
-     * 
-     * 
      */
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(@FormParam("username") String username,
-                          @FormParam("password") String password) throws DipendenteNotFoundException;
+                          @FormParam("password") String password);
 	
-	/**
-     * Metodo che effettua il logout, esso elimina il token dell'utente dal server cosi che esso non sia piu autenticato
-     *
-     * @param header da rimuovere per effetuare il logout
+    
+    /**
+     * Effettua il logout di un Dipendente, eliminando il token dell'utente dal server così che esso non sia più autenticato
+     * @param header Intestazione che contiene il token da rimuovere per effettuare il logout
      */
     @DELETE
     @Path("/logout")
@@ -42,7 +38,12 @@ public interface EndPointAutenticazione {
     @Produces(MediaType.TEXT_PLAIN)
     public Response logOut(@HeaderParam(HttpHeaders.AUTHORIZATION) String header);
 	
-	@PUT
+    
+    /**Modifica la password di un Dipendente identificato tramite il suo Codice fiscale
+     * @param cdf Il Codice fiscale del Dipendente
+     * @param password La nuova password
+     */
+    @PUT
     @Path("/cambiopassword/{cdf}")
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
