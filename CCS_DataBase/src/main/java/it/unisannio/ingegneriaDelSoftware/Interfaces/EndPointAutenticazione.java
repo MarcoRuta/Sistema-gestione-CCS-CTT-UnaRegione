@@ -39,13 +39,24 @@ public interface EndPointAutenticazione {
     public Response logOut(@HeaderParam(HttpHeaders.AUTHORIZATION) String header);
 	
     
-    /**Modifica la password di un Dipendente identificato tramite il suo Codice fiscale
-     * @param cdf Il Codice fiscale del Dipendente
-     * @param password La nuova password
+    /**Modifica la password di un utente
+     * @param password la nuova password
+     * @param header il token di autentificazione
      */
     @PUT
-    @Path("/cambiopassword/{cdf}")
+    @Path("/cambiopassword")
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
-    public Response cambioPassword(@PathParam("cdf")String cdf, String password);
+    public Response cambioPassword(@HeaderParam(HttpHeaders.AUTHORIZATION) String header, String password) throws AssertionError, DipendenteNotFoundException;
+    
+    
+    /**Recupera la password di un Utente
+     * @param username L'username dell'Utente che ha perso la password
+     * @param cdf cdf dell'Utente che vuole recuperare la password
+     */
+    @PUT
+    @Path("/recuperoPassword/{cdf}")
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response recuperoPassword(@PathParam("cdf")String cdf, String username) throws AssertionError, DipendenteNotFoundException;
 }

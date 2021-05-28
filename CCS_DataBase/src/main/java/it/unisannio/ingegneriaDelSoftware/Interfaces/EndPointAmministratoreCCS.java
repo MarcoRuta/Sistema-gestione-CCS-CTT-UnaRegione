@@ -83,8 +83,7 @@ public interface EndPointAmministratoreCCS {
 								  @FormParam("cognome")String cognome,
 								  @FormParam("dataDiNascita")String dataDiNascita,
 								  @FormParam("ruolo")String ruolo,
-								  @FormParam("username")String username,
-								  @FormParam("password")String password);
+								  @FormParam("username")String username);
 
 	
 	/**Rimuove un Dipendente dal DataBase

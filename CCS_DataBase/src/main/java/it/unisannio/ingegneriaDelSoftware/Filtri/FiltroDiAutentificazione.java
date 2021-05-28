@@ -1,6 +1,7 @@
 package it.unisannio.ingegneriaDelSoftware.Filtri;
 
 import it.unisannio.ingegneriaDelSoftware.Annotazioni.Secured;
+import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.Token;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.DipendenteNotFoundException;
@@ -52,13 +53,11 @@ public class FiltroDiAutentificazione implements ContainerRequestFilter {
             return;
         }
 
-        //recupero username e password usando il token
+        //recupero il dipendente usando il token
         try {
-            String usernamePassword = Token.getDipendenteByToken(token);
-            StringTokenizer aTokenizer = new StringTokenizer(usernamePassword);
-            String username = aTokenizer.nextToken(":");
-            String password = aTokenizer.nextToken();
-            String ruolo = mm.getDipendente(username,password).getRuolo().toString();
+        	 Dipendente dip = Token.getDipendenteByToken(token);
+             String ruolo = dip.getRuolo().toString();
+
 
             //sovrascrivo il securityContext
             /**The SecurityContext is a class of Spring Security.
@@ -69,7 +68,7 @@ public class FiltroDiAutentificazione implements ContainerRequestFilter {
 
                 @Override
                 public Principal getUserPrincipal() {
-                    return () -> username;
+                    return () -> dip.getUsername();
                 }
 
                 @Override

@@ -2,10 +2,12 @@ package it.unisannio.ingegneriaDelSoftware.EndPointRest;
 
 import it.unisannio.ingegneriaDelSoftware.Classes.Cdf;
 import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
+import it.unisannio.ingegneriaDelSoftware.Classes.PasswordGenerator;
 import it.unisannio.ingegneriaDelSoftware.Classes.Token;
 import it.unisannio.ingegneriaDelSoftware.Classes.User;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.DipendenteNotFoundException;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.InvalidChangePasswordException;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.TokenNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointAutenticazione;
 
@@ -66,25 +68,46 @@ public class EndPointRestAutentificazione implements EndPointAutenticazione {
     }
     
     
-    /**Modifica la password di un Dipendente identificato tramite il suo Codice fiscale
-     * @param cdf Il Codice fiscale del Dipendente
-     * @param password La nuova password
+    /**Modifica la password di un utente
+     * @param password la nuova password
+     * @param header il token di autentificazione
      */
     @PUT
-    @Path("/cambiopassword/{cdf}")
+    @Path("/cambiopassword")
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
-    public Response cambioPassword(@PathParam("cdf")String cdf, String password){
-        try{
-            System.out.println("richiesta arrivata");
-            mm.setPassword(Cdf.getCDF(cdf),password);
+    public Response cambioPassword(@HeaderParam(HttpHeaders.AUTHORIZATION) String header, String password) throws AssertionError, DipendenteNotFoundException{
+        String requestToken = header.substring("Basic ".length());
+        Dipendente dip = Token.getDipendenteByToken(requestToken);
+        mm.setPassword(dip.getCdf(), password);
+        return Response.status(Response.Status.OK)
+                .type(MediaType.TEXT_PLAIN)
+                .entity("Password cambiata correttamente")
+                .build();
+
+    }
+
+
+
+    /**Recupera la password di un Utente
+     * @param username L'username dell'Utente che ha perso la password
+     * @param cdf cdf dell'Utente che vuole recuperare la password
+     */
+    @PUT
+    @Path("/recuperoPassword/{cdf}")
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response recuperoPassword(@PathParam("cdf")String cdf, String username) throws AssertionError, DipendenteNotFoundException{
+        Dipendente dip = MongoDataManager.getInstance().getDipendente(Cdf.getCDF(cdf));
+        String password = PasswordGenerator.getPassword();
+        if (dip.getUsername().equals(username)) {
+            mm.setPassword(dip.getCdf(), password);
             return Response.status(Response.Status.OK)
-                    .entity("Password cambiata correttamente")
-                    .build();
-        }catch (DipendenteNotFoundException | AssertionError e){
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity(e.getMessage())
+                    .type(MediaType.TEXT_PLAIN)
+                    .entity("La tua nuova password è: "+password)
                     .build();
         }
+        throw  new InvalidChangePasswordException("Username e Codice Fiscale non appartengono alla stessa persona");
+
     }
 }

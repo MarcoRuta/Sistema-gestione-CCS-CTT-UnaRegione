@@ -22,11 +22,13 @@ import it.unisannio.ingegneriaDelSoftware.Annotazioni.Secured;
 import it.unisannio.ingegneriaDelSoftware.Classes.CTT;
 import it.unisannio.ingegneriaDelSoftware.Classes.Cdf;
 import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
+import it.unisannio.ingegneriaDelSoftware.Classes.PasswordGenerator;
 import it.unisannio.ingegneriaDelSoftware.Classes.RuoloDipendente;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.CTTNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.DipendenteNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointAmministratoreCCS;
+import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 
 import java.time.LocalDate;
 import java.time.format.*;
@@ -142,11 +144,10 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 	 * @param dataDiNascita Data di nascita del Dipendente da aggiungere al DataBase
 	 * @param ruolo Ruolo del Dipendente da aggiungere al DataBase
 	 * @param username Username del Dipendente da aggiungere al DataBase
-	 * @param password Password del Dipendente da aggiungere al DataBase
 	 * @return Response 
 	 */
 	@POST
-	@Path("/aggiuntaAmministratore")
+	@Path("/aggiuntaDipendente")
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public Response addDipendente(@FormParam("cdf")String cdf,
@@ -154,27 +155,19 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 								  @FormParam("cognome")String cognome,
 								  @FormParam("dataDiNascita")String dataDiNascita,
 								  @FormParam("ruolo")String ruolo,
-								  @FormParam("username")String username,
-								  @FormParam("password")String password){
+								  @FormParam("username")String username) throws DateTimeParseException,IllegalArgumentException,AssertionError{
 
-		try {
-			//creo un dipendente
-			Dipendente d = new Dipendente(Cdf.getCDF(cdf), nome, cognome, LocalDate.parse(dataDiNascita),
-					RuoloDipendente.valueOf(ruolo), username, password);
-			//aggiungo il dipendente al DB
-			mm.createDipendente(d);
-			return Response
-					.status(Response.Status.OK)
-					.entity("Dipendente aggiunto: "+cdf)
-					.build();
-		}catch(DateTimeParseException| IllegalArgumentException | AssertionError e) {
-			//The request could not be understood by the server due to malformed syntax.
-			// The client SHOULD NOT repeat the request without modifications.
-			return Response
-					.status(Response.Status.BAD_REQUEST)
-					.entity(e.getMessage())
-					.build();
-		}
+		//creo un dipendente
+		String password = PasswordGenerator.getPassword();
+		Dipendente d = new Dipendente(Cdf.getCDF(cdf), nome, cognome,
+				LocalDate.parse(dataDiNascita, DateTimeFormatter.ofPattern(Constants.DATEFORMAT)),
+				RuoloDipendente.valueOf(ruolo), username, password);
+		//aggiungo il dipendente al DB
+		mm.createDipendente(d);
+		return Response
+				.status(Response.Status.OK)
+				.entity("Dipendente: "+cdf+"\n"+"username: "+username+"\n"+"password: "+password)
+				.build();
 	}
 
 	
