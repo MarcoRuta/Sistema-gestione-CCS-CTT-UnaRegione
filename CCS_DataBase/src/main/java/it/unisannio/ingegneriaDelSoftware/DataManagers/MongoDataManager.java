@@ -8,6 +8,7 @@ import com.mongodb.client.MongoDatabase;
 import it.unisannio.ingegneriaDelSoftware.Classes.*;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.Codec.CTTCodec;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.Codec.DipendenteCodec;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.Codec.SaccaCodec;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Util.*;
@@ -19,7 +20,6 @@ import java.util.List;
 
 import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
-import static com.mongodb.client.model.Updates.set;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
 public class MongoDataManager {
@@ -33,7 +33,7 @@ public class MongoDataManager {
     
     private MongoDataManager(){
         CodecRegistry pojoCodecRegistry = fromRegistries(
-                CodecRegistries.fromCodecs(new DipendenteCodec(), new CTTCodec()), MongoClient.getDefaultCodecRegistry());
+                CodecRegistries.fromCodecs(new DipendenteCodec(), new CTTCodec(), new SaccaCodec()), MongoClient.getDefaultCodecRegistry());
         mongoClient = new MongoClient("localhost", MongoClientOptions.builder().codecRegistry(pojoCodecRegistry).build());
     }
 
@@ -41,6 +41,13 @@ public class MongoDataManager {
         MongoDatabase database = mongoClient.getDatabase(Constants.DB_NAME);
         database.drop();
         mongoClient.close();
+    }
+
+    /**Restituisce una MongoCollection<Sacca> registrando il codec di base di Mongo per la serializzazione in BSON
+     * @return MongoCollection<Sacca>*/
+    private MongoCollection<Sacca> getCollectionSacca(){
+        MongoDatabase database = mongoClient.getDatabase(Constants.DB_NAME);
+        return  database.getCollection(Constants.COLLECTION_SACCHE,Sacca.class);
     }
 
 
@@ -60,6 +67,15 @@ public class MongoDataManager {
     }
 
 
+    /**Aggiunge una Sacca al database delle sacche solo se essa non è gia presente nel DB delle sacche
+     * @param s Sacca da aggiungere al db
+     * @throws EntityAlreadyExistsException se la Sacca che si vuole aggiungere è già presente nel DB
+     */
+    public void createSacca(Sacca s) throws EntityAlreadyExistsException {
+        if (containsSacca(s.getSeriale())) throw new EntityAlreadyExistsException("Sacca con seriale"+s.getSeriale()+"gia presente nel DB");
+        MongoCollection<Sacca> collection = getCollectionSacca();
+        collection.insertOne(s);
+    }
     
     
     /**Aggiunge un CTT al database dei CTT solo se esso non è gia presente nel DB dei CTT
@@ -83,7 +99,19 @@ public class MongoDataManager {
     
     
     
-
+    /**Restituisce una Sacca ricercata sul database dalle Sacche tramite il Seriale
+     * @param ser Seriale della Sacca da ricercare
+     * @return null se la Sacca non è stata trovata; la Sacca se essa è stata trovata
+     * @throws EntityNotFoundException se l'entità non è presente nel DB
+     */
+    public  Sacca getSacca(Seriale ser) throws EntityNotFoundException {
+        MongoCollection<Sacca> collection = getCollectionSacca();
+       Sacca unaSacca =collection.find(eq(Constants.ELEMENT_SERIALE, ser.getSeriale())).first();
+       if (unaSacca != null)
+           return unaSacca;
+        throw new EntityNotFoundException("La sacca ricercata"+ ser +"non è stata trovata");
+    }
+    
 	/**
 	 * Restituisce un CTT ricercato all'interno del database dei CTT tramite il suo numero
 	 * @return CTT Il CTT ricercato
@@ -128,7 +156,17 @@ public class MongoDataManager {
         throw new EntityNotFoundException("Impossibile trovare il dipendente. Username o Password errati");
     }
 	
-	
+    /**@param seriale Il seriale della Sacca che si vuole cercare
+     * @return true se la Sacca è contenuta nel database delle Sacche
+     */
+    public  boolean containsSacca(Seriale seriale) {
+        try {
+            Sacca unSacca = getSacca(seriale);
+            return true;
+        }catch(EntityNotFoundException e) {
+            return false;
+        }
+    }
 	
     /**Controlla se il CTT selezionato tramite il numero è presente nel Database dei CTT
      * @return true se il CTT è presente nel database dei CTT, false se il Dipendente non è presente*/
@@ -155,7 +193,16 @@ public class MongoDataManager {
     }
     
     
-    
+    /**Rimuove una Sacca dal DataBase identificata tramite il Seriale, solo se essa è gia presente
+     * @param ser Seriale della Sacca da rimuovere dal db delle sacche
+     * @throws EntityNotFoundException se la Sacca che si vuole rimuovere non è presente nel DB
+     */
+    public  void removeSacca(Seriale ser) throws EntityNotFoundException{
+        if(!containsSacca(ser)) throw new EntityNotFoundException("Non è possibile rimuovere una sacca non presente nel DB.\nSeriale sacca: "+ser);
+        MongoCollection<Sacca> collection =getCollectionSacca();
+        collection.deleteOne(eq(Constants.ELEMENT_SERIALE,ser));
+    }
+
     
 	/**
 	 * Rimuove un CTT dal database dei CTT solo se esiste e partendo dal suo numero
@@ -179,7 +226,17 @@ public class MongoDataManager {
     }
     
     
-    
+    /** Restituisce una lista contenente tutte le Sacche presenti in magazzino
+     * @return la lista delle Sacche presenti in magazzino
+     */
+    public  List<Sacca> getListaSacche(){
+        MongoCollection<Sacca> collection = getCollectionSacca();
+        List<Sacca> sacche = new ArrayList<Sacca>();
+
+        for (Sacca unaSacca : collection.find())
+            sacche.add(unaSacca);
+        return sacche;
+    }
     
     /**
 	 * Restituisce la lista di tutti i CTT presenti nel database del CCS

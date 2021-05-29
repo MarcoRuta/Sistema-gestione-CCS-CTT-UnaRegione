@@ -6,6 +6,13 @@ public class Constants {
 	
 	public static final String DB_NAME = "CCS";
 	
+	public static final String COLLECTION_SACCHE = "SACCHE_IN_SCADENZA";
+	public static final String ELEMENT_SERIALE = "seriale";
+	public static final String ELEMENT_GRUPPO = "gruppo";
+	public static final String ELEMENT_DATAPRODUZIONE = "dataProduzione";
+	public static final String ELEMENT_DATASCADENZA = "dataScadenza";
+	public static final String ELEMENT_PRENOTATO = "prenotato";
+	
 	public static final String COLLECTION_CTT = "CTT";
 	public static final String ELEMENT_NUMERO = "numero";
 	public static final String ELEMENT_DENOMINAZIONE = "denominazione";

@@ -2,19 +2,27 @@ package it.unisannio.ingegneriaDelSoftware;
 
 
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.*;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.ExceptionHandler.*;
 import it.unisannio.ingegneriaDelSoftware.Filtri.FiltroDiAutorizzazione;
+import it.unisannio.ingegneriaDelSoftware.SaccheInScadenzaManager.GestioneScadenzeCTT;
 import it.unisannio.ingegneriaDelSoftware.Filtri.FiltroDiAutentificazione;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 
 import javax.ws.rs.ApplicationPath;
 
 
 @SpringBootApplication (scanBasePackages = {"WebSocketConfig", "ingegneriaDelSoftware"})
 @ApplicationPath("/rest")
+@EnableScheduling
+@Configuration
+
+
 public class CttDataBaseRestApplication extends ResourceConfig {
 
 	public CttDataBaseRestApplication() throws Exception {
@@ -42,11 +50,23 @@ public class CttDataBaseRestApplication extends ResourceConfig {
 		register(EndPointRestAmministratoreCTT.class);
 		//Endpoint Operatore
 		register(EndPointRestOperatoreCTT.class);
+		
+		
+		//Gestione sacche in scadenza
+		register(GestioneScadenzeCTT.class);
+	}
+	
+	@Scheduled(cron = "*/10 * * * * *")
+	public void gestioneSaccheInScadenza() throws EntityNotFoundException {
+		GestioneScadenzeCTT ctt = new GestioneScadenzeCTT();
+		ctt.alertSaccheInScadenza();
+		
 	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(CttDataBaseRestApplication.class, args);
 		
 	}
+
 	
 }

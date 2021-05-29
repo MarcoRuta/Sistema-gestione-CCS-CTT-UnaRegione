@@ -1,7 +1,6 @@
 package it.unisannio.ingegneriaDelSoftware.Classes;
 
 import java.io.PrintStream;
-import java.util.Locale;
 
 public class CTTPosition {
 		
