@@ -1,16 +1,13 @@
 package it.unisannio.ingegneriaDelSoftware.EndPointRest;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import it.unisannio.ingegneriaDelSoftware.Classes.*;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
-import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaNotFoundException;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.*;
-import org.apache.tomcat.jni.Local;
 ;
 
 public class CTT implements CTTFunction {
@@ -19,9 +16,9 @@ public class CTT implements CTTFunction {
 
 	/**Restituisce una lista di tutte le sacche che scadono entro 72 ore
 	 * @return la lista di sacche non ancora scadute ma che scadono entro 72 ore da oggi
-	 * @throws SaccaNotFoundException Eccezione che si verifica quando la Sacca inserita non viene trovata
+	 * @throws EntityNotFoundException Eccezione che si verifica quando la Sacca inserita non viene trovata
 	 */
-	public List<Sacca> alertControlScadenza() throws SaccaNotFoundException {
+	public List<Sacca> alertControlScadenza() throws EntityNotFoundException {
 		
 		List<Sacca> listaSacche = md.getListaSacche();
 		List<Sacca> saccheInScadenza = new ArrayList<Sacca>();
@@ -39,9 +36,9 @@ public class CTT implements CTTFunction {
 
 
 	/**Rimuove tutte le Sacche scadute dal database delle Sacche e aggiorna i corrispettivi DatiSacca con enteRichiedente "Scaduta" e dataAffidamento con la data di scadenza
-	 * @throws SaccaNotFoundException Eccezione che si verifica quando la Sacca inserita non viene trovata
+	 * @throws EntityNotFoundException Eccezione che si verifica quando la Sacca inserita non viene trovata
 	 */
-	public void removeSaccheScadute() throws SaccaNotFoundException {
+	public void removeSaccheScadute() throws EntityNotFoundException{
 		List<Sacca> listaSacche = md.getListaSacche();
 
 		for(Sacca sacca : listaSacche) {
@@ -54,9 +51,9 @@ public class CTT implements CTTFunction {
 
 	/**Rimuove una Sacca dal Database e setta la dataAffidamento di DatiSacca alla data di scadenza e setta l'enteRichiedente con "Scaduta"
 	 * @param s Sacca da rimuovere dal database delle Sacche
-	 * @throws SaccaNotFoundException Eccezione che si verifica quando la Sacca inserita non viene trovata
+	 * @throws it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException Eccezione che si verifica quando la Sacca inserita non viene trovata
 	 */
-	private void removeSaccaScaduta(Sacca s) throws SaccaNotFoundException {
+	private void removeSaccaScaduta(Sacca s) throws EntityNotFoundException{
 
 		md.removeSacca(s.getSeriale());
 		md.setDataAffidamentoDatiSacca(s.getSeriale(), s.getDataScadenza());

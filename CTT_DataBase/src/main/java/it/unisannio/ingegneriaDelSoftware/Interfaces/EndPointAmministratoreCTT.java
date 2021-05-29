@@ -2,9 +2,13 @@ package it.unisannio.ingegneriaDelSoftware.Interfaces;
 
 
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.StreamingOutput;
+import javax.ws.rs.core.UriInfo;
 
 import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
-import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaNotFoundException;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
+
 import java.util.List;
 
 
@@ -23,14 +27,15 @@ public interface EndPointAmministratoreCTT {
 								  String nome, String cognome,
 								  String dataDiNascita,
 								  String ruolo,
-								  String username);
+								  String username,
+								  UriInfo uriInfo) throws EntityAlreadyExistsException;
 
 
 	/**Rimuove un Dipendente dal DataBase
 	 * @param cdf Codice fiscale del Dipendente da rimuovere dal DataBase
 	 * @return
 	 */
-	public Response removeDipendente(String cdf) ;
+	public Response removeDipendente( String header,String cdf) throws EntityNotFoundException;
 
 
 	/**Restituisce la lista dei Dipendenti del CTT che occupano il Ruolo scelto
@@ -43,7 +48,7 @@ public interface EndPointAmministratoreCTT {
 	/**Restituisce la lista delle Sacche di un determinato Gruppo sanguigno, presenti del database delle Sacche
 	 * @param gs Gruppo sanguigno delle Sacche che si vogliono ricercare
 	 * @return la lista di Sacche di un determinato Gruppo sanguigno
-	 * @throws SaccaNotFoundException
+	 * @throws EntityNotFoundException
 	 */
 	public Response reportStatisticoSacche(String gs);
 
@@ -70,5 +75,12 @@ public interface EndPointAmministratoreCTT {
 
 	/**Metodo tramite il quale è possibile accedere alla lista di dipendenti che lavorano al CTT
 	 * @return  la lista di dipendenti che lavorano al CTT*/
-	public List<Dipendente> getDipendenti();
+	public List<Dipendente> getDipendenti(String headers) throws EntityNotFoundException;
+
+
+	/**Metodo tramite il quale è possibile recuperare un pdf con cdf, username e password di un dipendente
+	 * @param cdf il cdf del dipendente di cui si vogliono recuperare i dati
+	 * @return StreamingOutput
+	 * */
+	public StreamingOutput getPDF(String cdf) throws EntityNotFoundException;
 }

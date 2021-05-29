@@ -14,6 +14,8 @@ import javax.ws.rs.core.Form;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+
+import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -25,7 +27,6 @@ import it.unisannio.ingegneriaDelSoftware.Classes.RuoloDipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
 import it.unisannio.ingegneriaDelSoftware.Classes.User;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
-import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaNotFoundException;
 
 public class RicercaSaccaLocaleTest {
 
@@ -34,7 +35,7 @@ public class RicercaSaccaLocaleTest {
 	Client client = ClientBuilder.newClient();
 	WebTarget evasioneSacca = client.target("http://127.0.0.1:8080/rest/operatore/ricerca");
 	
-	@BeforeClass public static void populateDBSacche() throws SaccaNotFoundException, AssertionError, ParseException {
+	@BeforeClass public static void populateDBSacche() throws EntityAlreadyExistsException {
 		
 
 	    	List<Sacca> listaSacche = new ArrayList<Sacca>();

@@ -2,9 +2,8 @@ package it.unisannio.ingegneriaDelSoftware.EndPointRest;
 
 import it.unisannio.ingegneriaDelSoftware.Classes.*;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
-import it.unisannio.ingegneriaDelSoftware.Exceptions.DipendenteNotFoundException;
-import it.unisannio.ingegneriaDelSoftware.Exceptions.InvalidChangePasswordException;
-import it.unisannio.ingegneriaDelSoftware.Exceptions.TokenNotFoundException;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
+
 import javax.annotation.security.PermitAll;
 import javax.ws.rs.*;
 import javax.ws.rs.core.HttpHeaders;
@@ -23,34 +22,30 @@ public class EndPointRestAutentificazione {
      * @return il ruolo con il quale si è registrati
      * esso setta il token di autentificazione nei cookie con cookieName = "access_token
      * il cookie ha una max-Age pari ad un turno lavorativo di 8 ore"
+     * @throws  EntityNotFoundException se il login non va a buon fine
      */
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(@FormParam("username") String username,
-                          @FormParam("password") String password) {
-    	try{
-    		Dipendente unDipendente = mm.getDipendente(username, password);
-    		String token =  Token.getToken(username + ":" + password).getValue();
-    		User aUser = new User(token,unDipendente.getRuolo().toString(),unDipendente.getNome(), unDipendente.getCognome());
-    		return Response.status(Response.Status.OK)
-    		        .entity(aUser)
-    		        .build();
-    	}catch (DipendenteNotFoundException e) {
-    		return Response.status(Response.Status.FORBIDDEN)
-    		        .entity(e.getMessage())
-    		        .build();
-    	}	
+                          @FormParam("password") String password) throws EntityNotFoundException {
+        Dipendente unDipendente = mm.getDipendente(username, password);
+        String token =  Token.getToken(username + ":" + password).getValue();
+        User aUser = new User(token,unDipendente.getRuolo().toString(),unDipendente.getNome(), unDipendente.getCognome(), unDipendente.getCdf().getCodiceFiscale());
+        return Response.status(Response.Status.CREATED)
+                .entity(aUser)
+                .build();
     }
 
     /**Effettua il logout, esso elimina il token dell'utente dal server cosi che esso non sia piu autenticato
      * @param header da rimuovere per effettuare il logout
+     * @throws EntityNotFoundException se si sta facendo il logout con un token non valido
      */
     @DELETE
     @Path("/logout")
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
-    public Response logOut(@HeaderParam(HttpHeaders.AUTHORIZATION) String header)throws TokenNotFoundException{
+    public Response logOut(@HeaderParam(HttpHeaders.AUTHORIZATION) String header)throws EntityNotFoundException{
             Token.removeToken(header.substring("Basic ".length()));
             return Response.status(Response.Status.OK)
                     .entity("Token rimosso correttamente")
@@ -61,19 +56,24 @@ public class EndPointRestAutentificazione {
     /**Modifica la password di un utente
      * @param password la nuova password
      * @param header il token di autentificazione
+     * @throws EntityNotFoundException se si vuole cambiare la password di un dipendente non registrato nel DB
      */
     @PUT
-    @Path("/cambiopassword")
+    @Path("/cambiopassword/{cdf}")
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
-    public Response cambioPassword(@HeaderParam(HttpHeaders.AUTHORIZATION) String header, String password) throws AssertionError, DipendenteNotFoundException{
+    public Response cambioPassword(@HeaderParam(HttpHeaders.AUTHORIZATION) String header,@PathParam("cdf")String cdf, String password) throws AssertionError, EntityNotFoundException {
         String requestToken = header.substring("Basic ".length());
         Dipendente dip = Token.getDipendenteByToken(requestToken);
-        mm.setPassword(dip.getCdf(), password);
-        return Response.status(Response.Status.OK)
-                .type(MediaType.TEXT_PLAIN)
-                .entity("Password cambiata correttamente")
-                .build();
+        if (dip.getCdf().getCodiceFiscale().equals(cdf)) {
+            mm.setPassword(dip.getCdf(), password);
+            return Response.status(Response.Status.OK)
+                    .type(MediaType.TEXT_PLAIN)
+                    .entity("Password cambiata correttamente")
+                    .build();
+        }
+        throw  new WebApplicationException(Response.status(Response.Status.FORBIDDEN)
+                .entity("Non puoi cambiare la password di un altro utente").type(MediaType.TEXT_PLAIN).build());
 
     }
 
@@ -82,14 +82,15 @@ public class EndPointRestAutentificazione {
     /**Recupera la password di un Utente
      * @param username L'username dell'Utente che ha perso la password
      * @param cdf cdf dell'Utente che vuole recuperare la password
+     * @throws  EntityNotFoundException se si vuole recuperare la password di un utente non presente nel DB
      */
     @PUT
     @Path("/recuperoPassword/{cdf}")
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
-    public Response recuperoPassword(@PathParam("cdf")String cdf, String username) throws AssertionError, DipendenteNotFoundException{
+    public Response recuperoPassword(@PathParam("cdf")String cdf, String username) throws AssertionError, EntityNotFoundException {
         Dipendente dip = MongoDataManager.getInstance().getDipendente(Cdf.getCDF(cdf));
-        String password = PasswordGenerator.getPassword();
+        String password = IDGenerator.getID();
         if (dip.getUsername().equals(username)) {
             mm.setPassword(dip.getCdf(), password);
             return Response.status(Response.Status.OK)
@@ -97,7 +98,8 @@ public class EndPointRestAutentificazione {
                     .entity("La tua nuova password è: "+password)
                     .build();
         }
-        throw  new InvalidChangePasswordException("Username e Codice Fiscale non appartengono alla stessa persona");
+        throw  new WebApplicationException(Response.status(Response.Status.FORBIDDEN)
+                .entity("username e codice fiscale non coincidono").type(MediaType.TEXT_PLAIN).build());
 
     }
 }

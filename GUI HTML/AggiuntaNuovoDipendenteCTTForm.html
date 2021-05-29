@@ -29,14 +29,9 @@
              else document.getElementById("p5").innerHTML = "Username: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
         }
         function print6(){
-            if(password.value!="")
-                document.getElementById("p6").innerHTML = "Password: "+"<span class='textPrint'>" +password.value+"</span>";
-             else document.getElementById("p6").innerHTML = "Password: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
-        }
-        function print7(){
             if(rl.value!=0)
-                document.getElementById("p7").innerHTML = "Ruolo: "+"<span class='textPrint'>" +rl.value+"</span>";
-             else document.getElementById("p7").innerHTML = "Ruolo: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
+                document.getElementById("p6").innerHTML = "Ruolo: "+"<span class='textPrint'>" +rl.value+"</span>";
+             else document.getElementById("p6").innerHTML = "Ruolo: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
         }
         
     </script>
@@ -101,15 +96,9 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label>Password:</label>
-                            <div class="inputForm">
-                                <input id="password" name="password" onchange="controllaPassword();" oninput="print6();" class="form-control" type="text" placeholder=">=8 CARATTERI, ~1 LETTERA e ~1 NUMERO.">
-                            </div>
-                        </div>
-                        <div class="form-group row">
                             <label>Ruolo:</label>
                             <div class="inputForm">
-                                <select class="form-control" id="rl" oninput="print7();" style="height: 40px;width: 364px;">
+                                <select class="form-control" id="rl" oninput="print6();" style="height: 40px;width: 364px;">
                                     <option value='0'>Seleziona il tipo di ruolo</option>
                                     <option value="AmministratoreCTT">AmministratoreCTT</option>
                                     <option value="MagazziniereCTT">MagazziniereCTT</option>
@@ -132,7 +121,6 @@
                 <p id="p4"></p>
                 <p id="p5"></p>
                 <p id="p6"></p>
-                <p id="p7"></p>
             </div>
             <div class="outPreview" style="height: 40px;margin: 4% 45px;">
                 <p id="result"></p>
@@ -141,12 +129,13 @@
         </div>
         
     </div>
-    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
     <script>
         var token = sessionStorage.getItem("token");
         var ruolo = sessionStorage.getItem("ruolo");
         var xhttp = new XMLHttpRequest();
-        var res;
+        var urlPdf;
 
         verificoToken = function(){
                if(token == null || ruolo != 'AmministratoreCTT'){
@@ -164,18 +153,19 @@
                 var cn = cognome.value;
                 var dn = datanasc.value;
                 var us = username.value;
-                var ps = password.value;
                 var rlo = rl.value;
-                var params = 'cdf='+cdf+'&nome='+nm+'&cognome='+cn+'&dataDiNascita='+dn+'&username='+us+'&password='+ps+'&ruolo='+rlo;
+                var params = 'cdf='+cdf+'&nome='+nm+'&cognome='+cn+'&dataDiNascita='+dn+'&username='+us+'&ruolo='+rlo;
+
 
                 xhttp.onreadystatechange = function() {
-                    if (this.readyState == 4 && this.status == 200) {
-                        res= "Dipendente "+cdf+" aggiunto correttamente";
-                 	    //document.getElementById("result").innerHTML = "Dipendente "+cdf+" aggiunto correttamente";
+                    if (this.readyState == 4 && this.status == 201) {
+                        alert("Dipendente "+cdf+" aggiunto correttamente");
+                        urlPdf = host + xhttp.getResponseHeader("Content-Location");
+                        creaPdf();
                  	}else {
-                 	if(this.readyState == 4 && this.status != 200){
-                 	    res = this.response;
-                 	    //document.getElementById("result").innerHTML = this.response;
+                 	if(this.readyState == 4 && this.status != 201){
+                 	    alert(this.response);
+                 	    setTimeout(reloadPage,1000);
                  	    }
                  	}
 
@@ -185,8 +175,6 @@
                     document.getElementById("result").innerHTML = "[Error 401] Impossibile Aggiungere Sacca ";
                 };
 
-                
-                setTimeout(reloadPage, 500);
 
                 xhttp.open("POST", url, true);
                 xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
@@ -196,16 +184,34 @@
         }
             
             function reloadPage() {
-                alert(res);
                 codice.value ="";
                 nome.value="";
                 cognome.value="";
                 datanasc.value="";
                 username.value="";
-                password.value="";
                 rl.value="";
                 location.reload();
             }
+
+
+
+      /*####### CREA PDF FUNCTION ######*/
+      function creaPdf() {
+             var xhr = new XMLHttpRequest();
+             xhr.open("GET", urlPdf, true);
+             xhr.setRequestHeader('Authorization', 'Basic '+token);
+             xhr.withCredentials = true;
+             xhr.responseType = 'arraybuffer';
+             xhr.send();
+
+            xhr.onreadystatechange = function() {
+                    if (xhr.readyState == 4){
+                        var blobSrc = window.URL.createObjectURL(new Blob([this.response], { type: 'application/pdf'}));
+                        window.open(blobSrc);
+                    }
+            };
+            setTimeout(reloadPage, 1000);
+      }
 
     </script>
         

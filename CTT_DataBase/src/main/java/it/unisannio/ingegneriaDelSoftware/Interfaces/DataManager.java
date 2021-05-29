@@ -1,8 +1,6 @@
 package it.unisannio.ingegneriaDelSoftware.Interfaces;
 import it.unisannio.ingegneriaDelSoftware.Classes.*;
-import it.unisannio.ingegneriaDelSoftware.Exceptions.DatiSaccaNotFoundException;
-import it.unisannio.ingegneriaDelSoftware.Exceptions.DipendenteNotFoundException;
-import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaNotFoundException;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -15,9 +13,9 @@ public interface DataManager {
 
 	void removeSacca(Seriale ser);
 
-	Sacca getSacca(Seriale ser) throws SaccaNotFoundException;
+	Sacca getSacca(Seriale ser) throws EntityNotFoundException;
 
-	DatiSacca getDatiSacca(Seriale ser) throws DatiSaccaNotFoundException;
+	DatiSacca getDatiSacca(Seriale ser) throws EntityNotFoundException;
 	
 	List<Sacca> getListaSacche();
 	
@@ -37,9 +35,9 @@ public interface DataManager {
 
 	void removeDipendente(Cdf cdf);
 	
-	Dipendente getDipendente(String username, String password) throws DipendenteNotFoundException;
+	Dipendente getDipendente(String username, String password) throws EntityNotFoundException;
 
-	Dipendente getDipendente(Cdf cdf) throws DipendenteNotFoundException;
+	Dipendente getDipendente(Cdf cdf) throws EntityNotFoundException;
 
 	/**Modifica la password di un Dipendente all'interno del DB
 	 * @param password la nuova passworda da aggiungere

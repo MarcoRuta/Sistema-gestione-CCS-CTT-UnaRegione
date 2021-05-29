@@ -19,6 +19,7 @@ import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.Classes.NotificaEvasione;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.NotificheObservers.TerminaleMagazziniereObserver;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Observer;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Subject;
@@ -48,6 +49,7 @@ public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT, Subject{
 	 * @param dataArrivoMassima Data entro la quale la Sacca non deve scadere e deve arrivare all'Ente richiedente
 	 * @param enteRichiedente Ente richiedente della Sacca
 	 * @return la lista di sacche ricercate
+	 *
 	 */
 	@GET
 	@Path("/ricerca")
@@ -82,6 +84,11 @@ public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT, Subject{
 		} catch (SaccheInLocaleNotFoundException e) {
 			return Response //in realtà deve avviare RicercaSaccaGlobale e passare i parametri al CCS
 					.status(Response.Status.NOT_FOUND)
+					.entity(e.getMessage())
+					.build();
+		} catch (EntityNotFoundException e) {
+			return 	Response //in realtà deve avviare RicercaSaccaGlobale e passare i parametri al CCS
+					.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(e.getMessage())
 					.build();
 		}

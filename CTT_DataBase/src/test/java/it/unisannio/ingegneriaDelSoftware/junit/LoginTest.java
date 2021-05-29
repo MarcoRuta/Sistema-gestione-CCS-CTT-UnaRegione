@@ -15,7 +15,8 @@ import javax.ws.rs.core.Form;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import it.unisannio.ingegneriaDelSoftware.Exceptions.DipendenteNotFoundException;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -34,7 +35,7 @@ public class LoginTest {
     static MongoDataManager md = MongoDataManager.getInstance();
 
 	
-	@BeforeClass public static void populateDBDipendenti() throws ParseException, DipendenteNotFoundException {
+	@BeforeClass public static void populateDBDipendenti() throws EntityAlreadyExistsException {
 		List<Dipendente> listaDipendenti = new ArrayList<Dipendente>();
 	        
 	 	Cdf cdf = Cdf.getCDF("XDDBHH45H57H684W");

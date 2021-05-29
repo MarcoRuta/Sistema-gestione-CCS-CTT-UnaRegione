@@ -1,10 +1,7 @@
 package it.unisannio.ingegneriaDelSoftware.Classes;
 
-import it.unisannio.ingegneriaDelSoftware.Exceptions.InvalidParamException;
-
 import java.io.PrintStream;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Sacca {

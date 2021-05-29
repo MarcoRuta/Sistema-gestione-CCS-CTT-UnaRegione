@@ -8,14 +8,24 @@ public class User {
     private String ruolo;
     private String nome;
     private String cognome;
+    private String cdf;
 
-    public User(String token, String ruolo, String nome, String cognome){
+    public User(String token, String ruolo, String nome, String cognome, String cdf){
         this.ruolo = ruolo;
         this.token = token;
         this.nome = nome;
         this.cognome = cognome;
+        this.cdf = cdf;
     }
     public User(){};
+
+    public String getCdf() {
+        return cdf;
+    }
+
+    public void setCdf(String cdf) {
+        this.cdf = cdf;
+    }
 
     public void setToken(String token) {
         this.token = token;
@@ -54,12 +64,12 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return token.equals(user.token) && ruolo.equals(user.ruolo) && nome.equals(user.nome) && cognome.equals(user.cognome);
+        return cdf.equals(user.cdf);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(token, ruolo, nome, cognome);
+        return Objects.hash(cdf);
     }
 
     @Override
@@ -69,6 +79,7 @@ public class User {
                 ", ruolo='" + ruolo + '\'' +
                 ", nome='" + nome + '\'' +
                 ", cognome='" + cognome + '\'' +
+                ", cdf='" + cdf + '\'' +
                 '}';
     }
 }

@@ -1,9 +1,9 @@
 package it.unisannio.ingegneriaDelSoftware.Interfaces;
 
 
-import javax.ws.rs.core.Response;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
 
-import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaNotFoundException;
+import javax.ws.rs.core.Response;
 
 public interface EndPointOperatoreCTT {
 
@@ -12,12 +12,12 @@ public interface EndPointOperatoreCTT {
 	 * @param dataArrivoMassima Data entro la quale la Sacca non deve scadere e deve arrivare all'Ente richiedente
 	 * @param enteRichiedente Ente richiedente della Sacca
 	 * @return la Sacca con le caratteristiche richieste
-	 * @throws SaccaNotFoundException Eccezione che si verifica quando la sacca inserita non viene trovata
+	 * @throws EntityNotFoundException Eccezione che si verifica quando la sacca inserita non viene trovata
 	 */
 	public Response ricercaSaccaLocale(String gruppoSanguigno,
 									   String numeroSacche,
 									   String dataArrivoMassima,
 									   String enteRichiedente,
 									   String indirizzoEnte,
-									   String priorita);
+									   String priorita) throws EntityNotFoundException;
 }

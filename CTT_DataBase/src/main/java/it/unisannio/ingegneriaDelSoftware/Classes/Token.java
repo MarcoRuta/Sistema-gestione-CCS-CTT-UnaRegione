@@ -1,8 +1,7 @@
 package it.unisannio.ingegneriaDelSoftware.Classes;
 
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
-import it.unisannio.ingegneriaDelSoftware.Exceptions.DipendenteNotFoundException;
-import it.unisannio.ingegneriaDelSoftware.Exceptions.TokenNotFoundException;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
 
 import java.security.SecureRandom;
 import java.util.*;
@@ -50,9 +49,9 @@ public class Token {
 
     /**@param token il token di autentificazione di un utente
      * @return  username:password dell'utente a cui è associato il token
-     * @throws DipendenteNotFoundException se il token ricercato non è associato a nessun dipendente
+     * @throws EntityNotFoundException se il token ricercato non è associato a nessun dipendente
      */
-    public static Dipendente getDipendenteByToken(String token) throws DipendenteNotFoundException {
+    public static Dipendente getDipendenteByToken(String token) throws EntityNotFoundException {
         assert token != null: "il token non puo essere null";
         for (String usernamePassword : Token.tokens.keySet())
             if (Token.tokens.get(usernamePassword).getValue().equals(token)) {
@@ -61,7 +60,7 @@ public class Token {
                 String password = tokenizer.nextToken();
                 return MongoDataManager.getInstance().getDipendente(username, password);
             }
-        throw new DipendenteNotFoundException("Il token non è associato a nessun dipendente");
+        throw new EntityNotFoundException("Il token non è associato a nessun dipendente");
 
     }
 
@@ -79,16 +78,16 @@ public class Token {
 
     /**Elimina dalla lista dei token il token passatogli come parametro
      * @param token il token da eliminare
-     * @throws TokenNotFoundException se il token che si vuole rimuovere non è presente
+     * @throws EntityNotFoundException se il token che si vuole rimuovere non è presente
      */
-    public static void removeToken(String token) throws TokenNotFoundException {
+    public static void removeToken(String token) throws EntityNotFoundException {
         if (Token.containsToken(token)) {
             for (String key : Token.tokens.keySet())
                 if (tokens.get(key).getValue().equals(token)) {
                     Token.tokens.remove(key);
                     return;
                 }
-        } else  throw new TokenNotFoundException("Il token non esiste");
+        } else  throw new EntityNotFoundException("Il token non esiste");
     }
 
     @Override

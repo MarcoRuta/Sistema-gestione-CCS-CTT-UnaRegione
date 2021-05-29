@@ -15,6 +15,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -24,7 +25,6 @@ import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.RuoloDipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.User;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
-import it.unisannio.ingegneriaDelSoftware.Exceptions.DipendenteNotFoundException;
 
 
 public class RemoveDipendenteCTTTest {
@@ -33,7 +33,7 @@ public class RemoveDipendenteCTTTest {
 	Client client = ClientBuilder.newClient();
 	WebTarget rimozioneAmm = client.target("http://127.0.0.1:8080/rest/amministratore/rimozioneDipendente");
 
-    @BeforeClass public static void populateDBDipendenti() throws ParseException, DipendenteNotFoundException {
+    @BeforeClass public static void populateDBDipendenti() throws EntityAlreadyExistsException {
         List<Dipendente> listaDipendenti = new ArrayList<Dipendente>();
 
         Cdf cdf = Cdf.getCDF("XDDBHH45H57H684W");

@@ -2,9 +2,7 @@ package it.unisannio.ingegneriaDelSoftware;
 
 
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.*;
-import it.unisannio.ingegneriaDelSoftware.Exceptions.ExceptionHandler.AssertionErrorHandler;
-import it.unisannio.ingegneriaDelSoftware.Exceptions.ExceptionHandler.ExceptionHandler;
-import it.unisannio.ingegneriaDelSoftware.Exceptions.ExceptionHandler.MarlFormedURLExceptionHandler;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.ExceptionHandler.*;
 import it.unisannio.ingegneriaDelSoftware.Filtri.FiltroDiAutorizzazione;
 import it.unisannio.ingegneriaDelSoftware.Filtri.FiltroDiAutentificazione;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -29,8 +27,11 @@ public class CttDataBaseRestApplication extends ResourceConfig {
 		register(AssertionErrorHandler.class);
 		//gestione Exception
 		register(ExceptionHandler.class);
-		//gestione MalformedURLException
-		register(MarlFormedURLExceptionHandler.class);
+		register(EntityAlreadyExistsExceptionHandler.class);
+		register(DateTimeParseExceptionHandler.class);
+		register(EntityNotFoundExceptionHandler.class);
+		register(IllegalArgumentExceptionHandler.class);
+
 
 
 		//Endpoint del Magazziniere

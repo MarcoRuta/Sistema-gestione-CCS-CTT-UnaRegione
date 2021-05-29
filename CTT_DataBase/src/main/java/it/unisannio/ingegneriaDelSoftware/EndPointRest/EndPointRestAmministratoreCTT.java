@@ -1,5 +1,7 @@
 package it.unisannio.ingegneriaDelSoftware.EndPointRest;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -10,14 +12,16 @@ import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Singleton;
 import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.*;
 
+import com.itextpdf.text.DocumentException;
 import it.unisannio.ingegneriaDelSoftware.Annotazioni.Secured;
 import it.unisannio.ingegneriaDelSoftware.Classes.*;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
-import it.unisannio.ingegneriaDelSoftware.Exceptions.DipendenteNotFoundException;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointAmministratoreCTT;
+import it.unisannio.ingegneriaDelSoftware.PDF.PDFGenerator;
 import it.unisannio.ingegneriaDelSoftware.Util.*;
 
 @Path("/amministratore")
@@ -28,6 +32,36 @@ import it.unisannio.ingegneriaDelSoftware.Util.*;
 public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT {
 	private MongoDataManager md = MongoDataManager.getInstance();
 
+
+	/**Metodo tramite il quale è possibile recuperare un pdf con cdf, username e password di un dipendente
+	 * @param cdf il cdf del dipendente di cui si vogliono recuperare i dati
+	 * @return StreamingOutput
+	 * */
+	@GET
+	@Path("aggiuntaDipendente/pdf/{cdf}")
+	@Produces("application/pdf")
+	@Consumes(MediaType.TEXT_PLAIN)
+	public StreamingOutput getPDF(@PathParam("cdf")String cdf){
+		return new StreamingOutput() {
+			public void write(OutputStream output){
+				try {
+					Dipendente dip = md.getDipendente(Cdf.getCDF(cdf));
+					PDFGenerator.makeDocumentDipendente(output, cdf,dip.getUsername(),dip.getPassword());
+				} catch (DocumentException | IOException e) {
+					throw new WebApplicationException(Response
+							.status(Response.Status.INTERNAL_SERVER_ERROR)
+							.entity("Impossibile creare il dipendente")
+							.build());
+				} catch (EntityNotFoundException e) {
+					throw new WebApplicationException(Response
+							.status(Response.Status.NOT_FOUND)
+							.entity("Impossibile creare il dipendente")
+							.build());
+				}
+			}
+		};
+	}
+
 	/**Aggiunge un Dipendente al DataBase
 	 * @param cdf Dipendente da aggiungere al DataBase
 	 * @param nome
@@ -35,7 +69,7 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 	 * @param dataDiNascita
 	 * @param ruolo
 	 * @param username
-	 * @return Response 200 ok, username password e codice fiscale del Dipendente se tutto è andato a buonfine.
+	 * @return Response 201 CREATED, ed un messaggio di ACK.
 	 */
 	@POST
 	@Path("/aggiuntaDipendente")
@@ -46,18 +80,20 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 								  @FormParam("cognome")String cognome,
 								  @FormParam("dataDiNascita")String dataDiNascita,
 								  @FormParam("ruolo")String ruolo,
-								  @FormParam("username")String username) throws DateTimeParseException,IllegalArgumentException,AssertionError{
+								  @FormParam("username")String username,
+								  @Context UriInfo uriInfo) throws DateTimeParseException, IllegalArgumentException, AssertionError, EntityAlreadyExistsException {
 
 		//creo un dipendente
-		String password = PasswordGenerator.getPassword();
+		String password = IDGenerator.getID();
 		Dipendente d = new Dipendente(Cdf.getCDF(cdf), nome, cognome,
 				LocalDate.parse(dataDiNascita, DateTimeFormatter.ofPattern(Constants.DATEFORMAT)),
 				RuoloDipendente.valueOf(ruolo), username, password);
 		//aggiungo il dipendente al DB
 		md.createDipendente(d);
 		return Response
-				.status(Response.Status.OK)
-				.entity("Dipendente: "+cdf+"\n"+"username: "+username+"\n"+"password: "+password)
+				.status(Response.Status.CREATED)
+				.entity("Dipendente aggiunto correttamente")
+				.header(HttpHeaders.CONTENT_LOCATION,uriInfo.getAbsolutePath().getPath()+"/pdf/"+d.getCdf().getCodiceFiscale())
 				.build();
 	}
 
@@ -65,12 +101,22 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 	/**Rimuove un Dipendente dal DataBase
 	 * @param cdf Codice fiscale del Dipendente da rimuovere dal DataBase
 	 * @return Response 200 OK
+	 * @throws  EntityNotFoundException se si vuole rimuovere un dipendente non presente nel DB
 	 */
 	@DELETE
 	@Path("/rimozioneDipendente/{cdf}")
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes(MediaType.TEXT_PLAIN)
-	public Response removeDipendente(@PathParam("cdf") String cdf) throws DipendenteNotFoundException {
+	public Response removeDipendente(@HeaderParam(HttpHeaders.AUTHORIZATION)String header,
+									 @PathParam("cdf") String cdf) throws EntityNotFoundException {
+		Dipendente deleter = Token.getDipendenteByToken(header.substring("Basic ".length()));
+		if (deleter.getCdf().getCodiceFiscale().equals(cdf))
+			throw  new WebApplicationException(
+					Response
+					.status(Response.Status.FORBIDDEN)
+					.entity("Non puoi cancellare te stesso")
+					.build());
+
 		md.removeDipendente(Cdf.getCDF(cdf));
 		return Response
 				.status(Response.Status.OK)
@@ -89,7 +135,7 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response reportOperatoriCTT(@QueryParam("ruolo")String ruolo){
 	
-			List<Dipendente> listaDipendenti = getDipendenti();
+			List<Dipendente> listaDipendenti = md.getListaDipendenti();
 			List<Dipendente> risultatoQuery = new ArrayList<Dipendente>();
 			
 			for(Dipendente d : listaDipendenti)
@@ -188,8 +234,10 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 	@GET
 	@Path("/dipendenti")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Dipendente> getDipendenti(){		
-		return md.getListaDipendenti();
+	public List<Dipendente> getDipendenti(@HeaderParam(HttpHeaders.AUTHORIZATION) String header) throws EntityNotFoundException {
+		List<Dipendente> dipendenti = md.getListaDipendenti();
+		dipendenti.remove(Token.getDipendenteByToken(header.substring("Basic ".length())));
+		return  dipendenti;
 	}
 
 	/**Restituisce una lista di DatiSacca che sono arrivate dopo di dataInizioReport oppure sono state affidate dopo prima di dataAffidamentoReport

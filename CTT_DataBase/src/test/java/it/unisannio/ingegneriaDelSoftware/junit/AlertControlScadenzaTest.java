@@ -6,6 +6,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -15,13 +17,12 @@ import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.CTT;
-import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccaNotFoundException;
 
 public class AlertControlScadenzaTest {
 	CTT ctt = new CTT();
 	static MongoDataManager md = MongoDataManager.getInstance();
 	
-	@BeforeClass public static void populateDBSacche() throws SaccaNotFoundException {
+	@BeforeClass public static void populateDBSacche() throws EntityAlreadyExistsException {
 
 
 		List<Sacca> listaSacche = new ArrayList<Sacca>();
@@ -561,10 +562,10 @@ public class AlertControlScadenzaTest {
 	
 	/**
 	*Test che dovrebbe restituire una lista con 3 Sacche che stanno per scadere (nel beforeclass ci sono 3 sacche con dataScadenza LocalDate.now().plusDays(2)!)
-	 * @throws SaccaNotFoundException 
+	 * @throws it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException
 	*/
 	@Test	
-	public void test1() throws SaccaNotFoundException{  	
+	public void test1() throws EntityNotFoundException {
 		assertEquals(3, ctt.alertControlScadenza().size());
 	}
 	

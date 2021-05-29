@@ -72,7 +72,7 @@
                         </div>
                         <div class="row" style="width:75%; margin-top: 5%; margin-left: 16%;">
                             <div class="col-sm">
-                                <button class="btn btn-primary" onclick="location.href='MenuDiSelezioneQueryCTT.html';" type="button" style="background-color: #13958d; width: 210px;">Report statici</button>
+                                <button class="btn btn-primary" onclick="location.href='MenuDiSelezioneQueryCTT.html';" type="button" style="background-color: #13958d; width: 210px;">Report statistici</button>
                             </div>
                         </div>
                 </div>
@@ -125,6 +125,7 @@
                              sessionStorage.removeItem("ruolo");
                              sessionStorage.removeItem("nome");
                              sessionStorage.removeItem("cognome");
+                             sessionStorage.removeItem("cdf");
                              window.location.href='Login.html';
                         }else {
                             if(this.readyState == 4 && this.status != 200 ){

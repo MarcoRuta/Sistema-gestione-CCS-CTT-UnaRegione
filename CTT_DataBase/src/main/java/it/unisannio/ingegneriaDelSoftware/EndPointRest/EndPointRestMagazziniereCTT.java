@@ -1,25 +1,25 @@
 package it.unisannio.ingegneriaDelSoftware.EndPointRest;
 
+import com.itextpdf.text.DocumentException;
 import it.unisannio.ingegneriaDelSoftware.Classes.*;
 import it.unisannio.ingegneriaDelSoftware.Annotazioni.Secured;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointMagazziniereCTT;
+import it.unisannio.ingegneriaDelSoftware.PDF.PDFGenerator;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Singleton;
 import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.net.MalformedURLException;
-import java.net.URL;
+import javax.ws.rs.core.*;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
+import java.util.*;
 
 @Path("/magazziniere")
 @Singleton
@@ -28,14 +28,19 @@ import java.util.StringTokenizer;
 public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 
 	private MongoDataManager md = MongoDataManager.getInstance();
+	private Map<String,List<Seriale>> evasioni = new HashMap<>();
 
-	
-	/**Inserisce una Sacca e DatiSacca nel DB
-	 * @param gruppo_sanguigno Il gruppo sanguigno della Sacca
-	 * @param data_produzione La data di produzione della Sacca yyyy-MM-dd
-	 * @param data_scadenza La data di scadenza della Sacca yyyy-MM-dd
-	 * @param ente_donatore L'ente che ha donato la Sacca
-	 * @return messaggio corretta aggiunta Sacca*/
+
+	/**Metodo con il quale il Magazziniere aggiunge una Sacca al DataBase
+	 *
+	 * @param gruppo_sanguigno Gruppo sanguigno della Sacca
+	 * @param data_scadenza Data di scadenza della Sacca
+	 * @param data_produzione Data di produzione della Sacca
+	 * @param ente_donatore Ente di provenienza della Sacca
+	 * @param uriInfo  info dell'uri relativo alla risorsa richiesta
+	 * @return Messaggio di errore in caso di problema di inserimento dati;
+	 * @throws EntityAlreadyExistsException se si vuole aggiungere una sacca già presente nel DB
+	 */
 	@POST
 	@Path("/aggiuntaSacca")
 	@Produces(MediaType.TEXT_PLAIN)
@@ -43,7 +48,8 @@ public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 	public Response aggiuntaSaccaMagazzino(@FormParam("gruppo_sanguigno") String gruppo_sanguigno,
 										   @FormParam("data_scadenza") String data_scadenza,
 										   @FormParam("data_produzione") String data_produzione,
-										   @FormParam("ente_donatore") String ente_donatore) throws MalformedURLException {
+										   @FormParam("ente_donatore") String ente_donatore,
+										   @Context UriInfo uriInfo) throws EntityAlreadyExistsException {
 		//creo la sacca
 		Sacca unaSacca = new Sacca(GruppoSanguigno.valueOf(gruppo_sanguigno),
 				LocalDate.parse(data_produzione, DateTimeFormatter.ofPattern(Constants.DATEFORMAT)),
@@ -62,26 +68,28 @@ public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 		return Response
 				.status(Response.Status.CREATED)
 				.entity("Sacca con seriale " + unaSacca.getSeriale().getSeriale() + " aggiunta correttamente")
-				.header("Location", new URL("http://127.0.0.1:8080/sacche/"+unaSacca.getSeriale().getSeriale()))
+				.header("Location",uriInfo.getBaseUri()+"/sacche/"+unaSacca.getSeriale().getSeriale())
 				.build();
 	}
 
-	
-	/**Aggiorna i datiSacca e rimuove la Sacca dal DB attivo per ogni Sacca presente nell'ordine
-	 * @param listaseriali Seriali della Sacca da evadere, i seriali sono separati da una ","
-	 * @param ente_richiedente l'ente che ha richiesto la Sacca
-	 * @param indirizzo L'indirizzo dell'ente che ha richiesto la Sacca
-	 * @return Response OK se le Sacche sono state rimosse correttamente, BAD_REQUEST se si tenta di evadere sacche non presenti nel DB
-	 * @return Response 
-	 * */
-	 
-	@PUT
+
+	/**Metodo attivato dal magazziniere quando riceve una notifica evasione Sacca esso aggiorna i datiSacca e rimuove la Sacca dal DB attivo
+	 *
+	 * @param listaseriali Seriale della Sacca da evadere
+	 * @param ente_richiedente Ente che richiede la Sacca
+	 * @param indirizzo Indirizzo dell'enteRichiedente
+	 * @param uriInfo  info dell'uri relativo alla risorsa richiesta
+	 * @return messaggio di corretta evasione.
+	 * @throws EntityNotFoundException se la sacca da evadere non è presente nel DB
+	 */
+	@POST
 	@Path("/evasione")
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public Response evasioneSacca(@FormParam("listaSeriali") String listaseriali,					
+	public Response evasioneSacca(@FormParam("listaSeriali") String listaseriali,
 								  @FormParam("enteRichiedente") String ente_richiedente,
-								  @FormParam("indirizzoEnte")String indirizzo){
+								  @FormParam("indirizzoEnte")String indirizzo,
+								  @Context UriInfo uriInfo) throws EntityNotFoundException {
 
 		//Prendo dalla stringa listaSeriali la lista dei seriali attraverso una tokenizzazione, i seriali arrivano nel formato SERIALE/SERIALE/SERIALE/..../SERIALE/
 		List<Seriale> listaSeriali = new ArrayList<Seriale>();
@@ -89,8 +97,7 @@ public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 		StringTokenizer st = new StringTokenizer(listaseriali,",");
 		while (st.hasMoreTokens())
 			listaSeriali.add(Seriale.getSeriale(st.nextToken()));
-		//Etichetta da restituire al client
-		String etichetta = "";
+
 
 		for(Seriale unSeriale : listaSeriali) {
 			//recupero una sacca se presente altrimenti si solleva una eccezione SaccaNotFoundException
@@ -101,37 +108,61 @@ public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 			md.setIndirizzoEnteDatiSacca(unSeriale,indirizzo);
 			//recupero il DatiSacca aggiornato
 			DatiSacca datiSacca = md.getDatiSacca(unSeriale);
-			//aggiorno etichetta
-			etichetta = etichetta + unaSacca.getEtichettaSacca()+"\n"+ datiSacca.getEtichettaDatiSacca() +"\n";
 			//rimuovo la sacca
 			md.removeSacca(unaSacca.getSeriale());
-			//The property set or change succeeded.
 		}
-			
+
+		//registro l'evasione
+		String id_evasione = IDGenerator.getID();
+		this.evasioni.put(id_evasione,listaSeriali);
+
 		return Response
-				.status(Response.Status.OK)
-				.entity(etichetta + "\nEnte richiedente: " + ente_richiedente + "\nIndirizzo: " + indirizzo)
+				.status(Response.Status.CREATED)
+				.entity("Sacche evase correttamente")
+				.header(HttpHeaders.CONTENT_LOCATION,
+						uriInfo.getAbsolutePath().getPath()+"/pdf/"+id_evasione)
 				.build();
 	}
-		
-	
+
 	/**
-	 * Metodo utilizzato per aggiunta automatica del seriale delle sacche
-	 * disponibili nel magazzino per l'evasione
-	 * @return serialiSacca Lista 
-	 */
+	 *Metodo che permette di ottenere i dati di una evasione sottoforma di PDF
+	 * @param id_evasione id dell'evasione cercata
+	 * @return StreamingOutput
+	 * */
 	@GET
-	@Path("/sacche")
-	@Produces(MediaType.APPLICATION_JSON)
-	public List<Seriale> listaSacca(){
+	@Path("/evasione/pdf/{id_evasione}")
+	@Produces("application/pdf")
+	@Consumes(MediaType.TEXT_PLAIN)
+	public StreamingOutput getPDF(@PathParam("id_evasione")String id_evasione) {
+		return new StreamingOutput(){
+			public void write(OutputStream output){
+				try {
+					if(!evasioni.containsKey(id_evasione))
+						throw new WebApplicationException(
+										Response
+										.status(Response.Status.NOT_FOUND)
+										.entity("Evasione non trovata")
+										.build());
 
-		List<Sacca> listaSacche = md.getListaSacche();
-		List<Seriale> serialiSacca = new ArrayList<Seriale>();
-
-		for(Sacca s : listaSacche)
-			serialiSacca.add(s.getSeriale());
-
-		return serialiSacca;
+					List<Seriale> seriali = evasioni.get(id_evasione);
+					int numeroSacche = seriali.size();
+					Seriale unSeriale = seriali.get(0);
+					DatiSacca unSacca = MongoDataManager.getInstance().getDatiSacca(unSeriale);
+					String indirizzo =unSacca.getIndirizzoEnte();
+					String dataAffidamento = unSacca.getDataAffidamento().get().toString();
+					String gruppoSanguigno = unSacca.getGruppoSanguigno().toString();
+					String ente = unSacca.getEnteRichiedente();
+					PDFGenerator.makeDocumentSacca(output, numeroSacche, ente, indirizzo, dataAffidamento, gruppoSanguigno);
+				} catch (DocumentException | IOException | EntityNotFoundException e) {
+					throw new WebApplicationException(Response
+							.status(Response.Status.INTERNAL_SERVER_ERROR)
+							.entity("Impossibile creare il PDF per l'evasione con id "+id_evasione)
+							.build());
+				}
+			}
+		};
 	}
+
+
 
 }
