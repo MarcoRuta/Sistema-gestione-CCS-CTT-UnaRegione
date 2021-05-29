@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.unisannio.ingegneriaDelSoftware.Classes.CTT;
+import it.unisannio.ingegneriaDelSoftware.Classes.CTTName;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
-import it.unisannio.ingegneriaDelSoftware.Exceptions.CTTNotFoundException;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.*;
 
 public class CCS implements CCSFunction{
@@ -14,10 +15,10 @@ public class CCS implements CCSFunction{
 	 * @param num Numero del CTT dato
 	 * @return CTT più vicino a quello selezionato
 	 */
-	public CTT CttPiuVicino(int num) throws CTTNotFoundException{
+	public CTT CttPiuVicino(CTTName cttName) throws EntityNotFoundException {
 		MongoDataManager mm = MongoDataManager.getInstance();
 		
-		CTT c = mm.getCTT(num);		
+		CTT c = mm.getCTT(cttName);
 		List<CTT> listaCTT = mm.getListaCTT();		
 		List<CTT> listaCTTOrdinata = new ArrayList<CTT>();
 

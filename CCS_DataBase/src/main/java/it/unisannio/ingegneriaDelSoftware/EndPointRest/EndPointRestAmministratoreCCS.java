@@ -1,33 +1,22 @@
 package it.unisannio.ingegneriaDelSoftware.EndPointRest;
-
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Singleton;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
 
+import com.itextpdf.text.DocumentException;
 import it.unisannio.ingegneriaDelSoftware.Annotazioni.Secured;
-import it.unisannio.ingegneriaDelSoftware.Classes.CTT;
-import it.unisannio.ingegneriaDelSoftware.Classes.Cdf;
-import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
-import it.unisannio.ingegneriaDelSoftware.Classes.PasswordGenerator;
-import it.unisannio.ingegneriaDelSoftware.Classes.RuoloDipendente;
+import it.unisannio.ingegneriaDelSoftware.Classes.*;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
-import it.unisannio.ingegneriaDelSoftware.Exceptions.CTTNotFoundException;
-import it.unisannio.ingegneriaDelSoftware.Exceptions.DipendenteNotFoundException;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointAmministratoreCCS;
+import it.unisannio.ingegneriaDelSoftware.PDF.PDFGenerator;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 
 import java.time.LocalDate;
@@ -43,8 +32,6 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 	private MongoDataManager mm = MongoDataManager.getInstance();
 	
 	/**Aggiunge un nuovo CTT al Database dei CTT
-	 * @param numero Il numero identificativo del CTT che si vuole inserire
-	 * @param denominazione La denominazione del CTT che si vuole inserire
 	 * @param provincia La provincia del CTT che si vuole inserire
 	 * @param citta La città del CTT che si vuole inserire
 	 * @param indirizzo L'indirizzo del CTT che si vuole aggiungere
@@ -57,73 +44,42 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 	@Path("/aggiuntaCTT")
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public Response addCTT(@FormParam("numero_ctt") String numero,
-			   		   @FormParam("nome_ctt") String denominazione,
-			   	       @FormParam("provincia") String provincia,
-			           @FormParam("citta") String citta, 
-				       @FormParam("indirizzo") String indirizzo,
-				       @FormParam("telefono") String telefono, 
-					   @FormParam("email") String email,
-					   @FormParam("latitude") String latitudine,
-					   @FormParam("longitude") String longitudine)
-						{
-		
-		try{
-			CTT ctt = new CTT(Integer.parseInt(numero),denominazione, provincia, citta, telefono, indirizzo, email, Double.parseDouble(latitudine), Double.parseDouble(longitudine));		
-			mm.createCTT(ctt);
-			
-			return Response
-					// The source resource was successfully copied.
-					// The COPY operation resulted in the creation of a new resource.
-					.status(Response.Status.OK)
-					.entity("CTT numero " + ctt.getNumero() + " aggiunto correttamente")
-					.header("Location", new URL("http://127.0.0.1:8080/ctt/"+ctt.getNumero()))
-					.build();
-		}catch (AssertionError assertionError){
-			//The request could not be understood by the server due to malformed syntax.
-			// The client SHOULD NOT repeat the request without modifications.
-			return Response
-					.status(Response.Status.BAD_REQUEST)
-					.entity(assertionError.getMessage())
-					.build();
-		} catch (MalformedURLException e) {
-			//something has gone wrong on the website's server,
-			// but the server could not be more specific on what the exact problem is.
-			return Response
-					.status(Response.Status.INTERNAL_SERVER_ERROR)
-					.entity("Non è stato possibile creare l'uri per la nuova risorsa")
-					.build();
-		}
+	public Response addCTT(@FormParam("provincia") String provincia,
+						   @FormParam("citta") String citta,
+						   @FormParam("indirizzo") String indirizzo,
+						   @FormParam("telefono") String telefono,
+						   @FormParam("email") String email,
+						   @FormParam("latitude") String latitudine,
+						   @FormParam("longitude") String longitudine,
+						   @Context UriInfo uriInfo) throws EntityAlreadyExistsException {
+		CTT ctt = new CTT(new CTTName(), provincia, citta, telefono, indirizzo, email, Double.parseDouble(latitudine), Double.parseDouble(longitudine));
+		mm.createCTT(ctt);
+
+
+		// The source resource was successfully copied.
+		// The COPY operation resulted in the creation of a new resource.
+		return Response
+				.status(Response.Status.OK)
+				.entity(ctt.getDenominazione().getCttname() + " aggiunto correttamente")
+				.header(HttpHeaders.LOCATION, uriInfo.getBaseUri()+"/centers/"+ctt.getDenominazione().getCttname())
+				.build();
+
 	}
 	
 	
 	/**Rimuove un CTT dal Database dei CTT
-	 * @param numero Il numero identificativo del CTT che si vuole rimuovere
 	 * @return Response */
 	@DELETE
-	@Path("/rimozioneCTT/{numero}")
+	@Path("/rimozioneCTT/{cttName}")
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes(MediaType.TEXT_PLAIN)
-	public Response removeCTT(@PathParam("numero") String numero) {
-	try {
-		mm.removeCTT(Integer.parseInt(numero));
+	public Response removeCTT(@PathParam("cttName") String cttName) throws EntityNotFoundException, NumberFormatException {
+		mm.removeCTT(CTTName.getCttName(cttName));
 		return Response
 				.status(Response.Status.OK)
-				.entity("CTT numero " + numero + " rimosso correttamente")
+				.entity(cttName + " rimosso correttamente")
 				.build();
-		}catch(AssertionError | NumberFormatException e){
-		//The request could not be understood by the server due to malformed syntax.
-		// The client SHOULD NOT repeat the request without modifications.
-		return Response
-				.status(Response.Status.BAD_REQUEST)
-				.entity(e.getMessage())
-				.build();
-		} catch (CTTNotFoundException e) {
-		return Response
-				.status(Response.Status.NOT_FOUND)
-				.entity(e.getMessage())
-				.build();
-		}	
+
 	}
 
 	
@@ -142,32 +98,62 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 	 * @param nome Nome del Dipendente da aggiungere al DataBase
 	 * @param cognome Cognome del Dipendente da aggiungere al DataBase
 	 * @param dataDiNascita Data di nascita del Dipendente da aggiungere al DataBase
-	 * @param ruolo Ruolo del Dipendente da aggiungere al DataBase
 	 * @param username Username del Dipendente da aggiungere al DataBase
 	 * @return Response 
 	 */
 	@POST
-	@Path("/aggiuntaDipendente")
+	@Path("/aggiuntaAmministratore")
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public Response addDipendente(@FormParam("cdf")String cdf,
+	public Response addAmministratore(@FormParam("cdf")String cdf,
 								  @FormParam("nome")String nome,
 								  @FormParam("cognome")String cognome,
 								  @FormParam("dataDiNascita")String dataDiNascita,
-								  @FormParam("ruolo")String ruolo,
-								  @FormParam("username")String username) throws DateTimeParseException,IllegalArgumentException,AssertionError{
+								  @FormParam("username")String username,
+								  @Context UriInfo uriInfo) throws DateTimeParseException, IllegalArgumentException, AssertionError, EntityAlreadyExistsException {
 
 		//creo un dipendente
-		String password = PasswordGenerator.getPassword();
+		String password = IDGenerator.getID();
 		Dipendente d = new Dipendente(Cdf.getCDF(cdf), nome, cognome,
 				LocalDate.parse(dataDiNascita, DateTimeFormatter.ofPattern(Constants.DATEFORMAT)),
-				RuoloDipendente.valueOf(ruolo), username, password);
+				RuoloDipendente.AmministratoreCCS, username, password);
 		//aggiungo il dipendente al DB
 		mm.createDipendente(d);
+		System.err.println("ho creato il dip");
 		return Response
-				.status(Response.Status.OK)
-				.entity("Dipendente: "+cdf+"\n"+"username: "+username+"\n"+"password: "+password)
+				.status(Response.Status.CREATED)
+				.entity("Dipendente aggiunto correttamente")
+				.header(HttpHeaders.CONTENT_LOCATION,uriInfo.getAbsolutePath().getPath()+"/pdf/"+d.getCdf().getCodiceFiscale())
 				.build();
+	}
+
+	/**Metodo tramite il quale è possibile recuperare un pdf con cdf, username e password di un dipendente
+	 * @param cdf il cdf del dipendente di cui si vogliono recuperare i dati
+	 * @return StreamingOutput
+	 * */
+	@GET
+	@Path("aggiuntaAmministratore/pdf/{cdf}")
+	@Produces("application/pdf")
+	@Consumes(MediaType.TEXT_PLAIN)
+	public StreamingOutput getPDF(@PathParam("cdf")String cdf){
+		return new StreamingOutput() {
+			public void write(OutputStream output){
+				try {
+					Dipendente dip = mm.getDipendente(Cdf.getCDF(cdf));
+					PDFGenerator.makeDocumentDipendente(output, cdf,dip.getUsername(),dip.getPassword());
+				} catch (DocumentException | IOException e) {
+					throw new WebApplicationException(Response
+							.status(Response.Status.INTERNAL_SERVER_ERROR)
+							.entity("Impossibile creare il dipendente")
+							.build());
+				} catch (EntityNotFoundException e) {
+					throw new WebApplicationException(Response
+							.status(Response.Status.NOT_FOUND)
+							.entity("Impossibile creare il dipendente")
+							.build());
+				}
+			}
+		};
 	}
 
 	
@@ -179,21 +165,21 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 	@Path("/rimozioneAmministratore/{cdf}")
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes(MediaType.TEXT_PLAIN)
-	public Response removeDipendente(@PathParam("cdf") String cdf) {
-		try {
-			//rimuovo il dipendente dal ctt
-			mm.removeDipendente(Cdf.getCDF(cdf));
-			return Response
-					.status(Response.Status.OK)
-					.entity("Dipendente rimosso: " + cdf)
-					.build();
-		}catch (AssertionError | DipendenteNotFoundException ex){
-			//il dipendente che si vuole rimuovere non è presente
-			return Response
-					.status(Response.Status.NOT_FOUND)
-					.entity("Rimozione del Dipendente non riuscita")
-					.build();
-		}
+	public Response removeAmministratore(@HeaderParam(HttpHeaders.AUTHORIZATION)String header,
+									 @PathParam("cdf") String cdf) throws EntityNotFoundException {
+		Dipendente deleter = Token.getDipendenteByToken(header.substring("Basic ".length()));
+		if (deleter.getCdf().getCodiceFiscale().equals(cdf))
+			throw  new WebApplicationException(
+					Response
+							.status(Response.Status.FORBIDDEN)
+							.entity("Non puoi cancellare te stesso")
+							.build());
+
+		mm.removeDipendente(Cdf.getCDF(cdf));
+		return Response
+				.status(Response.Status.OK)
+				.entity("Corretta rimozione del Dipendente: " + cdf)
+				.build();
 	}
 
 
@@ -202,10 +188,11 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 	 * @return List<Dipendente> Lista di tutti i Dipendenti
 	 */
 	@GET
-	@Path("/dipendenti")
+	@Path("/amministratori")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Dipendente> listaDip(){
-		
-		return mm.getListaDipendenti();	
-	}	
+	public List<Dipendente> getAmministratori(@HeaderParam(HttpHeaders.AUTHORIZATION) String header) throws EntityNotFoundException {
+		List<Dipendente> dipendenti = mm.getListaDipendenti();
+		dipendenti.remove(Token.getDipendenteByToken(header.substring("Basic ".length())));
+		return  dipendenti;
+	}
 }

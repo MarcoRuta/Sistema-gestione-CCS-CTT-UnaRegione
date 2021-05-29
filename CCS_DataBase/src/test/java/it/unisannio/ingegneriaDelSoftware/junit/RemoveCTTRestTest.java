@@ -13,14 +13,12 @@ import javax.ws.rs.core.Form;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+
+import it.unisannio.ingegneriaDelSoftware.Classes.*;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import it.unisannio.ingegneriaDelSoftware.Classes.CTT;
-import it.unisannio.ingegneriaDelSoftware.Classes.Cdf;
-import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
-import it.unisannio.ingegneriaDelSoftware.Classes.RuoloDipendente;
-import it.unisannio.ingegneriaDelSoftware.Classes.User;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 
 
@@ -36,7 +34,7 @@ public class RemoveCTTRestTest {
 	 * @throws ParseException
 	 */
 	@BeforeClass 
-	public static void setUp() throws ParseException {
+	public static void setUp() throws EntityAlreadyExistsException {
 		
 		List<CTT> listaCTT = new ArrayList<CTT>();
 	        
@@ -49,7 +47,7 @@ public class RemoveCTTRestTest {
         String email = "sangiuliano@aruba.com";
         double latitudine = 44.5;
         double longitudine = 20.6;
-        CTT CTT001 = new CTT(numero, denominazione, provincia, citta, telefono, indirizzo, email, latitudine, longitudine);  
+        CTT CTT001 = new CTT(CTTName.getCttName("CTT00"+numero), provincia, citta, telefono, indirizzo, email, latitudine, longitudine);
         listaCTT.add(CTT001);
         
         numero = 2;
@@ -61,7 +59,7 @@ public class RemoveCTTRestTest {
         email = "ospedaledelmare@aruba.com";
         latitudine = 67.5;
         longitudine = 80.6;
-        CTT CTT002 = new CTT(numero, denominazione, provincia, citta, telefono, indirizzo, email, latitudine, longitudine);  
+        CTT CTT002 = new CTT(CTTName.getCttName("CTT00"+numero), provincia, citta, telefono, indirizzo, email, latitudine, longitudine);
         listaCTT.add(CTT002);
         
         numero = 3;
@@ -73,7 +71,7 @@ public class RemoveCTTRestTest {
         email = "addolorata@aruba.com";
         latitudine = 22.0;
         longitudine = 34.6;
-        CTT CTT003 = new CTT(numero, denominazione, provincia, citta, telefono, indirizzo, email, latitudine, longitudine);  
+        CTT CTT003 = new CTT(CTTName.getCttName("CTT00"+numero), provincia, citta, telefono, indirizzo, email, latitudine, longitudine);
         listaCTT.add(CTT003);
         
         numero = 4;
@@ -85,19 +83,19 @@ public class RemoveCTTRestTest {
         email = "annunziata@aruba.com";
         latitudine = 65.5;
         longitudine = 65.6;
-        CTT CTT004 = new CTT(numero, denominazione, provincia, citta, telefono, indirizzo, email, latitudine, longitudine);    
+        CTT CTT004 = new CTT(CTTName.getCttName("CTT00"+numero), provincia, citta, telefono, indirizzo, email, latitudine, longitudine);
         listaCTT.add(CTT004);
         
         numero = 5;
         denominazione = "San Pio";
         provincia = "BN";
         citta = "Benevento";
-        telefono = "082457111";
+        telefono = "0824571115";
         indirizzo = "Via Torre Della Catena 118";
         email = "sanpio@aruba.com";
         latitudine = 40.5;
         longitudine = 60.1;
-        CTT CTT005 = new CTT(numero, denominazione, provincia, citta, telefono, indirizzo, email, latitudine, longitudine);  
+        CTT CTT005 = new CTT(CTTName.getCttName("CTT00"+numero), provincia, citta, telefono, indirizzo, email, latitudine, longitudine);
         listaCTT.add(CTT005);
         
         numero = 6;
@@ -109,7 +107,7 @@ public class RemoveCTTRestTest {
         email = "sangiuseppe@aruba.com";
         latitudine = 64.5;
         longitudine = 13.6;
-        CTT CTT006 = new CTT(numero, denominazione, provincia, citta, telefono, indirizzo, email, latitudine, longitudine);   
+        CTT CTT006 = new CTT(CTTName.getCttName("CTT00"+numero), provincia, citta, telefono, indirizzo, email, latitudine, longitudine);
         listaCTT.add(CTT006);
         
         numero = 7;
@@ -121,7 +119,7 @@ public class RemoveCTTRestTest {
         email = "psaut@aruba.com";
         latitudine = 11.5;
         longitudine = 23.6;
-        CTT CTT007 = new CTT(numero, denominazione, provincia, citta, telefono, indirizzo, email, latitudine, longitudine);  
+        CTT CTT007 = new CTT(CTTName.getCttName("CTT00"+numero), provincia, citta, telefono, indirizzo, email, latitudine, longitudine);
         listaCTT.add(CTT007);
       
         MongoDataManager mm = MongoDataManager.getInstance();
@@ -154,7 +152,7 @@ public class RemoveCTTRestTest {
 	 */
 	@Test public void testRimozioneCTTCorretto(){	
 
-		Response responseRemCTT = rimozioneCTT.path("1").request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).delete();
+		Response responseRemCTT = rimozioneCTT.path("CTT001").request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).delete();
 		assertEquals(Status.OK.getStatusCode(), responseRemCTT.getStatus());
 			} 	
 	
@@ -165,7 +163,7 @@ public class RemoveCTTRestTest {
 	@Test public void testRimozioneCTTNonPresente(){
 		
 
-		Response responseRemCTT = rimozioneCTT.path("8").request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).delete();
+		Response responseRemCTT = rimozioneCTT.path("CTT008").request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).delete();
 		assertEquals(Status.NOT_FOUND.getStatusCode(), responseRemCTT.getStatus());
 	} 
 	

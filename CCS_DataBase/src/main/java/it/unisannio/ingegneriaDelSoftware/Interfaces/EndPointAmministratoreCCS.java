@@ -13,16 +13,19 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 import it.unisannio.ingegneriaDelSoftware.Classes.CTT;
 import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
+import org.glassfish.jersey.server.Uri;
 
 
 public interface EndPointAmministratoreCCS {
 	
 	/**Aggiunge un nuovo CTT al Database dei CTT
 	 * @param numero Il numero identificativo del CTT che si vuole inserire
-	 * @param denominazione La denominazione del CTT che si vuole inserire
 	 * @param provincia La provincia del CTT che si vuole inserire
 	 * @param citta La città del CTT che si vuole inserire
 	 * @param indirizzo L'indirizzo del CTT che si vuole aggiungere
@@ -31,29 +34,20 @@ public interface EndPointAmministratoreCCS {
 	 * @param latitudine La latitudine del CTT che si vuole aggiungere
 	 * @param longitudine La longitudine del CTT che si vuole aggiungere
 	 * @return Response */
-	@POST
-	@Path("/aggiuntaCTT")
-	@Produces(MediaType.TEXT_PLAIN)
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public Response addCTT(@FormParam("numero_ctt") String numero,
-			   		   @FormParam("nome_ctt") String denominazione,
-			   	       @FormParam("provincia") String provincia,
-			           @FormParam("citta") String citta, 
-				       @FormParam("indirizzo") String indirizzo,
-				       @FormParam("telefono") String telefono, 
-					   @FormParam("email") String email,
-					   @FormParam("latitude") String latitudine,
-					   @FormParam("longitude") String longitudine);
+	public Response addCTT(String provincia,
+						   String citta,
+						   String indirizzo,
+						   String telefono,
+						   String email,
+						   String latitudine,
+						   String longitudine,
+						   UriInfo uriInfo) throws EntityAlreadyExistsException;
 	
 	
 	/**Rimuove un CTT dal Database dei CTT
 	 * @param numero Il numero identificativo del CTT che si vuole rimuovere
 	 * @return Response */
-	@DELETE
-	@Path("/rimozioneCTT/{numero}")
-	@Produces(MediaType.TEXT_PLAIN)
-	@Consumes(MediaType.TEXT_PLAIN)
-	public Response removeCTT(@PathParam("numero") String numero) ;	
+	public Response removeCTT(String numero) throws EntityNotFoundException;
 	
 	
 	/**Restituisce la lista di tutti i CTT presenti nel Database dei CTT, utilizzato per l' aggiunta automatica dei CTT
@@ -69,41 +63,28 @@ public interface EndPointAmministratoreCCS {
 	 * @param nome Nome del Dipendente da aggiungere al DataBase
 	 * @param cognome Cognome del Dipendente da aggiungere al DataBase
 	 * @param dataDiNascita Data di nascita del Dipendente da aggiungere al DataBase
-	 * @param ruolo Ruolo del Dipendente da aggiungere al DataBase
 	 * @param username Username del Dipendente da aggiungere al DataBase
-	 * @param password Password del Dipendente da aggiungere al DataBase
 	 * @return Response 
 	 */
-	@POST
-	@Path("/aggiuntaAmministratore")
-	@Produces(MediaType.TEXT_PLAIN)
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public Response addDipendente(@FormParam("cdf")String cdf,
-								  @FormParam("nome")String nome,
-								  @FormParam("cognome")String cognome,
-								  @FormParam("dataDiNascita")String dataDiNascita,
-								  @FormParam("ruolo")String ruolo,
-								  @FormParam("username")String username);
+	public Response addAmministratore(String cdf,
+									  String nome,
+									  String cognome,
+									  String dataDiNascita,
+									  String username,
+									  UriInfo uriInfo) throws EntityAlreadyExistsException;
 
 	
 	/**Rimuove un Dipendente dal DataBase
 	 * @param cdf Codice fiscale del Dipendente da rimuovere dal DataBase
 	 * @return
 	 */
-	@DELETE
-	@Path("/rimozioneAmministratore/{cdf}")
-	@Produces(MediaType.TEXT_PLAIN)
-	@Consumes(MediaType.TEXT_PLAIN)
-	public Response removeDipendente(@PathParam("cdf") String cdf) ;
+	public Response removeAmministratore(String headers,String cdf) throws EntityNotFoundException;
 	
 	
 	/**
 	 * Restituisce la lista di tutti i Dipendenti presenti nel database dei Dipendenti
 	 * @return List<Dipendente> Lista di tutti i Dipendenti
 	 */
-	@GET
-	@Path("/dipendenti")
-	@Produces(MediaType.APPLICATION_JSON)
-	public List<Dipendente> listaDip();
+	public List<Dipendente> getAmministratori(String headers) throws EntityNotFoundException;
 
 }

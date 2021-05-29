@@ -5,123 +5,74 @@ import java.util.Objects;
 import java.lang.Math;
 
 public class CTT{
-	
-	private final Integer numero;
-	private final String denominazione;
+
+	private final CTTName denominazione;
 	private final String telefono;
 	private final String email;
 	private final CTTPosition posizione;
 	
 
 	/**Metodo Costruttore di CTT
-	 * @param numero  l'identificativo del CTT
 	 * @param denominazione  il nome del CTT
 	 * @param provincia la provincia in cui è situato il CTT
 	 * @param città la città in cui è situato il CTT
 	 * @param indirizzo l'indirizzo del CTT
 	 * @param telefono il numero di telefono del CTT
-	 * @param e_mail l'email ufficiale del CTT
+	 * @param email l'email ufficiale del CTT
 	 * @param latitudine
 	 * @param longitudine
 	 * */
-	public CTT(Integer numero, String denominazione, String provincia, String città, String telefono, String indirizzo, String email, double latitudine, double longitudine) {
-		assert numero != null: "Il numero del CTT non può essere null";
+	public CTT(CTTName denominazione, String provincia, String città, String telefono, String indirizzo, String email, double latitudine, double longitudine) {
 		assert denominazione != null: "La denominazione non può essere null";
 		assert telefono != null: "il telefono non può essere null";
 		assert email != null: "l'e_mail non può essere null";
-		
+		if (telefono.length()!=10 || !(telefono.matches("^[0-9]*$"))) throw new IllegalArgumentException("Formato del numero di telefono non valido");
+		if (!email.matches("^(.+)@(.+)$")) throw new IllegalArgumentException("Formato dell'email non valido");
+
 		this.posizione = new CTTPosition(provincia,città,indirizzo,latitudine,longitudine);
-		
-		this.numero = numero;
 		this.denominazione = denominazione;
 		this.telefono = telefono;
 		this.email = email;
 	
 	}
-	
-	
+
+
+
 	/**
 	 * Metodo costruttore di CTT con CTTPosition
-	 * @param numero  l'identificativo del CTT
 	 * @param denominazione  il nome del CTT
 	 * @param telefono il numero di telefono del CTT
-	 * @param e_mail l'email ufficiale del CTT
-	 * @param latitudine
-	 * @param longitudine
+	 * @param email l'email ufficiale del CTT
 	 */ 
-	public CTT(Integer numero, 
-			String denominazione, 
-			String telefono, 
-			String email, 
-			CTTPosition posizione) {
-		assert numero != null: "Il numero del CTT non può essere null";
+	public CTT(CTTName denominazione, String telefono, String email, CTTPosition posizione) {
 		assert denominazione != null: "La denominazione non può essere null";
 		assert telefono != null: "Il telefono non può essere null";
 		assert email != null: "L'email non può essere null";
-		
-		this.numero = numero;
+		if (telefono.length()!=10 || !(telefono.matches("^[0-9]*$"))) throw new IllegalArgumentException("Formato del numero di telefono non valido");
+		if (!email.matches("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$")) throw new IllegalArgumentException("Formato dell'email non valido");
+
+
+
+
 		this.denominazione = denominazione;
 		this.telefono = telefono;
 		this.email = email;
 		this.posizione = posizione;
 	}
-	
+
+
 
 	/**Stampa le informazioni di un CTT
 	 * @param ps stream di output su cui stampare i dati del CTT
 	 */
 	public void print(PrintStream ps) {
 		ps.println("\n##################################");
-		ps.println("Numero: "+ this.numero);
-		ps.println("Denominazione: "+ this.denominazione);
+		ps.println("Denominazione: "+ this.denominazione.getCttname());
 		ps.println("Telefono: "+ this.telefono);
 		ps.println("email: "+ this.email);
 		this.getPosizione().print(ps);
 	}
 
-	
-	/**Verifica l'uguaglianza tra due CTT
-	 * @param o Oggetto CTT con cui effettuare il confronto confrontare
-	 * @return Un boolean true o false a seconda dell'esito del confronto
-	 */
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		CTT ctt = (CTT) o;
-		return numero.equals(ctt.numero);
-	}
-
-	
-	/**
-	 * Metodo che calcola l'hashcode di un CTT
-	 * 
-	 * @return Un intero pari all'hashcode generato
-	 * 
-	 */
-	@Override
-	public int hashCode() {
-		return Objects.hash(numero);
-	}
-
-	
-	/**
-	 * Metodo che concatena in un'unica stringa le informazioni di un CTT
-	 *  * 
-	 * @return La stringa concatenata
-	 * 
-	 */
-	@Override
-	public String toString() {
-		return "CTT{" +
-				"numero=" + numero +
-				", denominazione=" + denominazione +
-				", telefono=" + telefono +
-				", email=" + email +
-				", "+posizione.toString() +
-				'}';
-	}
-	
 	
 	/*
 	 * Metodo che calcola la distanza tra due punti applicando la formula dell'emisenoverso
@@ -142,28 +93,7 @@ public class CTT{
 		return distanza;
 	}
 
-	
-	/**
-	 * Metodo che restituisce l'identificativo del CTT
-	 * 
-	 * @return  identificativo
-	 *
-	 */
-	public int getNumero() {
-		return numero;
-	}
-	
-	
-	/**
-	 * Metodo che restituisce la denominazione del CTT
-	 * 
-	 * @return  Denominazione
-	 *
-	 */
-	public String getDenominazione() {
-		return denominazione;
-	}
-	
+
 	
 	/**
 	 * Metodo che restituisce il recapito telefonico del CTT
@@ -196,8 +126,31 @@ public class CTT{
 	public CTTPosition getPosizione() {
 		return posizione;
 	}
-	
-	
 
-	
+	public CTTName getDenominazione() {
+		return denominazione;
+	}
+
+	@Override
+	public String toString() {
+		return "CTT{" +
+				"denominazione=" + denominazione +
+				", telefono='" + telefono + '\'' +
+				", email='" + email + '\'' +
+				", posizione=" + posizione +
+				'}';
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		CTT ctt = (CTT) o;
+		return Objects.equals(denominazione, ctt.denominazione);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(denominazione);
+	}
 }

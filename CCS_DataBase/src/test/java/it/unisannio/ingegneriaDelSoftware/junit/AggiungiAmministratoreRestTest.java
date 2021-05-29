@@ -15,8 +15,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import it.unisannio.ingegneriaDelSoftware.Exceptions.DipendenteNotFoundException;
-
+import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -32,7 +31,7 @@ public class AggiungiAmministratoreRestTest {
 	WebTarget aggiuntaAmministratore = client.target("http://127.0.0.1:8080/rest/CCS/aggiuntaAmministratore");
 		
 	
-	@BeforeClass public static void populateDBDipendenti() throws ParseException, DipendenteNotFoundException {
+	@BeforeClass public static void populateDBDipendenti() throws EntityAlreadyExistsException {
 			List<Dipendente> listaDipendenti = new ArrayList<Dipendente>();
 		        
 		 	Cdf cdf = Cdf.getCDF("XDDBHH45H57H684W");
@@ -123,7 +122,7 @@ public class AggiungiAmministratoreRestTest {
 			form1.param("username", "username 123");
 			form1.param("password", "Password123");
 			Response responseaddAmm = aggiuntaAmministratore.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).post(Entity.form(form1));
-			assertEquals(Status.OK.getStatusCode(), responseaddAmm.getStatus());	
+			assertEquals(Status.CREATED.getStatusCode(), responseaddAmm.getStatus());
 		}
 		
 		
@@ -140,7 +139,7 @@ public class AggiungiAmministratoreRestTest {
 			form1.param("username", "username 234");
 			form1.param("password", "Password234");
 			Response responseaddAmm = aggiuntaAmministratore.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).post(Entity.form(form1));
-			assertEquals(Status.OK.getStatusCode(), responseaddAmm.getStatus());	
+			assertEquals(Status.CREATED.getStatusCode(), responseaddAmm.getStatus());
 		}
 		
 		

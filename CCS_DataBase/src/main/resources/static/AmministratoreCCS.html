@@ -94,6 +94,7 @@
     var ruolo = sessionStorage.getItem("ruolo");
     var name = sessionStorage.getItem("nome");
     var surname = sessionStorage.getItem("cognome");
+    var host = document.location.origin;
     
 
 	function start() {
@@ -119,13 +120,14 @@
      logout = function(){
 
 	      var xhttp = new XMLHttpRequest();
-	      var url ="http://127.0.0.1:8080/rest/autentificazione/logout";
+	      var url = host +"/rest/autentificazione/logout";
 	      xhttp.onreadystatechange = function() {
 	                  if (this.readyState == 4 && this.status == 200 ) {
 	                       sessionStorage.removeItem("token");
 	                       sessionStorage.removeItem("ruolo");
 	                       sessionStorage.removeItem("nome");
 	                       sessionStorage.removeItem("cognome");
+	                       sessionStorage.removeItem("cdf");
 	                       window.location.href='Login.html';
 	                  }else {
 	                      if(this.readyState == 4 && this.status != 200 ){

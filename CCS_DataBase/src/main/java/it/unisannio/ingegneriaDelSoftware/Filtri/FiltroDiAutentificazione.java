@@ -4,7 +4,8 @@ import it.unisannio.ingegneriaDelSoftware.Annotazioni.Secured;
 import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.Token;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
-import it.unisannio.ingegneriaDelSoftware.Exceptions.DipendenteNotFoundException;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
+
 import javax.annotation.Priority;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
@@ -14,7 +15,6 @@ import javax.ws.rs.core.*;
 import javax.ws.rs.ext.Provider;
 import java.io.IOException;
 import java.security.Principal;
-import java.util.*;
 
 
 /**
@@ -87,7 +87,7 @@ public class FiltroDiAutentificazione implements ContainerRequestFilter {
                 }
             });
 
-        } catch (DipendenteNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
                     .entity("Dipendente non registrato nel DB").build());
             return;

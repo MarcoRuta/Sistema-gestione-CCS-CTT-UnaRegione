@@ -1,4 +1,7 @@
 package it.unisannio.ingegneriaDelSoftware;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.ExceptionHandler.*;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,6 +26,15 @@ public class CcsDataBaseRestApplication extends ResourceConfig {
 		
 		//Endpoint del Magazziniere
 		register(EndPointRestAmministratoreCCS.class);
+
+		//exceptionHandler
+		register(AssertionError.class);
+		register(DateTimeParseExceptionHandler.class);
+		register(EntityAlreadyExisistsExceptionHandler.class);
+		register(EntityNotFoundExceptionHandler.class);
+		register(ExceptionHandler.class);
+		register(IllegalArgumentExceptionHandler.class);
+		register(NumberFormaExceptionHandler.class);
 
 	
 	}

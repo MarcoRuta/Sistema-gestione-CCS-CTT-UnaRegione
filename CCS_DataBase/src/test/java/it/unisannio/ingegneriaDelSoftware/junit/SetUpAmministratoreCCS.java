@@ -5,10 +5,11 @@ import it.unisannio.ingegneriaDelSoftware.Classes.Cdf;
 import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.RuoloDipendente;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
 
 public class SetUpAmministratoreCCS {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws EntityAlreadyExistsException {
 		
 		Cdf cdf = Cdf.getCDF("RRCTRC88S05V467H");
         LocalDate ld = LocalDate.parse("1970-07-10");

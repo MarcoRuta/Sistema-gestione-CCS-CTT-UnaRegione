@@ -3,19 +3,6 @@
 
 <head>
     <script>
-        function print1(){
-            if(numero_ctt.value > 0 && numero_ctt.value < 999)
-                document.getElementById("p1").innerHTML = "Numero: "+"<span class='textPrint'>" +numero_ctt.value+"</span>";
-            else if(numero_ctt.value < 1 || numero_ctt.value > 999) {
-                numero_ctt.value = "";
-                document.getElementById("p1").innerHTML = "Numero: <span class='errorPrint'>NUMERO NON SUPPORTATO</span>";
-            }
-        }
-        function print2(){
-            if(nome_ctt.value!="")
-                document.getElementById("p2").innerHTML = "Denominazione: "+"<span class='textPrint'>" +nome_ctt.value+"</span>";
-             else document.getElementById("p2").innerHTML = "Denominazione: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
-        }
         function print3(){
             if(provincia.value!="")
                 document.getElementById("p3").innerHTML = "Provincia: "+"<span class='textPrint'>" +provincia.value+"</span>";
@@ -81,18 +68,6 @@
             </div>
             <div class="containerForm" style= "overflow: auto; max-height: 440px; max-width: 705px" >
                 <form id="myForm">
-                        <div class="form-group row">
-                            <label>Numero:</label>
-                            <div class="inputForm">
-                                <input id="numero_ctt" name="numCTT" onchange="setDenominazione();" oninput="print1();" class="form-control" type="number" min="1" max="999" placeholder="da 1 a 999">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label>Denominazione:</label>
-                            <div class="inputForm">
-                                <input id="nome_ctt" name="denom" class="form-control" type="text" disabled="disabled">
-                            </div>
-                        </div>
                         <div class="form-group row">
                             <label>Provincia:</label>
                             <div class="inputForm">
@@ -168,14 +143,14 @@
 		    var ruolo = sessionStorage.getItem("ruolo");
             var xhttp = new XMLHttpRequest();
             var res;
+            var host = document.location.origin;
+
             
             function loadCTT(){
                 
-                var url = "http://127.0.0.1:8080/rest/CCS/aggiuntaCTT";
+                var url = host +"/rest/CCS/aggiuntaCTT";
                 
-                
-                var num = numero_ctt.value;
-                var name = nome_ctt.value;
+
                 var pr = provincia.value;
                 var city = citta.value;
                 var ind = indirizzo.value;
@@ -184,16 +159,14 @@
                 var lat = latitude.value;
                 var lon = longitude.value;
                 
-                var params = 'numero_ctt='+num+'&nome_ctt='+name+'&provincia='+pr+'&citta='+city+'&indirizzo='+ind+'&telefono='+tel+'&email='+em+'&latitude='+lat+'&longitude='+lon;
+                var params = 'provincia='+pr+'&citta='+city+'&indirizzo='+ind+'&telefono='+tel+'&email='+em+'&latitude='+lat+'&longitude='+lon;
 
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
                     	res = this.response;
-                 	    //document.getElementById("result").innerHTML = this.response;
                         
                  	}else if(this.readyState == 4 && this.status != 200 ){
                  		res = this.response;
-                        //document.getElementById("result").innerHTML = this.response;
                          
                         }
 

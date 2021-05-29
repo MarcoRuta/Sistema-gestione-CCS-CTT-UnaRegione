@@ -1,6 +1,7 @@
 package it.unisannio.ingegneriaDelSoftware.Classes;
 
 import java.io.PrintStream;
+import java.util.Locale;
 
 public class CTTPosition {
 		
@@ -25,8 +26,12 @@ public class CTTPosition {
 		assert indirizzo != null: "l'indirizzo non può essere null";
 		assert latitudine != 0: "la latitudine non può essere null";
 		assert longitudine != 0: "la longitudine non può essere null";
-	
-		this.provincia = provincia;
+
+		if (provincia.length()!= 2) throw new IllegalArgumentException("La provincia deve essere di due caratteri");
+		if (! (provincia.toUpperCase().matches("^[A-Z]*$"))) throw new IllegalArgumentException("La provincia deve contenere solo lettere");
+		if (latitudine < -90 || latitudine > 90 || longitudine < -180 || longitudine > 180) throw new IllegalArgumentException("la Longitudine o la latitudine è errata");
+
+		this.provincia = provincia.toUpperCase();
 		this.citta = citta;
 		this.indirizzo = indirizzo;
 		this.latitudine = latitudine;

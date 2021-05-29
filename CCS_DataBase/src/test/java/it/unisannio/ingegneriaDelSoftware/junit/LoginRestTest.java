@@ -11,6 +11,7 @@ import javax.ws.rs.core.Form;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -28,7 +29,7 @@ public class LoginRestTest {
 	
 	
 	  @BeforeClass
-	  public static void setUp(){
+	  public static void setUp() throws EntityAlreadyExistsException {
 		
 		Cdf cdf = Cdf.getCDF("KTMFSW67T64I460X");
 	    LocalDate ld = LocalDate.parse("1978-10-10");
@@ -47,7 +48,7 @@ public class LoginRestTest {
 		  form.param("username", "admiN");
 		  form.param("password", "Admin");
 		  Response responseaddCTT = aggiuntaCTT.request().post(Entity.form(form));
-		  assertEquals(Status.FORBIDDEN.getStatusCode(), responseaddCTT.getStatus()); 
+		  assertEquals(Status.NOT_FOUND.getStatusCode(), responseaddCTT.getStatus());
 	  }
 	  
 	  @Test
@@ -56,7 +57,7 @@ public class LoginRestTest {
 		  form.param("username", "admin");
 		  form.param("password", "Adminadmin1");
 		  Response responseaddCTT = aggiuntaCTT.request().post(Entity.form(form));
-		  assertEquals(Status.OK.getStatusCode(), responseaddCTT.getStatus()); 	 
+		  assertEquals(Status.CREATED.getStatusCode(), responseaddCTT.getStatus());
 	  }
 	  
 	@AfterClass public static void drop(){
