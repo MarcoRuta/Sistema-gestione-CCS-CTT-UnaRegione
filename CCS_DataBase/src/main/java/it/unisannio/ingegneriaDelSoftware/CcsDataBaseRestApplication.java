@@ -12,7 +12,7 @@ import it.unisannio.ingegneriaDelSoftware.Filtri.FiltroDiAutentificazione;
 
 import javax.ws.rs.ApplicationPath;
 
-@SpringBootApplication
+@SpringBootApplication (scanBasePackages = {"WebSocketConfig", "ingegneriaDelSoftware"})
 @ApplicationPath("/rest")
 public class CcsDataBaseRestApplication extends ResourceConfig {
 

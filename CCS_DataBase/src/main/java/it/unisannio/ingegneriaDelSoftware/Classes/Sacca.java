@@ -1,6 +1,6 @@
 package it.unisannio.ingegneriaDelSoftware.Classes;
 
-import java.io.PrintStream;
+
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -8,11 +8,12 @@ public class Sacca {
 	
 	
 
-	private  Seriale seriale;
-	private  GruppoSanguigno gruppo;
-	private  LocalDate dataProduzione;
-	private  LocalDate dataScadenza;
+	private Seriale seriale;
+	private GruppoSanguigno gruppo;
+	private LocalDate dataProduzione;
+	private LocalDate dataScadenza;
 	private boolean prenotato;
+
 
 
 	/**@param gs il gruppo sanguigno della sacca
@@ -38,80 +39,8 @@ public class Sacca {
 		this.prenotato = prenotato;
 	}
 
-	public GruppoSanguigno getGruppo() {
-		return gruppo;
-	}
 
 
-
-	public void setGruppoSanguigno(GruppoSanguigno gruppo) {
-		this.gruppo = gruppo;
-	}
-
-
-
-	public void setSeriale(Seriale seriale) {
-		this.seriale = seriale;
-	}
-
-
-
-	public void setDataProduzione(LocalDate dataProduzione) {
-		this.dataProduzione = dataProduzione;
-	}
-
-
-
-	public void setDataScadenza(LocalDate dataScadenza) {
-		this.dataScadenza = dataScadenza;
-	}
-
-
-
-	public void setPrenotato(boolean prenotato) {
-		this.prenotato = prenotato;
-	}
-
-	/**@return  il seriale della sacca*/
-	public Seriale getSeriale() {
-		return this.seriale;
-	}
-
-	/**@return il gruppo sanguigno della sacca*/
-	public GruppoSanguigno getGruppoSanguigno() {
-		return this.gruppo;
-	}
-
-	/**@return la data di scadenza della sacca*/
-	public LocalDate getDataScadenza() {
-		return dataScadenza;
-	}
-
-	/**@return la data di produzione della sacca*/
-	public LocalDate getDataProduzione() {
-		return dataProduzione;
-	}
-
-	/**@return true se la sacca è prenotata, false altrimenti*/
-	public boolean isPrenotato() {
-		return prenotato;
-	}
-
-	/**@return cambio lo stato di una sacca*/
-	public void setPrenotato() {
-		this.prenotato = true;
-	}
-
-
-	/**@param ps  stream di output su cui stampare i dati della sacca*/
-	public void print(PrintStream ps) {
-		ps.println("\n##################################");
-		ps.println("Seriale: "+this.seriale);
-		ps.println("Gruppo sanguigno: "+this.gruppo);
-		ps.println("Data produzione: "+this.dataProduzione);
-		ps.println("Data di scadenza: "+this.dataScadenza);
-		ps.println("Prenotata: "+isPrenotato());
-	}
 
 
 	@Override
@@ -137,4 +66,45 @@ public class Sacca {
 				", prenotato=" + prenotato +
 				'}';
 	}
+	
+	public Seriale getSeriale() {
+		return seriale;
+	}
+
+	public void setSeriale(Seriale seriale) {
+		this.seriale = seriale;
+	}
+
+	public GruppoSanguigno getGruppoSanguigno() {
+		return gruppo;
+	}
+
+	public void setGruppoSanguigno(GruppoSanguigno gruppo) {
+		this.gruppo = gruppo;
+	}
+
+	public LocalDate getDataProduzione() {
+		return dataProduzione;
+	}
+
+	public void setDataProduzione(LocalDate dataProduzione) {
+		this.dataProduzione = dataProduzione;
+	}
+
+	public LocalDate getDataScadenza() {
+		return dataScadenza;
+	}
+
+	public void setDataScadenza(LocalDate dataScadenza) {
+		this.dataScadenza = dataScadenza;
+	}
+
+	public boolean isPrenotato() {
+		return prenotato;
+	}
+
+	public void setPrenotato(boolean prenotato) {
+		this.prenotato = prenotato;
+	}
+	
 }

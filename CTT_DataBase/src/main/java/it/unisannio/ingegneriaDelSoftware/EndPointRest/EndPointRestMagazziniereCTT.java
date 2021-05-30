@@ -23,8 +23,9 @@ import java.util.*;
 
 @Path("/magazziniere")
 @Singleton
-@Secured
-@RolesAllowed("MagazziniereCTT")
+//@Secured
+//@RolesAllowed({"MagazziniereCTT","CCS"})
+
 public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 
 	private MongoDataManager md = MongoDataManager.getInstance();

@@ -200,7 +200,7 @@ public class MongoDataManager {
     public  void removeSacca(Seriale ser) throws EntityNotFoundException{
         if(!containsSacca(ser)) throw new EntityNotFoundException("Non è possibile rimuovere una sacca non presente nel DB.\nSeriale sacca: "+ser);
         MongoCollection<Sacca> collection =getCollectionSacca();
-        collection.deleteOne(eq(Constants.ELEMENT_SERIALE,ser));
+        collection.deleteOne(eq(Constants.ELEMENT_SERIALE,ser.getSeriale()));
     }
 
     

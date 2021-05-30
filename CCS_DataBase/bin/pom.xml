@@ -19,6 +19,11 @@
 	
 <dependencies>
 		<dependency>
+		    <groupId>com.google.code.gson</groupId>
+		    <artifactId>gson</artifactId>
+		    <version>2.8.5</version>
+		</dependency>
+		<dependency>
  			 <groupId>junit</groupId>
  			 <artifactId>junit</artifactId>
   			 <version>4.13</version>
@@ -44,6 +49,11 @@
  	  		<artifactId>mongo-java-driver</artifactId>
 	  		<version>3.12.8</version>
  		</dependency>
+	<dependency>
+		<groupId>com.itextpdf</groupId>
+		<artifactId>itextpdf</artifactId>
+		<version>5.5.10</version>
+	</dependency>
  		
  		<dependency>
             		<groupId>org.springframework.boot</groupId>

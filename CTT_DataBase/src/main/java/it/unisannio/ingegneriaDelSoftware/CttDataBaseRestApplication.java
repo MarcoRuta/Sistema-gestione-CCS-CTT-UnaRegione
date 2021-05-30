@@ -6,6 +6,7 @@ import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.ExceptionHandler.*;
 import it.unisannio.ingegneriaDelSoftware.Filtri.FiltroDiAutorizzazione;
 import it.unisannio.ingegneriaDelSoftware.SaccheInScadenzaManager.GestioneScadenzeCTT;
+import it.unisannio.ingegneriaDelSoftware.SaccheInScadenzaManager.SaccheInScadenzaClient;
 import it.unisannio.ingegneriaDelSoftware.Filtri.FiltroDiAutentificazione;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.boot.SpringApplication;
@@ -13,7 +14,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+import java.net.URI;
+import java.net.URISyntaxException;
 
+import javax.websocket.WebSocketContainer;
 import javax.ws.rs.ApplicationPath;
 
 
@@ -64,6 +68,8 @@ public class CttDataBaseRestApplication extends ResourceConfig {
 
 	public static void main(String[] args) {
 		SpringApplication.run(CttDataBaseRestApplication.class, args);
+		SaccheInScadenzaClient saccheInScadenzaClient = new SaccheInScadenzaClient();
+		
 		
 	}
 

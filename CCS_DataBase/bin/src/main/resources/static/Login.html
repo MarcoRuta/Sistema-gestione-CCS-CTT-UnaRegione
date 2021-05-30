@@ -48,23 +48,25 @@
     <script type="application/javascript">
         
             var xhttp = new XMLHttpRequest();
+            var host = document.location.origin;
 
             function verifyLogin(){
                 var username = user.value;
                 var password = pass.value;
-                var url = "http://127.0.0.1:8080/rest/autentificazione";
+                var url = host+ "/rest/autentificazione";
                 param = 'username='+username+'&password='+password;
 
                 xhttp.onreadystatechange = function() {
-                    if (this.readyState == 4 && this.status == 200 ) {
+                    if (this.readyState == 4 && this.status == 201 ) {
                         obj = JSON.parse(this.responseText);
                         sessionStorage.setItem("token", obj.token);
                         sessionStorage.setItem("ruolo",obj.ruolo);
                         sessionStorage.setItem("nome",obj.nome);
                         sessionStorage.setItem("cognome", obj.cognome);
+                        sessionStorage.setItem("cdf",obj.cdf);
                         window.location.href=obj.ruolo+'.html';
                  	}else{
-                 	if (this.readyState == 4 && this.status !=200)
+                 	if (this.readyState == 4 && this.status !=201)
                  	    document.getElementById("error").innerHTML="<span style = 'color:red'>"+this.response+"</span>";
                  	}
 

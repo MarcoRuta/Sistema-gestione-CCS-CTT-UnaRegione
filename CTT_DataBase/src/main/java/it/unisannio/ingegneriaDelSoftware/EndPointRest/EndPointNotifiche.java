@@ -44,7 +44,7 @@ public class EndPointNotifiche implements Subject {
     }
 
     @POST
-    @Path("/notifcaEvasione")
+    @Path("/notificaEvasione")
     public void notificaEvasione(Notifica notificaEvasione){
         this.notifyMagazziniereObserver(notificaEvasione);
 

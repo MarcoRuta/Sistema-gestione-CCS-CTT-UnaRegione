@@ -63,6 +63,7 @@
     var obj;
     var token = sessionStorage.getItem("token");
     var ruolo = sessionStorage.getItem("ruolo");
+    var host = document.location.origin;
     var res;
     
     function start() {
@@ -80,15 +81,13 @@
     rimozione = function(){
         
         var xhttp = new XMLHttpRequest();
-        var url ="http://127.0.0.1:8080/rest/CCS/rimozioneAmministratore/"+codice.value;
+        var url =host + "/rest/CCS/rimozioneAmministratore/"+codice.value;
         
         xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200 ) {
                     	res = this.response;
-                        //document.getElementById("result").innerHTML = this.response;
                  	}else if(this.readyState == 4 && this.status != 200 ) {
                  		res = this.response;
-                 	   	//document.getElementById("result").innerHTML = this.response;
                  	    }
         };
 
@@ -115,7 +114,7 @@
         
     	
         xhttp = new XMLHttpRequest(); 	
-        url = "http://127.0.0.1:8080/rest/CCS/dipendenti";
+        url = host +"/rest/CCS/amministratori";
         
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
