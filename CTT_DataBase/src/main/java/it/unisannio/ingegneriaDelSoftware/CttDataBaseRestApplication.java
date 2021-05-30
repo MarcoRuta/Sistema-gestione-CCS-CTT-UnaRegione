@@ -50,10 +50,9 @@ public class CttDataBaseRestApplication extends ResourceConfig {
 		register(EndPointRestAmministratoreCTT.class);
 		//Endpoint Operatore
 		register(EndPointRestOperatoreCTT.class);
-		
-		
-		//Gestione sacche in scadenza
-		register(GestioneScadenzeCTT.class);
+		//endointNotifiche
+		register(EndPointNotifiche.class);
+
 	}
 	
 	@Scheduled(cron = "*/10 * * * * *")

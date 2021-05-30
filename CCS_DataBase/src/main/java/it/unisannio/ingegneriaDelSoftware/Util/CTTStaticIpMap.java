@@ -6,13 +6,10 @@ import java.util.HashMap;
 
 
 public class CTTStaticIpMap {
-	
 
-	
-	@SuppressWarnings("serial")
-	private final static HashMap<String, String> indirizziCTT = new HashMap<String, String>(){
+	public final static HashMap<String, String> indirizziCTT = new HashMap<String, String>(){
 		{
-			put ("CTT001", "");
+			put ("CTT001", "127.0.0.1:8082");
 			put ("CTT002", "");
 			put ("CTT003", "");
 			put ("CTT004", "");
@@ -21,9 +18,5 @@ public class CTTStaticIpMap {
 			put ("CTT007", "");
 		}
 	};
-
-	public static HashMap<String, String> getIndirizzictt() {
-		return indirizziCTT;
-	}
 	
 }

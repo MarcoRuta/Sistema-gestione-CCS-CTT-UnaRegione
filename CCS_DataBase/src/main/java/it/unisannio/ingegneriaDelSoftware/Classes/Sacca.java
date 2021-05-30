@@ -44,7 +44,7 @@ public class Sacca {
 
 
 
-	public void setGruppo(GruppoSanguigno gruppo) {
+	public void setGruppoSanguigno(GruppoSanguigno gruppo) {
 		this.gruppo = gruppo;
 	}
 

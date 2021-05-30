@@ -1,6 +1,8 @@
 package it.unisannio.ingegneriaDelSoftware.EndPointRest;
 
 import it.unisannio.ingegneriaDelSoftware.Annotazioni.Secured;
+import it.unisannio.ingegneriaDelSoftware.Classes.NotificaEvasione;
+import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Observer;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Subject;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Notifica;
@@ -36,8 +38,9 @@ public class EndPointNotifiche implements Subject {
      * esso crea una notifica che mostra sul terminale dell'operatore*/
     @POST
     @Path("/alertScadenza")
-    public void alertSaccaScadenza(Notifica alertScadenza){
-        this.notifyOperatoreObserver(alertScadenza);
+    public void alertSaccaScadenza(Sacca alertScadenza){
+        System.err.println("sacca arrivata "+alertScadenza);
+        //this.notifyOperatoreObserver(alertScadenza);
     }
 
     @POST
