@@ -14,6 +14,7 @@ import javax.websocket.Session;
 import javax.websocket.WebSocketContainer;
 
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
+import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class SaccheInScadenzaClient {
 	// private ClientEndpointConfig clientConfig;
 	 private List<NotificaSaccaInScadenza> notificheSaccheInScadenza = new ArrayList<NotificaSaccaInScadenza>();
 
-	   private final String uri="ws://localhost:8080/ws/saccheInScadenza";
+	   private final String uri= Constants.CCSWebSocket;
 			   private Session session;
 			  
 

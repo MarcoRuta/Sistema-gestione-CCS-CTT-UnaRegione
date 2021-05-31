@@ -8,6 +8,7 @@ import it.unisannio.ingegneriaDelSoftware.Interfaces.Subject;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Notifica;
 import it.unisannio.ingegneriaDelSoftware.NotificheObservers.TerminaleMagazziniereObserver;
 import it.unisannio.ingegneriaDelSoftware.NotificheObservers.TerminaleOperatoreObserver;
+import it.unisannio.ingegneriaDelSoftware.SaccheInScadenzaManager.NotificaSaccaInScadenza;
 
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Path("/notifica")
-@Secured
+//@Secured
 public class EndPointNotifiche implements Subject {
 
     private static  List<Observer> observers = new ArrayList<>();
@@ -38,14 +39,14 @@ public class EndPointNotifiche implements Subject {
      * esso crea una notifica che mostra sul terminale dell'operatore*/
     @POST
     @Path("/alertScadenza")
-    public void alertSaccaScadenza(Sacca alertScadenza){
+    public void alertSaccaScadenza(NotificaSaccaInScadenza alertScadenza){
         System.err.println("sacca arrivata "+alertScadenza);
-        //this.notifyOperatoreObserver(alertScadenza);
+        this.notifyOperatoreObserver(alertScadenza);
     }
 
     @POST
     @Path("/notificaEvasione")
-    public void notificaEvasione(Notifica notificaEvasione){
+    public void notificaEvasione(NotificaEvasione notificaEvasione){
         this.notifyMagazziniereObserver(notificaEvasione);
 
     }
@@ -59,7 +60,11 @@ public class EndPointNotifiche implements Subject {
 
     @Override
     public void notifyMagazziniereObserver(Notifica notificaEvasione) {
-        observers.get(1).update(notificaEvasione);
+        if(notificaEvasione instanceof  NotificaEvasione) {
+            NotificaEvasione unaNotifica = (NotificaEvasione) notificaEvasione;
+            observers.get(1).update(unaNotifica);
+        }
+
 
     }
 }

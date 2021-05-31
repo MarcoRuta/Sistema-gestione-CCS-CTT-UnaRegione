@@ -9,7 +9,7 @@ public class CTTStaticIpMap {
 
 	public final static HashMap<String, String> indirizziCTT = new HashMap<String, String>(){
 		{
-			put ("CTT001","http://192.168.193.38:8080");
+			put ("CTT001","http://127.0.0.1:8081");
 			put ("CTT002","");
 			put ("CTT003","");
 			put ("CTT004","");

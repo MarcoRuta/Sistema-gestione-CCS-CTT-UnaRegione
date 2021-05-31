@@ -1,6 +1,7 @@
 package it.unisannio.ingegneriaDelSoftware.NotificheObservers;
 
 import WebSocketConfig.WebSocketEndpoint;
+import it.unisannio.ingegneriaDelSoftware.Classes.NotificaEvasione;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Notifica;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Observer;
 
@@ -13,10 +14,12 @@ public class TerminaleMagazziniereObserver implements Observer {
 
     public void update(Notifica notifica) {
         try {
-            Notifica unaNotifica = (Notifica) notifica;
-            for (Session s : WebSocketEndpoint.sessions)
-                // getBasicRemote(), situato nella libria WebSocket, permette di realizzare la comunicazione sincrona
-                s.getBasicRemote().sendObject(unaNotifica);
+           if(notifica instanceof NotificaEvasione) {
+               NotificaEvasione unaNotifica = (NotificaEvasione) notifica;
+               for (Session s : WebSocketEndpoint.sessions)
+                   // getBasicRemote(), situato nella libria WebSocket, permette di realizzare la comunicazione sincrona
+                   s.getBasicRemote().sendObject(unaNotifica);
+           }
         }catch (EncodeException e) {
             e.printStackTrace();
         } catch (IOException e) {

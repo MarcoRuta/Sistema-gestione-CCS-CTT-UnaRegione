@@ -15,11 +15,12 @@ import it.unisannio.ingegneriaDelSoftware.Classes.*;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.*;
+import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 
 public class GestioneScadenzeCTT implements CTTFunction {
 	Map<Seriale,Sacca> saccheInviate = new HashMap<>();
 	Client client = ClientBuilder.newClient();
-	WebTarget gestioneSaccheInscadenza = client.target("http://127.0.0.1:8081/rest/CCS/saccheInScadenza");
+	WebTarget gestioneSaccheInscadenza = client.target(Constants.CCSIP+"/rest/CCS/saccheInScadenza");
 	MongoDataManager mm = MongoDataManager.getInstance();
     
 
