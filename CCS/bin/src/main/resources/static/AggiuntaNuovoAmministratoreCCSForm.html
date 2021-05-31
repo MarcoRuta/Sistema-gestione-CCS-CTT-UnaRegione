@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+     <script>
+        function print1(){
+            if(codice.value!="") {
+                document.getElementById("p1").innerHTML = "Codice fiscale: "+"<span class='textPrint' style='text-transform:uppercase'>" +codice.value+"</span>";
+            }
+                else document.getElementById("p1").innerHTML = "Codice fiscale: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
+        }
+        function print2(){
+            if(nome.value!="")
+                document.getElementById("p2").innerHTML = "Nome: "+"<span class='textPrint'>" +nome.value+"</span>";
+             else document.getElementById("p2").innerHTML = "Nome: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
+        }
+        function print3(){
+            if(cognome.value!="")
+                document.getElementById("p3").innerHTML = "Cognome: "+"<span class='textPrint'>" +cognome.value+"</span>";
+             else document.getElementById("p3").innerHTML = "Cognome: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
+        }
+        function print4(){
+            if(datanasc.value!="")
+                document.getElementById("p4").innerHTML = "Data di nascita: "+"<span class='textPrint'>" +datanasc.value+"</span>";
+             else document.getElementById("p4").innerHTML = "Data di nascita: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
+        }
+        function print5(){
+            if(username.value!="")
+                document.getElementById("p5").innerHTML = "Username: "+"<span class='textPrint'>" +username.value+"</span>";
+             else document.getElementById("p5").innerHTML = "Username: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
+        }
+        
+        
+    </script>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>AggiuntaNuovoAmministratore</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/formStyles.css">
+</head>
+
+<body onload = "verificoToken();">
+    <div class="titlePage">
+        <div>
+            <span class="fontTitle">
+                Aggiunta Nuovo Amministratore Form            
+            </span>
+        </div>
+        <div>
+            <img class="logoCTT" src="assets/img/LOGO_CCS.svg">
+        </div>
+    </div>
+    
+    <div class="container" style="max-width: 1430px; margin: 1.5% auto;">
+        
+        <div class="dateForm">
+            <div class="titleDateForm">
+                <p>Inserisci i Dati:</p>
+                <button class="btn" onclick="location.href='AmministratoreCCS.html';"><img class="return" src="assets/img/return.png" /></button>
+            </div>
+            <div class="containerForm" style= "overflow: auto; max-height: 440px; max-width: 705px" >
+                <form id="myForm">
+                        <div class="form-group row">
+                            <label>Codice fiscale:</label>
+                            <div class="inputForm">
+                                <input id="codice" name="cdf" onchange="controllaCF();" oninput="print1();" class="form-control" type="text" placeholder="Enter a 16-digit code" style='text-transform:uppercase' >
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label>Nome:</label>
+                            <div class="inputForm">
+                                <input id="nome" name="nome" onchange="controllaNome();" oninput="print2();" class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label>Cognome:</label>
+                            <div class="inputForm">
+                                <input id="cognome" name="cognome" onchange="controllaCognome();" oninput="print3();" class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label>Data di nascita:</label>
+                            <div class="inputForm">
+                                <input id="datanasc" name="datanasc" oninput="print4();" class="form-control" type="date">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label>Username:</label>
+                            <div class="inputForm">
+                                <input id="username" name="username" oninput="print5();" class="form-control" type="text">
+                            </div>
+                        </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="previewForm">
+            <div class="titleDateForm">
+                <p>Anteprima</p>
+            </div>
+            <div class="outPreview">
+                <p id="p1"></p>
+                <p id="p2"></p>
+                <p id="p3"></p>
+                <p id="p4"></p>
+                <p id="p5"></p>
+            </div>
+            <div class="outPreview" style="height: 40px;margin: 4% 45px;">
+                <p id="result"></p>
+            </div>
+            <button class="btn btn-primary" type="submit" onclick="addAmm();" style="margin-left: 73.5%; width: 140px;height: 51px;font-family: Calibri light;font-size: 20px;">Conferma</button>
+        </div>
+        
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
+    <script type="application/javascript">
+    
+        var xhttp = new XMLHttpRequest();
+        var token = sessionStorage.getItem("token");
+        var ruolo = sessionStorage.getItem("ruolo");
+        var urlPdf;
+        var host = document.location.origin;
+
+
+        verificoToken = function(){
+            if(token == null || ruolo != 'AmministratoreCCS'){
+                alert("E' necessario effettuare il login per accedere a questa risorsa");
+                window.location.href='Login.html';
+           }
+        }
+
+         function addAmm(){
+                var url = host + "/rest/CCS/aggiuntaAmministratore";
+
+                var cd = codice.value;
+                var nm = nome.value;
+                var cn = cognome.value;
+                var dn = datanasc.value;
+                var us = username.value;
+                var params = 'cdf='+cd+'&nome='+nm+'&cognome='+cn+'&dataDiNascita='+dn+'&username='+us;
+
+
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 201) {
+                        alert(this.responseText);
+                        urlPdf = host + xhttp.getResponseHeader("Content-Location");
+                        creaPdf();
+                 	}else {
+                 	if(this.readyState == 4 && this.status != 201){
+                 	    alert(this.response);
+                 	    setTimeout(reloadPage,1000);
+                 	    }
+                 	}
+
+                };
+
+                xhttp.onerror = function(){
+                    alert("[Error 401] Impossibile Aggiungere Sacca");
+                };
+
+
+                xhttp.open("POST", url, true);
+                xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhttp.setRequestHeader('Authorization', 'Basic '+token);
+                xhttp.withCredentials = true;
+                xhttp.send(params);
+        }
+
+
+        /*####### CREA PDF FUNCTION ######*/
+        function creaPdf() {
+             var xhr = new XMLHttpRequest();
+             xhr.open("GET", urlPdf, true);
+             xhr.setRequestHeader('Authorization', 'Basic '+token);
+             xhr.withCredentials = true;
+             xhr.responseType = 'arraybuffer';
+             xhr.send();
+
+            xhr.onreadystatechange = function() {
+                    if (xhr.readyState == 4){
+                        var blobSrc = window.URL.createObjectURL(new Blob([this.response], { type: 'application/pdf'}));
+                        window.open(blobSrc);
+                    }
+            };
+            setTimeout(reloadPage, 1000);
+      }
+
+      function reloadPage() {
+            codice.value ="";
+            nome.value="";
+            cognome.value="";
+            datanasc.value="";
+            username.value="";
+            location.reload();
+        }
+
+            
+    </script>
+        
+    <div class="footer"></div>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/scriptControl.js"></script>
+</body>
+
+</html>

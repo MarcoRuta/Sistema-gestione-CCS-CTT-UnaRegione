@@ -1,0 +1,141 @@
+.footer {
+	position: fixed;
+  	left: 0;
+   	bottom: 0;
+   	width: 100%;
+	height: 5%;
+   	background-color: #13958d;
+	background-image: linear-gradient(#214F52,#13958d);
+   	color: white;
+   	text-align: center;
+}
+
+
+.titlePage {
+	width: auto;
+	height: 150px;
+	background-color: #13958d;
+	background-image: linear-gradient(#13958d,#214F52);
+	padding: 30px 36px;
+}
+
+.logoCTT {
+	margin-left: 85%;
+	margin-top: -8em;
+	width:192px;
+	height:192px;
+}
+
+.logoCCS {
+	margin-left: 85%;
+	margin-top: -8em;
+	width:192px;
+	height:192px;
+}
+
+.logoCenter {
+	margin-left: 7%;
+	width:250px;
+	height:250px;
+}
+
+span.fontTitle {
+	color: rgb(255,255,255);
+	font-size: 50px;
+	font-family: muli,sans-serif;
+}
+
+div.titlePage p {
+	color: rgb(255,255,255);
+	font-size: 50px;
+	font-family: muli,sans-serif;
+}
+
+.loginForm {
+	height: 330px;
+	margin: 100px auto;
+	width: 300px;
+}
+
+span#urgent {
+	color: red;
+}
+
+.boxProfile {
+	background-color: #eef4f7;
+	background-image: url(&quot;assets/img/bg-pattern.png&quot;); 
+	margin: 1% 0%;
+}
+
+div.col-sm span {
+	font-size: 20px;
+	font-family: muli,sans-serif;
+	padding-left: 14%;
+}
+
+div.col-sm p {
+	font-family: muli,sans-serif;
+	font-size: 20px;
+}
+
+.boxButton {
+	background-color: #eef4f7;
+	margin: 1% 0%;
+	margin-left: 1%;
+}
+
+.containerBtn {
+	width: 670px;
+	margin-left: 5%;
+	margin-top: 8%;
+}
+
+.boxNotification {
+	padding-left: 0px;
+	padding-right: 0px;
+	background-color: #eef4f7;
+	height: 242px;
+}
+
+div.boxNotification h2 {
+	font-family: muli,sans-serif;
+	margin: 10px 30px;
+	text-align: left;
+}	
+
+.btnClear {
+	height: 65px;
+	margin: -3em 83%;
+	width: auto;
+}
+
+.divNot {
+	margin-top: 2%;
+	overflow:auto;
+	max-height:  190px;
+}
+
+
+div.divNot p {
+	overflow: hidden;
+  	display: -webkit-box;
+  	-webkit-line-clamp: 3;
+  	-webkit-box-orient: vertical;
+	margin: 10px;
+}
+
+.divNotMag {
+	overflow:auto;
+	max-height:  180px;
+}
+
+
+div.divNotMag p {
+	overflow: hidden;
+  	display: -webkit-box;
+  	-webkit-line-clamp: 3;
+  	-webkit-box-orient: vertical;
+	margin: 10px;
+}
+
+

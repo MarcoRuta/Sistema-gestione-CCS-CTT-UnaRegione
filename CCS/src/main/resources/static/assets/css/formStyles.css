@@ -1,0 +1,154 @@
+.dateForm {
+	height: 500px;
+	width: 695px;
+	background-color: #13958d;
+	background-image: linear-gradient(#005C56,#13958d);
+}
+.titleDateForm {
+	width: auto;
+	height: 50px;
+}
+
+div.titleDateForm p {
+	color: rgb(255,255,255);
+	font-size: 34px;
+	text-align: center;
+	height: 60px;
+	font-family: muli,sans-serif;
+}
+
+div.titleDateForm button {
+	color: rgb(255,255,255);
+	font-family: muli,sans-serif;
+	margin-left: 2%;
+	margin-top: -7.5em;
+}
+
+.return {
+ 	max-width: 60px;
+	max-height: 50px;
+}
+
+
+
+.container {
+	max-width: 1430px;
+	margin: 1.5% auto;
+}
+
+.containerForm {
+	max-width: 1430px;
+	margin: 1.5% auto;
+	
+}
+
+.row {
+	margin-right:0px;
+	margin-left:0px;
+}
+
+
+div.row p{
+	width: 250px;
+	height: 40px;
+	font-size: 24px;
+	font-family: Calibri light;
+	margin: 4% 14%;
+	color: rgb(255,255,255);
+}
+
+div.row label{
+	width: 250px;
+	height: 40px;
+	font-size: 24px;
+	font-family: Calibri light;
+	color: rgb(255,255,255);
+	margin: 1% 4%;
+}
+
+.inputForm {
+	width: 400px;
+	height: 40px;
+	margin: -3em 40%;
+}
+
+
+div.inputForm input {
+	width: 364px;
+	font-size: 19px;
+	font-family: Calibri light;
+}
+
+
+.outPreview {
+	height: 250px;
+	width: 600px;
+	margin: auto;
+	background-color: #ffffff;
+	overflow: auto;
+}
+
+div.outPreview p{
+	margin: 0px;
+	font-size: 24px;
+	font-family: muli,sans-serif;
+	padding-left: 5px 
+}
+
+.previewForm {
+	width: 690px;
+	height: 500px;
+	margin: -500px 710px;
+	background-color: #13958d;
+	background-image: linear-gradient(#005C56,#13958d);
+}
+
+.textPrint {
+	color: #13958d;
+	font-weight: bold;
+}
+
+.errorPrint{
+	color: red;
+	font-weight: bold;
+	font-size: 16px;
+}
+
+.containerTable {
+	width: 1000px;
+	height: 400px;
+	margin: auto;
+
+}
+
+tbody.tableStyle p {
+	height: 50px;
+	color: rgb(255,255,255);
+	font-family: Calibri light;
+	font-weight: bold;
+	font-size: 25px;
+	width: auto;
+	margin: 0px auto;
+}
+
+tbody.tableStyle td {
+	height: 85px;
+}
+
+.box {
+	height: 50%;
+	margin: 1.5% auto;
+	width: 1250px;
+	background-color: #13958d;
+	background-image: linear-gradient(#005C56,#13958d);
+}
+
+.containerFormPass {
+	max-width: 33.333333%;
+	margin: auto;
+}
+	
+
+div.containerFormPass label {
+	font-weight: bold;
+}

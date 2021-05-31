@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script>
+        function print3(){
+            if(provincia.value!="")
+                document.getElementById("p3").innerHTML = "Provincia: "+"<span class='textPrint'>" +provincia.value+"</span>";
+             else document.getElementById("p3").innerHTML = "Provincia: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
+        }
+        function print4(){
+            if(citta.value!="")
+                document.getElementById("p4").innerHTML = "Città: "+"<span class='textPrint'>" +citta.value+"</span>";
+             else document.getElementById("p4").innerHTML = "Città: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
+        }
+        function print5(){
+            if(indirizzo.value!="")
+                document.getElementById("p5").innerHTML = "Indirizzo: "+"<span class='textPrint'>" +indirizzo.value+"</span>";
+             else document.getElementById("p5").innerHTML = "Indirizzo: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
+        }
+        function print6(){
+            if(telefono.value!="")
+                document.getElementById("p6").innerHTML = "Telefono: "+"<span class='textPrint'>" +telefono.value+"</span>";
+             else document.getElementById("p6").innerHTML = "Telefono: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
+        }
+        function print7(){
+            if(email.value!="")
+                document.getElementById("p7").innerHTML = "E-mail: "+"<span class='textPrint'>" +email.value+"</span>";
+             else document.getElementById("p7").innerHTML = "E-mail: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
+        }
+        function print8(){
+            if(latitude.value!="")
+                document.getElementById("p8").innerHTML = "Latitude: "+"<span class='textPrint'>" +latitude.value+"</span>";
+             else document.getElementById("p8").innerHTML = "Latitude: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
+        }
+        function print9(){
+            if(longitude.value!="")
+                document.getElementById("p9").innerHTML = "Longitude: "+"<span class='textPrint'>" +longitude.value+"</span>";
+             else document.getElementById("p9").innerHTML = "Longitude: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
+        }
+    </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>AggiuntaNuovoCTTForm</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/formStyles.css">
+</head>
+
+<body onload="verificoToken();">
+        <div class="titlePage">
+        <div>
+            <span class="fontTitle">
+                Aggiunta Nuovo CTT Form            
+            </span>
+        </div>
+        <div>
+            <img class="logoCCS" src="assets/img/LOGO_CCS.svg">
+        </div>
+    </div>
+    
+    <div class="container" style="max-width: 1430px; margin: 1.5% auto;">
+        
+        <div class="dateForm">
+            <div class="titleDateForm">
+                <p>Inserisci i Dati:</p>
+                <button class="btn" onclick="location.href='AmministratoreCCS.html';"><img class="return" src="assets/img/return.png" /></button>
+            </div>
+            <div class="containerForm" style= "overflow: auto; max-height: 440px; max-width: 705px" >
+                <form id="myForm">
+                        <div class="form-group row">
+                            <label>Provincia:</label>
+                            <div class="inputForm">
+                                <input id="provincia" name="prov" oninput="print3();" class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label>Città:</label>
+                            <div class="inputForm">
+                                <input id="citta" name="city" oninput="print4();" class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label>Indirizzo:</label>
+                            <div class="inputForm">
+                                <input id="indirizzo" name="street" oninput="print5();" class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label>Telefono:</label>
+                            <div class="inputForm">
+                                <input id="telefono" name="phone" onchange="controllaTelefono();" oninput="print6();" class="form-control" type="text" placeholder="minimo 10 numeri">
+                            </div>
+                        </div> 
+                        <div class="form-group row">
+                            <label>E-mail:</label>
+                            <div class="inputForm">
+                                <input id="mail" name="email" onchange="controllaEmail();" oninput="print7();" class="form-control" type="text" placeholder="esempio@gmail.com">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label>Latitudine:</label>
+                            <div class="inputForm">
+                                <input id="latitude" name="lat" onchange="controllaLatitude();" oninput="print8();" class="form-control" type="text" placeholder="-90 a 90 gradi">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label>Longitudine:</label>
+                            <div class="inputForm">
+                                <input id="longitude" name="lon" onchange="controllaLongitude();" oninput="print9();" class="form-control" type="text" placeholder="-180 a 180 gradi">
+                            </div>
+                        </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="previewForm">
+            <div class="titleDateForm">
+                <p>Anteprima</p>
+            </div>
+            <div class="outPreview">
+                <p id="p1"></p>
+                <p id="p2"></p>
+                <p id="p3"></p>
+                <p id="p4"></p>
+                <p id="p5"></p>
+                <p id="p6"></p>
+                <p id="p7"></p> 
+                <p id="p8"></p>
+                <p id="p9"></p>
+            </div>
+            <div class="outPreview" style="height: 40px;margin: 4% 45px;">
+                <p id="result"></p>
+            </div>
+            <button class="btn btn-primary" type="submit" onclick="loadCTT();" style="margin-left: 73.5%; width: 140px;height: 51px;font-family: Calibri light;font-size: 20px;">Conferma</button>
+        </div>
+        
+    </div>
+     
+    <script type="application/javascript">
+        
+		    var token = sessionStorage.getItem("token");
+		    var ruolo = sessionStorage.getItem("ruolo");
+            var xhttp = new XMLHttpRequest();
+            var res;
+            var host = document.location.origin;
+
+            
+            function loadCTT(){
+                
+                var url = host +"/rest/CCS/aggiuntaCTT";
+                
+
+                var pr = provincia.value;
+                var city = citta.value;
+                var ind = indirizzo.value;
+                var tel = telefono.value;
+                var em = mail.value;
+                var lat = latitude.value;
+                var lon = longitude.value;
+                
+                var params = 'provincia='+pr+'&citta='+city+'&indirizzo='+ind+'&telefono='+tel+'&email='+em+'&latitude='+lat+'&longitude='+lon;
+
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                    	res = this.response;
+                        
+                 	}else if(this.readyState == 4 && this.status != 200 ){
+                 		res = this.response;
+                         
+                        }
+
+                };
+
+                xhttp.onerror = function(){
+                    document.getElementById("result").innerHTML = "[Error 401] Impossibile Aggiungere CTT ";
+                };
+
+                setTimeout(reloadPage, 500);
+                
+                xhttp.open("POST", url, true);
+                xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhttp.setRequestHeader('Authorization', 'Basic '+token);
+                xhttp.withCredentials = true;
+                xhttp.send(params);
+
+
+            }
+
+            function reloadPage() {
+                alert(res);
+                location.reload();
+            }
+
+            function setDenominazione() {
+
+                var x = document.getElementById("numero_ctt");
+                if(x.value!="") {
+                if(x.value < 10)
+                    document.getElementById("nome_ctt").value = "CTT00" + x.value;
+                else if (x.value < 100)
+                    document.getElementById("nome_ctt").value = "CTT0" + x.value;
+                else
+                    document.getElementById("nome_ctt").value = "CTT" + x.value;
+
+                }
+                else {
+                    document.getElementById("nome_ctt").value = "";
+                }
+                print2();
+            }
+            
+            verificoToken = function(){
+                if(token == null || ruolo != 'AmministratoreCCS'){
+                    alert("E' necessario effettuare il login per accedere a questa risorsa");
+                    window.location.href='Login.html';
+               }
+            }
+    </script>   
+    <div class="footer"></div>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/scriptControl.js"></script>
+    
+</body>
+
+</html>

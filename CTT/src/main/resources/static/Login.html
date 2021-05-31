@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Login</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/fonts/ionicons.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<body>
+    <div class="titlePage" style="height: 200px;">
+        <div>
+            <span class="fontTitle">
+                Rete Distribuzione Sacche Di Sangue             
+            </span>
+            <p>Login</p>
+        </div>
+    </div>
+    <div class="loginForm" style="margin: 2% auto;">
+        <form id="formLogin">
+            <h2 class="sr-only">Login Form</h2>
+                <div>
+                    <img class="logoCenter" src="assets/img/LOGO_CENTER_R.svg">
+                </div>
+                <p id="error"></p>
+                <div class="form-group">
+                    <input class="form-control" type="text" id="user" name="username" placeholder="Username">
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="password" id="pass" name="password" placeholder="Password">
+                </div>
+                <a class="forgot" href="ChangePassword.html">Hai dimenticato email o password?</a>
+        </form>
+        <div class="form-group">
+            <button class="btn btn-primary btn-block" id="btnLogin" type="submit" onclick="verifyLogin();" style="background-color: #13958d;">Log In</button>
+        </div>
+
+    </div>
+    <p id="result"></p>
+    <div class="footer"></div>
+    
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    
+    <script type="application/javascript">
+        
+            var xhttp = new XMLHttpRequest();
+
+            function verifyLogin(){
+                var username = user.value;
+                var password = pass.value;
+                var host = document.location.origin;
+                var url = host + "/rest/autentificazione";
+                param = 'username='+username+'&password='+password;
+
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 201 ) {
+                        obj = JSON.parse(this.responseText);
+                        sessionStorage.setItem("token", obj.token);
+                        sessionStorage.setItem("ruolo",obj.ruolo);
+                        sessionStorage.setItem("nome",obj.nome);
+                        sessionStorage.setItem("cognome", obj.cognome);
+                        sessionStorage.setItem("cdf",obj.cdf);
+                        window.location.href=obj.ruolo+'.html';
+                 	}else{
+                 	if (this.readyState == 4 && this.status !=201)
+                 	    document.getElementById("error").innerHTML="<span style = 'color:red'>"+this.response+"</span>";
+                 	}
+
+                };
+
+
+                xhttp.onerror = function(){
+                   alert("impossibile inviare la richiesta");
+                };
+
+
+                xhttp.open("POST", url, true);
+                xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhttp.send(param);
+
+                }
+                
+    </script>
+    
+    
+</body>
+
+</html>

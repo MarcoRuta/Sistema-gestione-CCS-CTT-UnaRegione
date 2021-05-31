@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+     <script>        
+        function removeNotification()
+        {
+            divNot.innerHTML = "";
+        }
+    </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>AmministratoreCSSHub</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<body onload="start();">
+    <div class="titlePage">
+        <div>
+            <span class="fontTitle">
+                Centro Controllo Smistamento    
+            </span>
+        </div>
+        <div>
+            <img class="logoCCS" src="assets/img/LOGO_CCS.svg">
+        </div>
+	</div>
+    
+    <div class="container">
+        
+        <div class="row" style="margin-left:0px; margin-right: 0px">
+            <div class="border col boxProfile" style="background-image: url(&quot;assets/img/bg-pattern.png&quot;);">
+                <div class="row">
+                    <div class="col-sm">
+                        <img src="assets/img/doctor+pediatrician+icon-1320185104387356300.png" style="width: 200px;margin: 5% 7%;">
+                        <span>Amministratore CSS</span>
+                    </div>
+                    <div class="col-sm" style="margin-top: 9%; margin-left: -2em">
+                        <div>
+                            <p id="nome">Nome: </p>
+                        </div>
+                        <div style="margin: 30px 0%;">
+                            <p id="cognome">Cognome: </p>
+                        </div>
+                        <div style="width: 300px;">
+                            <button class="btn btn-primary" onclick="location.href='ChangePasswordAfterLogin.html';" type="button" style="background-color: #13958d;">Change Password</button>
+                            <button class="btn btn-primary" onclick="logout();" type="button" style="margin: 0% 5%">Log out</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border col-sm boxButton" style="background-image: url(&quot;assets/img/bg-pattern.png&quot;);">
+                <div class="containerBtn">
+                        <div class="row" style="width:75%">
+                            <div class="col-sm">
+                                <button class="btn btn-primary" onclick="location.href='AggiuntaNuovoCTTForm.html';" type="button" style="background-color: #13958d;width: 210px;">Aggiunta nuovo CTT</button>
+                            </div>
+                            <div class="col-sm">
+                                <button class="btn btn-primary" onclick="location.href='AggiuntaNuovoAmministratoreCCSForm.html';" type="button" style="background-color: #13958d; width: 210px;">Aggiungi Amministratore</button>
+                             </div>
+                        </div>
+                        <div class="row" style="width:75%; margin-top: 5%">
+                            <div class="col-sm">
+                                <button class="btn btn-primary" onclick="location.href='RimozioneCTTForm.html';" type="button" style="background-color: #13958d; width: 210px;">Rimozione CTT</button>
+                            </div>
+                            <div class="col-sm">
+                                <button class="btn btn-primary" onclick="location.href='RimozioneAmministratoreCCSForm.html';" type="button" style="background-color: #13958d; width: 210px;">Rimuovi Amministratore</button>
+                            </div>
+                        </div>
+                        <div class="row" style="width:75%; margin-top: 5%; margin-left: 16%;">
+                            <div class="col-sm">
+                                <button class="btn btn-primary" onclick="location.href='MenuDiSelezioneQueryCCS.html';" type="button" style="background-color: #13958d; width: 210px;">Report statistici</button>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+         
+        <div class="boxNotification col-sm-12 border shadow-sm profile-box" style="background-image: url(&quot;assets/img/bg-pattern.png&quot;);">
+            <h2>Notifiche</h2>
+            <div class="btnClear">
+                <button class="btn btn-primary" onclick="removeNotification();" type="button" style="background-color: #13958d;width: 177px;">Pulisci notifiche</button>
+            </div>
+            <div class="divNot" id="divNot">
+            </div> 
+        </div> 
+    </div>
+    
+    <script type="application/javascript">
+
+    var token = sessionStorage.getItem("token");
+    var ruolo = sessionStorage.getItem("ruolo");
+    var name = sessionStorage.getItem("nome");
+    var surname = sessionStorage.getItem("cognome");
+    var host = document.location.origin;
+    
+
+	function start() {
+		verificoToken();
+		setPerson();
+	}
+    
+
+     verificoToken = function(){
+           if(token == null || ruolo != 'AmministratoreCCS'){
+            alert("E' necessario effettuare il login per accedere a questa risorsa");
+            window.location.href='Login.html';
+           }
+        };
+     
+     function setPerson(){
+
+     	document.getElementById("nome").textContent = "Nome: " + name;
+     	document.getElementById("cognome").textContent = "Cognome: " + surname;
+
+     }
+     
+     logout = function(){
+
+	      var xhttp = new XMLHttpRequest();
+	      var url = host +"/rest/autentificazione/logout";
+	      xhttp.onreadystatechange = function() {
+	                  if (this.readyState == 4 && this.status == 200 ) {
+	                       sessionStorage.removeItem("token");
+	                       sessionStorage.removeItem("ruolo");
+	                       sessionStorage.removeItem("nome");
+	                       sessionStorage.removeItem("cognome");
+	                       sessionStorage.removeItem("cdf");
+	                       window.location.href='Login.html';
+	                  }else {
+	                      if(this.readyState == 4 && this.status != 200 ){
+	                          alert(this.response);
+	                      }
+	                  }
+	      	};
+	
+	
+	           xhttp.onerror = function(){
+	                      alert("impossibile inviare la richiesta");
+	           };
+	
+	
+	           xhttp.open("DELETE", url, true);
+	           xhttp.setRequestHeader('Authorization', 'Basic '+token);
+	           xhttp.withCredentials = true;
+	           xhttp.send();
+
+       };
+     
+    </script>
+    
+    <div class="footer">
+        <p></p>
+    </div>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>

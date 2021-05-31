@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>ReportLocaleSaccheInviateRicevuteCTTForm</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/formStyles.css">
+    <link rel="stylesheet" href="assets/css/tables.css">
+</head>
+
+<body onload="verificoToken();">
+    <div class="titlePage">
+        <div>
+            <span class="fontTitle">
+                Report Locale Sacche Inviate e RicevuteCTT Form           
+            </span>
+        </div>
+        <div>
+            <img class="logoCTT" src="assets/img/LOGO_CTT.svg">
+        </div>
+    </div>
+    
+    <div class="container" style="max-width: 1430px; margin: 1.5% auto;">
+        
+        
+        <div class="dateFormQuery">
+            <div class="titleDateFormQuery">
+                <button class="btn" onclick="location.href='MenuDiSelezioneQueryCTT.html';"><img class="return" src="assets/img/return.png" /></button>
+            </div>
+            <div class="containerForm">
+                <form id="myForm">
+                    <div class="form-group row">
+                        <label for="formGroupExampleInput" style="margin: 1% 10%;">Data inizio:</label>
+                        <input id="datein" name="data_in" type="date" class="form-control" id="formGroupExampleInput" placeholder="Example input" style="margin-left: 10%;width: 80%;">
+                    </div>
+                    <div class="form-group row">
+                        <label for="formGroupExampleInput2" style="margin: 1% 10%;">Data fine:</label>
+                        <input id="dateout" name="data_out" type="date" class="form-control" id="formGroupExampleInput2" placeholder="Another input" style="margin-left: 10%;width: 80%;">
+                    </div>
+                </form>
+            </div>
+             <button class="btn btn-primary" type="submit" onclick="report();" style="margin-top: 50%;margin-left: 50%; width: 140px;height: 51px;font-family: Calibri light;font-size: 20px;">Conferma</button>
+        </div>
+
+        <div class="previewFormQuery">
+            <div class="titleDateFormQuery">
+                <p>Anteprima</p>
+            </div>
+            <div class="outPreviewQuery">
+                <table id = "tableSangue">
+                    <tr>
+                      <th scope="col"> Seriale Sacca </th>
+                      <th scope="col"> G. Sanguigno </th>
+                      <th scope="col"> Data Arrivo </th>
+                      <th scope="col"> Data Affidamento </th>
+                      <th scope="col"> Ente Donatore </th>
+                      <th scope="col"> Ente Richiedente </th>
+                      <th scope="col"> Indirizzo Ente </th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        
+    </div>
+    <script type="text/javascript">
+   
+    var token = sessionStorage.getItem("token");
+    var ruolo = sessionStorage.getItem("ruolo");
+    var xhttp = new XMLHttpRequest();
+    var obj;
+    var table = document.getElementById('tableSangue');
+    
+    verificoToken = function(){
+               if(token == null || ruolo != 'AmministratoreCTT'){
+                alert("E' necessario effettuare il login per accedere a questa risorsa");
+                window.location.href='Login.html';
+               }
+    };
+
+	function report(){
+    
+
+      xhttp = new XMLHttpRequest();
+      var host = document.location.origin;
+      var params = "dataInizio=" + datein.value + "&dataFine=" + dateout.value;
+      url = host + "/rest/amministratore/reportLocaleSaccheInviateERicevute?"+params;
+
+
+      xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+              obj = JSON.parse(this.responseText);
+              if(table.rows.length != 1) {
+                while(table.rows.length != 1) {
+                     table.deleteRow(1);
+                }
+              }
+              addPrint();
+              }
+          else if (this.readyState == 4 && this.status != 200) {
+          	alert(this.response);
+          }
+
+      };
+
+      xhttp.open("GET", url, true);
+      xhttp.setRequestHeader('Authorization', 'Basic '+token);
+      xhttp.withCredentials = true;
+      xhttp.send();
+
+    }
+    
+	 
+	function addPrint() {
+
+    var row;
+        for(let i = 0; i < obj.length; i++) {
+         
+            row = document.createElement('tr');
+            row.appendChild(document.createElement('td'));
+            row.appendChild(document.createElement('td'));
+            row.appendChild(document.createElement('td'));
+            row.appendChild(document.createElement('td'));
+            row.appendChild(document.createElement('td'));
+            row.appendChild(document.createElement('td'));
+            row.appendChild(document.createElement('td'));
+            row.cells[0].innerHTML = obj[i].seriale.seriale;
+            row.cells[1].innerHTML = obj[i].gruppoSanguigno;
+            row.cells[2].innerHTML = obj[i].dataArrivo;
+            row.cells[3].innerHTML = obj[i].dataAffidamento;
+            row.cells[4].innerHTML = obj[i].enteDonatore;
+            row.cells[5].innerHTML = obj[i].enteRichiedente;
+            row.cells[6].innerHTML = obj[i].indirizzoEnte;
+            table.appendChild(row);   
+      }
+      
+    }
+	 
+	 
+    </script> 
+        
+    <div class="footer"></div>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>

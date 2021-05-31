@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script>
+        function print1(){
+            if(datein.value!="")
+                document.getElementById("p1").innerHTML = "Data inizio: "+"<span class='textPrint'>" +datein.value+"</span>";
+            else document.getElementById("p1").innerHTML = "Data inizio: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
+        }
+        function print2(){
+            if(dateout.value!="")
+                document.getElementById("p2").innerHTML = "Data fine: "+"<span class='textPrint'>" +dateout.value+"</span>";
+            else document.getElementById("p2").innerHTML = "Data fine: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
+        }
+    </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>OrdinaCTTperRichiesteForm</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/formStyles.css">
+</head>
+
+<body style="background-color: #ffffff;" onload="verificoToken();">
+    
+    <div class="titlePage">
+        <div>
+            <span class="fontTitle">
+              Ordina CTT per richieste form            
+            </span>
+        </div>
+        <div>
+            <img class="logoCCS" src="assets/img/LOGO_CCS.svg">
+        </div>
+    </div>
+    
+    <div class="container" style="max-width: 1430px; margin: 1.5% auto;">
+        
+        <div class="dateForm">
+            <div class="titleDateForm">
+                <p>Inserisci date da considerare</p>
+                <button class="btn" onclick="location.href='MenuDiSelezioneQueryCCS.html';"><img class="return" src="assets/img/return.png" /></button>
+            </div>
+            <div class="containerForm">
+                <form id="myForm">
+                    <div class="form-group row">
+                        <label style="margin: 5% 10%;">Data inizio:</label>
+                        <div class="col-sm-10 inputForm">
+                            <input id="datein" name="data_in" oninput="print1();" class="form-control" type="date" style="width: 300px; margin: -1.5em 0%;">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label style="margin: 0% 10%;">Data fine:</label>
+                        <div class="col-sm-10 inputForm">
+                            <input id="dateout" name="data_out" oninput="print2();" class="form-control" type="date" style="width: 300px; margin: 2% 0%;">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="previewForm">
+            <div class="titleDateForm">
+                <p>Anteprima</p>
+            </div>
+            <div class="outPreview">
+                <p id="p1"></p>
+                <p id="p2"></p>
+            </div>
+            <div class="outPreview" style="height: 40px;margin: 4% 45px;"></div>
+            <button class="btn btn-primary" type="button" style="margin-left: 73.5%; width: 140px;height: 51px;font-family: Calibri light;font-size: 20px;">Conferma</button>
+        </div>
+        
+    </div>
+     
+    <script type="application/javascript">
+
+    var token = sessionStorage.getItem("token");
+    var ruolo = sessionStorage.getItem("ruolo");
+
+
+     verificoToken = function(){
+           if(token == null || ruolo != 'AmministratoreCCS'){
+            alert("E' necessario effettuare il login per accedere a questa risorsa");
+            window.location.href='Login.html';
+           }
+        }
+    </script> 
+       
+    <div class="footer"></div>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>

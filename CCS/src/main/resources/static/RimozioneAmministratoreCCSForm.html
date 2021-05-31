@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>RimozioneAmministratoreForm</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/formStyles.css">
+</head>
+
+<body onload="start();">
+    <div class="titlePage">
+        <div>
+            <span class="fontTitle">
+                Rimozione Amministratore Form           
+            </span>
+        </div>
+        <div>
+            <img class="logoCTT" src="assets/img/LOGO_CCS.svg">
+        </div>
+    </div>
+    
+    <div class="container" style="max-width: 1430px; margin: 1.5% auto;">
+        
+        <div class="dateForm">
+            <div class="titleDateForm">
+                <p>Inserisci dipendente da rimuovere</p>
+                <button class="btn" onclick="location.href='AmministratoreCCS.html';"><img class="return" src="assets/img/return.png" /></button>
+            </div>
+            <div class="containerForm">
+                <form id="myForm">
+                    <div class="form-group row" style="margin: 8% 5%">
+                            <label>Codice fiscale:</label>
+                             <div class="inputForm">
+                                <select id="codice" name="cdf" oninput="printDip()" class="form-control" onfocus='this.size=5;' onblur='this.size=1;' onchange='this.size=1; this.blur();' style="width: 300px;">
+                                        <option value='0'>Seleziona il dipendente da rimuovere</option>
+                                </select>
+                         </div>
+                        </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="previewForm">
+            <div class="titleDateForm">
+                <p>Anteprima</p>
+            </div>
+            <div class="outPreview">
+                <p id="p1"></p>
+            </div>
+            <div class="outPreview" style="height: 40px;margin: 4% 45px;">
+                <p id = "result"></p>
+            </div>
+            <button class="btn btn-primary" type="submit" onclick="rimozione();" style="margin-left: 73.5%; width: 140px;height: 51px;font-family: Calibri light;font-size: 20px;">Conferma</button>
+        </div>
+        
+    </div>
+    
+    <script type="application/javascript">
+    
+    var obj;
+    var token = sessionStorage.getItem("token");
+    var ruolo = sessionStorage.getItem("ruolo");
+    var host = document.location.origin;
+    var res;
+    
+    function start() {
+    	verificoToken();
+    	keepDip();
+    }
+
+    verificoToken = function(){
+        if(token == null || ruolo != 'AmministratoreCCS'){
+            alert("E' necessario effettuare il login per accedere a questa risorsa");
+            window.location.href='Login.html';
+       }
+    }
+
+    rimozione = function(){
+        
+        var xhttp = new XMLHttpRequest();
+        var url =host + "/rest/CCS/rimozioneAmministratore/"+codice.value;
+        
+        xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200 ) {
+                    	res = this.response;
+                 	}else if(this.readyState == 4 && this.status != 200 ) {
+                 		res = this.response;
+                 	    }
+        };
+
+
+        xhttp.onerror = function(){
+                   alert("impossibile inviare la richiesta");
+        };
+
+        setTimeout(reloadPage, 500);
+
+        xhttp.open("DELETE", url, true);
+        xhttp.setRequestHeader('Authorization', 'Basic '+token);
+        xhttp.withCredentials = true;
+        xhttp.send();
+
+    };
+    
+    function reloadPage() {
+        alert(res);
+        location.reload();
+    }
+    
+    function keepDip(){
+        
+    	
+        xhttp = new XMLHttpRequest(); 	
+        url = host +"/rest/CCS/amministratori";
+        
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                obj = JSON.parse(this.responseText);
+                addOption();
+                }  
+
+        };
+        
+        xhttp.onerror = function(){
+        document.getElementById("result").innerHTML = "[Error 401] Nessun dipendente presente";
+        };
+        
+        xhttp.open("GET", url, true);
+        xhttp.setRequestHeader('Authorization', 'Basic '+token);
+        xhttp.withCredentials = true;
+        xhttp.send();
+        
+    }
+
+	function addOption() {
+        
+        var x = document.getElementById("codice");
+        var option;
+        for(var i=0; i < obj.length; i++) {
+            option = document.createElement('option');
+            option.appendChild(document.createTextNode(obj[i].username + " - " + obj[i].cdf.codiceFiscale));
+            option.value=obj[i].cdf.codiceFiscale;
+            x.appendChild(option);
+        }
+    }
+
+	function printDip() {
+    
+	    let x = document.getElementById("codice");
+	    var inner;
+	    if(x.getvalue!=0) {
+	        inner = "Codice fiscale: <span class='textPrint'>" +obj[x.selectedIndex-1].cdf.codiceFiscale+"</span><br>Nome: <span class='textPrint'>"+obj[x.selectedIndex-1].nome+"</span><br>";
+	        inner = inner + "Cognome: <span class='textPrint'>" +obj[x.selectedIndex-1].cognome+"</span><br>Data di nascita: <span class='textPrint'>"+obj[x.selectedIndex-1].dataDiNascita+"</span><br>";
+	        inner = inner + "Username: <span class='textPrint'>" +obj[x.selectedIndex-1].username+"</span><br>Password: <span class='textPrint'>"+obj[x.selectedIndex-1].password+"</span><br>";
+	        inner = inner + "Ruolo: <span class='textPrint'>" +obj[x.selectedIndex-1].ruolo+"</span>";
+	        document.getElementById("p1").innerHTML = inner;
+	    }
+	    else {
+	        document.getElementById("p1").innerHTML = "<span class='errorPrint'>SI PREGA DI SELEZIONARE IL DIPENDENTE DA RIMUOVERE</span>";
+	    }
+
+
+	}
+
+    </script>
+        
+    <div class="footer"></div>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/scriptControl.js"></script>
+</body>
+
+</html>

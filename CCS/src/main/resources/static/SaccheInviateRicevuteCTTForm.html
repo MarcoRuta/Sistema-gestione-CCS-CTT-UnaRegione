@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script>
+        function print1(){
+            if(numctt.value!="")
+                document.getElementById("p1").innerHTML = "Numero CTT: "+"<span class='textPrint'>" +numctt.value+"</span>";
+            else document.getElementById("p1").innerHTML = "Numero CTT: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
+        }
+    </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>SaccheInviateRicevuteCTTForm</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/formStyles.css">
+</head>
+
+<body style="background-color: #ffffff;" onload="verificoToken();">
+    
+    <div class="titlePage">
+        <div>
+            <span class="fontTitle">
+               Sacche inviate e ricevute form            
+            </span>
+        </div>
+        <div>
+            <img class="logoCCS" src="assets/img/LOGO_CCS.svg">
+        </div>
+    </div>
+    
+    <div class="container" style="max-width: 1430px; margin: 1.5% auto;">
+        
+        <div class="dateForm">
+            <div class="titleDateForm">
+                <p>Inserisci il CTT per cui filtrare</p>
+                <button class="btn" onclick="location.href='MenuDiSelezioneQueryCCS.html';"><img class="return" src="assets/img/return.png" /></button>
+            </div>
+            <div class="containerForm">
+                <form id="myForm">
+                    <div class="form-group row" style="margin: 8% 5%">
+                        <label >Numero CTT:</label>
+                        <div class="inputForm">
+                                <input id="numctt" name="numCTT" oninput="print1();" class="form-control" type="number">
+                        </div>
+                    </div>
+                </form>
+            </div>     
+        </div>
+
+        <div class="previewForm">
+            <div class="titleDateForm">
+                <p>Anteprima</p>
+            </div>
+            <div class="outPreview">
+                <p id="p1"></p>
+            </div>
+            <div class="outPreview" style="height: 40px;margin: 4% 45px;"></div>
+            <button class="btn btn-primary" type="button" style="margin-left: 73.5%; width: 140px;height: 51px;font-family: Calibri light;font-size: 20px;">Conferma</button>
+        </div>
+        
+    </div>
+    
+    <script type="application/javascript">
+
+    var token = sessionStorage.getItem("token");
+    var ruolo = sessionStorage.getItem("ruolo");
+
+
+     verificoToken = function(){
+           if(token == null || ruolo != 'AmministratoreCCS'){
+            alert("E' necessario effettuare il login per accedere a questa risorsa");
+            window.location.href='Login.html';
+           }
+        }
+    </script>
+      
+    <div class="footer"></div>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>
