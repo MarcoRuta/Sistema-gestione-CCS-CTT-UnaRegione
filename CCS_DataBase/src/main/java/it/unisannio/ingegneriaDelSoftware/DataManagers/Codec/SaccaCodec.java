@@ -1,6 +1,8 @@
 package it.unisannio.ingegneriaDelSoftware.DataManagers.Codec;
 
 import it.unisannio.ingegneriaDelSoftware.Classes.*;
+import it.unisannio.ingegneriaDelSoftware.Classes.Beans.SaccaBean;
+import it.unisannio.ingegneriaDelSoftware.Classes.Beans.SerialeBean;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 import org.bson.BsonReader;
 import org.bson.BsonWriter;
@@ -11,17 +13,17 @@ import org.bson.codecs.EncoderContext;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-/**Codec usato per salvare {@link Sacca} all'interno  del DB*/
-public class SaccaCodec implements Codec<Sacca> {
+/**Codec usato per salvare {@link SaccaBean} all'interno  del DB*/
+public class SaccaCodec implements Codec<SaccaBean> {
 
 
     @Override
-    public Sacca decode(BsonReader reader, DecoderContext decoderContext) {
+    public SaccaBean decode(BsonReader reader, DecoderContext decoderContext) {
         reader.readStartDocument();
         reader.readObjectId();
-        Seriale ser = new Seriale();
+        SerialeBean ser = new SerialeBean();
         ser.setSeriale( reader.readString(Constants.ELEMENT_SERIALE));
-        Sacca unaSacca = new Sacca(
+        SaccaBean unaSacca = new SaccaBean(
                 ser,
                 GruppoSanguigno.valueOf(reader.readString(Constants.ELEMENT_GRUPPO)),
                 LocalDate.parse(reader.readString(Constants.ELEMENT_DATAPRODUZIONE),
@@ -34,7 +36,7 @@ public class SaccaCodec implements Codec<Sacca> {
     }
 
     @Override
-    public void encode(BsonWriter writer, Sacca value, EncoderContext encoderContext) {
+    public void encode(BsonWriter writer, SaccaBean value, EncoderContext encoderContext) {
 
         writer.writeStartDocument();
         writer.writeString(Constants.ELEMENT_SERIALE, value.getSeriale().getSeriale());
@@ -46,7 +48,7 @@ public class SaccaCodec implements Codec<Sacca> {
     }
 
     @Override
-    public Class<Sacca> getEncoderClass() {
-        return Sacca.class;
+    public Class<SaccaBean> getEncoderClass() {
+        return SaccaBean.class;
     }
 }

@@ -6,28 +6,27 @@ import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.ExceptionHandler.*;
 import it.unisannio.ingegneriaDelSoftware.Filtri.FiltroDiAutorizzazione;
 import it.unisannio.ingegneriaDelSoftware.SaccheInScadenzaManager.GestioneScadenzeCTT;
-import it.unisannio.ingegneriaDelSoftware.SaccheInScadenzaManager.SaccheInScadenzaClient;
+import WebSocket.ClientEndPoint.SaccheInScadenzaClientEndPoint;
 import it.unisannio.ingegneriaDelSoftware.Filtri.FiltroDiAutentificazione;
 import org.glassfish.jersey.server.ResourceConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
-import java.net.URI;
-import java.net.URISyntaxException;
 
-import javax.websocket.WebSocketContainer;
 import javax.ws.rs.ApplicationPath;
 
 
-@SpringBootApplication (scanBasePackages = {"WebSocketConfig", "ingegneriaDelSoftware"})
+@SpringBootApplication (scanBasePackages = {"WebSocket", "ingegneriaDelSoftware"})
 @ApplicationPath("/rest")
 @EnableScheduling
 @Configuration
-
-
 public class CttDataBaseRestApplication extends ResourceConfig {
+
+	public static Logger logger = LoggerFactory.getLogger(CttDataBaseRestApplication.class);
 
 	public CttDataBaseRestApplication() throws Exception {
 
@@ -58,9 +57,10 @@ public class CttDataBaseRestApplication extends ResourceConfig {
 		register(EndPointNotifiche.class);
 
 	}
-	
-	@Scheduled(cron = "*/10 * * * * *")
+
+	@Scheduled(cron = "*/60 * * * * *")
 	public void gestioneSaccheInScadenza() throws EntityNotFoundException {
+		CttDataBaseRestApplication.logger.info("Inizio il controllo per inoltrare le sacche in scadenza al CCS");
 		GestioneScadenzeCTT ctt = new GestioneScadenzeCTT();
 		ctt.alertSaccheInScadenza();
 		
@@ -68,7 +68,7 @@ public class CttDataBaseRestApplication extends ResourceConfig {
 
 	public static void main(String[] args) {
 		SpringApplication.run(CttDataBaseRestApplication.class, args);
-		SaccheInScadenzaClient saccheInScadenzaClient = new SaccheInScadenzaClient();
+		SaccheInScadenzaClientEndPoint saccheInScadenzaClient = new SaccheInScadenzaClientEndPoint();
 		
 		
 	}

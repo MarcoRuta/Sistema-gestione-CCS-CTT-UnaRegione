@@ -102,6 +102,7 @@
 			for(let i = 0; i < localStorage.length; i++) {
                 if(localStorage.key(i).substring(0,7) == "bottone") {
                     data = localStorage.getItem(localStorage.key(i));
+                    alert(data);
                     addBtn();
                 }
 			}
@@ -109,6 +110,7 @@
     
 
       function addBtn() {
+           alert(data);
           var obj = JSON.parse(data);
           str = "";
 

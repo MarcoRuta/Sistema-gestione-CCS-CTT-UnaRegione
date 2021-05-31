@@ -11,14 +11,19 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
+
+import WebSocket.ClientEndPoint.SaccheInScadenzaClientEndPoint;
 import it.unisannio.ingegneriaDelSoftware.Classes.*;
+import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaSaccaInScadenza;
+import it.unisannio.ingegneriaDelSoftware.CttDataBaseRestApplication;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.*;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 
 public class GestioneScadenzeCTT implements CTTFunction {
-	Map<Seriale,Sacca> saccheInviate = new HashMap<>();
+
+
 	Client client = ClientBuilder.newClient();
 	WebTarget gestioneSaccheInscadenza = client.target(Constants.CCSIP+"/rest/CCS/saccheInScadenza");
 	MongoDataManager mm = MongoDataManager.getInstance();
@@ -34,19 +39,20 @@ public class GestioneScadenzeCTT implements CTTFunction {
 	 * @throws EntityNotFoundException 
 	   */
     public void alertSaccheInScadenza() throws EntityNotFoundException {
-    		//rimuovo eventuali saccheScadute
-	    	removeSaccheScadute();
+    	//rimuovo eventuali saccheScadute
+		removeSaccheScadute();
 
-	    	//recupero le sacche in scadenza
-	    	List<Sacca> saccheInScadenza = getSaccheInScadenza();
-	    	if(!saccheInScadenza.isEmpty())
-	    		gestioneSaccheInscadenza.request().post(Entity.json(saccheInScadenza));
+		//recupero le sacche in scadenza
+		List<Sacca> saccheInScadenza = getSaccheInScadenza();
+		if(!saccheInScadenza.isEmpty())
+			gestioneSaccheInscadenza.request().post(Entity.json(saccheInScadenza));
+		CttDataBaseRestApplication.logger.info("Ho inviato un alert al CCS con la lista delle sacche in scadenza");
 
 	   
 	}
 	
-	/**Restituisce una lista di tutte le sacche che scadono entro le prossime 48-72 ore
-	 * @return la lista di sacche non ancora scadute ma che scadono entro 48-72 ore da oggi
+	/**Restituisce una lista di tutte le sacche che scadono entro le prossime 72 ore
+	 * @return la lista di sacche non ancora scadute ma che scadono entro 72 ore da oggi
 	 *Eccezione che si verifica quando la Sacca inserita non viene trovata
 	 */
 	public List<Sacca> getSaccheInScadenza() throws EntityNotFoundException {
@@ -54,14 +60,14 @@ public class GestioneScadenzeCTT implements CTTFunction {
 		List<Sacca> listaSacche = mm.getListaSacche();
 		List<Sacca> saccheInScadenza = new ArrayList<Sacca>();
 
-		for (Sacca sacca : listaSacche){
-			if( (sacca.getDataScadenza().isBefore(LocalDate.now().plusDays(3))
-					|| sacca.getDataScadenza().equals(LocalDate.now().plusDays(3)))
-		   && (sacca.getDataScadenza().isAfter(LocalDate.now().plusDays(2)) 
-				   || sacca.getDataScadenza().equals(LocalDate.now().plusDays(2)))
-			&& !(this.saccheInviate.containsKey(sacca.getSeriale())))
+
+		for (Sacca sacca : listaSacche)
+			if( ( sacca.getDataScadenza().isBefore(LocalDate.now().plusDays(3)) || sacca.getDataScadenza().equals(LocalDate.now().plusDays(3)))
+			&& !(sacca.isPrenotato())) {
 				saccheInScadenza.add(sacca);
-		}
+				CttDataBaseRestApplication.logger.info("Sacca in scadenza aggiunta: "+sacca.getSeriale().getSeriale());
+			}
+
 		return saccheInScadenza;
 	}
 
@@ -75,8 +81,6 @@ public class GestioneScadenzeCTT implements CTTFunction {
 		for(Sacca sacca : listaSacche) {
 			if(sacca.getDataScadenza().isBefore(LocalDate.now())) {
 				removeSaccaScaduta(sacca);
-				if (this.saccheInviate.containsKey(sacca.getSeriale()))
-					this.saccheInviate.remove(sacca.getSeriale());
 			}
 		}
 	}
@@ -92,6 +96,7 @@ public class GestioneScadenzeCTT implements CTTFunction {
 		mm.setDataAffidamentoDatiSacca(s.getSeriale(), s.getDataScadenza());
 		mm.setEnteRichiedenteDatiSacca(s.getSeriale(), "Scaduta");
 		mm.setIndirizzoEnteDatiSacca(s.getSeriale(), "Scaduta");
+		CttDataBaseRestApplication.logger.info("Ho rimosso la sacca: "+s.getSeriale().getSeriale()+" perchè era scaduta!");
 	}
 
 

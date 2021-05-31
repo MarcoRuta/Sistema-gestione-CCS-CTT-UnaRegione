@@ -12,7 +12,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import it.unisannio.ingegneriaDelSoftware.Classes.CTT;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
-import it.unisannio.ingegneriaDelSoftware.EndPointRest.CCS;
+import it.unisannio.ingegneriaDelSoftware.Functional.CCS;
 
 
 public class DistanceCTTTest {

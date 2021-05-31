@@ -1,9 +1,9 @@
 package it.unisannio.ingegneriaDelSoftware.NotificheObservers;
 
-import WebSocketConfig.WebSocketEndpoint;
+import WebSocket.ServerEndpoint.WebSocketEndPointSaccheInScadenza;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Notifica;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Observer;
-import it.unisannio.ingegneriaDelSoftware.SaccheInScadenzaManager.NotificaSaccaInScadenza;
+import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaSaccaInScadenza;
 
 import javax.websocket.EncodeException;
 import javax.websocket.Session;
@@ -15,7 +15,7 @@ public class TerminaleOperatoreObserver implements Observer {
         try {
             if(notifica instanceof NotificaSaccaInScadenza) {
                 NotificaSaccaInScadenza unaNotifica = (NotificaSaccaInScadenza) notifica;
-                for (Session s : WebSocketEndpoint.sessions)
+                for (Session s : WebSocketEndPointSaccheInScadenza.sessions)
                     // getBasicRemote(), situato nella libria WebSocket, permette di realizzare la comunicazione sincrona
                     s.getBasicRemote().sendObject(unaNotifica);
             }

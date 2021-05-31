@@ -4,7 +4,7 @@ import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Searcher;
-import it.unisannio.ingegneriaDelSoftware.Util.ScadenzeComparator;
+import it.unisannio.ingegneriaDelSoftware.Functional.ScadenzeComparator;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

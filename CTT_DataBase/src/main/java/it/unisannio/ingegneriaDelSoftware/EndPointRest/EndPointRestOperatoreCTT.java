@@ -6,27 +6,27 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Singleton;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 
 import it.unisannio.ingegneriaDelSoftware.Annotazioni.Secured;
 import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
-import it.unisannio.ingegneriaDelSoftware.Classes.NotificaEvasione;
+import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaEvasione;
+import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaSaccaInScadenza;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
+import it.unisannio.ingegneriaDelSoftware.CttDataBaseRestApplication;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
-import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.NotificheObservers.TerminaleMagazziniereObserver;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Observer;
-import it.unisannio.ingegneriaDelSoftware.Interfaces.Subject;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccheInLocaleNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointOperatoreCTT;
-import it.unisannio.ingegneriaDelSoftware.Interfaces.Notifica;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Searcher;
+import WebSocket.ClientEndPoint.SaccheInScadenzaClientEndPoint;
 import it.unisannio.ingegneriaDelSoftware.Searcher.CompositionSearcher;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 
@@ -35,7 +35,7 @@ import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 @Singleton
 @Secured
 @RolesAllowed("OperatoreCTT")
-public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT, Subject{
+public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT{
 
 	private MongoDataManager md = MongoDataManager.getInstance();
 
@@ -59,7 +59,7 @@ public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT, Subject{
 									   @QueryParam("dataArrivoMassima") String dataArrivoMassima,
 									   @QueryParam("enteRichiedente") String enteRichiedente,
 									   @QueryParam("indirizzoEnte") String indirizzoEnte,
-									   @QueryParam("priorità") String priorita) {
+									   @QueryParam("priorità") String priorita) throws InterruptedException {
 		try {
 			List<Sacca> saccheTrovate = new ArrayList<Sacca>();
 			List<String> serialiDaEvadere = new ArrayList<>();
@@ -67,42 +67,47 @@ public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT, Subject{
 			saccheTrovate = this.aSearcher.search(GruppoSanguigno.valueOf(gruppoSanguigno),
 					numSacche,
 					LocalDate.parse(dataArrivoMassima, DateTimeFormatter.ofPattern(Constants.DATEFORMAT)));
+
 			if (!saccheTrovate.isEmpty()) {
 				for (Sacca sacca : saccheTrovate) {
-					md.setPrenotatoSacca(sacca.getSeriale());
+					if(sacca.getDataScadenza().isBefore(LocalDate.now().plusDays(3))
+							|| sacca.getDataScadenza().isEqual(LocalDate.now().plusDays(3)))
+						this.notifyCCS(sacca);
+
 					serialiDaEvadere.add(sacca.getSeriale().getSeriale());
 				}
-				this.notifyMagazziniereObserver(new NotificaEvasione(serialiDaEvadere, enteRichiedente, indirizzoEnte));
+				CttDataBaseRestApplication.logger.info("Ho trovato delle sacche in locale");
 			}
 
 			if (saccheTrovate.size() < numSacche) throw new SaccheInLocaleNotFoundException("Verra contattato il CSS");
 
 			return Response
 					.status(Response.Status.OK) //In questo caso sono state trovate tutte le sacche, va inviata risposta 200 OK 
-					.entity(saccheTrovate)//Va gestito l'inoltro della notifica di evasione sacche presso l'interfaccia REST del magazziniere 
+					.entity(new NotificaEvasione(serialiDaEvadere, enteRichiedente, indirizzoEnte))//Va gestito l'inoltro della notifica di evasione sacche presso l'interfaccia REST del magazziniere
 					.build();
 		} catch (SaccheInLocaleNotFoundException e) {
 			return Response //in realtà deve avviare RicercaSaccaGlobale e passare i parametri al CCS
 					.status(Response.Status.NOT_FOUND)
 					.entity(e.getMessage())
 					.build();
-		} catch (EntityNotFoundException e) {
-			return 	Response //in realtà deve avviare RicercaSaccaGlobale e passare i parametri al CCS
-					.status(Response.Status.INTERNAL_SERVER_ERROR)
-					.entity(e.getMessage())
-					.build();
 		}
 	}
 
-	/**Il terminale del magazziniere è un subject, esso crea notifiche, le notifiche sono di interesse per
-	 * il terminale magazziniere che deve essere notificato*/
-	@Override
-	public void notifyMagazziniereObserver(Notifica notifica) {
-		this.anObserver.update(notifica);
+
+	private void notifyCCS(Sacca sacca) throws InterruptedException {
+		try{
+			Client client = ClientBuilder.newClient();
+			WebTarget evasioneSacca = client
+					.target(Constants.CCSIP+"/rest/CCS/ritiroAlertCTT/")
+					.path(sacca.getSeriale().getSeriale());
+			evasioneSacca.request().delete();
+			CttDataBaseRestApplication.logger.info("Avviso il CCS che ho consumato una delle Sacche in Scadenza");
+		}catch (Exception e){
+			wait(1000*60*2);
+			this.notifyCCS(sacca);
+
+		}
+
 	}
 
-	@Override
-	public void notifyOperatoreObserver(Notifica notifica) {
-		//do nothing
-	}
 }
