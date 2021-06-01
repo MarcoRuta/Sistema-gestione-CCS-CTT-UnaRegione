@@ -1,1 +1,0 @@
-typeSearchIndex = [{"p":"it.unisannio.ingegneriaDelSoftware.junit","l":"AggiungiDipendenteTest"},{"l":"All Classes","u":"allclasses-index.html"}];updateSearchResults();

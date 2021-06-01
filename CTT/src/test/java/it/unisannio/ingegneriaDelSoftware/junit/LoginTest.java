@@ -15,6 +15,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import it.unisannio.ingegneriaDelSoftware.Classes.Cdf;
@@ -23,16 +25,15 @@ import it.unisannio.ingegneriaDelSoftware.Classes.RuoloDipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.Beans.User;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 
+
 public class LoginTest {
 	static String token = null;
 	Client client = ClientBuilder.newClient();
 	WebTarget login = client.target("http://127.0.0.1:8080/rest/autentificazione");
     static MongoDataManager md = MongoDataManager.getInstance();
+
 	
-    /**
-	 * Metodo statico per la popolazione del database 
-	 */
-    public static void populateDB() throws EntityAlreadyExistsException {
+	@BeforeClass public static void populateDBDipendenti() throws EntityAlreadyExistsException {
 		List<Dipendente> listaDipendenti = new ArrayList<Dipendente>();
 	        
 	 	Cdf cdf = Cdf.getCDF("XDDBHH45H57H684W");
@@ -108,44 +109,52 @@ public class LoginTest {
 		User user = responselogin.readEntity(User.class);
 		token = user.getToken();
 	}
-		
-    /**
-     * Metodo statico per la distruzione del database
-     */
-    public static void dropDB() {
-		md.dropDB();
-	}
-    
-    
+			
+	
 	/**
-	*Test che dovrebbe restituire true in quanto l'utente con queste credenziali è presente nel database 
-	 * @throws EntityAlreadyExistsException 
+	*Test che dovrebbe restituire true in quanto l'utente con
+	*queste credenziali è presente nel database 
 	*/
 	@Test	
-	public void test1() throws EntityAlreadyExistsException{  
-		LoginTest.dropDB();
-		LoginTest.populateDB();
+	public void test1(){  			
 		Form form1 = new Form();
 		form1.param("username", "username 003");
 		form1.param("password", "Password3");
 		
 		Response responselogin = login.request().post(Entity.form(form1));
-		assertEquals(Status.CREATED.getStatusCode(), responselogin.getStatus());
-		LoginTest.dropDB();
+		assertEquals(Status.OK.getStatusCode(), responselogin.getStatus());
 	}
-		
+
 	/**
-	*Test che dovrebbe restituire not found in quanto l'utente con queste credenziali non  è presente nel database 
+	*Test che dovrebbe restituire true in quanto l'utente con
+	*queste credenziali è presente nel database 
 	*/
 	@Test	
-	public void test3()throws EntityAlreadyExistsException{ 
-		LoginTest.populateDB();
+	public void test2(){  	
+		Form form1 = new Form();
+		form1.param("username", "username 004");
+		form1.param("password", "Password4");
+		
+		Response responselogin = login.request().post(Entity.form(form1));
+		assertEquals(Status.OK.getStatusCode(), responselogin.getStatus());
+	}
+	
+	/**
+	*Test che dovrebbe restituire true in quanto l'utente con
+	*queste credenziali è presente nel database 
+	*/
+	@Test	
+	public void test3(){  	
 		Form form1 = new Form();
 		form1.param("username", "username 012");
 		form1.param("password", "007");
 		
 		Response responselogin = login.request().post(Entity.form(form1));
-		assertEquals(Status.NOT_FOUND.getStatusCode(), responselogin.getStatus());
-		LoginTest.dropDB();
+		assertEquals(Status.FORBIDDEN.getStatusCode(), responselogin.getStatus());
+	}
+	
+	
+	@AfterClass public static void dropDBDipendenti() {
+		md.dropDB();
 	}
 }

@@ -15,7 +15,10 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import it.unisannio.ingegneriaDelSoftware.Classes.*;
+import it.unisannio.ingegneriaDelSoftware.Classes.Beans.User;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 
@@ -31,6 +34,7 @@ public class RemoveCTTRestTest {
 	 * Classe per la popolamento del database			
 	 * @throws ParseException
 	 */
+	@BeforeClass 
 	public static void setUp() throws EntityAlreadyExistsException {
 		
 		List<CTT> listaCTT = new ArrayList<CTT>();
@@ -144,47 +148,33 @@ public class RemoveCTTRestTest {
 		token = user.getToken();
 	}
 	
-	
-	/**Classe per l'eliminazione del database
-	 */
-	public static void dropDBCTT() {
-		MongoDataManager mm = MongoDataManager.getInstance();
-		mm.dropDB();
-	}
-	
-	
 	/**Test del metodo REST rest/CCS/rimozioneCTT
 	 * Questo test deve andare a buon fine in quanto si tenta di eliminare un CTT inserito nel @BeforeClass
-	 * @throws EntityAlreadyExistsException 
 	 */
-	@Test public void testRimozioneCTTCorretto() throws EntityAlreadyExistsException{	
-		RemoveCTTRestTest.setUp();
+	@Test public void testRimozioneCTTCorretto(){	
+
 		Response responseRemCTT = rimozioneCTT.path("CTT001").request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).delete();
 		assertEquals(Status.OK.getStatusCode(), responseRemCTT.getStatus());
-		RemoveCTTRestTest.dropDBCTT();
-	} 	
+			} 	
 	
 	
 	/**Test del metodo REST rest/CCS/rimozioneCTT
 	 * Questo test non deve andare a buon fine in quanto si tenta di eliminare un CTT non presente nel database
-	 * @throws EntityAlreadyExistsException 
 	*/ 
-	@Test public void testRimozioneCTTNonPresente() throws EntityAlreadyExistsException{
-		RemoveCTTRestTest.setUp();
+	@Test public void testRimozioneCTTNonPresente(){
+		
+
 		Response responseRemCTT = rimozioneCTT.path("CTT008").request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).delete();
 		assertEquals(Status.NOT_FOUND.getStatusCode(), responseRemCTT.getStatus());
-		RemoveCTTRestTest.dropDBCTT();
-	} 	
+	} 
 	
 	
-	/**Test del metodo REST rest/CCS/rimozioneCTT
-	 * Questo test non deve andare a buon fine in quanto si tenta di eliminare un CTT con un nome errato
-	 * @throws EntityAlreadyExistsException, NumberFormatException
-	*/ 
-	/*@Test public void testRimozioneCTTNomeErrato() throws NumberFormatException, EntityAlreadyExistsException{
-		RemoveCTTRestTest.setUp();
-		Response responseRemCTT = rimozioneCTT.path("CTT-008").request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).delete();
-		assertEquals(Status.BAD_REQUEST.getStatusCode(), responseRemCTT.getStatus());
-		RemoveCTTRestTest.dropDBCTT();
-	} */
+
+	/**Classe per l'eliminazione del database
+	 */
+	@AfterClass public static void dropDBCTT() {
+		MongoDataManager mm = MongoDataManager.getInstance();
+		mm.dropDB();
+	}
+	
 }

@@ -12,6 +12,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import it.unisannio.ingegneriaDelSoftware.Classes.Cdf;
@@ -25,7 +27,10 @@ public class LoginRestTest {
 	Client client = ClientBuilder.newClient();
 	WebTarget aggiuntaCTT = client.target("http://127.0.0.1:8080/rest/autentificazione");
 	
-	public static void setUp() throws EntityAlreadyExistsException {		
+	
+	  @BeforeClass
+	  public static void setUp() throws EntityAlreadyExistsException {
+		
 		Cdf cdf = Cdf.getCDF("KTMFSW67T64I460X");
 	    LocalDate ld = LocalDate.parse("1978-10-10");
 	    RuoloDipendente ruolo = RuoloDipendente.AmministratoreCCS;
@@ -34,33 +39,29 @@ public class LoginRestTest {
 	    Dipendente dip = new Dipendente(cdf, "TestAdmin", "TestAdmin", ld, ruolo, username, password);
 	    MongoDataManager mm = MongoDataManager.getInstance();
 	    mm.createDipendente(dip);
-	}
+	  }
 
-	public static void dropDBDip(){
-		MongoDataManager mm = MongoDataManager.getInstance();
-		mm.dropDB();
-	} 
 	  
 	  @Test
-	  public void test1() throws EntityAlreadyExistsException {
-		  LoginRestTest.setUp();
+	  public void test1() {
 		  Form form = new Form();
 		  form.param("username", "admiN");
 		  form.param("password", "Admin");
 		  Response responseaddCTT = aggiuntaCTT.request().post(Entity.form(form));
 		  assertEquals(Status.NOT_FOUND.getStatusCode(), responseaddCTT.getStatus());
-		  LoginRestTest.dropDBDip();	  
-		  }
+	  }
 	  
 	  @Test
-	  public void test2() throws EntityAlreadyExistsException{
-		  LoginRestTest.setUp();
+	  public void test2() {
 		  Form form = new Form();
 		  form.param("username", "admin");
 		  form.param("password", "Adminadmin1");
 		  Response responseaddCTT = aggiuntaCTT.request().post(Entity.form(form));
 		  assertEquals(Status.CREATED.getStatusCode(), responseaddCTT.getStatus());
-		  LoginRestTest.dropDBDip();
 	  }
 	  
+	@AfterClass public static void drop(){
+		MongoDataManager mm = MongoDataManager.getInstance();
+		mm.dropDB();
+	}	  
 }

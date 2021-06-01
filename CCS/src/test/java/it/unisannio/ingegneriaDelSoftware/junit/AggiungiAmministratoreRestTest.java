@@ -1,6 +1,7 @@
 package it.unisannio.ingegneriaDelSoftware.junit;
 
 import static org.junit.Assert.assertEquals;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,11 +16,13 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import it.unisannio.ingegneriaDelSoftware.Classes.Cdf;
 import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.RuoloDipendente;
-import it.unisannio.ingegneriaDelSoftware.Classes.User;
+import it.unisannio.ingegneriaDelSoftware.Classes.Beans.User;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 
 public class AggiungiAmministratoreRestTest {	
@@ -28,7 +31,7 @@ public class AggiungiAmministratoreRestTest {
 	WebTarget aggiuntaAmministratore = client.target("http://127.0.0.1:8080/rest/CCS/aggiuntaAmministratore");
 		
 	
-	public static void populateDBDipendenti() throws EntityAlreadyExistsException {
+	@BeforeClass public static void populateDBDipendenti() throws EntityAlreadyExistsException {
 			List<Dipendente> listaDipendenti = new ArrayList<Dipendente>();
 		        
 		 	Cdf cdf = Cdf.getCDF("XDDBHH45H57H684W");
@@ -104,18 +107,12 @@ public class AggiungiAmministratoreRestTest {
 			User user = responselogin.readEntity(User.class);
 			token = user.getToken();
 		}
-	
-	public static void dropDBDipendenti() {
-		MongoDataManager mm = MongoDataManager.getInstance();
-		mm.dropDB();
-	}
-			
+
+		
 		/** Test per il metodo rest/CCS/aggiuntaamministratore dell'amministratoreCCS
-		 * @throws EntityAlreadyExistsException 
 		 */
 		@Test	
-		public void test1() throws EntityAlreadyExistsException{
-			AggiungiAmministratoreRestTest.populateDBDipendenti();
+		public void test1(){
 			Form form1 = new Form();
 			form1.param("cdf", "SRNGJZ50B54C143L");
 			form1.param("nome", "Ario");
@@ -126,16 +123,13 @@ public class AggiungiAmministratoreRestTest {
 			form1.param("password", "Password123");
 			Response responseaddAmm = aggiuntaAmministratore.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).post(Entity.form(form1));
 			assertEquals(Status.CREATED.getStatusCode(), responseaddAmm.getStatus());
-			AggiungiAmministratoreRestTest.dropDBDipendenti();
 		}
 		
 		
 		/** Test per il metodo rest/CCS/aggiuntaamministratore dell'amministratoreCCS
-		 * @throws EntityAlreadyExistsException 
 		 */
 		@Test	
-		public void test2() throws EntityAlreadyExistsException{
-			AggiungiAmministratoreRestTest.populateDBDipendenti();
+		public void test2(){
 			Form form1 = new Form();
 			form1.param("cdf", "LZZBHR41C46C446V");
 			form1.param("nome", "Lucio");
@@ -146,16 +140,13 @@ public class AggiungiAmministratoreRestTest {
 			form1.param("password", "Password234");
 			Response responseaddAmm = aggiuntaAmministratore.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).post(Entity.form(form1));
 			assertEquals(Status.CREATED.getStatusCode(), responseaddAmm.getStatus());
-			AggiungiAmministratoreRestTest.dropDBDipendenti();
 		}
 		
 		
 		/** Test per il metodo rest/CCS/aggiuntaamministratore dell'amministratoreCCS 
-		 * @throws EntityAlreadyExistsException 
 		 */
 		@Test	
-		public void test3() throws EntityAlreadyExistsException{
-			AggiungiAmministratoreRestTest.populateDBDipendenti();
+		public void test3(){
 			Form form1 = new Form();
 			form1.param("cdf", "LZZBHR41C46C446V");
 			form1.param("nome", "Lucio");
@@ -166,7 +157,11 @@ public class AggiungiAmministratoreRestTest {
 			form1.param("password", "Password234");
 			Response responseaddAmm = aggiuntaAmministratore.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).post(Entity.form(form1));
 			assertEquals(Status.BAD_REQUEST.getStatusCode(), responseaddAmm.getStatus());
-			AggiungiAmministratoreRestTest.dropDBDipendenti();
 		}
-
+		
+		
+		@AfterClass public static void dropDBDipendenti() {
+			MongoDataManager mm = MongoDataManager.getInstance();
+			mm.dropDB();
+		}
 	}

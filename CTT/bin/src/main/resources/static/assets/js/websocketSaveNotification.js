@@ -1,10 +1,10 @@
 			
-	var xhttp = new XMLHttpRequest();
-	var token = sessionStorage.getItem("token");
+//	var xhttp = new XMLHttpRequest();
+//	var token = sessionStorage.getItem("token");
 	
 	var j;
-	var obj;
-	var res;
+//	var obj;
+//	var urlPdf;
 	var hostWS;
 
 	
@@ -12,7 +12,7 @@
 
 	notify.write = function(data) {
 		
-		var str = "";
+/*		var str = "";
 		obj = JSON.parse(data);
 		
 		for(var i=0; i < obj.listaSeriali.length; i++) {
@@ -27,7 +27,7 @@
 		btn.value = str;
 		btn.style = 'width: 98%; max-height: 280px; vertical-align: baseline; margin: 1%; text-align: left;';
 		
-		 /*####### EVASIONE SACCA ######*/
+		 /*####### EVASIONE SACCA ######
 		btn.onclick = function() {
 			
 			var x = document.activeElement;
@@ -37,7 +37,7 @@
 		    var url = hostWS + "/rest/magazziniere/evasione";
 		    xhttp.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
-			    res = this.response;
+			    urlPdf = xhttp.getResponseHeader("Content-Location");
 			    setTimeout(creaPdf,1000);
 			    setTimeout(removeNotify,1500);
 			}else if(this.readyState == 4 && this.status != 200) {

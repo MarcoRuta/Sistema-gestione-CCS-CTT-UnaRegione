@@ -1,6 +1,7 @@
 package it.unisannio.ingegneriaDelSoftware.junit;
 
 import static org.junit.Assert.assertEquals;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -17,6 +18,8 @@ import javax.ws.rs.core.Response.Status;
 
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import it.unisannio.ingegneriaDelSoftware.Classes.Cdf;
 import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
@@ -29,10 +32,8 @@ public class AggiungiDipendenteTest {
 	Client client = ClientBuilder.newClient();
 	WebTarget aggiuntaAmministratore = client.target("http://127.0.0.1:8080/rest/amministratore/aggiuntaDipendente");
 		
-	/**
-	 * Metodo statico per la popolazione del database 
-	 */
-	public static void populateDB() throws EntityAlreadyExistsException {
+	
+	@BeforeClass public static void populateDBDipendenti() throws EntityAlreadyExistsException {
 			List<Dipendente> listaDipendenti = new ArrayList<Dipendente>();
 		        
 		 	Cdf cdf = Cdf.getCDF("XDDBHH45H57H684W");
@@ -109,41 +110,28 @@ public class AggiungiDipendenteTest {
 			token = user.getToken();
 		}
 
-	/**
-	 * Metodo statico per la distruzione del database
-	 */
-	public static void dropDB() {
-		MongoDataManager mm = MongoDataManager.getInstance();
-		mm.dropDB();
-	}
-	
-		/** Test per il metodo addDipendente dell'EndPointRestAmministratoreCTT con ruolo Magazziniere
-		 * @throws EntityAlreadyExistsException 
+		
+		/** Test per il metodo rest/CCS/aggiuntaamministratore dell'amministratoreCCS
 		 */
 		@Test	
-		public void test1() throws EntityAlreadyExistsException{
-			AggiungiDipendenteTest.dropDB();
-			AggiungiDipendenteTest.populateDB();
+		public void test1(){
 			Form form1 = new Form();
 			form1.param("cdf", "SRNGJZ50B54C143L");
-			form1.param("nome", "Mario");
-			form1.param("cognome", "Lucarelli");
+			form1.param("nome", "Ario");
+			form1.param("cognome", "lucarelli");
 			form1.param("dataDiNascita", "1988-07-04");
 			form1.param("ruolo", RuoloDipendente.MagazziniereCTT.toString());
 			form1.param("username", "username 123");
 			form1.param("password", "Password123");
 			Response responseaddAmm = aggiuntaAmministratore.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).post(Entity.form(form1));
-			assertEquals(Status.CREATED.getStatusCode(), responseaddAmm.getStatus());	
-			AggiungiDipendenteTest.dropDB();
+			assertEquals(Status.OK.getStatusCode(), responseaddAmm.getStatus());	
 		}
 		
 		
-		/** Test per il metodo addDipendente dell'EndPointRestAmministratoreCTT con ruolo Operatore
-		 * @throws EntityAlreadyExistsException 
+		/** Test per il metodo rest/CCS/aggiuntaamministratore dell'amministratoreCCS
 		 */
 		@Test	
-		public void test2() throws EntityAlreadyExistsException{
-			AggiungiDipendenteTest.populateDB();
+		public void test2(){
 			Form form1 = new Form();
 			form1.param("cdf", "LZZBHR41C46C446V");
 			form1.param("nome", "Lucio");
@@ -153,102 +141,29 @@ public class AggiungiDipendenteTest {
 			form1.param("username", "username 234");
 			form1.param("password", "Password234");
 			Response responseaddAmm = aggiuntaAmministratore.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).post(Entity.form(form1));
-			assertEquals(Status.CREATED.getStatusCode(), responseaddAmm.getStatus());	
-			AggiungiDipendenteTest.dropDB();
+			assertEquals(Status.OK.getStatusCode(), responseaddAmm.getStatus());	
 		}
 		
 		
-		/** Test per il metodo addDipendente dell'EndPointRestAmministratoreCTT con ruolo Amministratore
-		 * @throws EntityAlreadyExistsException 
+		/** Test per il metodo rest/CCS/aggiuntaamministratore dell'amministratoreCCS 
 		 */
 		@Test	
-		public void test3() throws EntityAlreadyExistsException{
-			AggiungiDipendenteTest.populateDB();
+		public void test3(){
 			Form form1 = new Form();
 			form1.param("cdf", "LZZBHR41C46C446V");
 			form1.param("nome", "Lucio");
 			form1.param("cognome", "Spora");
-			form1.param("dataDiNascita", "1977-04-01");
-			form1.param("ruolo", RuoloDipendente.AmministratoreCTT.toString());
-			form1.param("username", "username 234");
-			form1.param("password", "Password234");
-			Response responseaddAmm = aggiuntaAmministratore.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).post(Entity.form(form1));
-			assertEquals(Status.CREATED.getStatusCode(), responseaddAmm.getStatus());
-		}
-		
-		/** Test per il metodo addDipendente dell'EndPointRestAmministratoreCTT di un dipendente già presente nel database
-		 * @throws EntityAlreadyExistsException 
-		 */
-		@Test	
-		public void test4() throws EntityAlreadyExistsException{
-			Form form1 = new Form();
-			form1.param("cdf", "LZZBHR41C46C446V");
-			form1.param("nome", "Lucio");
-			form1.param("cognome", "Spora");
-			form1.param("dataDiNascita", "1977-04-01");
+			form1.param("dataDiNascita", "01-04-1977"); //formato errato
 			form1.param("ruolo", RuoloDipendente.AmministratoreCTT.toString());
 			form1.param("username", "username 234");
 			form1.param("password", "Password234");
 			Response responseaddAmm = aggiuntaAmministratore.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).post(Entity.form(form1));
 			assertEquals(Status.BAD_REQUEST.getStatusCode(), responseaddAmm.getStatus());
-			AggiungiDipendenteTest.dropDB();
 		}
 		
-		/** Test per il metodo addDipendente dell'EndPointRestAmministratoreCTT con formato data sbagliato
-		 * @throws EntityAlreadyExistsException 
-		 */
-		@Test	
-		public void test5() throws EntityAlreadyExistsException{
-			AggiungiDipendenteTest.populateDB();
-			Form form1 = new Form();
-			form1.param("cdf", "LZZBAS44C46C436V");
-			form1.param("nome", "Antonello");
-			form1.param("cognome", "Messina");
-			form1.param("dataDiNascita", "01-04-1977"); 
-			form1.param("ruolo", RuoloDipendente.AmministratoreCTT.toString());
-			form1.param("username", "username 5");
-			form1.param("password", "Password284");
-			Response responseaddAmm = aggiuntaAmministratore.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).post(Entity.form(form1));
-			assertEquals(Status.BAD_REQUEST.getStatusCode(), responseaddAmm.getStatus());
-			AggiungiDipendenteTest.dropDB();
-		}
 		
-		/** Test per il metodo addDipendente dell'EndPointRestAmministratoreCTT con argomenti sbagliati
-		 * @throws EntityAlreadyExistsException 
-		 */
-		@Test	
-		public void test6() throws EntityAlreadyExistsException{
-			AggiungiDipendenteTest.populateDB();
-			Form form1 = new Form();
-			form1.param("cdf", "LZZBAS44C46C436");
-			form1.param("nome", "Antonello");
-			form1.param("cognome", "Messina");
-			form1.param("dataDiNascita", "01-04-1977"); 
-			form1.param("ruolo", RuoloDipendente.AmministratoreCTT.toString());
-			form1.param("username", "username");
-			form1.param("password", "Password");
-			Response responseaddAmm = aggiuntaAmministratore.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).post(Entity.form(form1));
-			assertEquals(Status.BAD_REQUEST.getStatusCode(), responseaddAmm.getStatus());
-			AggiungiDipendenteTest.dropDB();
+		@AfterClass public static void dropDBDipendenti() {
+			MongoDataManager mm = MongoDataManager.getInstance();
+			mm.dropDB();
 		}
-		
-		/** Test per il metodo addDipendente dell'EndPointRestAmministratoreCTT con assertion error
-		 * @throws EntityAlreadyExistsException 
-		 */
-		@Test	
-		public void test7() throws EntityAlreadyExistsException{
-			AggiungiDipendenteTest.populateDB();
-			Form form1 = new Form();
-			form1.param("cdf", "LZZBASRRC46C436");
-			form1.param("nome", "Antonello");
-			form1.param("cognome", "Messina");
-			form1.param("dataDiNascita", "01-04-1977"); 
-			form1.param("ruolo", RuoloDipendente.AmministratoreCTT.toString());
-			form1.param("username", "username");
-			form1.param("password", "Password");
-			Response responseaddAmm = aggiuntaAmministratore.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).post(Entity.form(form1));
-			assertEquals(Status.BAD_REQUEST.getStatusCode(), responseaddAmm.getStatus());
-			AggiungiDipendenteTest.dropDB();
-		}
-		
 	}

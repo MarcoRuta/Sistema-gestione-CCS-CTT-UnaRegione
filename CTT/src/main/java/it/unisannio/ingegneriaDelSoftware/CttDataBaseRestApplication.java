@@ -1,4 +1,6 @@
 package it.unisannio.ingegneriaDelSoftware;
+
+
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.*;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.ExceptionHandler.*;
@@ -17,6 +19,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 import javax.ws.rs.ApplicationPath;
 
+
 @SpringBootApplication (scanBasePackages = {"WebSocket", "ingegneriaDelSoftware"})
 @ApplicationPath("/rest")
 @EnableScheduling
@@ -26,6 +29,7 @@ public class CttDataBaseRestApplication extends ResourceConfig {
 	public static Logger logger = LoggerFactory.getLogger(CttDataBaseRestApplication.class);
 
 	public CttDataBaseRestApplication() throws Exception {
+
 		//Filtro per autorizzazzione
 		register(FiltroDiAutorizzazione.class);
 		//Filtro per Authentificazione
@@ -38,6 +42,9 @@ public class CttDataBaseRestApplication extends ResourceConfig {
 		register(DateTimeParseExceptionHandler.class);
 		register(EntityNotFoundExceptionHandler.class);
 		register(IllegalArgumentExceptionHandler.class);
+
+
+
 		//Endpoint del Magazziniere
 		register(EndPointRestMagazziniereCTT.class);
 		//EndPoint per il login

@@ -8,7 +8,7 @@ import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
 
 public class SetUpAmministratoreCCS {
-/*################ DA RIMUOVERE ####################*/
+
 	public static void main(String[] args) throws EntityAlreadyExistsException {
 		
 		Cdf cdf = Cdf.getCDF("RRCTRC88S05V467H");
