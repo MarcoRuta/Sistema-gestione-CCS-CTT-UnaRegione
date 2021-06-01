@@ -110,4 +110,12 @@ public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT{
 
 	}
 
+	@DELETE
+	@Path("/prenotaSaccaInScadenza/{seriale}")
+	public Response prenotaSaccaAlert(@PathParam("seriale") String seriale){
+		Client client = ClientBuilder.newClient();
+		WebTarget gestioneSaccheInscadenza = client.target(Constants.CCSIP+"/rest/CCS/prenotaSaccaInScadenza/").path(seriale);
+		return gestioneSaccheInscadenza.request().delete(Response.class);
+	}
+
 }

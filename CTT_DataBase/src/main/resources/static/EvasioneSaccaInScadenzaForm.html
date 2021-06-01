@@ -82,6 +82,7 @@
             var token = sessionStorage.getItem("token");
             var ruolo = sessionStorage.getItem("ruolo");
             var res;
+            var host = document.location.origin;
 
            
 
@@ -100,7 +101,7 @@
                 var enterichiedente = enteRic.value;
                 var params = 'enteRichiedente='+enterichiedente+'&indirizzoEnte='+indirizzorichiedente;
                 
-                var url = "http://192.168.193.220:8080/rest/CCS/prenotaSaccaInScadenza/"+seriale ;
+                var url = host +"/rest/operatore/prenotaSaccaInScadenza/"+seriale ;
 
 
                 xhttp.onreadystatechange = function() {
