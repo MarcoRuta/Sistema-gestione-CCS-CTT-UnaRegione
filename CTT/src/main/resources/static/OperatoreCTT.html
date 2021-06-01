@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+     <script>
+        /*FUNZIONE PER AGGIUNTA NOTIFICA*/
+         /*function addNotification()
+        {
+            var node = document.getElementById("divNot");
+            htmlContent = node.innerHTML;
+            divNot.innerHTML = htmlContent + "<p class='notification'>> Sacca scaduta del gruppo sanguigno A+ del CTT#3</p>";
+        }*/
+        
+        function removeNotification()
+        {
+            divNot.innerHTML = "";
+        }
+    </script>
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>OperatoreCTTHub</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<body onload="start();">
+    <div class="titlePage">
+        <div>
+            <span class="fontTitle">
+                Centro Trasfusionale Territoriale            
+            </span>
+        </div>
+        <div>
+            <img class="logoCTT" src="assets/img/LOGO_CTT.svg">
+        </div>
+    </div>
+    
+    <div class="container">
+        
+        <div class="row" style="margin-left:0px; margin-right: 0px">
+            <div class="border col boxProfile" style="background-image: url(&quot;assets/img/bg-pattern.png&quot;);">
+                <div class="row">
+                    <div class="col-sm">
+                        <img src="assets/img/doctor+pediatrician+icon-1320185104387356300.png" style="width: 200px;margin: 5% 7%;">
+                        <span style="padding-left: 22%">Operatore CTT</span>
+                    </div>
+                    <div class="col-sm" style="margin-top: 9%; margin-left: -2em">
+                        <div>
+                            <p id="nome">Nome: </p>
+                        </div>
+                        <div style="margin: 30px 0%;">
+                            <p id="cognome">Cognome: </p>
+                        </div>
+                        <div style="width: 300px;">
+                            <button class="btn btn-primary" onclick="location.href='ChangePasswordAfterLogin.html';" type="button" style="background-color: #13958d;">Change Password</button>
+                            <button class="btn btn-primary" onclick="logout();" type="button" style="margin: 0% 5%">Log out</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border col-sm boxButton" style="background-image: url(&quot;assets/img/bg-pattern.png&quot;);">
+                <div class="containerBtn">
+                        <p style="margin-left: 30%; margin-top: -1.5em "><b>Azioni</b></p>
+                        <div class="row" style="width:75%; margin-top: 5%; margin-left: 16%;">
+                            <div class="col-sm">
+                                <button class="btn btn-primary" onclick="location.href='RicercaSaccaForm.html';" type="button" style="background-color: #13958d; width: 210px;">Ricerca sacca</button>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+         
+        <div class="boxNotification col-sm-12 border shadow-sm profile-box" style="background-image: url(&quot;assets/img/bg-pattern.png&quot;);">
+            <h2>Notifiche</h2>
+            <div class="divNotMag" id="divNot"></div>
+        </div> 
+    </div>
+    
+    <script>
+        var token = sessionStorage.getItem("token");
+        var ruolo = sessionStorage.getItem("ruolo");
+        var name = sessionStorage.getItem("nome");
+        var surname = sessionStorage.getItem("cognome");
+        var data;
+        var str;
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+
+        function start(){
+            verificoToken();
+            setPerson();
+        }
+        
+        function setPerson(){
+            document.getElementById("nome").textContent = "Nome: " + name;
+            document.getElementById("cognome").textContent = "Cognome: " + surname;
+        }
+
+        verificoToken = function(){
+                 if(token == null || ruolo != 'OperatoreCTT'){
+                  alert("E' necessario effettuare il login per accedere a questa risorsa");
+                  window.location.href='Login.html';
+                 }
+        };
+
+        logout = function(){
+
+           var xhttp = new XMLHttpRequest();
+           var host = document.location.origin;
+           var url = host + "/rest/autentificazione/logout";
+           xhttp.onreadystatechange = function() {
+                       if (this.readyState == 4 && this.status == 200 ) {
+                            sessionStorage.removeItem("token");
+                            sessionStorage.removeItem("ruolo");
+                            sessionStorage.removeItem("nome");
+                            sessionStorage.removeItem("cognome");
+                            sessionStorage.removeItem("cdf");
+                            window.location.href='Login.html';
+                       }else {
+                           if(this.readyState == 4 && this.status != 200 ){
+                               alert(this.response);
+                           }
+                       }
+           };
+
+
+            xhttp.onerror = function(){
+                       alert("impossibile inviare la richiesta");
+            };
+
+
+            xhttp.open("DELETE", url, true);
+            xhttp.setRequestHeader('Authorization', 'Basic '+token);
+            xhttp.withCredentials = true;
+            xhttp.send();
+
+        };
+
+
+        function sessionload() {
+			for(let i = 0; i < localStorage.length; i++) {
+                if(localStorage.key(i).substring(0,15) == "scadenzaBottone") {
+                    data = localStorage.getItem(localStorage.key(i));
+                    addBtn();
+                }
+			}
+        }
+
+
+      function addBtn() {
+          var array = JSON.parse(data);
+          for(let i =0; i<array.length; i++){
+              var btn = document.createElement("button");
+              str = array[i].seriale;
+              btn.className='btn btn-warning';
+              let date = new Date(array[i].dataScadenza.year, array[i].dataScadenza.monthValue-1, array[i].dataScadenza.dayOfMonth);
+
+              btn.innerHTML = "Sacca: " + str + "<br>Gruppo Sanguigno: " + array[i].gruppoSanguigno + "<br>Data Scadenza: " + date.toLocaleDateString(undefined, options);
+              btn.type = 'submit';
+              btn.value = str;
+              btn.id = 'btnSc';
+              btn.style = 'width: 98%; max-height: 280px; vertical-align: baseline; margin: 1%; text-align: left;';
+
+              /*####### EVASIONE SACCA ######*/
+              btn.onclick = function() {
+                  var x = document.activeElement;
+                  var myWindow = window.open("EvasioneSaccaInScadenzaForm.html?seriale="+x.value, "Evasione", "width=auto,height=auto");
+
+              }
+              document.getElementById("divNot").appendChild(btn);
+          }
+      }
+    </script>
+    
+    <div class="footer"></div>
+    <script src = "assets/js/webSocketScadenze.js"></script>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>

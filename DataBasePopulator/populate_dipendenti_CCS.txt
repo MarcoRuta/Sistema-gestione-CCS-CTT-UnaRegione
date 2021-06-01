@@ -1,0 +1,12 @@
+[{
+  "_id": {
+    "$oid": "60b0fda90be1b4e005a15eb8"
+  },
+  "cdf": "ZLWSBD62C16B959G",
+  "nome": "Amministratore",
+  "cognome": "DiProva",
+  "dataDiNascita": "1950-05-17",
+  "ruolo": "AmministratoreCCS",
+  "username": "amministratore",
+  "password": "Amministratore1"
+}]

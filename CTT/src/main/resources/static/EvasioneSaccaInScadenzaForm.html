@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script>
+        function print1(){
+            if(enteRic.value!="")
+                document.getElementById("p1").innerHTML = "Ente richiedente: "+"<span class='textPrint'>" +enteRic.value+"</span>";
+            else document.getElementById("p1").innerHTML = "Ente richiedente: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
+        }
+        function print2(){
+            if(indirizzo.value!=0)
+                document.getElementById("p2").innerHTML = "Indirizzo: "+"<span class='textPrint'>" +indirizzo.value+"</span>";
+            else document.getElementById("p2").innerHTML = "Indirizzo: <span class='errorPrint'>SI PREGA DI COMPILARE IL CAMPO</span>";
+        }
+
+    </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>EvasioneSaccaInScadenzaForm</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/formStyles.css">
+</head>
+
+<body onload="verificoToken();">
+    <div class="titlePage">
+        <div>
+            <span class="fontTitle">
+                Ricerca Sacca Form            
+            </span>
+        </div>
+        <div>
+            <img class="logoCTT" src="assets/img/LOGO_CTT.svg">
+        </div>
+    </div>
+    
+    <div class="container" style="max-width: 1430px; margin: 1.5% auto;">
+        
+        <div class="dateForm">
+            <div class="titleDateForm">
+                <p>Inserisci i dati</p>
+                <button class="btn" onclick="location.href='OperatoreCTT.html';"><img class="return" src="assets/img/return.png" /></button>
+            </div>
+            <div class="containerForm">
+                <form id="myForm">
+                    <div class="form-group row">
+                        <label>Ente richiedente:</label>
+                        <div class="col-sm-10 inputForm">
+                            <input id="enteRic" name="ente_richiedente" oninput="print1();" class="form-control" type="text" placeholder="Ente Richiedente">
+                        </div>  
+                    </div>
+                    <div class="form-group row">
+                            <label>Indirizzo:</label>
+                            <div class="col-sm-10 inputForm">
+                                <input id="indirizzo" name="ind" oninput="print2();" class="form-control" type="text" >
+                            </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="previewForm">
+            <div class="titleDateForm">
+                <p>Anteprima</p>
+            </div>
+            <div class="outPreview">
+                <p id="p1"></p>
+                <p id="p2"></p>
+            </div>
+            <div class="outPreview" style="height: 40px;margin: 4% 45px;">
+                <p id = "result"></p>
+            </div>
+            <button class="btn btn-primary" type="button" onclick="loadDoc();" style="margin-left: 73.5%; width: 140px;height: 51px;font-family: Calibri light;font-size: 20px;">Conferma</button>
+        </div>
+        
+    </div>
+ 
+    <script type="application/javascript">
+
+     
+            var token = sessionStorage.getItem("token");
+            var ruolo = sessionStorage.getItem("ruolo");
+            var res;
+            var host = document.location.origin;
+
+           
+
+            verificoToken = function(){
+               if(token == null || ruolo != 'OperatoreCTT'){
+                alert("E' necessario effettuare il login per accedere a questa risorsa");
+                window.location.href='Login.html';
+               }
+            };
+            
+            function loadDoc(){   
+                var xhttp = new XMLHttpRequest();
+            	var para = new URLSearchParams(window.location.search);
+                var seriale = para.get("seriale");
+                var indirizzorichiedente = indirizzo.value;
+                var enterichiedente = enteRic.value;
+                var params = 'enteRichiedente='+enterichiedente+'&indirizzoEnte='+indirizzorichiedente;
+                
+                var url = host +"/rest/operatore/prenotaSaccaInScadenza/"+seriale ;
+
+
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                 	    alert(this.response);
+                 	    parent.location.reload(true);
+                 	    window.close();
+                 	}else{
+                 	    if (this.readyState == 4 && this.status != 200){
+                 	        alert(this.response);
+                 	        parent.location.reload(true);
+                 	        window.close();
+                 	    }
+                 	}
+                };
+                
+                xhttp.onerror = function(){
+                    alert(this.response);
+                    parent.location.reload(true);
+                    window.close();
+                };
+
+
+                
+                xhttp.open('POST', url, true);
+                xhttp.setRequestHeader('Authorization', 'Basic '+token);
+                xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhttp.withCredentials = true;
+                xhttp.send(params);
+            }
+
+    window.onunload =  function(){
+        window.opener.location.reload();
+    }
+
+    </script>
+
+
+
+    <div class="footer"></div>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/scriptControl.js"></script>
+</body>
+
+</html>
