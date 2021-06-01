@@ -5,21 +5,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.unisannio.ingegneriaDelSoftware.Classes.CTTName;
+import it.unisannio.ingegneriaDelSoftware.Functional.CCS;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import it.unisannio.ingegneriaDelSoftware.Classes.CTT;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
-import it.unisannio.ingegneriaDelSoftware.Functional.CCS;
+
 
 
 public class DistanceCTTTest {
 	
 	/**Classe per il popolamento del database
 	 */
-	@BeforeClass public static void populateDataBaseCTT() throws EntityAlreadyExistsException {
+	@Before
+	public void setUp() throws EntityAlreadyExistsException {
 		
 		List<CTT> listaCTT = new ArrayList<CTT>();
 		
@@ -42,14 +45,22 @@ public class DistanceCTTTest {
 	}
 	
 	CCS ccs = new CCS();
+
+	
+	@After
+	public void dropDB(){
+		MongoDataManager mm = MongoDataManager.getInstance();
+		mm.dropDB();
+	}
 	
 	
 	/**Test 1
 	 * Il CTT più vicino al 4 (Campobasso) dovrebbe essere il 3 (Ferrazano)
 	 * @throws it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException
+	 * @throws EntityAlreadyExistsException 
 	 */
 	@Test
-	public void test1() throws EntityNotFoundException {
+	public void test1() throws EntityNotFoundException, EntityAlreadyExistsException {
 		assertEquals("CTT003",ccs.CttPiuVicino(CTTName.getCttName("CTT004")).getDenominazione().getCttname());
 	}
 	
@@ -57,9 +68,10 @@ public class DistanceCTTTest {
 	/**Test 2
 	 * Il CTT più vicino al 1 (Benevento) dovrebbe essere il 2 (Morcone)
 	 * @throws EntityNotFoundException
+	 * @throws EntityAlreadyExistsException 
 	 */
 	@Test
-	public void test2() throws EntityNotFoundException {
+	public void test2() throws EntityNotFoundException, EntityAlreadyExistsException {
 		assertEquals("CTT002",ccs.CttPiuVicino(CTTName.getCttName("CTT001")).getDenominazione().getCttname());
 	}
 	
@@ -67,9 +79,10 @@ public class DistanceCTTTest {
 	/**Test 3
 	 * Il CTT più vicino al 2 (Morcone) dovrebbe essere il 4 (Ferrazzano)
 	 * @throws EntityNotFoundException
+	 * @throws EntityAlreadyExistsException 
 	 */
 	@Test
-	public void test3() throws EntityNotFoundException {
+	public void test3() throws EntityNotFoundException, EntityAlreadyExistsException {
 		assertEquals("CTT003",ccs.CttPiuVicino(CTTName.getCttName("CTT002")).getDenominazione().getCttname());
 	}
 	
@@ -77,19 +90,10 @@ public class DistanceCTTTest {
 	/**Test 4
 	 * Il CTT più vicino al 2 (Ferrazzano) dovrebbe essere il 4 (Campobasso)
 	 * @throws EntityNotFoundException
+	 * @throws EntityAlreadyExistsException 
 	 */
 	@Test
-	public void test4() throws EntityNotFoundException {
+	public void test4() throws EntityNotFoundException, EntityAlreadyExistsException {
 		assertEquals("CTT004",ccs.CttPiuVicino(CTTName.getCttName("CTT003")).getDenominazione().getCttname());
 	}
-
-	
-	/**
-	 * Classe per l'eliminazione del database
-	 */
-	@AfterClass public static void dropDataBaseCTT() {
-		MongoDataManager mm = MongoDataManager.getInstance();
-		mm.dropDB();
-	}
-
 }

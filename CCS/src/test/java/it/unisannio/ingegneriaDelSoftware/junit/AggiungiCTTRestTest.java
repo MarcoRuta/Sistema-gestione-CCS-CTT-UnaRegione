@@ -14,8 +14,9 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import it.unisannio.ingegneriaDelSoftware.Classes.Cdf;
@@ -30,8 +31,8 @@ public class AggiungiCTTRestTest {
 	Client client = ClientBuilder.newClient();
 	WebTarget aggiuntaCTT = client.target("http://127.0.0.1:8080/rest/CCS/aggiuntaCTT");
 	
-	  @BeforeClass
-	  public static void setUp() throws EntityAlreadyExistsException {
+	@Before
+	public  void setUp() throws EntityAlreadyExistsException {
 		
 		Cdf cdf = Cdf.getCDF("KTMFSW67T64I460X");
 	    LocalDate ld = LocalDate.parse("1978-10-10");
@@ -53,64 +54,64 @@ public class AggiungiCTTRestTest {
 		token = user.getToken();
 	  }
 	  
-  @Test	public void testAggiuntaCTTCorretto(){
-	Form form1 = new Form();
-	form1.param("numero_ctt", "5");
-	form1.param("nome_ctt", "CTT005");
-	form1.param("provincia", "BN");
-	form1.param("citta", "Campolattaro");
-	form1.param("indirizzo", "Via del testing 12");
-	form1.param("telefono", "0821432576");
-	form1.param("email", "CTT005@gmail.com");
-	form1.param("latitude", "65");
-	form1.param("longitude", "41");
-	Response responseaddCTT = aggiuntaCTT.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).post(Entity.form(form1));
-	assertEquals(Status.OK.getStatusCode(), responseaddCTT.getStatus());
+	@After
+	public void drop(){
+		MongoDataManager mm = MongoDataManager.getInstance();
+		mm.dropDB();
+	} 
+	
+	@Test public void testAggiuntaCTTCorretto() throws EntityAlreadyExistsException{
+
+		Form form1 = new Form();
+		form1.param("numero_ctt", "5");
+		form1.param("nome_ctt", "CTT005");
+		form1.param("provincia", "BN");
+		form1.param("citta", "Campolattaro");
+		form1.param("indirizzo", "Via del testing 12");
+		form1.param("telefono", "0821432576");
+		form1.param("email", "CTT005@gmail.com");
+		form1.param("latitude", "65");
+		form1.param("longitude", "41");
+		Response responseaddCTT = aggiuntaCTT.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).post(Entity.form(form1));
+		assertEquals(Status.OK.getStatusCode(), responseaddCTT.getStatus());
 	}
   
-  @Test	public void testWrong_numero_ctt(){
-	Form form1 = new Form();
-	form1.param("provincia", "BN");
-	form1.param("citta", "Campolattaro");
-	form1.param("indirizzo", "Via del testing 12");
-	form1.param("telefono", "0821432576");
-	form1.param("email", "CTT005gmail.com");
-	form1.param("latitude", "65");
-	form1.param("longitude", "41");
-	Response responseaddCTT = aggiuntaCTT.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).post(Entity.form(form1));
-	assertEquals(Status.BAD_REQUEST.getStatusCode(), responseaddCTT.getStatus());
+	@Test public void testWrong_numero_ctt() throws EntityAlreadyExistsException{
+		Form form1 = new Form();
+		form1.param("provincia", "BN");
+		form1.param("citta", "Campolattaro");
+		form1.param("indirizzo", "Via del testing 12");
+		form1.param("telefono", "0821432576");
+		form1.param("email", "CTT005gmail.com");
+		form1.param("latitude", "65");
+		form1.param("longitude", "41");
+		Response responseaddCTT = aggiuntaCTT.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).post(Entity.form(form1));
+		assertEquals(Status.BAD_REQUEST.getStatusCode(), responseaddCTT.getStatus());
 	}
   
-  @Test	public void testWrong_telefono_ctt(){
-	Form form1 = new Form();
-	form1.param("provincia", "BN");
-	form1.param("citta", "Campolattaro");
-	form1.param("indirizzo", "Via del testing 12");
-	form1.param("telefono", "0821432576a");			//è stato inserito un input non valido per il campo telefono
-	form1.param("email", "CTT005@gmail.com");
-	form1.param("latitude", "65");
-	form1.param("longitude", "41");
-	Response responseaddCTT = aggiuntaCTT.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).post(Entity.form(form1));
-	assertEquals(Status.BAD_REQUEST.getStatusCode(), responseaddCTT.getStatus());
+	@Test public void testWrong_telefono_ctt() throws EntityAlreadyExistsException{
+		Form form1 = new Form();
+		form1.param("provincia", "BN");
+		form1.param("citta", "Campolattaro");
+		form1.param("indirizzo", "Via del testing 12");
+		form1.param("telefono", "0821432576a");			//è stato inserito un input non valido per il campo telefono
+		form1.param("email", "CTT005@gmail.com");
+		form1.param("latitude", "65");
+		form1.param("longitude", "41");
+		Response responseaddCTT = aggiuntaCTT.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).post(Entity.form(form1));
+		assertEquals(Status.BAD_REQUEST.getStatusCode(), responseaddCTT.getStatus());
 	}
 
-  @Test	public void testWrong_latitudine(){
-	Form form1 = new Form();
-	form1.param("provincia", "BN");
-	form1.param("citta", "Campolattaro");
-	form1.param("indirizzo", "Via del testing 12");
-	form1.param("telefono", "0821432576");			
-	form1.param("email", "CTT005@gmail.com");
-	form1.param("latitude", "190");			//è stato inserito un input non valido per la latitudine
-	form1.param("longitude", "41");
-	Response responseaddCTT = aggiuntaCTT.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).post(Entity.form(form1));
-	assertEquals(Status.BAD_REQUEST.getStatusCode(), responseaddCTT.getStatus());
+	@Test public void testWrong_latitudine() throws EntityAlreadyExistsException{
+		Form form1 = new Form();
+		form1.param("provincia", "BN");
+		form1.param("citta", "Campolattaro");
+		form1.param("indirizzo", "Via del testing 12");
+		form1.param("telefono", "0821432576");			
+		form1.param("email", "CTT005@gmail.com");
+		form1.param("latitude", "190");			//è stato inserito un input non valido per la latitudine
+		form1.param("longitude", "41");
+		Response responseaddCTT = aggiuntaCTT.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).post(Entity.form(form1));
+		assertEquals(Status.BAD_REQUEST.getStatusCode(), responseaddCTT.getStatus());
 	}
-	  	  
-  
-	@AfterClass public static void drop(){
-	MongoDataManager mm = MongoDataManager.getInstance();
-	mm.dropDB();
-	}
-	  
 }

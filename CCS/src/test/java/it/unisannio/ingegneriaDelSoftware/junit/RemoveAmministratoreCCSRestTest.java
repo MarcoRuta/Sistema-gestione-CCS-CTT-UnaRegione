@@ -1,7 +1,6 @@
 package it.unisannio.ingegneriaDelSoftware.junit;
 
 import static org.junit.Assert.assertEquals;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,10 +12,10 @@ import javax.ws.rs.core.Form;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import it.unisannio.ingegneriaDelSoftware.Classes.Cdf;
 import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
@@ -31,8 +30,8 @@ public class RemoveAmministratoreCCSRestTest {
 	Client client = ClientBuilder.newClient();
 	WebTarget rimozioneAmm = client.target("http://127.0.0.1:8080/rest/CCS/rimozioneAmministratore");
 	
-	
-	@BeforeClass public static void populateDBDipendenti() throws EntityAlreadyExistsException {
+	@Before
+	public void setUp() throws EntityAlreadyExistsException {
 		List<Dipendente> listaDipendenti = new ArrayList<Dipendente>();
 	        
 	 	Cdf cdf = Cdf.getCDF("XDDBHH45H57H684W");
@@ -109,11 +108,19 @@ public class RemoveAmministratoreCCSRestTest {
 		token = user.getToken();
 	}
 	
+	@After
+	/**Classe per l'eliminazione del database
+	 */
+	public  void dropDB() {
+		MongoDataManager mm = MongoDataManager.getInstance();
+		mm.dropDB();
+	}
+	
 	/**Test del metodo REST rest/CCS/rimozioneAmministratore
 	 * Questo test deve andare a buon fine in quanto si tenta di eliminare un Dipendente inserito nel @BeforeClass
+	 * @throws EntityAlreadyExistsException 
 	 */
-	@Test public void testRimozioneAmministratoreCCSCorretto(){	
-
+	@Test public void testRimozioneAmministratoreCCSCorretto() throws EntityAlreadyExistsException{	
 		Response responseRemAmm = rimozioneAmm.path("BVNZDG48A06D684R").request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).delete();
 		assertEquals(Status.OK.getStatusCode(), responseRemAmm.getStatus());
 	} 	
@@ -121,20 +128,20 @@ public class RemoveAmministratoreCCSRestTest {
 	
 	/**Test del metodo REST rest/CCS/rimozioneAmministratore
 	 * Questo test non deve andare a buon fine in quanto si tenta di eliminare un Dipendente non presente nel database
+	 * @throws EntityAlreadyExistsException 
 	*/ 
-	@Test public void testRimozioneAmministratoreCCSNonPresente(){
-		
-		Response responseRemAmm = rimozioneAmm.path("BVNZDG48A06D684R").request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).delete();
+	@Test public void testRimozioneAmministratoreCCSNonPresente() throws EntityAlreadyExistsException{
+		Response responseRemAmm = rimozioneAmm.path("NONPRE53N07D684R").request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).delete();
 		assertEquals(Status.NOT_FOUND.getStatusCode(), responseRemAmm.getStatus());
 	} 
 	
-	
+	/**Test del metodo REST rest/CCS/rimozioneAmministratore
+	 * Questo test non deve andare a buon fine in quanto l'amministratore tenta di eliminare se stesso mentre è loggato
+	 * @throws EntityAlreadyExistsException 
+	*/ 
+	@Test public void testRimozioneAmministratoreCCSSeStesso() throws EntityAlreadyExistsException{
+		Response responseRemAmm = rimozioneAmm.path("CZGMJS46A28I333C").request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).delete();
+		assertEquals(Status.FORBIDDEN.getStatusCode(), responseRemAmm.getStatus());
+	} 
 
-	/**Classe per l'eliminazione del database
-	 */
-	@AfterClass public static void dropDBDip() {
-		MongoDataManager mm = MongoDataManager.getInstance();
-		mm.dropDB();
-	}
-	
 }

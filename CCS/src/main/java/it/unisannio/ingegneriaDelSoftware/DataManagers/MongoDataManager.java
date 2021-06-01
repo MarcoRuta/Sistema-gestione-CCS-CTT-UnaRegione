@@ -42,7 +42,7 @@ public class MongoDataManager {
     public void dropDB() {
         MongoDatabase database = mongoClient.getDatabase(Constants.DB_NAME);
         database.drop();
-        mongoClient.close();
+
     }
 
     /**Restituisce una MongoCollection<Sacca> registrando il codec di base di Mongo per la serializzazione in BSON

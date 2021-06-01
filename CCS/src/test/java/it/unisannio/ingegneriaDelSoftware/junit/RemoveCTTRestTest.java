@@ -17,8 +17,9 @@ import javax.ws.rs.core.Response.Status;
 import it.unisannio.ingegneriaDelSoftware.Classes.*;
 import it.unisannio.ingegneriaDelSoftware.Classes.Beans.User;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 
@@ -34,13 +35,12 @@ public class RemoveCTTRestTest {
 	 * Classe per la popolamento del database			
 	 * @throws ParseException
 	 */
-	@BeforeClass 
-	public static void setUp() throws EntityAlreadyExistsException {
+	@Before
+	public  void setUp() throws EntityAlreadyExistsException {
 		
 		List<CTT> listaCTT = new ArrayList<CTT>();
 	        
 		Integer numero = 1;
-        String denominazione = "San Giuliano";
         String provincia = "NA";
         String citta = "Giugliano";
         String telefono = "0818955111";
@@ -52,7 +52,6 @@ public class RemoveCTTRestTest {
         listaCTT.add(CTT001);
         
         numero = 2;
-        denominazione = "Ospedale del Mare";
         provincia = "NA";
         citta = "Napoli";
         telefono = "0812541111";
@@ -64,7 +63,6 @@ public class RemoveCTTRestTest {
         listaCTT.add(CTT002);
         
         numero = 3;
-        denominazione = "Maria SS. Addolorata";
         provincia = "SA";
         citta = "Eboli";
         telefono = "0828362111";
@@ -76,7 +74,6 @@ public class RemoveCTTRestTest {
         listaCTT.add(CTT003);
         
         numero = 4;
-        denominazione = "Ospedale SS. Annunziata";
         provincia = "NA";
         citta = "Napoli";
         telefono = "0812542598";
@@ -88,7 +85,6 @@ public class RemoveCTTRestTest {
         listaCTT.add(CTT004);
         
         numero = 5;
-        denominazione = "San Pio";
         provincia = "BN";
         citta = "Benevento";
         telefono = "0824571115";
@@ -100,7 +96,6 @@ public class RemoveCTTRestTest {
         listaCTT.add(CTT005);
         
         numero = 6;
-        denominazione = "San Giuseppe";
         provincia = "AV";
         citta = "Avellino";
         telefono = "0825203111";
@@ -112,7 +107,6 @@ public class RemoveCTTRestTest {
         listaCTT.add(CTT006);
         
         numero = 7;
-        denominazione = "PSAUT";
         provincia = "BN";
         citta = "San Bartolomeo in Galdo";
         telefono = "0824789053";
@@ -148,33 +142,34 @@ public class RemoveCTTRestTest {
 		token = user.getToken();
 	}
 	
+	
+	/**Classe per l'eliminazione del database
+	 */
+	@After
+	public  void dropDBCTT() {
+		MongoDataManager mm = MongoDataManager.getInstance();
+		mm.dropDB();
+	}
+	
+	
 	/**Test del metodo REST rest/CCS/rimozioneCTT
 	 * Questo test deve andare a buon fine in quanto si tenta di eliminare un CTT inserito nel @BeforeClass
+	 * @throws EntityAlreadyExistsException 
 	 */
-	@Test public void testRimozioneCTTCorretto(){	
-
+	@Test public void testRimozioneCTTCorretto() throws EntityAlreadyExistsException{	
 		Response responseRemCTT = rimozioneCTT.path("CTT001").request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).delete();
 		assertEquals(Status.OK.getStatusCode(), responseRemCTT.getStatus());
-			} 	
+	} 	
 	
 	
 	/**Test del metodo REST rest/CCS/rimozioneCTT
 	 * Questo test non deve andare a buon fine in quanto si tenta di eliminare un CTT non presente nel database
+	 * @throws EntityAlreadyExistsException 
 	*/ 
-	@Test public void testRimozioneCTTNonPresente(){
-		
-
+	@Test public void testRimozioneCTTNonPresente() throws EntityAlreadyExistsException{
 		Response responseRemCTT = rimozioneCTT.path("CTT008").request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).delete();
 		assertEquals(Status.NOT_FOUND.getStatusCode(), responseRemCTT.getStatus());
-	} 
+	} 	
 	
-	
-
-	/**Classe per l'eliminazione del database
-	 */
-	@AfterClass public static void dropDBCTT() {
-		MongoDataManager mm = MongoDataManager.getInstance();
-		mm.dropDB();
-	}
 	
 }

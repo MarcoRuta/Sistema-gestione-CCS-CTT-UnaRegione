@@ -2,7 +2,6 @@ package it.unisannio.ingegneriaDelSoftware.junit;
 
 
 import static org.junit.Assert.assertEquals;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,10 +13,10 @@ import javax.ws.rs.core.Form;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import it.unisannio.ingegneriaDelSoftware.Classes.Beans.*;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import it.unisannio.ingegneriaDelSoftware.Classes.Cdf;
 import it.unisannio.ingegneriaDelSoftware.Classes.DatiSacca;
@@ -25,26 +24,25 @@ import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.Classes.RuoloDipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
-import it.unisannio.ingegneriaDelSoftware.Classes.Beans.User;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
-
 public class RicercaSaccaLocaleTest {
 
-	static MongoDataManager md = MongoDataManager.getInstance();
+
 	static String token = null;
 	Client client = ClientBuilder.newClient();
 	WebTarget evasioneSacca = client.target("http://127.0.0.1:8080/rest/operatore/ricerca");
 	
-	@BeforeClass public static void populateDBSacche() throws EntityAlreadyExistsException {
+	/**
+     * Metodo statico per il popolamento del database
+     */
+	@Before
+	public void setUp() throws EntityAlreadyExistsException {
 		
-
 	    	List<Sacca> listaSacche = new ArrayList<Sacca>();
 	    	List<DatiSacca> listaDatiSacche = new ArrayList<DatiSacca>();
+	
+	    	// Carico cinque sacche per tipo 
 	    	
-	    	//Caricamento sul sistema di cinque Sacche di tipo A+, 4 sacche sono arrivate nel magazzino tra il 15-07-2020 e il 02-05-2021 e hanno data di scadenza lontana (2022)
-	    	//Una sacca è arrivata nel 2018 ed è già scaduta
-	    	//Tutte le Sacche sono non prenotate e quindi affidabili ad un ente esterno 
-
 	    	//Prima sacca 
 	    	GruppoSanguigno gs = GruppoSanguigno.Ap;
 	    	LocalDate localDataProduzione = LocalDate.of(2020,04,10);
@@ -93,8 +91,7 @@ public class RicercaSaccaLocaleTest {
 	    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
 	    	 listaDatiSacche.add(datisacca); 
 
-
-	    	//La sacca scaduta
+	    	 //Quinta sacca
 	    	 gs = GruppoSanguigno.Ap;
 	    	 localDataProduzione = LocalDate.of(2018,06,10);
 	    	 localDataScadenza = LocalDate.of(2023,06,10);
@@ -106,10 +103,6 @@ public class RicercaSaccaLocaleTest {
 	    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
 	    	 listaDatiSacche.add(datisacca); 
 
-	    	//Caricamento sul sistema di cinque Sacche di tipo A-, 4 sacche sono arrivate nel magazzino tra il 15-07-2020 e il 02-05-2021 e hanno data di scadenza lontana
-	    	//Una sacca è arrivata nel 2018 ed è già scaduta
-	    	//Tutte le Sacche sono non prenotate e quindi affidabili ad un ente esterno 
-
 	    	//Prima sacca 
 	    	 gs = GruppoSanguigno.Am;
 	    	 localDataProduzione = LocalDate.of(2020,04,10);
@@ -158,8 +151,7 @@ public class RicercaSaccaLocaleTest {
 	    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
 	    	 listaDatiSacche.add(datisacca); 
 
-
-	    	//La sacca scaduta
+	    	//Quinta sacca
 	    	 gs = GruppoSanguigno.Am;
 	    	 localDataProduzione = LocalDate.of(2018,06,10);
 	    	 localDataScadenza = LocalDate.of(2023,06,10);
@@ -170,10 +162,6 @@ public class RicercaSaccaLocaleTest {
 	    	 enteDonatore = "AVIS - Napoli_Sud";
 	    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
 	    	 listaDatiSacche.add(datisacca); 
-
-	    	//Caricamento sul sistema di cinque Sacche di tipo B+, 4 sacche sono arrivate nel magazzino tra il 15-07-2020 e il 02-05-2021 e hanno data di scadenza lontana
-	    	//Una sacca è arrivata nel 2018 ed è già scaduta
-	    	//Tutte le Sacche sono non prenotate e quindi affidabili ad un ente esterno 
 
 	    	//Prima sacca 
 	    	 gs = GruppoSanguigno.Bp;
@@ -224,7 +212,7 @@ public class RicercaSaccaLocaleTest {
 	    	 listaDatiSacche.add(datisacca); 
 
 
-	    	//La sacca scaduta
+	    	//Quinta sacca
 	    	 gs = GruppoSanguigno.Bp;
 	    	 localDataProduzione = LocalDate.of(2018,06,10);
 	    	 localDataScadenza = LocalDate.of(2023,06,10);
@@ -235,12 +223,7 @@ public class RicercaSaccaLocaleTest {
 	    	 enteDonatore = "AVIS - Napoli_Sud";
 	    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
 	    	 listaDatiSacche.add(datisacca); 
-
-
-	    	//Caricamento sul sistema di cinque Sacche di tipo B-, 4 sacche sono arrivate nel magazzino tra il 15-07-2020 e il 02-05-2021 e hanno data di scadenza lontana
-	    	//Una sacca è arrivata nel 2018 ed è già scaduta
-	    	//Tutte le Sacche sono non prenotate e quindi affidabili ad un ente esterno 
-
+	    	 
 	    	//Prima sacca 
 	    	 gs = GruppoSanguigno.Bm;
 	    	 localDataProduzione = LocalDate.of(2020,04,10);
@@ -290,7 +273,7 @@ public class RicercaSaccaLocaleTest {
 	    	 listaDatiSacche.add(datisacca); 
 
 
-	    	//La sacca scaduta
+	    	//Quinta sacca
 	    	 gs = GruppoSanguigno.Bm;
 	    	 localDataProduzione = LocalDate.of(2018,06,10);
 	    	 localDataScadenza = LocalDate.of(2022,06,10);
@@ -301,10 +284,6 @@ public class RicercaSaccaLocaleTest {
 	    	 enteDonatore = "AVIS - Napoli_Sud";
 	    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
 	    	 listaDatiSacche.add(datisacca); 
-
-	    	//Caricamento sul sistema di cinque Sacche di tipo AB+, 4 sacche sono arrivate nel magazzino tra il 15-07-2020 e il 02-05-2021 e hanno data di scadenza lontana
-	    	//Una Sacca è arrivata nel 2018 ed è già scaduta
-	    	//Tutte le Sacche sono non prenotate e quindi affidabili ad un ente esterno 
 
 	    	//Prima sacca 
 	    	 gs = GruppoSanguigno.ABp;
@@ -354,8 +333,7 @@ public class RicercaSaccaLocaleTest {
 	    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
 	    	 listaDatiSacche.add(datisacca); 
 
-
-	    	//La sacca scaduta
+	    	//Quinta sacca
 	    	 gs = GruppoSanguigno.ABp;
 	    	 localDataProduzione = LocalDate.of(2018,06,10);
 	    	 localDataScadenza = LocalDate.of(2023,06,10);
@@ -367,10 +345,6 @@ public class RicercaSaccaLocaleTest {
 	    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
 	    	 listaDatiSacche.add(datisacca); 
 
-	    	//Caricamento sul sistema di cinque Sacche di tipo AB-, 4 sacche sono arrivate nel magazzino tra il 15-07-2020 e il 02-05-2021 e hanno data di scadenza lontana
-	    	//Una Sacca è arrivata nel 2018 ed è già scaduta
-	    	//Tutte le Sacche sono non prenotate e quindi affidabili ad un ente esterno 
-
 	    	//Prima sacca 
 	    	 gs = GruppoSanguigno.ABm;
 	    	 localDataProduzione = LocalDate.of(2020,04,10);
@@ -420,7 +394,7 @@ public class RicercaSaccaLocaleTest {
 	    	 listaDatiSacche.add(datisacca); 
 
 
-	    	//La sacca scaduta
+	    	//Quinta sacca
 	    	 gs = GruppoSanguigno.ABm;
 	    	 localDataProduzione = LocalDate.of(2018,06,10);
 	    	 localDataScadenza = LocalDate.of(2022,06,10);
@@ -432,10 +406,6 @@ public class RicercaSaccaLocaleTest {
 	    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
 	    	 listaDatiSacche.add(datisacca); 
 
-	    	//Caricamento sul sistema di cinque Sacche di tipo ZERO+, 4 sacche sono arrivate nel magazzino tra il 15-07-2020 e il 02-05-2021 e hanno data di scadenza lontana
-	    	//Una Sacca è arrivata nel 2018 ed è già scaduta
-	    	//Tutte le Sacche sono non prenotate e quindi affidabili ad un ente esterno 
-
 	    	//Prima sacca 
 	    	 gs = GruppoSanguigno.ZEROp;
 	    	 localDataProduzione = LocalDate.of(2020,04,10);
@@ -485,7 +455,7 @@ public class RicercaSaccaLocaleTest {
 	    	 listaDatiSacche.add(datisacca); 
 
 
-	    	//La sacca scaduta
+	    	//Quinta sacca
 	    	 gs = GruppoSanguigno.ZEROp;
 	    	 localDataProduzione = LocalDate.of(2018,06,10);
 	    	 localDataScadenza = LocalDate.of(2023,06,10);
@@ -497,10 +467,6 @@ public class RicercaSaccaLocaleTest {
 	    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
 	    	 listaDatiSacche.add(datisacca); 
 
-	    	//Caricamento sul sistema di cinque Sacche di tipo ZERO-, 4 sacche sono arrivate nel magazzino tra il 15-07-2020 e il 02-05-2021 e hanno data di scadenza lontana
-	    	//Una Sacca è arrivata nel 2018 ed è già scaduta
-	    	//Tutte le Sacche sono non prenotate e quindi affidabili ad un ente esterno 
-
 	    	//Prima sacca 
 	    	 gs = GruppoSanguigno.ZEROm;
 	    	 localDataProduzione = LocalDate.of(2020,04,10);
@@ -550,7 +516,7 @@ public class RicercaSaccaLocaleTest {
 	    	 listaDatiSacche.add(datisacca); 
 
 
-	    	//La sacca scaduta
+	    	//Quinta sacca
 	    	 gs = GruppoSanguigno.ZEROm;
 	    	 localDataProduzione = LocalDate.of(2018,06,10);
 	    	 localDataScadenza = LocalDate.of(2022,06,10);
@@ -561,7 +527,9 @@ public class RicercaSaccaLocaleTest {
 	    	 enteDonatore = "AVIS - Napoli_Sud";
 	    	 datisacca = new DatiSacca(sacca.getSeriale(), gs, localDataArrivo, null, enteDonatore, null,null);
 	    	 listaDatiSacche.add(datisacca); 
-	    	                                   
+	    	       
+	    	 MongoDataManager md = MongoDataManager.getInstance();
+	    	 
 	    	    	
 	    	for(Sacca sac : listaSacche) {
 	    		md.createSacca(sac);
@@ -587,8 +555,21 @@ public class RicercaSaccaLocaleTest {
 	 		
 		}
 	
+	/**
+     * Metodo statico per la distruzione del database
+     */
+	@After
+	public void dropDB() {
+		MongoDataManager mm = MongoDataManager.getInstance();
+		mm.dropDB();
+	}
+	
+	/**
+	 * Test per la ricerca sacca in locale sull'EndPointRestOperatoreCTT
+	 * @throws EntityAlreadyExistsException
+	 */
 	@Test
-	public void test1(){
+	public void test1() throws EntityAlreadyExistsException{
 		WebTarget ev1 = evasioneSacca.queryParam("gruppoSanguigno", "Bp")
 									 .queryParam("numeroSacche", "5")
 									 .queryParam("dataArrivoMassima", "2021-05-22")
@@ -600,23 +581,20 @@ public class RicercaSaccaLocaleTest {
 		assertEquals(Status.OK.getStatusCode(), responseRicerca.getStatus());
 	}
 	
-	
+	/**
+	 * Test per la ricerca sacca in locale non disponibile sull'EndPointRestOperatoreCTT
+	 * @throws EntityAlreadyExistsException
+	 */
 	@Test
-	public void test2(){
-		WebTarget ev1 = evasioneSacca.queryParam("gruppoSanguigno", "Ap")
+	public void test2() throws EntityAlreadyExistsException{
+		WebTarget ev2 = evasioneSacca.queryParam("gruppoSanguigno", "Ap")
 									 .queryParam("numeroSacche", "150")
 									 .queryParam("dataArrivoMassima", "2021-05-22")
 									 .queryParam("enteRichiedente", "Ospedale Rummo")
 									 .queryParam("indirizzoEnte", "Benevento, via pacevecchia 2")
 									 .queryParam("priorità", "TRUE");
 									 
-		Response responseRicerca = ev1.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).get();
+		Response responseRicerca = ev2.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).get();
 		assertEquals(Status.NOT_FOUND.getStatusCode(), responseRicerca.getStatus());
 	}
-
-	@AfterClass public static void dropDBSacche() {
-		md.dropDB();
-	}
-	
-	
 }

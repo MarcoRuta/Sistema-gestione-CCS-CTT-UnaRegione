@@ -1,7 +1,6 @@
 package it.unisannio.ingegneriaDelSoftware.junit;
 
 import static org.junit.Assert.assertEquals;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,8 +15,9 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import it.unisannio.ingegneriaDelSoftware.Classes.Cdf;
 import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
@@ -30,8 +30,8 @@ public class AggiungiAmministratoreRestTest {
 	Client client = ClientBuilder.newClient();
 	WebTarget aggiuntaAmministratore = client.target("http://127.0.0.1:8080/rest/CCS/aggiuntaAmministratore");
 		
-	
-	@BeforeClass public static void populateDBDipendenti() throws EntityAlreadyExistsException {
+	@Before
+	public void setUp() throws EntityAlreadyExistsException {
 			List<Dipendente> listaDipendenti = new ArrayList<Dipendente>();
 		        
 		 	Cdf cdf = Cdf.getCDF("XDDBHH45H57H684W");
@@ -107,12 +107,18 @@ public class AggiungiAmministratoreRestTest {
 			User user = responselogin.readEntity(User.class);
 			token = user.getToken();
 		}
-
-		
+	
+	@After
+	public  void dropDB() {
+		MongoDataManager mm = MongoDataManager.getInstance();
+		mm.dropDB();
+	}
+			
 		/** Test per il metodo rest/CCS/aggiuntaamministratore dell'amministratoreCCS
+		 * @throws EntityAlreadyExistsException 
 		 */
 		@Test	
-		public void test1(){
+		public void test1() throws EntityAlreadyExistsException{
 			Form form1 = new Form();
 			form1.param("cdf", "SRNGJZ50B54C143L");
 			form1.param("nome", "Ario");
@@ -127,9 +133,10 @@ public class AggiungiAmministratoreRestTest {
 		
 		
 		/** Test per il metodo rest/CCS/aggiuntaamministratore dell'amministratoreCCS
+		 * @throws EntityAlreadyExistsException 
 		 */
 		@Test	
-		public void test2(){
+		public void test2() throws EntityAlreadyExistsException{
 			Form form1 = new Form();
 			form1.param("cdf", "LZZBHR41C46C446V");
 			form1.param("nome", "Lucio");
@@ -144,9 +151,10 @@ public class AggiungiAmministratoreRestTest {
 		
 		
 		/** Test per il metodo rest/CCS/aggiuntaamministratore dell'amministratoreCCS 
+		 * @throws EntityAlreadyExistsException 
 		 */
 		@Test	
-		public void test3(){
+		public void test3() throws EntityAlreadyExistsException{
 			Form form1 = new Form();
 			form1.param("cdf", "LZZBHR41C46C446V");
 			form1.param("nome", "Lucio");
@@ -158,10 +166,5 @@ public class AggiungiAmministratoreRestTest {
 			Response responseaddAmm = aggiuntaAmministratore.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).post(Entity.form(form1));
 			assertEquals(Status.BAD_REQUEST.getStatusCode(), responseaddAmm.getStatus());
 		}
-		
-		
-		@AfterClass public static void dropDBDipendenti() {
-			MongoDataManager mm = MongoDataManager.getInstance();
-			mm.dropDB();
-		}
+
 	}

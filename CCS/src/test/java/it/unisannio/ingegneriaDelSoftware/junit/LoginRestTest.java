@@ -12,8 +12,9 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import it.unisannio.ingegneriaDelSoftware.Classes.Cdf;
@@ -27,10 +28,8 @@ public class LoginRestTest {
 	Client client = ClientBuilder.newClient();
 	WebTarget aggiuntaCTT = client.target("http://127.0.0.1:8080/rest/autentificazione");
 	
-	
-	  @BeforeClass
-	  public static void setUp() throws EntityAlreadyExistsException {
-		
+	@Before
+	public  void setUp() throws EntityAlreadyExistsException {		
 		Cdf cdf = Cdf.getCDF("KTMFSW67T64I460X");
 	    LocalDate ld = LocalDate.parse("1978-10-10");
 	    RuoloDipendente ruolo = RuoloDipendente.AmministratoreCCS;
@@ -39,20 +38,25 @@ public class LoginRestTest {
 	    Dipendente dip = new Dipendente(cdf, "TestAdmin", "TestAdmin", ld, ruolo, username, password);
 	    MongoDataManager mm = MongoDataManager.getInstance();
 	    mm.createDipendente(dip);
-	  }
+	}
 
+	@After
+	public void dropDB(){
+		MongoDataManager mm = MongoDataManager.getInstance();
+		mm.dropDB();
+	} 
 	  
 	  @Test
-	  public void test1() {
+	  public void test1() throws EntityAlreadyExistsException {
 		  Form form = new Form();
 		  form.param("username", "admiN");
 		  form.param("password", "Admin");
 		  Response responseaddCTT = aggiuntaCTT.request().post(Entity.form(form));
-		  assertEquals(Status.NOT_FOUND.getStatusCode(), responseaddCTT.getStatus());
-	  }
+		  assertEquals(Status.NOT_FOUND.getStatusCode(), responseaddCTT.getStatus());  
+		  }
 	  
 	  @Test
-	  public void test2() {
+	  public void test2() throws EntityAlreadyExistsException{
 		  Form form = new Form();
 		  form.param("username", "admin");
 		  form.param("password", "Adminadmin1");
@@ -60,8 +64,4 @@ public class LoginRestTest {
 		  assertEquals(Status.CREATED.getStatusCode(), responseaddCTT.getStatus());
 	  }
 	  
-	@AfterClass public static void drop(){
-		MongoDataManager mm = MongoDataManager.getInstance();
-		mm.dropDB();
-	}	  
 }
