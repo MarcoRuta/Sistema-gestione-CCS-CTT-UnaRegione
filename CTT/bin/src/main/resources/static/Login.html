@@ -57,16 +57,15 @@
                 param = 'username='+username+'&password='+password;
 
                 xhttp.onreadystatechange = function() {
-                    if (this.readyState == 4 && this.status == 201 ) {
+                    if (this.readyState == 4 && this.status == 200 ) {
                         obj = JSON.parse(this.responseText);
                         sessionStorage.setItem("token", obj.token);
                         sessionStorage.setItem("ruolo",obj.ruolo);
                         sessionStorage.setItem("nome",obj.nome);
                         sessionStorage.setItem("cognome", obj.cognome);
-                        sessionStorage.setItem("cdf",obj.cdf);
                         window.location.href=obj.ruolo+'.html';
                  	}else{
-                 	if (this.readyState == 4 && this.status !=201)
+                 	if (this.readyState == 4 && this.status !=200)
                  	    document.getElementById("error").innerHTML="<span style = 'color:red'>"+this.response+"</span>";
                  	}
 

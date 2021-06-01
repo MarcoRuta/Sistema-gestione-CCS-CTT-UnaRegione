@@ -29,8 +29,12 @@ public class Constants {
 	public static final String ELEMENT_RUOLO = "ruolo";
 	public static final String ELEMENT_USERNAME = "username";
 	public static final String ELEMENT_PASSWORD = "password";
-	
-	public static SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+
+	//indirizzi ip
+    public static final String CCSIP = "http://192.168.193.220:8080";
+    public static final String CCSWebSocket = "ws://192.168.193.220:8080/ws/saccheInScadenza";
+
+    public static SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 	public static final String DATEFORMAT = "yyyy-MM-dd";
 
 

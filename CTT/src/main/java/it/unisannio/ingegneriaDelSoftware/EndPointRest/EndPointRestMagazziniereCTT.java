@@ -2,16 +2,16 @@ package it.unisannio.ingegneriaDelSoftware.EndPointRest;
 
 import com.itextpdf.text.DocumentException;
 import it.unisannio.ingegneriaDelSoftware.Classes.*;
-import it.unisannio.ingegneriaDelSoftware.Annotazioni.Secured;
+import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaEvasione;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
+import it.unisannio.ingegneriaDelSoftware.Functional.IDGenerator;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointMagazziniereCTT;
 import it.unisannio.ingegneriaDelSoftware.PDF.PDFGenerator;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 
 
-import javax.annotation.security.RolesAllowed;
 import javax.inject.Singleton;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -23,13 +23,14 @@ import java.util.*;
 
 @Path("/magazziniere")
 @Singleton
-@Secured
-@RolesAllowed("MagazziniereCTT")
+//@Secured
+//@RolesAllowed({"MagazziniereCTT","CCS"})
+
 public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 
 	private MongoDataManager md = MongoDataManager.getInstance();
-	private Map<String,List<Seriale>> evasioni = new HashMap<>();
-
+	public Map<String,List<Seriale>> evasioni = new HashMap<>();
+	
 
 	/**Metodo con il quale il Magazziniere aggiunge una Sacca al DataBase
 	 *
@@ -63,6 +64,8 @@ public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 		md.createDatiSacca(datiSacca);
 		//update Seriale settings
 		Seriale.updateSettings();
+		// The source resource was successfully copied.
+		// The COPY operation resulted in the creation of a new resource.
 		return Response
 				.status(Response.Status.CREATED)
 				.entity("Sacca con seriale " + unaSacca.getSeriale().getSeriale() + " aggiunta correttamente")
@@ -91,9 +94,12 @@ public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 
 		//Prendo dalla stringa listaSeriali la lista dei seriali attraverso una tokenizzazione, i seriali arrivano nel formato SERIALE/SERIALE/SERIALE/..../SERIALE/
 		List<Seriale> listaSeriali = new ArrayList<Seriale>();
+
 		StringTokenizer st = new StringTokenizer(listaseriali,",");
+		System.err.println(listaseriali);
 		while (st.hasMoreTokens())
 			listaSeriali.add(Seriale.getSeriale(st.nextToken()));
+		System.err.println(listaSeriali);
 
 
 		for(Seriale unSeriale : listaSeriali) {
@@ -103,9 +109,10 @@ public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 			md.setEnteRichiedenteDatiSacca(unSeriale, ente_richiedente);
 			md.setDataAffidamentoDatiSacca(unSeriale, LocalDate.now());
 			md.setIndirizzoEnteDatiSacca(unSeriale,indirizzo);
+			//recupero il DatiSacca aggiornato
+			DatiSacca datiSacca = md.getDatiSacca(unSeriale);
 			//rimuovo la sacca
 			md.removeSacca(unaSacca.getSeriale());
-			
 		}
 
 		//registro l'evasione

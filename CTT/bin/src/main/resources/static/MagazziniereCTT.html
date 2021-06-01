@@ -76,7 +76,7 @@
     
     var data;
     var str;
-    var urlPdf;
+    var res;
     var host;
     
     
@@ -107,11 +107,11 @@
 			}
       }
     
-
+    
       function addBtn() {
           var obj = JSON.parse(data);
           str = "";
-
+          
           for(var i=0; i < obj.listaSeriali.length; i++) {
            str = str + obj.listaSeriali[i] + ",";
         }
@@ -125,58 +125,58 @@
           
           /*####### EVASIONE SACCA ######*/
           btn.onclick = function() {
-
+ 
         	  var x = document.activeElement;
               var params = 'listaSeriali='+ x.value +'&enteRichiedente='+ obj.enteRichiedente +'&indirizzoEnte='+ obj.indirizzoEnte;
-              
               host = document.location.origin;
-              var url = host+"/rest/magazziniere/evasione";
-              
+              var url = host+"/rest/magazziniere/evasione?" + params;
               xhttp.onreadystatechange = function() {
-                  if (this.readyState == 4 && this.status == 201) {
-                	  alert(this.response);
-                      urlPdf = host + xhttp.getResponseHeader("Content-Location");
-                      creaPdf();
+                  if (this.readyState == 4 && this.status == 200) {
+                      res = this.response;
+                      setTimeout(creaPdf,1000);
                       setTimeout(removeNotify,1500);
-                  } else if(this.readyState == 4 && this.status != 201) {
+                  } else if(this.readyState == 4 && this.status != 200) {
                        alert(this.response);
                   }
-
+      
               };
-
+              
               xhttp.onerror = function(){
                   alert("Sacca non esistente");
               };
-
-
-              xhttp.open("POST", url, true);
+      
+      
+              xhttp.open("PUT", url, true);
               xhttp.setRequestHeader('Authorization', 'Basic '+token);
               xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
               xhttp.withCredentials = true;
-              xhttp.send(params);
-
+              xhttp.send();
+  
           };
-
+          
           /*#############################*/
               
           document.getElementById("divNot").appendChild(btn);
       }
     
-  	/*####### CREA PDF FUNCTION ######*/
+      /*####### CREA PDF FUNCTION ######*/
       function creaPdf() {
-              var xhr = new XMLHttpRequest();
-              xhr.open("GET", urlPdf, true);
-              xhr.setRequestHeader('Authorization', 'Basic '+token);
-              xhr.withCredentials = true;
-              xhr.responseType = 'arraybuffer';
-              xhr.send();
-
-              xhr.onreadystatechange = function() {
-                if (xhr.readyState == 4){
-                    var blobSrc = window.URL.createObjectURL(new Blob([this.response], { type: 'application/pdf'}));
-                    window.open(blobSrc);
-                }
-              };
+              alert("STO CREANDO IL PDF!");
+              var doc = new jsPDF();
+              /*var host = "http://"+ window.location.hostname;*/
+              
+              doc.setFontSize(25);
+              doc.text(20, 20, "Evasione sacche");
+      
+              doc.setLineWidth(0.5);
+              doc.line(20, 25, 197, 25);
+      
+              doc.setFontSize(20);
+              doc.text(20, 40, res);
+              //doc.text(20,45,indirizzo.value);
+      
+              // Save the PDF
+              doc.save('EvasioneSacche.pdf');
       }
       /*#############################*/
     
@@ -210,7 +210,6 @@
                           sessionStorage.removeItem("ruolo");
                           sessionStorage.removeItem("nome");
                           sessionStorage.removeItem("cognome");
-                          sessionStorage.removeItem("cdf");
                           window.location.href='Login.html';
                      }else {
                          if(this.readyState == 4 && this.status != 200 ){

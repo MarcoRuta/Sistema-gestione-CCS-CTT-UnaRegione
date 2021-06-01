@@ -1,0 +1,34 @@
+[{
+  "_id": {
+    "$oid": "60b0fb4b0be1b4e005a15cf7"
+  },
+  "cdf": "RTUMRC98E08B519C",
+  "nome": "Magazziniere",
+  "cognome": "DiProva",
+  "dataDiNascita": "2001-05-28",
+  "ruolo": "MagazziniereCTT",
+  "username": "magazziniere",
+  "password": "Magazziniere1"
+},{
+  "_id": {
+    "$oid": "60b0fbf30be1b4e005a15da7"
+  },
+  "cdf": "ZLWSBD62C16B959Y",
+  "nome": "Operatore",
+  "cognome": "DiProva",
+  "dataDiNascita": "1987-05-14",
+  "ruolo": "OperatoreCTT",
+  "username": "operatore",
+  "password": "Operatore1"
+},{
+  "_id": {
+    "$oid": "60b0fda90be1b4e005a15eb8"
+  },
+  "cdf": "ZLWSBD62C16B959G",
+  "nome": "Amministratore",
+  "cognome": "DiProva",
+  "dataDiNascita": "1950-05-17",
+  "ruolo": "AmministratoreCTT",
+  "username": "amministratore",
+  "password": "Amministratore1"
+}]

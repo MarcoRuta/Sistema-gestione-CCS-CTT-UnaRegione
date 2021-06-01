@@ -135,7 +135,7 @@
         var token = sessionStorage.getItem("token");
         var ruolo = sessionStorage.getItem("ruolo");
         var xhttp = new XMLHttpRequest();
-        var urlPdf;
+        var dipendente;
 
         verificoToken = function(){
                if(token == null || ruolo != 'AmministratoreCTT'){
@@ -158,12 +158,12 @@
 
 
                 xhttp.onreadystatechange = function() {
-                    if (this.readyState == 4 && this.status == 201) {
+                    if (this.readyState == 4 && this.status == 200) {
                         alert("Dipendente "+cdf+" aggiunto correttamente");
-                        urlPdf = host + xhttp.getResponseHeader("Content-Location");
+                        dipendente = this.response;
                         creaPdf();
                  	}else {
-                 	if(this.readyState == 4 && this.status != 201){
+                 	if(this.readyState == 4 && this.status != 200){
                  	    alert(this.response);
                  	    setTimeout(reloadPage,1000);
                  	    }
@@ -197,20 +197,21 @@
 
       /*####### CREA PDF FUNCTION ######*/
       function creaPdf() {
-             var xhr = new XMLHttpRequest();
-             xhr.open("GET", urlPdf, true);
-             xhr.setRequestHeader('Authorization', 'Basic '+token);
-             xhr.withCredentials = true;
-             xhr.responseType = 'arraybuffer';
-             xhr.send();
+              alert("STO CREANDO IL PDF!");
+              var doc = new jsPDF();
 
-            xhr.onreadystatechange = function() {
-                    if (xhr.readyState == 4){
-                        var blobSrc = window.URL.createObjectURL(new Blob([this.response], { type: 'application/pdf'}));
-                        window.open(blobSrc);
-                    }
-            };
-            setTimeout(reloadPage, 1000);
+              doc.setFontSize(25);
+              doc.text(20, 20, "Dati Dipendente");
+
+              doc.setLineWidth(0.5);
+              doc.line(20, 25, 197, 25);
+
+              doc.setFontSize(20);
+              doc.text(20, 40, dipendente);
+
+              // Save the PDF
+              doc.save('Dipendente.pdf');
+              setTimeout(reloadPage, 1000);
       }
 
     </script>

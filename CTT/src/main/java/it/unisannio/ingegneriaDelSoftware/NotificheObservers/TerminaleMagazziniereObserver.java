@@ -1,6 +1,8 @@
 package it.unisannio.ingegneriaDelSoftware.NotificheObservers;
 
-import WebSocketConfig.WebSocketEndpoint;
+import WebSocket.ServerEndpoint.WebSocketEndPointEvasioneSacche;
+import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaEvasione;
+import it.unisannio.ingegneriaDelSoftware.CttDataBaseRestApplication;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Notifica;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Observer;
 
@@ -13,14 +15,15 @@ public class TerminaleMagazziniereObserver implements Observer {
 
     public void update(Notifica notifica) {
         try {
-            Notifica unaNotifica = (Notifica) notifica;
-            for (Session s : WebSocketEndpoint.sessions)
-                // getBasicRemote(), situato nella libria WebSocket, permette di realizzare la comunicazione sincrona
-                s.getBasicRemote().sendObject(unaNotifica);
+               NotificaEvasione unaNotifica = (NotificaEvasione) notifica;
+               for (Session s : WebSocketEndPointEvasioneSacche.sessions) {
+                   s.getBasicRemote().sendObject(unaNotifica);
+                   CttDataBaseRestApplication.logger.info("Ho Inviato La notifica Evasione al TerminaleMagazziniere con session "+s.getId());
+               }
         }catch (EncodeException e) {
-            e.printStackTrace();
+            CttDataBaseRestApplication.logger.error("Problemi con la codifica delle notifiche evasione");
         } catch (IOException e) {
-            e.printStackTrace();
+            CttDataBaseRestApplication.logger.error("Problemi con l'inoltro della notifica evasione al magazziniere");
         }
 
     }

@@ -77,7 +77,6 @@ public class PDFGenerator {
         table.addCell(dataAffidamento.toString());
         //aggiungo al pdf
         document.add(table);
-        System.err.println("ho aggiunto la tabella");
         document.close();
     }
 }

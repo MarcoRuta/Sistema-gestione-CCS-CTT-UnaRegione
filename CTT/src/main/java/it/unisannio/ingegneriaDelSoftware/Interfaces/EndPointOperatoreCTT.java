@@ -19,5 +19,5 @@ public interface EndPointOperatoreCTT {
 									   String dataArrivoMassima,
 									   String enteRichiedente,
 									   String indirizzoEnte,
-									   String priorita) throws EntityNotFoundException;
+									   String priorita) throws EntityNotFoundException, InterruptedException;
 }

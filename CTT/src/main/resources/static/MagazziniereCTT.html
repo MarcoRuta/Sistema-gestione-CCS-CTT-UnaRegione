@@ -113,7 +113,7 @@
           str = "";
 
           for(var i=0; i < obj.listaSeriali.length; i++) {
-           str = str + obj.listaSeriali[i] + ",";
+           str = str + obj.listaSeriali[i];
         }
           str2 = str.substring(0,str.length-1);
           var btn = document.createElement("button");
@@ -183,7 +183,7 @@
       /*####### REMOVE FUNCTION ######*/
       function removeNotify() {
           var x = document.activeElement;
-          let sr = x.value.substring(0,15);
+          let sr = x.value.substring(0,15) + ",";
           for(let i = 0; i < localStorage.length; i++) {
                   if(localStorage.key(i).substring(0,7) == "bottone") {
                           data = localStorage.getItem(localStorage.key(i));

@@ -11,10 +11,12 @@ import javax.ws.rs.core.*;
 
 import com.itextpdf.text.DocumentException;
 import it.unisannio.ingegneriaDelSoftware.Annotazioni.Secured;
+import it.unisannio.ingegneriaDelSoftware.CcsDataBaseRestApplication;
 import it.unisannio.ingegneriaDelSoftware.Classes.*;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
+import it.unisannio.ingegneriaDelSoftware.Functional.IDGenerator;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointAmministratoreCCS;
 import it.unisannio.ingegneriaDelSoftware.PDF.PDFGenerator;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
@@ -52,9 +54,10 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 						   @FormParam("latitude") String latitudine,
 						   @FormParam("longitude") String longitudine,
 						   @Context UriInfo uriInfo) throws EntityAlreadyExistsException {
+		CcsDataBaseRestApplication.logger.info("Si è richiesta l'aggiunta di un CTT");
 		CTT ctt = new CTT(new CTTName(), provincia, citta, telefono, indirizzo, email, Double.parseDouble(latitudine), Double.parseDouble(longitudine));
 		mm.createCTT(ctt);
-
+		CcsDataBaseRestApplication.logger.info("il CTT è stato aggiunto correttamente al DataBase");
 
 		// The source resource was successfully copied.
 		// The COPY operation resulted in the creation of a new resource.
@@ -74,7 +77,9 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes(MediaType.TEXT_PLAIN)
 	public Response removeCTT(@PathParam("cttName") String cttName) throws EntityNotFoundException, NumberFormatException {
+		CcsDataBaseRestApplication.logger.info("Si è richiesta la rimozione di un CTT");
 		mm.removeCTT(CTTName.getCttName(cttName));
+		CcsDataBaseRestApplication.logger.info("Il CTT "+cttName+"è stato rimosso correttamente dal DB");
 		return Response
 				.status(Response.Status.OK)
 				.entity(cttName + " rimosso correttamente")
@@ -89,6 +94,7 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 	@Path("/centers")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<CTT> listaCTT(){
+		CcsDataBaseRestApplication.logger.info("Si è richiesta la lista dei CTT presenti nel DataBase");
 		return mm.getListaCTT();	
 	}
 	
@@ -112,6 +118,7 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 								  @FormParam("username")String username,
 								  @Context UriInfo uriInfo) throws DateTimeParseException, IllegalArgumentException, AssertionError, EntityAlreadyExistsException {
 
+		CcsDataBaseRestApplication.logger.info("Si è richiesta l'aggiunta di un' Amministratore");
 		//creo un dipendente
 		String password = IDGenerator.getID();
 		Dipendente d = new Dipendente(Cdf.getCDF(cdf), nome, cognome,
@@ -119,7 +126,7 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 				RuoloDipendente.AmministratoreCCS, username, password);
 		//aggiungo il dipendente al DB
 		mm.createDipendente(d);
-		System.err.println("ho creato il dip");
+		CcsDataBaseRestApplication.logger.info("L'amministratore "+d.getCdf().getCodiceFiscale()+" è stato aggiunto correttamente al DataBase");
 		return Response
 				.status(Response.Status.CREATED)
 				.entity("Dipendente aggiunto correttamente")
@@ -136,6 +143,7 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 	@Produces("application/pdf")
 	@Consumes(MediaType.TEXT_PLAIN)
 	public StreamingOutput getPDF(@PathParam("cdf")String cdf){
+		CcsDataBaseRestApplication.logger.info("Sono stati richiesti i dati Del Dipendente: "+cdf);
 		return new StreamingOutput() {
 			public void write(OutputStream output){
 				try {
@@ -181,8 +189,6 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 				.entity("Corretta rimozione del Dipendente: " + cdf)
 				.build();
 	}
-
-
     /**
 	 * Restituisce la lista di tutti i Dipendenti presenti nel database dei Dipendenti
 	 * @return List<Dipendente> Lista di tutti i Dipendenti
@@ -191,6 +197,7 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 	@Path("/amministratori")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Dipendente> getAmministratori(@HeaderParam(HttpHeaders.AUTHORIZATION) String header) throws EntityNotFoundException {
+		CcsDataBaseRestApplication.logger.info("Si è richiesta la lista degli amministratori presenti nel DB");
 		List<Dipendente> dipendenti = mm.getListaDipendenti();
 		dipendenti.remove(Token.getDipendenteByToken(header.substring("Basic ".length())));
 		return  dipendenti;

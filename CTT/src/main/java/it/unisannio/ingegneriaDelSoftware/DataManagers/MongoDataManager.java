@@ -277,6 +277,7 @@ public class MongoDataManager {
     public  void setPrenotatoSacca(Seriale seriale)throws EntityNotFoundException{
         if (!containsSacca(seriale)) throw new EntityNotFoundException("Non puoi aggiornare lo stato di una sacca che non è presente nel DB. Seriale della sacca: "+seriale.getSeriale());
         Sacca sacca = getSacca(seriale);
+        sacca.setPrenotato();
         getCollectionSacca().replaceOne(eq(Constants.ELEMENT_SERIALE,seriale.getSeriale()), sacca);
     }
 
