@@ -16,13 +16,12 @@ public class Dipendente {
 
 	/**Metodo Costruttore dell'oggetto Dipendente
 	 * @param cdf Codice fiscale del dipendente
+	 * @param nome Nome del dipendente
 	 * @param cognome Cognome del del dipendente
 	 * @param dataDiNascita Data di nascita del dipendente
-	 * @param nome Nome del dipendente
+	 * @param ruolo Ruolo del dipendente nel centro CTT
 	 * @param password Password del dipendente sul sistema CTT
 	 * @param username Username del dipendente sul sistema CTT
-	 * @param ruolo Ruolo del dipendente nel centro CTT
-	 * @throws IllegalArgumentException se il Dipendente non ha almeno 18 anni
 	 */
 	public Dipendente(Cdf cdf, String nome, String cognome, LocalDate dataDiNascita, RuoloDipendente ruolo, String username, String password) {
 		assert cdf!= null: "Il codice fiscale del dipendente non può essere null";
@@ -111,8 +110,7 @@ public class Dipendente {
 	}
 
 	
-	/**
-	 * Stampa le informazioni di un Dipendente 
+	/**Stampa le informazioni di un Dipendente 
 	 * @param ps stream di output su cui stampare i dati del Dipendente 
 	 */
 	public void print(PrintStream ps) {
@@ -126,8 +124,8 @@ public class Dipendente {
 		ps.println("Password: "+this.password);
 	}
 
-	/**
-	 * Concatena in un'unica stringa le informazioni del Dipendente
+	
+	/**Concatena in un'unica stringa le informazioni del Dipendente
 	 * @return La stringa concatenata
 	 */
 	@Override
@@ -143,8 +141,7 @@ public class Dipendente {
 				'}';
 	}
 
-	/**
-	 * Verifica l'uguaglianza tra due Dipendenti
+	/**Verifica l'uguaglianza tra due Dipendenti
 	 * @return Un boolean true o false a seconda dell'esito del confronto
 	 */
 	@Override
@@ -155,8 +152,7 @@ public class Dipendente {
 		return cdf.equals(that.cdf);
 	}
 
-	/**
-	 * Calcola l'hashcode di un Dipendente
+	/**Calcola l'hashcode di un Dipendente
 	 * @return Un intero pari all'hashcode generato
 	 */
 	@Override

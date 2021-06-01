@@ -19,10 +19,6 @@ public enum GruppoSanguigno {
 	ABp,
 	ABm;
 
-	
-	
-
-	
 	@SuppressWarnings("serial")
 	private final static HashMap<GruppoSanguigno, List<GruppoSanguigno>> puoDonareA = new HashMap<GruppoSanguigno, List<GruppoSanguigno>>() {
 		{
@@ -36,6 +32,7 @@ public enum GruppoSanguigno {
 			put (ABm, new ArrayList<GruppoSanguigno>(Arrays.asList(ABp,ABm)));
 		}
 	};
+	
 	
 	@SuppressWarnings("serial")
 	private final static HashMap<GruppoSanguigno, List<GruppoSanguigno>> puoRicevereDa = new HashMap<GruppoSanguigno, List<GruppoSanguigno>>() {
@@ -51,23 +48,15 @@ public enum GruppoSanguigno {
 		}
 	};
 	
-	/*
-	 * @pre
-	 * gs not null
-	 */
+
 	public static Iterator<GruppoSanguigno> puoDonareA(GruppoSanguigno gs) {
 		assert gs !=null;
 		return puoDonareA.get(gs).iterator();
 	}
 	
-	/*
-	 * @pre
-	 * gs not null
-	 */
 	public static Iterator<GruppoSanguigno> puoRicevereDa(GruppoSanguigno gs) {
 		assert gs !=null;
 		return puoRicevereDa.get(gs).iterator();
 	}
 		
 }
-

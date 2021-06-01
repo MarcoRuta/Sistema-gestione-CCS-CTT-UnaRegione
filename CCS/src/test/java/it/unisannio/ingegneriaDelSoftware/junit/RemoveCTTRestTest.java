@@ -1,7 +1,6 @@
 package it.unisannio.ingegneriaDelSoftware.junit;
 
 import static org.junit.Assert.assertEquals;
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,13 +29,11 @@ public class RemoveCTTRestTest {
 	Client client = ClientBuilder.newClient();
 	WebTarget rimozioneCTT = client.target("http://127.0.0.1:8080/rest/CCS/rimozioneCTT");
 	
-	
-	/**
-	 * Classe per la popolamento del database			
-	 * @throws ParseException
+	/**Popola il database dei CTT			
+	 * @throws EntityAlreadyExistsException
 	 */
 	@Before
-	public  void setUp() throws EntityAlreadyExistsException {
+	public void setUp() throws EntityAlreadyExistsException {
 		
 		List<CTT> listaCTT = new ArrayList<CTT>();
 	        
@@ -142,8 +139,7 @@ public class RemoveCTTRestTest {
 		token = user.getToken();
 	}
 	
-	
-	/**Classe per l'eliminazione del database
+	/**Droppa i database
 	 */
 	@After
 	public  void dropDBCTT() {
@@ -151,9 +147,7 @@ public class RemoveCTTRestTest {
 		mm.dropDB();
 	}
 	
-	
-	/**Test del metodo REST rest/CCS/rimozioneCTT
-	 * Questo test deve andare a buon fine in quanto si tenta di eliminare un CTT inserito nel @BeforeClass
+	/**Test del metodo REST rest/CCS/rimozioneCTT, va a buon fine in quanto si tenta di eliminare un CTT inserito nel setUp
 	 * @throws EntityAlreadyExistsException 
 	 */
 	@Test public void testRimozioneCTTCorretto() throws EntityAlreadyExistsException{	
@@ -161,15 +155,11 @@ public class RemoveCTTRestTest {
 		assertEquals(Status.OK.getStatusCode(), responseRemCTT.getStatus());
 	} 	
 	
-	
-	/**Test del metodo REST rest/CCS/rimozioneCTT
-	 * Questo test non deve andare a buon fine in quanto si tenta di eliminare un CTT non presente nel database
+	/**Test del metodo REST rest/CCS/rimozioneCTT, non deve andare a buon fine in quanto si tenta di eliminare un CTT non presente nel database
 	 * @throws EntityAlreadyExistsException 
 	*/ 
 	@Test public void testRimozioneCTTNonPresente() throws EntityAlreadyExistsException{
 		Response responseRemCTT = rimozioneCTT.path("CTT008").request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).delete();
 		assertEquals(Status.NOT_FOUND.getStatusCode(), responseRemCTT.getStatus());
 	} 	
-	
-	
 }

@@ -31,6 +31,9 @@ public class AggiungiCTTRestTest {
 	Client client = ClientBuilder.newClient();
 	WebTarget aggiuntaCTT = client.target("http://127.0.0.1:8080/rest/CCS/aggiuntaCTT");
 	
+	/**Aggiunge al database dei Dipendenti un Amministratore CCS con i permessi necessari per testare il metodo successivo
+	 * @throws EntityAlreadyExistsException
+	 */
 	@Before
 	public  void setUp() throws EntityAlreadyExistsException {
 		
@@ -53,13 +56,20 @@ public class AggiungiCTTRestTest {
 		User user = responselogin.readEntity(User.class);
 		token = user.getToken();
 	  }
-	  
+	
+	
+	/**Droppa i database
+	 */
 	@After
 	public void drop(){
 		MongoDataManager mm = MongoDataManager.getInstance();
 		mm.dropDB();
 	} 
 	
+	
+	/** Test per il metodo rest/CCS/aggiuntaCTT dell'amministratoreCCS, va a buon fine
+	 * @throws EntityAlreadyExistsException 
+	 */
 	@Test public void testAggiuntaCTTCorretto() throws EntityAlreadyExistsException{
 
 		Form form1 = new Form();
@@ -76,6 +86,10 @@ public class AggiungiCTTRestTest {
 		assertEquals(Status.OK.getStatusCode(), responseaddCTT.getStatus());
 	}
   
+	
+	/** Test per il metodo rest/CCS/aggiuntaCTT dell'amministratoreCCS, non va a buon fine siccome mancano i parametri numero_ctt e nome_ctt
+	 * @throws EntityAlreadyExistsException 
+	 */
 	@Test public void testWrong_numero_ctt() throws EntityAlreadyExistsException{
 		Form form1 = new Form();
 		form1.param("provincia", "BN");
@@ -89,6 +103,10 @@ public class AggiungiCTTRestTest {
 		assertEquals(Status.BAD_REQUEST.getStatusCode(), responseaddCTT.getStatus());
 	}
   
+	
+	/** Test per il metodo rest/CCS/aggiuntaCTT dell'amministratoreCCS, non va a buon fine siccome il parametro telefono è in un formato errato
+	 * @throws EntityAlreadyExistsException 
+	 */
 	@Test public void testWrong_telefono_ctt() throws EntityAlreadyExistsException{
 		Form form1 = new Form();
 		form1.param("provincia", "BN");
@@ -102,6 +120,10 @@ public class AggiungiCTTRestTest {
 		assertEquals(Status.BAD_REQUEST.getStatusCode(), responseaddCTT.getStatus());
 	}
 
+	
+	/**Test per il metodo rest/CCS/aggiuntaCTT dell'amministratoreCCS, non va a buon fine siccome la letitudine inserita non esiste e non è valida
+	 * @throws EntityAlreadyExistsException
+	 */
 	@Test public void testWrong_latitudine() throws EntityAlreadyExistsException{
 		Form form1 = new Form();
 		form1.param("provincia", "BN");

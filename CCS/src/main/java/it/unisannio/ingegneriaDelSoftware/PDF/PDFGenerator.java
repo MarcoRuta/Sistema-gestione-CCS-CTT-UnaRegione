@@ -8,9 +8,17 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.stream.Stream;
 
-
 public class PDFGenerator {
-    public static void  makeDocumentDipendente(OutputStream output, String cdf, String username , String password) throws DocumentException, IOException {
+	
+	/**Genera il PDF del Dipendente appena aggiunto al database dei Dipendenti
+	 * @param output
+	 * @param cdf
+	 * @param username
+	 * @param password
+	 * @throws DocumentException
+	 * @throws IOException
+	 */
+    public static void makeDocumentDipendente(OutputStream output, String cdf, String username , String password) throws DocumentException, IOException {
         Document document = new Document();
         PdfWriter.getInstance(document, output);
         document.open();
@@ -39,8 +47,18 @@ public class PDFGenerator {
         document.close();
     }
 
-
-    public static void  makeDocumentSacca(OutputStream output,
+    
+    /**Genera il PDF della Sacca e DatiSacca ad evasione avvenuta, contenente le info che costituiranno l'etichetta
+     * @param output
+     * @param numeroSacche
+     * @param enteRichiedente
+     * @param indirizzoEnte
+     * @param dataAffidamento
+     * @param gruppoSanguigno
+     * @throws DocumentException
+     * @throws IOException
+     */
+    public static void makeDocumentSacca(OutputStream output,
                                           int numeroSacche,
                                           String enteRichiedente,
                                           String indirizzoEnte,

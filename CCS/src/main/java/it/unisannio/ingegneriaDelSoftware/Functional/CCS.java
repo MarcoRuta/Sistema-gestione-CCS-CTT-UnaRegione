@@ -30,5 +30,4 @@ public class CCS implements CCSFunction{
 		
 		return min;
 	}
-	
 }

@@ -1,5 +1,4 @@
 package WebSocket.Encoders;
-
 import javax.websocket.EncodeException;
 import javax.websocket.Encoder;
 import javax.websocket.EndpointConfig;
@@ -9,29 +8,32 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import it.unisannio.ingegneriaDelSoftware.CcsDataBaseRestApplication;
 import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaSaccaInScadenza;
 
-
-
 public class NotificaSaccaInScadenzaEncoder implements Encoder.Text<ArrayList<NotificaSaccaInScadenza>>{
 	
-
-
-	  public String encode(ArrayList<NotificaSaccaInScadenza> notifiche) throws EncodeException {
+	/**Restituisce l'oggetto json correttamente serializzato, dato un ArrayList<SaccaInScadenza>
+	 * @param ArrayList<SaccaInScadenza> lista delle sacche in scadenza
+	 * @return Il json corrispondente alla lista delle sacche in scadenza
+	 */
+	public String encode(ArrayList<NotificaSaccaInScadenza> notifiche) throws EncodeException {
 		try {
-			String json = new ObjectMapper().writeValueAsString(notifiche);
-			CcsDataBaseRestApplication.logger.info("Ho serializzato correttamente la lista di notificheSaccheInScadenza: "+notifiche);
-	        return json;
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-			return null;
+		String json = new ObjectMapper().writeValueAsString(notifiche);
+		CcsDataBaseRestApplication.logger.info("Ho serializzato correttamente la lista di notificheSaccheInScadenza: "+notifiche);
+        return json;
+		}catch (JsonProcessingException e) {
+		e.printStackTrace();
+		return null;
 		}
-		
-	  }
+	}
 
-	  public void init(EndpointConfig ec) {
+	
+	/**Inizializzatore della WebSocket
+	 */
+	public void init(EndpointConfig ec) {
+	}
 
-	  }
-
-	  public void destroy() {
-
-	  }
+	
+	/**Chiusura della WebSocket
+	 */
+	public void destroy() {
+	}
 }

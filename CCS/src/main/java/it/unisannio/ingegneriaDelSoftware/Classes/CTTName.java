@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Properties;
 
 
-/**FlyWeight object for cttName*/
+/**FlyWeight*/
 public class CTTName {
 
     /** tag usati per i settings all'interno del file XML*/
@@ -22,6 +22,7 @@ public class CTTName {
     private static int lastAssigned;
     private final String cttname;
 
+    /**Mappa statica che mantiene tutte le istanze di CTTName*/
     private static Map<String,CTTName> cttNameMap = new HashMap<String,CTTName>();
 
     /**Costruisco il seriale a partire da configurazioni presenti in /localsettings/serial_settings.xml*/
@@ -42,9 +43,8 @@ public class CTTName {
 
 
 
-    /**Ricavo il Seriale se è stato gia creato
-     * Si evita di creare piu volte lo stesso seriale
-     * @param cttname deve iniziare con CTT ed essere seguit do un intero di massimo 3 cifre*/
+    /**Restituisce il nome del CTT partendo da una stringa
+     * @param cttname deve iniziare con CTT ed essere seguito da un intero di massimo 3 cifre*/
     public static CTTName getCttName(String cttname){
         assert cttname!= null:"il nome del CTT non puo essere null";
         if (cttNameMap.containsKey(cttname))
@@ -54,23 +54,27 @@ public class CTTName {
         return unCttName;
     }
 
+    /**Restituisce il nome del CTT
+	 * @return cttname
+	 */
     public String getCttname() {
         return cttname;
     }
 
+    
     public static String getTagLastAssigned() {
         return TAG_LAST_ASSIGNED;
     }
 
-    /**
-     * costruisco un seriale, di volta in volta il seriale creato sarà diverso*/
+    
+    /**Costruisce un seriale, di volta in volta il seriale creato sarà diverso*/
     public CTTName() {
         this.cttname = radice+(new DecimalFormat("000")).format(++lastAssigned);
         CTTName.cttNameMap.put(this.cttname,this);
         CTTName.updateSettings();
     }
 
-    /**costruisco il seriale a partire da una stringa
+    /**Costruisce il seriale a partire da una stringa
      * @param cttname deve essere una stringa di 6 caratteri
      * */
     private CTTName(String cttname) {
@@ -81,7 +85,8 @@ public class CTTName {
     }
 
 
-    /**aggiorno il file xml di settings per la generazione del seriale*/
+    /**Aggiorna il file xml di settings per la generazione del seriale
+    */
     public static void updateSettings() {
         Properties saveProps = new Properties();
         saveProps.setProperty(TAG_RADICE, radice);
@@ -95,7 +100,7 @@ public class CTTName {
         }
     }
 
-    /**aggiorno il file xml di settings per la generazione del cttname alla sua versione originaria*/
+    /**Aggiorno il file xml di settings per la generazione del cttname alla sua versione originaria*/
     public static void restartSettings() {
         Properties saveProps = new Properties();
         saveProps.setProperty(TAG_RADICE, radice);

@@ -28,8 +28,11 @@ public class LoginRestTest {
 	Client client = ClientBuilder.newClient();
 	WebTarget aggiuntaCTT = client.target("http://127.0.0.1:8080/rest/autentificazione");
 	
+	/**Aggiunge al database dei Dipendenti un amministratoreCCS necessario per testare il metodo successivo
+	 * @throws EntityAlreadyExistsException
+	 */
 	@Before
-	public  void setUp() throws EntityAlreadyExistsException {		
+	public void setUp() throws EntityAlreadyExistsException {		
 		Cdf cdf = Cdf.getCDF("KTMFSW67T64I460X");
 	    LocalDate ld = LocalDate.parse("1978-10-10");
 	    RuoloDipendente ruolo = RuoloDipendente.AmministratoreCCS;
@@ -40,28 +43,35 @@ public class LoginRestTest {
 	    mm.createDipendente(dip);
 	}
 
+	/**Droppa i database
+	 */
 	@After
 	public void dropDB(){
 		MongoDataManager mm = MongoDataManager.getInstance();
 		mm.dropDB();
 	} 
 	  
+	/**Test per verificare la non presenza di un amministratoreCCS all'interno del database tramite username e password passate nel form 
+	 * @throws EntityAlreadyExistsException
+	 */
 	  @Test
-	  public void test1() throws EntityAlreadyExistsException {
-		  Form form = new Form();
-		  form.param("username", "admiN");
-		  form.param("password", "Admin");
-		  Response responseaddCTT = aggiuntaCTT.request().post(Entity.form(form));
-		  assertEquals(Status.NOT_FOUND.getStatusCode(), responseaddCTT.getStatus());  
-		  }
+	 public void testAmministratoreNonPresente() throws EntityAlreadyExistsException {
+		Form form = new Form();
+		form.param("username", "admiN");
+		form.param("password", "Admin");
+		Response responseaddCTT = aggiuntaCTT.request().post(Entity.form(form));
+		assertEquals(Status.NOT_FOUND.getStatusCode(), responseaddCTT.getStatus());  
+		}
 	  
+	  /**Test per verificare la presenza dell'amministratoreCCS creato nel setUp all'interno del database  
+		 * @throws EntityAlreadyExistsException
+		 */
 	  @Test
-	  public void test2() throws EntityAlreadyExistsException{
+	  public void testAmministratorePresente() throws EntityAlreadyExistsException{
 		  Form form = new Form();
 		  form.param("username", "admin");
 		  form.param("password", "Adminadmin1");
 		  Response responseaddCTT = aggiuntaCTT.request().post(Entity.form(form));
 		  assertEquals(Status.CREATED.getStatusCode(), responseaddCTT.getStatus());
 	  }
-	  
 }

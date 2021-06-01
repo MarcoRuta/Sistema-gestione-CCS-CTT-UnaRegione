@@ -9,5 +9,4 @@ class CcsDataBaseRestApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }

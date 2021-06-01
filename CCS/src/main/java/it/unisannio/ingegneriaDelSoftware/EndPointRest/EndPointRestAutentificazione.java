@@ -18,13 +18,11 @@ public class EndPointRestAutentificazione {
 
     private MongoDataManager mm = MongoDataManager.getInstance();
 
-    /**
-     * Login è l'operazione con la quale un generico Dipendente del CTT accede al sistema
-     *
+    /**Login è l'operazione con la quale un generico Dipendente del CTT accede al sistema
      * @return il ruolo con il quale si è registrati
      * esso setta il token di autentificazione nei cookie con cookieName = "access_token
      * il cookie ha una max-Age pari ad un turno lavorativo di 8 ore"
-     * @throws  EntityNotFoundException se il login non va a buon fine
+     * @throws EntityNotFoundException se il login non va a buon fine
      */
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -39,6 +37,7 @@ public class EndPointRestAutentificazione {
                 .build();
     }
 
+    
     /**Effettua il logout, esso elimina il token dell'utente dal server cosi che esso non sia piu autenticato
      * @param header da rimuovere per effettuare il logout
      * @throws EntityNotFoundException se si sta facendo il logout con un token non valido
@@ -80,11 +79,10 @@ public class EndPointRestAutentificazione {
     }
 
 
-
     /**Recupera la password di un Utente
      * @param username L'username dell'Utente che ha perso la password
      * @param cdf cdf dell'Utente che vuole recuperare la password
-     * @throws  EntityNotFoundException se si vuole recuperare la password di un utente non presente nel DB
+     * @throws EntityNotFoundException se si vuole recuperare la password di un utente non presente nel DB
      */
     @PUT
     @Path("/recuperoPassword/{cdf}")
@@ -102,6 +100,5 @@ public class EndPointRestAutentificazione {
         }
         throw  new WebApplicationException(Response.status(Response.Status.FORBIDDEN)
                 .entity("username e codice fiscale non coincidono").type(MediaType.TEXT_PLAIN).build());
-
     }
 }

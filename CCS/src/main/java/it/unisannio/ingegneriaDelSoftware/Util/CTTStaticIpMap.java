@@ -1,9 +1,6 @@
 package it.unisannio.ingegneriaDelSoftware.Util;
 
-
 import java.util.HashMap;
-
-
 
 public class CTTStaticIpMap {
 
@@ -17,6 +14,5 @@ public class CTTStaticIpMap {
 			//put ("CTT006","http://192.168.193.194:8080");
 			//put ("CTT007","http://192.168.193.194:8080");
 		}
-	};
-	
+	};	
 }

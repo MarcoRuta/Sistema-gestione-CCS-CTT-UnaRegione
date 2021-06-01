@@ -10,24 +10,65 @@ public class NotificaSaccaInScadenza implements Notifica {
 	private LocalDate dataScadenza;
 	private String gruppoSanguigno;
 	
-	
+	/**Metodo costruttore di NotificaSaccaInScadenza
+	 * @param seriale seriale della Sacca in scadenza
+	 * @param dataScadenza data di scadenza della Sacca in scadenza
+	 * @param gruppoSanguigno gruppoSanguigno della Sacca in scadenza
+	 */
 	public NotificaSaccaInScadenza(String seriale, LocalDate dataScadenza, String gruppoSanguigno) {
 		this.setSeriale(seriale);
 		this.setDataScadenza(dataScadenza);
 		this.setGruppoSanguigno(gruppoSanguigno);
 	}
 
-
+	
+	/**Restituisce il seriale della Sacca
+	 * @return seriale
+	 */
 	public String getSeriale() {
 		return seriale;
 	}
 
 
+	/*/Modifica il seriale della Sacca
+	 * @param seriale
+	 */
 	public void setSeriale(String seriale) {
 		this.seriale = seriale;
 	}
 
 
+	/**Restituisce la data di scadenza
+	 * @return dataScadenza
+	 */
+	public LocalDate getDataScadenza() {
+		return dataScadenza;
+	}
+
+
+	/**Modifica la data di scadenza della Sacca
+	 * @param dataScadenza
+	 */
+	public void setDataScadenza(LocalDate dataScadenza) {
+		this.dataScadenza = dataScadenza;
+	}
+
+	
+	/**Restituisce il gruppo sanguigno della Sacca
+	 * @return
+	 */
+	public String getGruppoSanguigno() {
+		return gruppoSanguigno;
+	}
+
+	/**Modifica il gruppo sanguigno della Sacca
+	 * @param gruppoSanguigno
+	 */
+	public void setGruppoSanguigno(String gruppoSanguigno) {
+		this.gruppoSanguigno = gruppoSanguigno;
+	}
+
+	
 	@Override
 	public String toString() {
 		return "NotificaSaccaInScadenza [seriale=" + seriale + ","
@@ -74,25 +115,4 @@ public class NotificaSaccaInScadenza implements Notifica {
 			return false;
 		return true;
 	}
-
-
-	public LocalDate getDataScadenza() {
-		return dataScadenza;
-	}
-
-
-	public void setDataScadenza(LocalDate dataScadenza) {
-		this.dataScadenza = dataScadenza;
-	}
-
-
-	public String getGruppoSanguigno() {
-		return gruppoSanguigno;
-	}
-
-
-	public void setGruppoSanguigno(String gruppoSanguigno) {
-		this.gruppoSanguigno = gruppoSanguigno;
-	}
-
 }

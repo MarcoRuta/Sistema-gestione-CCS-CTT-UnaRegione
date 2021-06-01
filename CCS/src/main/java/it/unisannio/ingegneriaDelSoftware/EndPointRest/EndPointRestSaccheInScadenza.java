@@ -6,7 +6,6 @@ import java.util.List;
 import javax.inject.Singleton;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -16,11 +15,8 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 import it.unisannio.ingegneriaDelSoftware.CcsDataBaseRestApplication;
 import it.unisannio.ingegneriaDelSoftware.Classes.Beans.SaccaBean;
@@ -29,7 +25,6 @@ import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaEvasione;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
-import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaSaccaInScadenza;
 import it.unisannio.ingegneriaDelSoftware.Functional.NotificaSaccaInScadenzaMaker;
 import it.unisannio.ingegneriaDelSoftware.GestioneScadenze.SaccheInScadenzaObserver;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointSaccheInScadenzaCCS;
@@ -38,11 +33,8 @@ import it.unisannio.ingegneriaDelSoftware.Interfaces.Observer;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Subject;
 import it.unisannio.ingegneriaDelSoftware.Util.CTTStaticIpMap;
 
-
 @Path("/CCS")
 @Singleton
-
-
 
 public class EndPointRestSaccheInScadenza implements EndPointSaccheInScadenzaCCS, Subject{
 	
@@ -50,7 +42,7 @@ public class EndPointRestSaccheInScadenza implements EndPointSaccheInScadenzaCCS
 	Observer cttObserver = new SaccheInScadenzaObserver();
 
 	
-	/**Metodo utilizzato da un CTT per aggiungere al database delle sacche in scadenza una lista di sacche in scadenza presenti nel proprio database
+	/**Aggiunge al database delle sacche in scadenza una lista di sacche in scadenza presenti nel proprio database
 	 * @param listaSaccheInScadenza la lista delle sacche in scadenza, in formato JSON
 	 * @throws EntityAlreadyExistsException 
 	 */
@@ -72,12 +64,8 @@ public class EndPointRestSaccheInScadenza implements EndPointSaccheInScadenzaCCS
 	}
 
 
-
-
-
-
-	/**Metodo utilizzato dal un CTT per accettare una delle sacche in scadenza presenti nella rete
-	 * L'iterazione del metodo termina con una richiesta di evasione presso il CTT che mantiene tale sacca e una notifica di conferma per il CTT che l'ha richiesta
+	/**Accetta una delle sacche in scadenza presenti nella rete
+	 * L'iterazione del metodo termina con una richiesta di evasione presso il CTT che mantiene tale Sacca e una notifica di conferma per il CTT che l'ha richiesta
 	 * @throws EntityNotFoundException 
 	 */
 	@DELETE
@@ -117,6 +105,7 @@ public class EndPointRestSaccheInScadenza implements EndPointSaccheInScadenzaCCS
 	
 	}
 
+	
 	@DELETE
 	@Path("/ritiroAlertCTT/{seriale}")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -132,20 +121,12 @@ public class EndPointRestSaccheInScadenza implements EndPointSaccheInScadenzaCCS
 		this.notifyCTT(NotificaSaccaInScadenzaMaker.creaNotificheSaccheInScadenza());
 
 		return Response.status(Response.Status.OK).entity("Alert Ritirato").build();
-
-
 	}
-
-
 
 
 	@Override
 	public void notifyCTT(List<Notifica> notifiche) {
 		this.cttObserver.update(notifiche);
 		CcsDataBaseRestApplication.logger.info("Sto per inoltrare le sacche in scadenza ai CTT");
-	}
-	
+	}	
 }
-		
-
-

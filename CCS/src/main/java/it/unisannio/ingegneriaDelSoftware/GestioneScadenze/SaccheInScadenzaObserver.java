@@ -25,9 +25,6 @@ public class SaccheInScadenzaObserver implements Observer {
 				CcsDataBaseRestApplication.logger.error("Problemi con la codifica delle notifiche delle sacche in scadenza");
 				e.printStackTrace();
 			}
-		}
-		
+		}		
 	}
-		
-
 }

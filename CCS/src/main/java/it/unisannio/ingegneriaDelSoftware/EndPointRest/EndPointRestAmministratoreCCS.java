@@ -24,8 +24,6 @@ import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 import java.time.LocalDate;
 import java.time.format.*;
 
-
-
 @Path("/CCS")
 @Singleton
 @Secured
@@ -66,12 +64,12 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 				.entity(ctt.getDenominazione().getCttname() + " aggiunto correttamente")
 				.header(HttpHeaders.LOCATION, uriInfo.getBaseUri()+"/centers/"+ctt.getDenominazione().getCttname())
 				.build();
-
 	}
 	
 	
 	/**Rimuove un CTT dal Database dei CTT
-	 * @return Response */
+	 * @return Response 
+	 */
 	@DELETE
 	@Path("/rimozioneCTT/{cttName}")
 	@Produces(MediaType.TEXT_PLAIN)
@@ -84,7 +82,6 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 				.status(Response.Status.OK)
 				.entity(cttName + " rimosso correttamente")
 				.build();
-
 	}
 
 	
@@ -134,8 +131,9 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 				.build();
 	}
 
-	/**Metodo tramite il quale è possibile recuperare un pdf con cdf, username e password di un dipendente
-	 * @param cdf il cdf del dipendente di cui si vogliono recuperare i dati
+	
+	/**Recupera un pdf con cdf, username e password di un Dipendente
+	 * @param cdf il cdf del Dipendente di cui si vogliono recuperare i dati
 	 * @return StreamingOutput
 	 * */
 	@GET
@@ -167,7 +165,7 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 	
 	/**Rimuove un Dipendente dal DataBase
 	 * @param cdf Codice fiscale del Dipendente da rimuovere dal DataBase
-	 * @return
+	 * @return Response
 	 */
 	@DELETE
 	@Path("/rimozioneAmministratore/{cdf}")
@@ -177,7 +175,7 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 									 @PathParam("cdf") String cdf) throws EntityNotFoundException {
 		Dipendente deleter = Token.getDipendenteByToken(header.substring("Basic ".length()));
 		if (deleter.getCdf().getCodiceFiscale().equals(cdf))
-			throw  new WebApplicationException(
+			throw new WebApplicationException(
 					Response
 							.status(Response.Status.FORBIDDEN)
 							.entity("Non puoi cancellare te stesso")
@@ -189,8 +187,9 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 				.entity("Corretta rimozione del Dipendente: " + cdf)
 				.build();
 	}
-    /**
-	 * Restituisce la lista di tutti i Dipendenti presenti nel database dei Dipendenti
+	
+	
+    /**Restituisce la lista di tutti i Dipendenti presenti nel database dei Dipendenti
 	 * @return List<Dipendente> Lista di tutti i Dipendenti
 	 */
 	@GET
@@ -200,6 +199,6 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 		CcsDataBaseRestApplication.logger.info("Si è richiesta la lista degli amministratori presenti nel DB");
 		List<Dipendente> dipendenti = mm.getListaDipendenti();
 		dipendenti.remove(Token.getDipendenteByToken(header.substring("Basic ".length())));
-		return  dipendenti;
+		return dipendenti;
 	}
 }

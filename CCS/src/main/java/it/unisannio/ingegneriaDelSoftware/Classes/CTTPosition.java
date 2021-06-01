@@ -28,7 +28,7 @@ public class CTTPosition {
 
 		if (provincia.length()!= 2) throw new IllegalArgumentException("La provincia deve essere di due caratteri");
 		if (! (provincia.toUpperCase().matches("^[A-Z]*$"))) throw new IllegalArgumentException("La provincia deve contenere solo lettere");
-		if (latitudine < -90 || latitudine > 90 || longitudine < -180 || longitudine > 180) throw new IllegalArgumentException("la Longitudine o la latitudine è errata");
+		if (latitudine < -90 || latitudine > 90 || longitudine < -180 || longitudine > 180) throw new IllegalArgumentException("la longitudine o la latitudine è errata");
 
 		this.provincia = provincia.toUpperCase();
 		this.citta = citta;
@@ -52,7 +52,7 @@ public class CTTPosition {
 	}
 
 	/**Stampa le informazioni della posizione del CTT
-	 * @param ps  stream di output su cui stampare i dati della posizione del CTT
+	 * @param ps stream di output su cui stampare i dati della posizione del CTT
 	 */
 	public void print(PrintStream ps) {
 		ps.println("Provincia: "+ this.provincia);

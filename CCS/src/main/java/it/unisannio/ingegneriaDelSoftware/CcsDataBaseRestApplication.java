@@ -36,7 +36,7 @@ public class CcsDataBaseRestApplication extends ResourceConfig {
 		//exceptionHandler
 		register(AssertionError.class);
 		register(DateTimeParseExceptionHandler.class);
-		register(EntityAlreadyExisistsExceptionHandler.class);
+		register(EntityAlreadyExistsExceptionHandler.class);
 		register(EntityNotFoundExceptionHandler.class);
 		register(ExceptionHandler.class);
 		register(IllegalArgumentExceptionHandler.class);

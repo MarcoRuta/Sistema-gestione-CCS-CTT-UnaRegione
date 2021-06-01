@@ -23,13 +23,15 @@ import it.unisannio.ingegneriaDelSoftware.Classes.RuoloDipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.Beans.User;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 
-
 public class RemoveAmministratoreCCSRestTest {
 	
 	static String token = null;
 	Client client = ClientBuilder.newClient();
 	WebTarget rimozioneAmm = client.target("http://127.0.0.1:8080/rest/CCS/rimozioneAmministratore");
 	
+	/**Aggiunge al database dei Dipendenti quelli necessari per testare il metodo successivo
+	 * @throws EntityAlreadyExistsException
+	 */
 	@Before
 	public void setUp() throws EntityAlreadyExistsException {
 		List<Dipendente> listaDipendenti = new ArrayList<Dipendente>();
@@ -108,6 +110,8 @@ public class RemoveAmministratoreCCSRestTest {
 		token = user.getToken();
 	}
 	
+	/**Droppa i database
+	 */
 	@After
 	/**Classe per l'eliminazione del database
 	 */
@@ -116,8 +120,7 @@ public class RemoveAmministratoreCCSRestTest {
 		mm.dropDB();
 	}
 	
-	/**Test del metodo REST rest/CCS/rimozioneAmministratore
-	 * Questo test deve andare a buon fine in quanto si tenta di eliminare un Dipendente inserito nel @BeforeClass
+	/**Test del metodo REST rest/CCS/rimozioneAmministratore, deve andare a buon fine in quanto si tenta di eliminare un Dipendente inserito nel setUp
 	 * @throws EntityAlreadyExistsException 
 	 */
 	@Test public void testRimozioneAmministratoreCCSCorretto() throws EntityAlreadyExistsException{	
@@ -125,9 +128,7 @@ public class RemoveAmministratoreCCSRestTest {
 		assertEquals(Status.OK.getStatusCode(), responseRemAmm.getStatus());
 	} 	
 	
-	
-	/**Test del metodo REST rest/CCS/rimozioneAmministratore
-	 * Questo test non deve andare a buon fine in quanto si tenta di eliminare un Dipendente non presente nel database
+	/**Test del metodo REST rest/CCS/rimozioneAmministratore, non deve andare a buon fine in quanto si tenta di eliminare un Dipendente non presente nel database
 	 * @throws EntityAlreadyExistsException 
 	*/ 
 	@Test public void testRimozioneAmministratoreCCSNonPresente() throws EntityAlreadyExistsException{
@@ -135,13 +136,11 @@ public class RemoveAmministratoreCCSRestTest {
 		assertEquals(Status.NOT_FOUND.getStatusCode(), responseRemAmm.getStatus());
 	} 
 	
-	/**Test del metodo REST rest/CCS/rimozioneAmministratore
-	 * Questo test non deve andare a buon fine in quanto l'amministratore tenta di eliminare se stesso mentre è loggato
+	/**Test del metodo REST rest/CCS/rimozioneAmministratore, non deve andare a buon fine in quanto l'AmministratoreCCS tenta di eliminare se stesso mentre è loggato
 	 * @throws EntityAlreadyExistsException 
 	*/ 
 	@Test public void testRimozioneAmministratoreCCSSeStesso() throws EntityAlreadyExistsException{
 		Response responseRemAmm = rimozioneAmm.path("CZGMJS46A28I333C").request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).delete();
 		assertEquals(Status.FORBIDDEN.getStatusCode(), responseRemAmm.getStatus());
 	} 
-
 }

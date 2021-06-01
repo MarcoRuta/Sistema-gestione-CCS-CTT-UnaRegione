@@ -6,12 +6,13 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 
-public class EntityAlreadyExisistsExceptionHandler implements ExceptionMapper<EntityAlreadyExistsException> {
+public class EntityAlreadyExistsExceptionHandler implements ExceptionMapper<EntityAlreadyExistsException> {
+	
     @Override
     public Response toResponse(EntityAlreadyExistsException exception) {
-        return  Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                .entity(exception.getMessage())
-                .type(MediaType.TEXT_PLAIN)
-                .build();
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+	        .entity(exception.getMessage())
+	        .type(MediaType.TEXT_PLAIN)
+	        .build();
     }
 }

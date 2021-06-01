@@ -13,7 +13,7 @@ public class CTT{
 	
 
 	/**Metodo Costruttore di CTT
-	 * @param denominazione  il nome del CTT
+	 * @param denominazione il nome del CTT
 	 * @param provincia la provincia in cui è situato il CTT
 	 * @param città la città in cui è situato il CTT
 	 * @param indirizzo l'indirizzo del CTT
@@ -32,17 +32,15 @@ public class CTT{
 		this.posizione = new CTTPosition(provincia,città,indirizzo,latitudine,longitudine);
 		this.denominazione = denominazione;
 		this.telefono = telefono;
-		this.email = email;
-	
+		this.email = email;	
 	}
 
 
-
-	/**
-	 * Metodo costruttore di CTT con CTTPosition
+	/**Metodo costruttore di CTT con CTTPosition
 	 * @param denominazione  il nome del CTT
 	 * @param telefono il numero di telefono del CTT
 	 * @param email l'email ufficiale del CTT
+	 * @param posizione la posizione del CTT
 	 */ 
 	public CTT(CTTName denominazione, String telefono, String email, CTTPosition posizione) {
 		assert denominazione != null: "La denominazione non può essere null";
@@ -50,9 +48,6 @@ public class CTT{
 		assert email != null: "L'email non può essere null";
 		if (telefono.length()!=10 || !(telefono.matches("^[0-9]*$"))) throw new IllegalArgumentException("Formato del numero di telefono non valido");
 		if (!email.matches("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$")) throw new IllegalArgumentException("Formato dell'email non valido");
-
-
-
 
 		this.denominazione = denominazione;
 		this.telefono = telefono;
@@ -74,12 +69,9 @@ public class CTT{
 	}
 
 	
-	/*
-	 * Metodo che calcola la distanza tra due punti applicando la formula dell'emisenoverso
-	 * 
+	/**Calcola la distanza tra due punti applicando la formula dell'emisenoverso
 	 * @param CTT Il ctt da cui voglio calcolare la distanza rispetto a quello attuale
 	 * @return La distanza tra i due CTT
-	 * 
 	 */
 	public double distanzaDalCtt(CTT c){
 		double distanza = -1;
@@ -95,38 +87,32 @@ public class CTT{
 
 
 	
-	/**
-	 * Metodo che restituisce il recapito telefonico del CTT
-	 * 
-	 * @return  Telefono
-	 *
+	/**Restituisce il recapito telefonico del CTT
+	 * @return Telefono Numero di telefono del CTT
 	 */
 	public String getTelefono() {
 		return telefono;
 	}
 	
 	
-	/**
-	 * Metodo che restituisce l'email del CTT
-	 * 
-	 * @return  Email
-	 *
+	/**Restituisce l'email del CTT
+	 * @return Email
 	 */
 	public String getEmail() {
 		return email;
 	}
 	
 	
-	/**
-	 * Metodo che restituisce l'ubicazione del CTT
-	 * 
-	 * @return  Ubicazione
-	 *
+	/**Restituisce l'ubicazione del CTT
+	 * @return Ubicazione
 	 */
 	public CTTPosition getPosizione() {
 		return posizione;
 	}
 
+	/**Restituisce la denominazione del CTT
+	 * @return denominazione
+	 */
 	public CTTName getDenominazione() {
 		return denominazione;
 	}

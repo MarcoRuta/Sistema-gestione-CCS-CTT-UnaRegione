@@ -29,7 +29,10 @@ public class AggiungiAmministratoreRestTest {
 	static String token = null;
 	Client client = ClientBuilder.newClient();
 	WebTarget aggiuntaAmministratore = client.target("http://127.0.0.1:8080/rest/CCS/aggiuntaAmministratore");
-		
+	
+	/**Popola il database di Dipendenti
+	 * @throws EntityAlreadyExistsException
+	 */
 	@Before
 	public void setUp() throws EntityAlreadyExistsException {
 			List<Dipendente> listaDipendenti = new ArrayList<Dipendente>();
@@ -108,17 +111,19 @@ public class AggiungiAmministratoreRestTest {
 			token = user.getToken();
 		}
 	
+	/**Droppa i database
+	 */
 	@After
 	public  void dropDB() {
 		MongoDataManager mm = MongoDataManager.getInstance();
 		mm.dropDB();
 	}
 			
-		/** Test per il metodo rest/CCS/aggiuntaamministratore dell'amministratoreCCS
+		/** Test per il metodo rest/CCS/aggiuntamministratore dell'amministratoreCCS, va a buon fine
 		 * @throws EntityAlreadyExistsException 
 		 */
 		@Test	
-		public void test1() throws EntityAlreadyExistsException{
+		public void testCorretto() throws EntityAlreadyExistsException{
 			Form form1 = new Form();
 			form1.param("cdf", "SRNGJZ50B54C143L");
 			form1.param("nome", "Ario");
@@ -132,11 +137,11 @@ public class AggiungiAmministratoreRestTest {
 		}
 		
 		
-		/** Test per il metodo rest/CCS/aggiuntaamministratore dell'amministratoreCCS
+		/** Test per il metodo rest/CCS/aggiuntaamministratore dell'amministratoreCCS, va a buon fine
 		 * @throws EntityAlreadyExistsException 
 		 */
 		@Test	
-		public void test2() throws EntityAlreadyExistsException{
+		public void testCorretto2() throws EntityAlreadyExistsException{
 			Form form1 = new Form();
 			form1.param("cdf", "LZZBHR41C46C446V");
 			form1.param("nome", "Lucio");
@@ -150,11 +155,12 @@ public class AggiungiAmministratoreRestTest {
 		}
 		
 		
-		/** Test per il metodo rest/CCS/aggiuntaamministratore dell'amministratoreCCS 
+		/** Test per il metodo rest/CCS/aggiuntaamministratore dell'amministratoreCCS, non va a buon fine,
+		 * siccome i dati dell'AmministratoreCCS da aggiungere sono in un formato errato
 		 * @throws EntityAlreadyExistsException 
 		 */
 		@Test	
-		public void test3() throws EntityAlreadyExistsException{
+		public void testFormatoErrato() throws EntityAlreadyExistsException{
 			Form form1 = new Form();
 			form1.param("cdf", "LZZBHR41C46C446V");
 			form1.param("nome", "Lucio");

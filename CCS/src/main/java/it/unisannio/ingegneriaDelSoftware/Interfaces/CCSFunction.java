@@ -6,4 +6,4 @@ import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
 
 public interface CCSFunction {
 		public CTT CttPiuVicino(CTTName cttName) throws EntityNotFoundException;
-	}
+}
