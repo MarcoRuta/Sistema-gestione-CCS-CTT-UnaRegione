@@ -34,15 +34,14 @@ public class EvasioneSaccaTest {
 	WebTarget evasioneSacca = client.target("http://127.0.0.1:8080/rest/magazziniere/evasione");
 	static MongoDataManager md = MongoDataManager.getInstance();
 	
-	public static void populateDBSacche() throws EntityAlreadyExistsException {
+	/**
+	 * Metodo statico per la popolazione del database
+	 */
+	public static void populateDB() throws EntityAlreadyExistsException {
     	List<Sacca> listaSacche = new ArrayList<Sacca>();
     	List<DatiSacca> listaDatiSacche = new ArrayList<DatiSacca>();
-    	//Caricamento sul sistema di cinque Sacche di tipo A+, 4 sacche sono arrivate nel magazzino tra il 15-07-2020 e il 02-05-2021 e hanno data di scadenza lontana (2022)
-    	//Una sacca è arrivata nel 2018 ed è già scaduta
-    	//Tutte le Sacche sono non prenotate e quindi affidabili ad un ente esterno 
-
+    	
     	//Prima sacca
-		//simuliamo sia stata prenotata.
     	GruppoSanguigno gs = GruppoSanguigno.Ap;
     	LocalDate localDataProduzione = LocalDate.of(2020,04,10);
     	LocalDate localDataScadenza = LocalDate.now().plusDays(2);
@@ -56,7 +55,6 @@ public class EvasioneSaccaTest {
     	listaDatiSacche.add(datisacca); 
 
     	//Seconda sacca
-		//simuliamo sia stata prenotata.
     	 gs = GruppoSanguigno.Am;
     	 localDataProduzione = LocalDate.of(2020,05,10);
     	 localDataScadenza = LocalDate.of(2022,06,10);
@@ -70,7 +68,6 @@ public class EvasioneSaccaTest {
     	 listaDatiSacche.add(datisacca); 
 
     	//Terza sacca
-		//simuliamo sia stata prenotata
     	 gs = GruppoSanguigno.Bp;
     	 localDataProduzione = LocalDate.of(2020,06,10);
     	 localDataScadenza = LocalDate.of(2022,06,10);
@@ -106,37 +103,44 @@ public class EvasioneSaccaTest {
 		token = user.getToken();  	
 	}
 	
-	public static void dropDBSacche() {
+	/**
+	 * Metodo statico per la distruzione del database 
+	 */
+	public static void dropDB() {
 		MongoDataManager md = MongoDataManager.getInstance();
 		md.dropDB();
 	}
 
 	/**
-	 * Test 
+	 * Test del metodo removeDipendente dell'EndPointMagazziniereCTT
 	 * @throws EntityAlreadyExistsException 
 	*/
 	@Test public void test1() throws EntityAlreadyExistsException{
-		EvasioneSaccaTest.populateDBSacche();		
+		EvasioneSaccaTest.populateDB();		
 		Form form1 = new Form();	
 		form1.param("listaSeriali", "CTT001-00000121,CTT001-00000122,CTT001-00000123,");
 		//123,124,125 SONO STATI INSERITI PER FAR FUNZIONARE IL BRANCH COVERING, MA DI BASE ANDREBBE MESSA LA RIGA SOTTO 1,2,3
-//		form1.param("listaSeriali", "CTT001-00000001,CTT001-00000002,CTT001-00000003,");
+		//form1.param("listaSeriali", "CTT001-00000001,CTT001-00000002,CTT001-00000003,");
 		form1.param("enteRichiedente", "Ospedale Rummo");
 		form1.param("indirizzoEnte", "Benevento, via pacevecchia 12");
 		Response evasioneSaccaMagazz = evasioneSacca.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).post(Entity.form(form1));
 		assertEquals(Status.CREATED.getStatusCode(), evasioneSaccaMagazz.getStatus());
-		EvasioneSaccaTest.dropDBSacche();
+		EvasioneSaccaTest.dropDB();
 	}
 	
+	/**
+	 * Test del metodo removeDipendente dell'EndPointMagazziniereCTT con sacche non presenti
+	 * @throws EntityAlreadyExistsException 
+	*/
 	@Test public void test2() throws EntityAlreadyExistsException{
-		EvasioneSaccaTest.dropDBSacche();
-		EvasioneSaccaTest.populateDBSacche();
-		Form form1 = new Form();					//sacca non presente	
+		EvasioneSaccaTest.dropDB();
+		EvasioneSaccaTest.populateDB();
+		Form form1 = new Form();						
 		form1.param("listaSeriali", "CTT001-00000001,CTT001-00000123,CTT001-00000003,");
 		form1.param("enteRichiedente", "Ospedale Rummo");
 		form1.param("indirizzoEnte", "Benevento, via pacevecchia 12");
 		Response evasioneSaccaMagazz = evasioneSacca.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).post(Entity.form(form1));
 		assertEquals(Status.NOT_FOUND.getStatusCode(), evasioneSaccaMagazz.getStatus());
-		EvasioneSaccaTest.dropDBSacche();
+		EvasioneSaccaTest.dropDB();
 	}
 }

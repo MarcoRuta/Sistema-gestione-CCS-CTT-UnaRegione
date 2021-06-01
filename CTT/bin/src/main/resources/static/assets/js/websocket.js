@@ -1,18 +1,19 @@
 			
-	var xhttp = new XMLHttpRequest();
-	var token = sessionStorage.getItem("token");
+//	var xhttp = new XMLHttpRequest();
+//	var token = sessionStorage.getItem("token");
 	
 	var j;
-	var obj;
-	var res;
+//	var obj;
+//	var res;
 	var hostWS;
+//	var urlPdf;
 	
 	var notify = {};
 
 	notify.write = function(data) {
 		
 		
-		var str = "";
+/*		var str = "";
 		obj = JSON.parse(data);
 		
 		for(var i=0; i < obj.listaSeriali.length; i++) {
@@ -27,7 +28,7 @@
 		btn.value = str;
 		btn.style = 'width: 98%; max-height: 280px; vertical-align: baseline; margin: 1%; text-align: left;';
 		
-		 /*####### EVASIONE SACCA ######*/
+		 /*####### EVASIONE SACCA ######
 		btn.onclick = function() {
 
 			var x = document.activeElement;
@@ -36,8 +37,8 @@
 		    var url = hostWS + "/rest/magazziniere/evasione";
 		    xhttp.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
-			    res = this.response;
-			    setTimeout(creaPdf,1000);
+			    urlPdf = xhttp.getResponseHeader("Content-Location");
+			    creaPdf();
 			    setTimeout(removeNotify,1500);
 			}else if(this.readyState == 4 && this.status != 200) {
 				//QUALCOSA
@@ -58,48 +59,45 @@
 		    xhttp.send(params);
 	
 		};
-        
-		/*#############################*/
+    
+		/*#############################
 		document.getElementById("divNot").appendChild(btn);
 		
-		
+		*/
 		if(localStorage.getItem('j') == null) {
 			  j = 0;
 		}
 		else { j = localStorage.getItem('j');}
 		
 		localStorage.setItem('bottone' + j, data);
-    		localStorage.setItem('j',++j);
+		localStorage.setItem('j',++j);
 
-    		setTimeout(reload,1500);
-    	};
+		setTimeout(reload,1000);
+	};
 
 	function reload(){
 		location.reload();
 	}
 	
-	/*####### CREA PDF FUNCTION ######*/
+	/*####### CREA PDF FUNCTION ######
       function creaPdf() {
-              alert("STO CREANDO IL PDF!");
-              var doc = new jsPDF();
-              /*var host = "http://"+ window.location.hostname;*/
-              
-              doc.setFontSize(25);
-              doc.text(20, 20, "Evasione sacche");
-      
-              doc.setLineWidth(0.5);
-              doc.line(20, 25, 197, 25);
-      
-              doc.setFontSize(20);
-              doc.text(20, 40, res);
-              //doc.text(20,45,indirizzo.value);
-      
-              // Save the PDF
-              doc.save('EvasioneSacche.pdf');
+              var xhr = new XMLHttpRequest();
+              xhr.open("GET", urlPdf, true);
+              xhr.setRequestHeader('Authorization', 'Basic '+token);
+              xhr.withCredentials = true;
+              xhr.responseType = 'arraybuffer';
+              xhr.send();
+
+              xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4){
+                    var blobSrc = window.URL.createObjectURL(new Blob([this.response], { type: 'application/pdf'}));
+                    window.open(blobSrc);
+                }
+              };
       }
       /*#############################*/
     
-      /*####### REMOVE FUNCTION ######*/
+      /*####### REMOVE FUNCTION ######
       function removeNotify() {
           var x = document.activeElement;
           let sr = x.value.substring(0,15);

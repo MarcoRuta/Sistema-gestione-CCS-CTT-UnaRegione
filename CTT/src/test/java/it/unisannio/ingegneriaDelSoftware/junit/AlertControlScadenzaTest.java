@@ -20,16 +20,13 @@ public class AlertControlScadenzaTest {
 	CTT ctt = new CTT();
 	static MongoDataManager md = MongoDataManager.getInstance();
 	
-	public static void populateDBSacche() throws EntityAlreadyExistsException {
-
-
+	/**
+	 * Metodo statico per la popolazione del database 
+	 */
+	public static void populateDB() throws EntityAlreadyExistsException {
 		List<Sacca> listaSacche = new ArrayList<Sacca>();
 		List<DatiSacca> listaDatiSacche = new ArrayList<DatiSacca>();
-
-		//Caricamento sul sistema di cinque Sacche di tipo A+, 4 sacche sono arrivate nel magazzino tra il 15-07-2020 e il 02-05-2021 e hanno data di scadenza lontana (2022)
-		//Una Sacca è arrivata nel 2018 ed è già scaduta
-		//Tutte le Sacche sono non prenotate e quindi affidabili ad un ente esterno
-
+		
 		//Prima sacca
 		GruppoSanguigno gs = GruppoSanguigno.Ap;
 		LocalDate localDataProduzione = LocalDate.of(2020,04,10);
@@ -557,21 +554,24 @@ public class AlertControlScadenzaTest {
 	        }
 		}
 	
-	public static void dropDBSacche() {
+	/**
+     * Metodo statico per la distruzione del database
+     */
+	public static void dropDB() {
 		md.dropDB();
 	}
 	
 	/**
-	*Test che dovrebbe restituire una lista con 3 Sacche che stanno per scadere (nel beforeclass ci sono 3 sacche con dataScadenza LocalDate.now().plusDays(2)!)
+	*Test che dovrebbe restituire una lista con 3 Sacche che stanno per scadere (nel populate ci sono 3 sacche con dataScadenza LocalDate.now().plusDays(2)!)
 	 * @throws it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException
 	 * @throws EntityAlreadyExistsException 
 	*/
 	@Test	
 	public void test1() throws EntityNotFoundException, EntityAlreadyExistsException {
-		AlertControlScadenzaTest.dropDBSacche();
-		AlertControlScadenzaTest.populateDBSacche();
+		AlertControlScadenzaTest.dropDB();
+		AlertControlScadenzaTest.populateDB();
 		assertEquals(3, ctt.alertControlScadenza().size());
-		AlertControlScadenzaTest.dropDBSacche();
+		AlertControlScadenzaTest.dropDB();
 	}
 	
 	 

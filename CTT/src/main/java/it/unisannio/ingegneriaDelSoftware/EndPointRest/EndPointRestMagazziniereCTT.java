@@ -63,8 +63,6 @@ public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 		md.createDatiSacca(datiSacca);
 		//update Seriale settings
 		Seriale.updateSettings();
-		// The source resource was successfully copied.
-		// The COPY operation resulted in the creation of a new resource.
 		return Response
 				.status(Response.Status.CREATED)
 				.entity("Sacca con seriale " + unaSacca.getSeriale().getSeriale() + " aggiunta correttamente")

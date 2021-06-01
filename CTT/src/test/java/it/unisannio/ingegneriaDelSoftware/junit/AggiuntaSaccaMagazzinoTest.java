@@ -32,7 +32,10 @@ public class AggiuntaSaccaMagazzinoTest {
 	WebTarget aggiuntaSaccaMagazz = client.target("http://127.0.0.1:8080/rest/magazziniere/aggiuntaSacca");
 	static MongoDataManager md = MongoDataManager.getInstance();
 
-	public static void populateDBMagazziniere() throws EntityAlreadyExistsException {
+	/**
+	 * Metodo statico per la popolazione del database
+	 */
+	public static void populateDB() throws EntityAlreadyExistsException {
         Dipendente d = new Dipendente(Cdf.getCDF("RLISNR72C54F356H"), "Mario", "Magazz", LocalDate.parse("1950-07-10", DateTimeFormatter.ofPattern(Constants.DATEFORMAT)), RuoloDipendente.MagazziniereCTT, "admin", "Adminadmin1");
         md.createDipendente(d);
     	
@@ -47,13 +50,20 @@ public class AggiuntaSaccaMagazzinoTest {
 		token = user.getToken();
 	}
 	
-	public static void dropDBSacche() {
+	/**
+	 * Metodo statico per la distruzione del database 
+	 */
+	public static void dropDB() {
 		md.dropDB();
 	}
 	
+	/**
+	 * Test del metodo aggiuntaSaccaMagazzino dell'EndPointMagazziniere
+	 * @throws EntityAlreadyExistsException
+	 */
 	@Test public void test1() throws EntityAlreadyExistsException {
-		AggiuntaSaccaMagazzinoTest.dropDBSacche();
-		AggiuntaSaccaMagazzinoTest.populateDBMagazziniere();
+		AggiuntaSaccaMagazzinoTest.dropDB();
+		AggiuntaSaccaMagazzinoTest.populateDB();
 		Form form1 = new Form();
 		form1.param("gruppo_sanguigno", GruppoSanguigno.Ap.toString());
 		form1.param("data_scadenza", "2023-11-10");
@@ -62,11 +72,15 @@ public class AggiuntaSaccaMagazzinoTest {
 
 		Response responseaddSaccaMagazz = aggiuntaSaccaMagazz.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).post(Entity.form(form1));
 		assertEquals(Status.CREATED.getStatusCode(), responseaddSaccaMagazz.getStatus());
-		AggiuntaSaccaMagazzinoTest.dropDBSacche();
+		AggiuntaSaccaMagazzinoTest.dropDB();
 	}
 	
+	/**
+	 * Test del metodo aggiuntaSaccaMagazzino dell'EndPointMagazziniere applicato su una sacca con dati errati
+	 * @throws EntityAlreadyExistsException
+	 */
 	@Test public void test2() throws EntityAlreadyExistsException {
-		AggiuntaSaccaMagazzinoTest.populateDBMagazziniere();
+		AggiuntaSaccaMagazzinoTest.populateDB();
 		Form form1 = new Form();
 		form1.param("gruppo_sanguigno", GruppoSanguigno.Ap.toString());
 		form1.param("data_scadenza", "2016-11-10");
@@ -75,6 +89,6 @@ public class AggiuntaSaccaMagazzinoTest {
 
 		Response responseaddSaccaMagazz = aggiuntaSaccaMagazz.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).post(Entity.form(form1));
 		assertEquals(Status.BAD_REQUEST.getStatusCode(), responseaddSaccaMagazz.getStatus());
-		AggiuntaSaccaMagazzinoTest.dropDBSacche();
+		AggiuntaSaccaMagazzinoTest.dropDB();
 	}
 }
