@@ -30,7 +30,7 @@ public class NotificaSaccaInScadenzaDecoder implements Decoder.Text< ArrayList<N
 
 	  public boolean willDecode(String jsonMessage) {
 	    try {
-	      new ObjectMapper().readValue(new String(jsonMessage), SaccaBean[].class);
+	      new ObjectMapper().readValue(new String(jsonMessage), NotificaSaccaInScadenza[].class);
 	      return true;
 	    } catch (Exception e) {
 	      return false;

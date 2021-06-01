@@ -234,9 +234,10 @@ public class MongoDataManager {
     public  List<SaccaBean> getListaSacche(){
         MongoCollection<SaccaBean> collection = getCollectionSacca();
         List<SaccaBean> sacche = new ArrayList<SaccaBean>();
-
-        for (SaccaBean unaSacca : collection.find())
-            sacche.add(unaSacca);
+        if(collection!= null) {
+            for (SaccaBean unaSacca : collection.find())
+                sacche.add(unaSacca);
+        }
         return sacche;
     }
     
@@ -279,5 +280,15 @@ public class MongoDataManager {
         unDipendente.setPassword(password);
        getCollectionDipendente().replaceOne(eq(Constants.ELEMENT_CDF),unDipendente);
     }
+
+    
+    //DACOMMENTARE
+	public void removeSaccheCttOffline(CTTName cttOffline) throws EntityNotFoundException {
+		List<SaccaBean> listaSacche = this.getListaSacche();
+		for(SaccaBean s : listaSacche)
+			if(s.getSeriale().getSeriale().substring(0,6).equals(cttOffline.getCttname())) {
+                this.removeSacca(s.getSeriale());
+            }
+	}
 	
 }

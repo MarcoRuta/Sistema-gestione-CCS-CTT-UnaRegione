@@ -1,5 +1,8 @@
 package it.unisannio.ingegneriaDelSoftware.Classes;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -20,6 +23,8 @@ public class CTTName {
 
     private final static String radice;
     private static int lastAssigned;
+
+    @JsonProperty("cttname")
     private final String cttname;
 
     private static Map<String,CTTName> cttNameMap = new HashMap<String,CTTName>();
@@ -58,12 +63,10 @@ public class CTTName {
         return cttname;
     }
 
-    public static String getTagLastAssigned() {
-        return TAG_LAST_ASSIGNED;
-    }
 
     /**
      * costruisco un seriale, di volta in volta il seriale creato sarà diverso*/
+    @JsonCreator
     public CTTName() {
         this.cttname = radice+(new DecimalFormat("000")).format(++lastAssigned);
         CTTName.cttNameMap.put(this.cttname,this);
@@ -81,6 +84,8 @@ public class CTTName {
     }
 
 
+
+
     /**aggiorno il file xml di settings per la generazione del seriale*/
     public static void updateSettings() {
         Properties saveProps = new Properties();
@@ -95,19 +100,6 @@ public class CTTName {
         }
     }
 
-    /**aggiorno il file xml di settings per la generazione del cttname alla sua versione originaria*/
-    public static void restartSettings() {
-        Properties saveProps = new Properties();
-        saveProps.setProperty(TAG_RADICE, radice);
-        saveProps.setProperty(TAG_LAST_ASSIGNED, Integer.toString(0));
-        try {
-            FileOutputStream fos = new FileOutputStream("localsettings/cttname_settings.xml");
-            saveProps.storeToXML(fos, "");
-            fos.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     public String toString() {

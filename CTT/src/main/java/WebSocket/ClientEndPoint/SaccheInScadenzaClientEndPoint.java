@@ -6,7 +6,10 @@ import java.util.ArrayList;
 
 import javax.websocket.*;
 
+import WebSocket.Decoders.CTTNameDecoder;
+import WebSocket.Encoders.CTTNameEncoder;
 import WebSocket.ServerEndpoint.WebSocketEndPointSaccheInScadenza;
+import it.unisannio.ingegneriaDelSoftware.Classes.CTTName;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
 import it.unisannio.ingegneriaDelSoftware.Classes.Seriale;
 import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaSaccaInScadenza;
@@ -19,8 +22,8 @@ import java.util.List;
 
 
 @ClientEndpoint(
-encoders = {NotificaSaccaInScadenzaEncoder.class},
-decoders = {NotificaSaccaInScadenzaDecoder.class} )
+encoders = {NotificaSaccaInScadenzaEncoder.class, CTTNameEncoder.class},
+decoders = {NotificaSaccaInScadenzaDecoder.class, CTTNameDecoder.class} )
 public class SaccheInScadenzaClientEndPoint {
 
 	 public static List<NotificaSaccaInScadenza> notificheSaccheInScadenza = new ArrayList<NotificaSaccaInScadenza>();
@@ -30,12 +33,15 @@ public class SaccheInScadenzaClientEndPoint {
 	 private Session session;
 			  
 
-	 public SaccheInScadenzaClientEndPoint(){
+	 public SaccheInScadenzaClientEndPoint() throws InterruptedException {
 	 	try{
-	 		WebSocketContainer container=ContainerProvider.getWebSocketContainer();
-	 		container.connectToServer(this, new URI(uri));
-	 	}catch(Exception ex){
+				WebSocketContainer container=ContainerProvider.getWebSocketContainer();
+				container.connectToServer(this, new URI(uri));
 
+	 	}catch(Exception ex){
+			CttDataBaseRestApplication.logger.error("Il CCS è OFFLINE");
+			Thread.sleep(1000*30);
+			new SaccheInScadenzaClientEndPoint();
 	 	}
 	 }
 
@@ -43,6 +49,13 @@ public class SaccheInScadenzaClientEndPoint {
 	 public void onOpen(Session session){
 	 	CttDataBaseRestApplication.logger.info("Connesso al ServerEndpointSaccheInScadenza Del CCS");
 	 	this.session=session;
+		 try {
+			 session.getBasicRemote().sendObject(CTTName.getInstance());
+		 } catch (IOException e) {
+			 e.printStackTrace();
+		 } catch (EncodeException e) {
+			 e.printStackTrace();
+		 }
 	 }
 
 	 @OnMessage
@@ -66,8 +79,16 @@ public class SaccheInScadenzaClientEndPoint {
 	}
 
 	@OnClose
-	public void onClose(Session session){
-		CttDataBaseRestApplication.logger.error("Connessione con il EndPointSaccheInScadenza del CCS Interrotta");
+	public void onClose(Session session) throws InterruptedException {
+		try{
+			WebSocketContainer container=ContainerProvider.getWebSocketContainer();
+			container.connectToServer(this, new URI(uri));
+			CttDataBaseRestApplication.logger.error("Connessione con il EndPointSaccheInScadenza del CCS Interrotta");
+		}catch(Exception ex){
+			CttDataBaseRestApplication.logger.error("Il CCS è OFFLINE");
+			Thread.sleep(1000*30);
+			new SaccheInScadenzaClientEndPoint();
+		}
 	 }
 
 }

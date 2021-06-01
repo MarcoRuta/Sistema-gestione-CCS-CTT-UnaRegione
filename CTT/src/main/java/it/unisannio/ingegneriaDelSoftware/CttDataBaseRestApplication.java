@@ -66,7 +66,7 @@ public class CttDataBaseRestApplication extends ResourceConfig {
 		
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 		SpringApplication.run(CttDataBaseRestApplication.class, args);
 		SaccheInScadenzaClientEndPoint saccheInScadenzaClient = new SaccheInScadenzaClientEndPoint();
 		

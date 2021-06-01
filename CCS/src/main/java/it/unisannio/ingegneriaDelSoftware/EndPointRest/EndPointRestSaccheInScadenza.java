@@ -103,7 +103,6 @@ public class EndPointRestSaccheInScadenza implements EndPointSaccheInScadenzaCCS
 		
 		Client client = ClientBuilder.newClient();
 		WebTarget evasioneSacca = client.target(indirizzoCTT+"/rest/notifica/notificaEvasione");
-		System.err.println(indirizzoCTT);
 		
 		NotificaEvasione notifica = new NotificaEvasione(listaSeriali,ente_richiedente,indirizzo);
 		CcsDataBaseRestApplication.logger.info("Ho creato la notifica evasione Sacca che sto per inoltrare al CTT che possiede la sacca: "+notifica);

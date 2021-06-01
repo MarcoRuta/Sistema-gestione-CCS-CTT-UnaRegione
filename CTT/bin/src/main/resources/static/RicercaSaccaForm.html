@@ -162,17 +162,37 @@
 
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
-                 	    res ="Ricerca sacca completata in locale, il magazziniere è stato avvisato per evadere l'ordine";
-                 	    //document.getElementById("result").innerHTML = "Ricerca sacca completata in locale, il magazziniere è stato avvisato per evadere l'ordine";
+                 	    res = JSON.parse(this.response);
+                 	    if (confirm(res.listaSeriali+"\nConfermare l'evasione?" )){
+                 	         let xhttpEvasione = new XMLHttpRequest();
+                 	         let urlEvasione = host + "/rest/notifica/notificaEvasione";
+                 	         xhttpEvasione.open("POST", urlEvasione, true);
+                             xhttpEvasione.setRequestHeader('Authorization', 'Basic '+token);
+                             xhttpEvasione.setRequestHeader('Content-Type', 'application/json');
+                             xhttpEvasione.withCredentials = true;
+                             xhttpEvasione.send(this.response);
+
+                             xhttpEvasione.onreadystatechange = function() {
+                                if (this.readyState == 4 && this.status != 200){
+                                    alert(this.response);
+                                    reloadPage();
+                                }
+                             };
+
+
+                 	    }else{
+                 	        reloadPage();
+                 	    }
                  	}else{
-                       //document.getElementById("result").innerHTML = this.response;
-                       res = this.response;
+                 	    if (this.readyState == 4 && this.status != 200){
+                            alert(this.response);
+                        }
                  	}
                 };
                 
                 xhttp.onerror = function(){
                     //document.getElementById("result").innerHTML = "Non è stato possibile completare la ricerca in locale, è stato allertato il sistema CCS";
-                    res = this.response;
+                    alert(this.response);
                 };
 
 
@@ -181,11 +201,9 @@
                 xhttp.setRequestHeader('Authorization', 'Basic '+token);
                 xhttp.withCredentials = true;
                 xhttp.send();
-                setTimeout(reloadPage, 1000);
             }
             
             function reloadPage() {
-                alert(res);
                 gruppo_sanguigno.value = "";
                 dataaff.value= "";
                 numero_sacche.value= "";
