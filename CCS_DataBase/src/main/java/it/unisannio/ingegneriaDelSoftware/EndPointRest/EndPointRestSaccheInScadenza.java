@@ -15,8 +15,11 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import it.unisannio.ingegneriaDelSoftware.CcsDataBaseRestApplication;
 import it.unisannio.ingegneriaDelSoftware.Classes.Beans.SaccaBean;
@@ -53,7 +56,6 @@ public class EndPointRestSaccheInScadenza implements EndPointSaccheInScadenzaCCS
 	@POST
 	@Path("/saccheInScadenza")
 	@Consumes(MediaType.APPLICATION_JSON)
-	
 	public void aggiungiSaccaInScadenza(SaccaBean[] listaSaccheInScadenza) {
 		CcsDataBaseRestApplication.logger.info("Ho ricevuto una lista di sacche in scadenza da un CTT ");
 		for(SaccaBean s : new ArrayList<>(Arrays.asList(listaSaccheInScadenza))) {
@@ -83,8 +85,8 @@ public class EndPointRestSaccheInScadenza implements EndPointSaccheInScadenzaCCS
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response prenotaSacca(@PathParam("seriale") String seriale,
 								 @FormParam("enteRichiedente") String ente_richiedente,
-								 @FormParam("indirizzoEnte")String indirizzo) throws EntityNotFoundException {
-		
+								 @FormParam("indirizzoEnte") String indirizzo) throws EntityNotFoundException {
+
 		//Recupero l'indirizzo del CTT che possiede la sacca in scadenza
 		String nomeCTT = seriale.substring(0,6);
 		String indirizzoCTT = CTTStaticIpMap.indirizziCTT.get(nomeCTT);
@@ -109,8 +111,8 @@ public class EndPointRestSaccheInScadenza implements EndPointSaccheInScadenzaCCS
 		this.notifyCTT(NotificaSaccaInScadenzaMaker.creaNotificheSaccheInScadenza());
 		
 		if (response.getStatus() == 204){
-			return Response.status(Response.Status.OK).entity("Sacca In Scadenza Prenotata Correttamente").build();
-		} else return  response;
+			return Response.status(Response.Status.OK).entity("Sacca In Scadenza Prenotata Correttamente").header("Access-Control-Allow-Origin","*").build();
+		} else return response;
 	
 	}
 
@@ -118,7 +120,7 @@ public class EndPointRestSaccheInScadenza implements EndPointSaccheInScadenzaCCS
 	@Path("/ritiroAlertCTT/{seriale}")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response prenotaSacca(@PathParam("seriale") String seriale) throws EntityNotFoundException {
+	public Response ritiroAlertCTTSacca(@PathParam("seriale") String seriale) throws EntityNotFoundException {
 
 		SerialeBean ser = new SerialeBean();
 		ser.setSeriale(seriale);

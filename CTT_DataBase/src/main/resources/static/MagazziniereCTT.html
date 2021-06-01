@@ -102,7 +102,6 @@
 			for(let i = 0; i < localStorage.length; i++) {
                 if(localStorage.key(i).substring(0,7) == "bottone") {
                     data = localStorage.getItem(localStorage.key(i));
-                    alert(data);
                     addBtn();
                 }
 			}
@@ -110,14 +109,14 @@
     
 
       function addBtn() {
-           alert(data);
           var obj = JSON.parse(data);
           str = "";
 
           for(var i=0; i < obj.listaSeriali.length; i++) {
-           str = str + obj.listaSeriali[i] + ",";
+           str = str + obj.listaSeriali[i];
         }
           str2 = str.substring(0,str.length-1);
+          alert(str);
           var btn = document.createElement("button");
           btn.className='btn btn-warning';
           btn.innerHTML = "Sacche: " + str2 + "<br>Ente: " + obj.enteRichiedente + "<br>Indirizzo: " + obj.indirizzoEnte;
@@ -185,7 +184,7 @@
       /*####### REMOVE FUNCTION ######*/
       function removeNotify() {
           var x = document.activeElement;
-          let sr = x.value.substring(0,15);
+          let sr = x.value.substring(0,15) + ",";
           for(let i = 0; i < localStorage.length; i++) {
                   if(localStorage.key(i).substring(0,7) == "bottone") {
                           data = localStorage.getItem(localStorage.key(i));

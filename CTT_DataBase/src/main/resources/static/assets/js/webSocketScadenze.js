@@ -5,11 +5,19 @@
 
 	notify.write = function(data) {
 	    for(let i = 0; i < localStorage.length; i++) {
-            if(localStorage.key(i).substring(0,15) == "bottoneScadenza") {
+            if(localStorage.key(i) == "scadenzaBottone") {
                localStorage.removeItem(localStorage.key(i));
+
+                while (document.getElementById('divNot').childElementCount != 0){
+                    var button = document.getElementById('btnSc');
+                    document.getElementById('divNot').removeChild(button);
+                }
             }
         }
-		localStorage.setItem('bottoneScadenza' + j, data);
+
+		localStorage.setItem('scadenzaBottone', data);
+
+		sessionload();
 	};
 
 
@@ -19,6 +27,7 @@
 
 
         channel.connect = function(host) {
+            let connected = localStorage.getItem("connected");
    	    	channel.socket = new WebSocket(host);
 
 

@@ -84,12 +84,12 @@
         var name = sessionStorage.getItem("nome");
         var surname = sessionStorage.getItem("cognome");
         var data;
+        var str;
         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
         function start(){
             verificoToken();
             setPerson();
-            sessionload();
         }
         
         function setPerson(){
@@ -140,7 +140,7 @@
 
         function sessionload() {
 			for(let i = 0; i < localStorage.length; i++) {
-                if(localStorage.key(i).substring(0,15) == "bottoneScadenza") {
+                if(localStorage.key(i).substring(0,15) == "scadenzaBottone") {
                     data = localStorage.getItem(localStorage.key(i));
                     addBtn();
                 }
@@ -152,20 +152,21 @@
           var array = JSON.parse(data);
           for(let i =0; i<array.length; i++){
               var btn = document.createElement("button");
+              str = array[i].seriale;
               btn.className='btn btn-warning';
-              let date = new Date(array[i].dataScadenza.year, array[i].dataScadenza.monthValue, array[i].dataScadenza.dayOfMonth);
+              let date = new Date(array[i].dataScadenza.year, array[i].dataScadenza.monthValue-1, array[i].dataScadenza.dayOfMonth);
 
-              btn.innerHTML = "Sacca: " + array[i].seriale + "<br>Gruppo Sanguigno: " + array[i].gruppoSanguigno + "<br>Data Scadenza: " + date.toLocaleDateString(undefined, options);
+              btn.innerHTML = "Sacca: " + str + "<br>Gruppo Sanguigno: " + array[i].gruppoSanguigno + "<br>Data Scadenza: " + date.toLocaleDateString(undefined, options);
               btn.type = 'submit';
-              btn.value = array[i].seriale;
+              btn.value = str;
+              btn.id = 'btnSc';
               btn.style = 'width: 98%; max-height: 280px; vertical-align: baseline; margin: 1%; text-align: left;';
 
               /*####### EVASIONE SACCA ######*/
               btn.onclick = function() {
                   var x = document.activeElement;
-                  var myWindow = window.open("EvasioneSaccainScadenzaForm.html?seriale="+array[i].seriale, "Evasione", "width=auto,height=auto");
-                  alert("Completato?");
-                  location.reload();
+                  var myWindow = window.open("EvasioneSaccaInScadenzaForm.html?seriale="+str, "Evasione", "width=auto,height=auto");
+
               }
               document.getElementById("divNot").appendChild(btn);
           }

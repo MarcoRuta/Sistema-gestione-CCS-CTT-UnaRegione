@@ -2,6 +2,7 @@ package it.unisannio.ingegneriaDelSoftware.EndPointRest;
 
 import com.itextpdf.text.DocumentException;
 import it.unisannio.ingegneriaDelSoftware.Classes.*;
+import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaEvasione;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
@@ -29,7 +30,7 @@ public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 
 	private MongoDataManager md = MongoDataManager.getInstance();
 	public Map<String,List<Seriale>> evasioni = new HashMap<>();
-
+	
 
 	/**Metodo con il quale il Magazziniere aggiunge una Sacca al DataBase
 	 *
