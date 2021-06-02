@@ -37,7 +37,7 @@ public class DatiSacca {
 		assert gruppoSanguigno!= null: "Il gruppo sanguigno non puo essere nullo";
 		assert dataArrivo != null: "La data di arrivo non può essere nulla";
 		assert enteDonatore != null: "L'ente donatore non può essre nullo";
-		if(dataAffidamento != null && dataAffidamento.isBefore(dataArrivo))
+		if(dataAffidamento != null && dataAffidamento.isBefore(dataArrivo) && !dataAffidamento.isEqual(dataArrivo))
 			throw new IllegalArgumentException("La data di affidamento non puo essere precedente a quella di arrivo");
 
 
@@ -90,7 +90,7 @@ public class DatiSacca {
 	 */
 	public void setDataAffidamento(LocalDate dataAffidamento) throws  IllegalArgumentException, AssertionError{
 		assert dataAffidamento != null: "La data di affidamento non può essere null";
-		if (dataAffidamento.isBefore(this.dataArrivo)) throw  new IllegalArgumentException("La data di arrivo non puo essere inferiore alla data di affidamento");
+		if (dataAffidamento.isBefore(this.dataArrivo) && !(dataAffidamento.isEqual(this.dataArrivo))) throw  new IllegalArgumentException("La data di arrivo non puo essere inferiore alla data di affidamento");
 		this.dataAffidamento = Optional.of(dataAffidamento);
 	}
 	

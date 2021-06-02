@@ -22,16 +22,16 @@ public class WebSocketEndPointSmaltimentoSacche {
     public void start(Session session) {
         CttDataBaseRestApplication.logger.info("Terminale Magazziniere Connesso al Server Endpoint SMaltimento sessione: " + session.getId());
         try {
-            if (EndPointNotificheMagazziniere.serialiDaSmaltire != null){
+            if(EndPointNotificheMagazziniere.serialiDaSmaltire != null) {
                 session.getBasicRemote().sendObject(EndPointNotificheMagazziniere.serialiDaSmaltire);
                 CttDataBaseRestApplication.logger.info("Ho inviato la notifica di smaltimento sacca" + session.getId());
-                CttDataBaseRestApplication.logger.info("notifica: "+EndPointNotificheMagazziniere.serialiDaSmaltire);
+                CttDataBaseRestApplication.logger.info("notifica: " + EndPointNotificheMagazziniere.serialiDaSmaltire);
             }
             sessions.add(session);
         } catch (IOException e) {
-            e.printStackTrace();
+            CttDataBaseRestApplication.logger.error("Non sono riuscito ad inviare la lista smaltimento: "+e.getMessage());
         } catch (EncodeException e) {
-            e.printStackTrace();
+            CttDataBaseRestApplication.logger.error("Problemi nell'encoding della notifica smaltimento: "+e.getMessage());
         }
 
     }

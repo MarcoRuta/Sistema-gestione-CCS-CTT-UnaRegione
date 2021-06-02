@@ -54,7 +54,9 @@
                                 <button class="btn btn-primary" onclick="location.href='AggiungiSaccaForm.html';" type="button" style="background-color: #13958d;width: 210px;">Aggiunta sacca</button>
                             </div>
                         </div>
-                    <div class = "divSmaMag" id ="divSma"></div>
+                    <div class="row" style="width:75%; margin-top:5%; margin-left: 16%;">
+                        <div class = "divSmaMag" id ="divSma"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -215,6 +217,11 @@
   
      };
 
+
+
+
+
+
     </script>
     <script>
 
@@ -252,14 +259,17 @@
                 if (this.readyState == 4 && this.status == 200) {
                     var blobSrcSma = window.URL.createObjectURL(new Blob([this.response], { type: 'application/pdf'}));
                     window.open(blobSrcSma);
+                    location.reload();
                 } else if(this.readyState == 4 && this.status != 200) {
                        alert(this.response);
+                       location.reload();
                 }
 
             };
 
             xhttpSma.onerror = function(){
                 alert("Impossibile Conttatare il server");
+                location.reload();
             };
 
 
@@ -268,6 +278,7 @@
             xhttpSma.withCredentials = true;
             xhttpSma.responseType = 'arraybuffer';
             xhttpSma.send();
+
         };
 
         document.getElementById("divSma").appendChild(btnSma);

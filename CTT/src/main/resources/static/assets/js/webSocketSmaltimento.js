@@ -7,11 +7,6 @@
     	    for(let i = 0; i < localStorage.length; i++) {
                 if(localStorage.key(i) == "smaltimentoBottone") {
                    localStorage.removeItem(localStorage.key(i));
-
-                    while (document.getElementById('divSma').childElementCount != 0){
-                        var button = document.getElementById('btnSma');
-                        document.getElementById('divSma').removeChild(button);
-                    }
                 }
             }
 

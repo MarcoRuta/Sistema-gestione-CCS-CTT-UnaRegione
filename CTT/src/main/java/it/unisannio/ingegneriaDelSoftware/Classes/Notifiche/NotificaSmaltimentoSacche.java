@@ -14,6 +14,9 @@ public class NotificaSmaltimentoSacche implements Notifica {
         this.serialeList = serialeList;
     }
 
+    public NotificaSmaltimentoSacche() {
+    }
+
     public List<Seriale> getSerialeList() {
         return serialeList;
     }

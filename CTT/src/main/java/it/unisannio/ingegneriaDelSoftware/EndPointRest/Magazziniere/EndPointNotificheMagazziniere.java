@@ -27,7 +27,7 @@ public class EndPointNotificheMagazziniere implements Subject {
     private static TerminaleMagazziniereObserver observer = new TerminaleMagazziniereObserver();
     private MongoDataManager mm = MongoDataManager.getInstance();
     private static List<NotificaEvasione> notificheEvasione = new ArrayList<>();
-    public static NotificaSmaltimentoSacche serialiDaSmaltire;
+    public static NotificaSmaltimentoSacche serialiDaSmaltire ;
 
 
     @POST
@@ -51,7 +51,7 @@ public class EndPointNotificheMagazziniere implements Subject {
             public void write(OutputStream output){
                 try {
                     PDFGenerator.makeDocumentSmaltimento(output,serialiDaSmaltire.getSerialeList());
-                    serialiDaSmaltire= null;
+                    serialiDaSmaltire = null;
                 } catch (DocumentException | IOException e) {
                     throw new WebApplicationException(Response
                             .status(Response.Status.INTERNAL_SERVER_ERROR)
