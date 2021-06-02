@@ -163,7 +163,12 @@
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
                  	    res = JSON.parse(this.response);
-                 	    if (confirm(res.listaSeriali+"\nConfermare l'evasione?" )){
+                 	    var serialiDaEvadere = new Array();
+                 	    for (let i=0; i< res.listaSeriali.length; i++){
+                            serialiDaEvadere[i] = res.listaSeriali[i].seriale;
+                 	    }
+
+                 	    if (confirm(serialiDaEvadere+"\nConfermare l'evasione?" )){
                  	         let xhttpEvasione = new XMLHttpRequest();
                  	         let urlEvasione = host + "/rest/notifica/notificaEvasione";
                  	         xhttpEvasione.open("POST", urlEvasione, true);
@@ -174,7 +179,6 @@
 
                              xhttpEvasione.onreadystatechange = function() {
                                 if (this.readyState == 4 && this.status != 200){
-                                    alert(this.response);
                                     reloadPage();
                                 }
                              };
@@ -191,7 +195,6 @@
                 };
                 
                 xhttp.onerror = function(){
-                    //document.getElementById("result").innerHTML = "Non è stato possibile completare la ricerca in locale, è stato allertato il sistema CCS";
                     alert(this.response);
                 };
 

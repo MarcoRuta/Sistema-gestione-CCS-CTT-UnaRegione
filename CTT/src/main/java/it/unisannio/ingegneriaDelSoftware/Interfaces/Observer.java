@@ -1,6 +1,5 @@
 package it.unisannio.ingegneriaDelSoftware.Interfaces;
-
-import it.unisannio.ingegneriaDelSoftware.Interfaces.Notifica;
+import java.util.List;
 
 public interface Observer {
     void update(Notifica notifica);

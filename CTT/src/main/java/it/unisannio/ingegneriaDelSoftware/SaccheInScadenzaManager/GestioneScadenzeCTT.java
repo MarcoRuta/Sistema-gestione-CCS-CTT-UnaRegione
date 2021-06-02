@@ -15,6 +15,7 @@ import javax.ws.rs.client.WebTarget;
 import WebSocket.ClientEndPoint.SaccheInScadenzaClientEndPoint;
 import it.unisannio.ingegneriaDelSoftware.Classes.*;
 import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaSaccaInScadenza;
+import it.unisannio.ingegneriaDelSoftware.ClientRest.ConnectionVerifier;
 import it.unisannio.ingegneriaDelSoftware.CttDataBaseRestApplication;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
@@ -44,11 +45,15 @@ public class GestioneScadenzeCTT implements CTTFunction {
 
 		//recupero le sacche in scadenza
 		List<Sacca> saccheInScadenza = getSaccheInScadenza();
-		if(!saccheInScadenza.isEmpty())
-			gestioneSaccheInscadenza.request().post(Entity.json(saccheInScadenza));
-		CttDataBaseRestApplication.logger.info("Ho inviato un alert al CCS con la lista delle sacche in scadenza");
+		boolean sent = false;
+		while (!sent && !saccheInScadenza.isEmpty() ) {
+			if (ConnectionVerifier.isCCSOnline()) {
+				gestioneSaccheInscadenza.request().post(Entity.json(saccheInScadenza));
+				CttDataBaseRestApplication.logger.info("Ho inviato un alert al CCS con la lista delle sacche in scadenza");
+				sent = true;
+			}
+		}
 
-	   
 	}
 	
 	/**Restituisce una lista di tutte le sacche che scadono entro le prossime 72 ore

@@ -1,5 +1,6 @@
 package it.unisannio.ingegneriaDelSoftware.Interfaces;
 
+import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaEvasione;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
 
@@ -10,17 +11,11 @@ import javax.ws.rs.core.UriInfo;
 public interface EndPointMagazziniereCTT {
 
 	/**Metodo attivato dal magazziniere quando riceve una notifica evasione Sacca esso aggiorna i datiSacca e rimuove la Sacca dal DB attivo
-	 *
-	 * @param seriale Seriale della Sacca da evadere
-	 * @param ente_richiedente Ente che richiede la Sacca
-	 * @param indirizzo Indirizzo dell'enteRichiedente
 	 * @param uriInfo  info dell'uri relativo alla risorsa richiesta
 	 * @return messaggio di corretta evasione.
 	 * @throws EntityNotFoundException se la sacca da evadere non è presente nel DB
 	 */
-	public Response evasioneSacca(String seriale,
-								  String ente_richiedente,
-								  String indirizzo,
+	public Response evasioneSacca(NotificaEvasione notificaEvasione,
 								  UriInfo uriInfo) throws EntityNotFoundException;
 
 	/**Metodo con il quale il Magazziniere aggiunge una Sacca al DataBase

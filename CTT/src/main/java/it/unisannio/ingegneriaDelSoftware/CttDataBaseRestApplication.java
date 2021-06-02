@@ -18,6 +18,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import javax.ws.rs.ApplicationPath;
+import javax.ws.rs.ProcessingException;
 
 
 @SpringBootApplication (scanBasePackages = {"WebSocket", "ingegneriaDelSoftware"})
@@ -63,7 +64,6 @@ public class CttDataBaseRestApplication extends ResourceConfig {
 		CttDataBaseRestApplication.logger.info("Inizio il controllo per inoltrare le sacche in scadenza al CCS");
 		GestioneScadenzeCTT ctt = new GestioneScadenzeCTT();
 		ctt.alertSaccheInScadenza();
-		
 	}
 
 	public static void main(String[] args) throws InterruptedException {

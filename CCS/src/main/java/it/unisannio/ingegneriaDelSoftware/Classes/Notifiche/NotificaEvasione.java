@@ -2,26 +2,27 @@ package it.unisannio.ingegneriaDelSoftware.Classes.Notifiche;
 
 import java.util.List;
 
+import it.unisannio.ingegneriaDelSoftware.Classes.Beans.SerialeBean;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Notifica;
 
 public class NotificaEvasione implements Notifica {
 	
-	private List<String> listaSeriali;
+	private List<SerialeBean> listaSeriali;
 	private String enteRichiedente;
 	private String indirizzoEnte;
 
 	public NotificaEvasione() {}
 	
-	public NotificaEvasione(List<String> seriali, String enteRichiedente, String indirizzoEnte){
+	public NotificaEvasione(List<SerialeBean> seriali, String enteRichiedente, String indirizzoEnte){
 		this.listaSeriali = seriali;
 		this.enteRichiedente = enteRichiedente;
 		this.indirizzoEnte = indirizzoEnte;
 	}
 	
-	public List<String> getListaSeriali() {
+	public List<SerialeBean> getListaSeriali() {
 		return listaSeriali;
 	}
-	public void setListaSeriali(List<String> listaSeriali) {
+	public void setListaSeriali(List<SerialeBean> listaSeriali) {
 		this.listaSeriali = listaSeriali;
 	}
 	

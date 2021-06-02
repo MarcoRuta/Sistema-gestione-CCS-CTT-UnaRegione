@@ -41,9 +41,6 @@ import it.unisannio.ingegneriaDelSoftware.Util.CTTStaticIpMap;
 
 @Path("/CCS")
 @Singleton
-
-
-
 public class EndPointRestSaccheInScadenza implements EndPointSaccheInScadenzaCCS, Subject{
 	
 	MongoDataManager mm = MongoDataManager.getInstance();
@@ -97,8 +94,8 @@ public class EndPointRestSaccheInScadenza implements EndPointSaccheInScadenzaCCS
 		mm.removeSacca(ser);
 	
 		//Converto il seriale in modo che coincida con quello accettato dal @POST di notificaevasione
-		List<String> listaSeriali = new ArrayList<String>();
-		listaSeriali.add(seriale);
+		List<SerialeBean> listaSeriali = new ArrayList<>();
+		listaSeriali.add(ser);
 		
 		
 		Client client = ClientBuilder.newClient();

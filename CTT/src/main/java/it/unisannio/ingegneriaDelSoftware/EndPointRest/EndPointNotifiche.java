@@ -24,6 +24,8 @@ public class EndPointNotifiche implements Subject {
 
     private static  List<Observer> observers = new ArrayList<>();
     private MongoDataManager mm = MongoDataManager.getInstance();
+    private static List<Notifica> notificheEvasione = new ArrayList<>();
+
 
     static {
         observers.add(new TerminaleOperatoreObserver());
@@ -36,12 +38,8 @@ public class EndPointNotifiche implements Subject {
     @Consumes(MediaType.APPLICATION_JSON)
     public void notificaEvasione(NotificaEvasione notificaEvasione) throws EntityNotFoundException {
         CttDataBaseRestApplication.logger.info("L'operatore ha richiesto l'evasione per le sacche: "+notificaEvasione.getListaSeriali());
-        List<String> seriali = new ArrayList<>();
-        for (String seriale : notificaEvasione.getListaSeriali()) {
-            mm.setPrenotatoSacca(Seriale.getSeriale(seriale));
-            seriali.add(seriale+",");
-        }
-        notificaEvasione.setListaSeriali(seriali);
+        for (Seriale seriale : notificaEvasione.getListaSeriali())
+            mm.setPrenotatoSacca(seriale);
         this.notifyMagazziniereObserver(notificaEvasione);
     }
 

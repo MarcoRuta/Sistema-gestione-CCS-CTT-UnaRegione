@@ -3,6 +3,7 @@ package it.unisannio.ingegneriaDelSoftware.EndPointRest;
 import com.itextpdf.text.DocumentException;
 import it.unisannio.ingegneriaDelSoftware.Classes.*;
 import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaEvasione;
+import it.unisannio.ingegneriaDelSoftware.CttDataBaseRestApplication;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
@@ -76,9 +77,6 @@ public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 
 	/**Metodo attivato dal magazziniere quando riceve una notifica evasione Sacca esso aggiorna i datiSacca e rimuove la Sacca dal DB attivo
 	 *
-	 * @param listaseriali Seriale della Sacca da evadere
-	 * @param ente_richiedente Ente che richiede la Sacca
-	 * @param indirizzo Indirizzo dell'enteRichiedente
 	 * @param uriInfo  info dell'uri relativo alla risorsa richiesta
 	 * @return messaggio di corretta evasione.
 	 * @throws EntityNotFoundException se la sacca da evadere non è presente nel DB
@@ -86,29 +84,20 @@ public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 	@POST
 	@Path("/evasione")
 	@Produces(MediaType.TEXT_PLAIN)
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public Response evasioneSacca(@FormParam("listaSeriali") String listaseriali,
-								  @FormParam("enteRichiedente") String ente_richiedente,
-								  @FormParam("indirizzoEnte")String indirizzo,
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response evasioneSacca(NotificaEvasione notificaEvasione,
 								  @Context UriInfo uriInfo) throws EntityNotFoundException {
 
-		//Prendo dalla stringa listaSeriali la lista dei seriali attraverso una tokenizzazione, i seriali arrivano nel formato SERIALE/SERIALE/SERIALE/..../SERIALE/
-		List<Seriale> listaSeriali = new ArrayList<Seriale>();
-
-		StringTokenizer st = new StringTokenizer(listaseriali,",");
-		System.err.println(listaseriali);
-		while (st.hasMoreTokens())
-			listaSeriali.add(Seriale.getSeriale(st.nextToken()));
-		System.err.println(listaSeriali);
+		CttDataBaseRestApplication.logger.info("Il terminale del magazzinere ha ricevuto una notifica di evasione: "+notificaEvasione);
 
 
-		for(Seriale unSeriale : listaSeriali) {
+		for(Seriale unSeriale : notificaEvasione.getListaSeriali()) {
 			//recupero una sacca se presente altrimenti si solleva una eccezione SaccaNotFoundException
 			Sacca unaSacca = md.getSacca(unSeriale);
 			//aggiorno i dati del dati sacca
-			md.setEnteRichiedenteDatiSacca(unSeriale, ente_richiedente);
+			md.setEnteRichiedenteDatiSacca(unSeriale, notificaEvasione.getEnteRichiedente());
 			md.setDataAffidamentoDatiSacca(unSeriale, LocalDate.now());
-			md.setIndirizzoEnteDatiSacca(unSeriale,indirizzo);
+			md.setIndirizzoEnteDatiSacca(unSeriale,notificaEvasione.getIndirizzoEnte());
 			//recupero il DatiSacca aggiornato
 			DatiSacca datiSacca = md.getDatiSacca(unSeriale);
 			//rimuovo la sacca
@@ -117,7 +106,7 @@ public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 
 		//registro l'evasione
 		String id_evasione = IDGenerator.getID();
-		this.evasioni.put(id_evasione,listaSeriali);
+		this.evasioni.put(id_evasione,notificaEvasione.getListaSeriali());
 
 		return Response
 				.status(Response.Status.CREATED)

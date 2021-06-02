@@ -17,13 +17,11 @@ import java.util.List;
 
 public class WebSocketEndPointSaccheInScadenza {
     public static List<Session> sessions = new ArrayList<Session>();
-    private Session session;
 
 
     @OnOpen
     public void start(Session session) {
         CttDataBaseRestApplication.logger.info("Terminale Operatore Connesso al Server Endpoint sessione: "+session.getId());
-        this.session = session;
         try {
             session.getBasicRemote().sendObject(SaccheInScadenzaClientEndPoint.notificheSaccheInScadenza);
         } catch (IOException e) {
@@ -36,14 +34,14 @@ public class WebSocketEndPointSaccheInScadenza {
 
 
     @OnClose
-    public void end() {
+    public void end(Session session) {
         sessions.remove(session);
 
     }
 
 
     @OnMessage
-    public void receive(String message) {
+    public void receive(String message, Session session) {
         // in this example we don't receive messages with this endpoint
     }
 

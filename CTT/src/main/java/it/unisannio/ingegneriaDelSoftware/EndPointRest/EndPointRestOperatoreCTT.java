@@ -9,9 +9,7 @@ import javax.inject.Singleton;
 import javax.ws.rs.*;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.Form;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -19,16 +17,15 @@ import javax.ws.rs.core.Response;
 import it.unisannio.ingegneriaDelSoftware.Annotazioni.Secured;
 import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaEvasione;
-import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaSaccaInScadenza;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
+import it.unisannio.ingegneriaDelSoftware.Classes.Seriale;
+import it.unisannio.ingegneriaDelSoftware.ClientRest.CCtRestClient;
+import it.unisannio.ingegneriaDelSoftware.ClientRest.ConnectionVerifier;
 import it.unisannio.ingegneriaDelSoftware.CttDataBaseRestApplication;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
-import it.unisannio.ingegneriaDelSoftware.NotificheObservers.TerminaleMagazziniereObserver;
-import it.unisannio.ingegneriaDelSoftware.Interfaces.Observer;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccheInLocaleNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointOperatoreCTT;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Searcher;
-import WebSocket.ClientEndPoint.SaccheInScadenzaClientEndPoint;
 import it.unisannio.ingegneriaDelSoftware.Searcher.CompositionSearcher;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 
@@ -41,8 +38,6 @@ public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT{
 
 	private MongoDataManager md = MongoDataManager.getInstance();
 
-	/**Il terminale del magazziniere deve essere notificato quando viene creata una notifica*/
-	private Observer anObserver= new TerminaleMagazziniereObserver();
 	/**Composite che effettua la ricerca prima in locale con il gruppo sanguigno specificato e poi in locale con i gs compatibili*/
 	public Searcher aSearcher = new CompositionSearcher();
 
@@ -63,8 +58,9 @@ public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT{
 									   @QueryParam("indirizzoEnte") String indirizzoEnte,
 									   @QueryParam("priorità") String priorita) throws InterruptedException {
 		try {
+			CttDataBaseRestApplication.logger.info("Ho ricevuto la richiesta per ricercare "+ numeroSacche +"sacche di gruppo: "+gruppoSanguigno);
 			List<Sacca> saccheTrovate = new ArrayList<Sacca>();
-			List<String> serialiDaEvadere = new ArrayList<>();
+			List<Seriale> serialiDaEvadere = new ArrayList<>();
 			int numSacche = Integer.parseInt(numeroSacche);
 			saccheTrovate = this.aSearcher.search(GruppoSanguigno.valueOf(gruppoSanguigno),
 					numSacche,
@@ -72,11 +68,13 @@ public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT{
 
 			if (!saccheTrovate.isEmpty()) {
 				for (Sacca sacca : saccheTrovate) {
-					if(sacca.getDataScadenza().isBefore(LocalDate.now().plusDays(3))
+					if((sacca.getDataScadenza().isBefore(LocalDate.now().plusDays(3))
 							|| sacca.getDataScadenza().isEqual(LocalDate.now().plusDays(3)))
-						this.notifyCCS(sacca);
+							&& ConnectionVerifier.isCCSOnline())
+						//contatto il ccs dato ch è online
+						CCtRestClient.notifyEvasioneSaccaToCCS(sacca);
 
-					serialiDaEvadere.add(sacca.getSeriale().getSeriale());
+					serialiDaEvadere.add(sacca.getSeriale());
 				}
 				CttDataBaseRestApplication.logger.info("Ho trovato delle sacche in locale");
 			}
@@ -96,21 +94,7 @@ public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT{
 	}
 
 
-	private void notifyCCS(Sacca sacca) throws InterruptedException {
-		try{
-			Client client = ClientBuilder.newClient();
-			WebTarget evasioneSacca = client
-					.target(Constants.CCSIP+"/rest/CCS/ritiroAlertCTT/")
-					.path(sacca.getSeriale().getSeriale());
-			evasioneSacca.request().delete();
-			CttDataBaseRestApplication.logger.info("Avviso il CCS che ho consumato una delle Sacche in Scadenza");
-		}catch (Exception e){
-			wait(1000*60*2);
-			this.notifyCCS(sacca);
 
-		}
-
-	}
 
 	@POST
 	@Path("/prenotaSaccaInScadenza/{seriale}")

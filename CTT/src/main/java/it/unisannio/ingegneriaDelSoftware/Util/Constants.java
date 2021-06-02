@@ -31,8 +31,8 @@ public class Constants {
 	public static final String ELEMENT_PASSWORD = "password";
 
 	//indirizzi ip
-    public static final String CCSIP = 	"http://192.168.193.220:8080";
-    public static final String CCSWebSocket = "ws://192.168.193.220:8080/ws/saccheInScadenza";
+    public static final String CCSIP = 	"http://127.0.0.1:8080";//"http://192.168.193.220:8080";
+    public static final String CCSWebSocket = "ws://127.0.0.1:8080/ws/saccheInScadenza";//"ws://192.168.193.220:8080/ws/saccheInScadenza";
 
     public static SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 	public static final String DATEFORMAT = "yyyy-MM-dd";

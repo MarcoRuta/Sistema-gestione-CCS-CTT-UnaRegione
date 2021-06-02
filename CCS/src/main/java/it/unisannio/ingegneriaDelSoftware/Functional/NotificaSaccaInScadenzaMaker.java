@@ -1,5 +1,6 @@
 package it.unisannio.ingegneriaDelSoftware.Functional;
 
+import it.unisannio.ingegneriaDelSoftware.CcsDataBaseRestApplication;
 import it.unisannio.ingegneriaDelSoftware.Classes.Beans.SaccaBean;
 import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaSaccaInScadenza;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
@@ -14,6 +15,7 @@ public class NotificaSaccaInScadenzaMaker {
         List<SaccaBean> listaSacche = MongoDataManager.getInstance().getListaSacche();
         List<Notifica> listaNotifiche = new ArrayList<Notifica>();
         for(SaccaBean s : listaSacche) listaNotifiche.add(new NotificaSaccaInScadenza(s.getSeriale().getSeriale(),s.getDataScadenza(),s.getGruppoSanguigno().toString()));
+        CcsDataBaseRestApplication.logger.info("Ho creato la notifica sacche in scadenza: "+listaNotifiche);
         return listaNotifiche;
     }
 }

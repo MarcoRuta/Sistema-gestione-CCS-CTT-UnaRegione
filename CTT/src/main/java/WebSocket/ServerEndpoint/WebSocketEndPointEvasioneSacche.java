@@ -2,6 +2,7 @@ package WebSocket.ServerEndpoint;
 
 import WebSocket.Decoders.NotificaEvasioneDecoder;
 import WebSocket.Encoders.NotificaEvasioneEncoder;
+import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaEvasione;
 import it.unisannio.ingegneriaDelSoftware.CttDataBaseRestApplication;
 
 import java.util.ArrayList;
@@ -21,27 +22,27 @@ import javax.websocket.server.ServerEndpoint;
 public class WebSocketEndPointEvasioneSacche {
 	
 	public static List<Session> sessions = new ArrayList<Session>();
-	private Session session; 
+
 	
 
     @OnOpen
     public void start(Session session) {
-        this.session = session;
         sessions.add(session);
         CttDataBaseRestApplication.logger.info("Terminale Magazziniere Connesso alla WebSocket sessione: "+session.getId());
+        //gli inoltro tutte le notifiche che ho ricevuto
     }
 
    
     @OnClose
-    public void end() {
+    public void end(Session session) {
     	sessions.remove(session);
     	
     }
 
 
     @OnMessage
-    public void receive(String message) {
-        // in this example we don't receive messages with this endpoint
+    public void receive(String message, Session session) {
+        //we don't receive messages with this endpoint
     }
 
     @OnError
