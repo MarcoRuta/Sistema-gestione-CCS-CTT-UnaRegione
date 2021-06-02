@@ -17,11 +17,10 @@ public class CTTPosition {
 	 * @param indirizzo Indirizzo di appartenenza del CTT
 	 * @param latitudine Latitudine del CTT
 	 * @param longitudine Longitudine del CTT
-	 * 
 	 */
 	public CTTPosition(String provincia, String citta, String indirizzo, double latitudine, double longitudine) {
 		assert provincia != null: "la provincia non può essere null";
-		assert citta != null: "la citta non può essere null";
+		assert citta != null: "la città non può essere null";
 		assert indirizzo != null: "l'indirizzo non può essere null";
 		assert latitudine != 0: "la latitudine non può essere null";
 		assert longitudine != 0: "la longitudine non può essere null";

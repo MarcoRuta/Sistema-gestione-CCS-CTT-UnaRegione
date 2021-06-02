@@ -1,7 +1,9 @@
 package it.unisannio.ingegneriaDelSoftware.Interfaces;
 
-import it.unisannio.ingegneriaDelSoftware.Interfaces.Notifica;
-
 public interface Observer {
+	
+	/**Aggiorna le notifiche di ogni sessione, ogni volta che cambia lo stato
+	 * @param notifica
+	 */
     void update(Notifica notifica);
 }

@@ -1,10 +1,7 @@
 package it.unisannio.ingegneriaDelSoftware.Interfaces;
-
 import java.util.List;
-
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
-
 
 public interface CTTFunction {
 

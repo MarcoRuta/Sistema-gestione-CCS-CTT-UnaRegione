@@ -3,7 +3,6 @@ package it.unisannio.ingegneriaDelSoftware.Filtri;
 import it.unisannio.ingegneriaDelSoftware.Annotazioni.Secured;
 import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.Token;
-import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
 
 import javax.annotation.Priority;
@@ -35,7 +34,6 @@ public class FiltroDiAutentificazione implements ContainerRequestFilter {
      * resourceInfo contiene i dati relativi alla resource che è stata richiesta attraverso la richiesta intercettata*/
     @Context
     private ResourceInfo resourceInfo;
-    private MongoDataManager mm = MongoDataManager.getInstance();
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {

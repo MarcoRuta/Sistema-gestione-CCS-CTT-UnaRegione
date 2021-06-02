@@ -5,6 +5,7 @@ import it.unisannio.ingegneriaDelSoftware.Classes.Beans.User;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Functional.IDGenerator;
+import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointAutentificazione;
 
 import javax.annotation.security.PermitAll;
 import javax.ws.rs.*;
@@ -14,14 +15,12 @@ import javax.ws.rs.core.Response;
 
 @Path("/autentificazione")
 @PermitAll
-public class EndPointRestAutentificazione {
+public class EndPointRestAutentificazione implements EndPointAutentificazione{
 
     private MongoDataManager mm = MongoDataManager.getInstance();
 
-    /**
-     * Login è l'operazione con la quale un generico Dipendente del CTT accede al sistema
-     *
-     * @return il ruolo con il quale si è registrati
+    /**Login è l'operazione con la quale un generico Dipendente del CTT accede al sistema
+     * @return Response
      * esso setta il token di autentificazione nei cookie con cookieName = "access_token
      * il cookie ha una max-Age pari ad un turno lavorativo di 8 ore"
      * @throws  EntityNotFoundException se il login non va a buon fine

@@ -9,6 +9,7 @@ import javax.ws.rs.ext.Provider;
 
 /**Un handler che si occupa di elaborare una risposta nel momento in cui viene sollevata dal server
  * una {@link AssertionError} exception*/
+
 @Provider
 public class AssertionErrorHandler implements ExceptionMapper<AssertionError> {
 
@@ -20,5 +21,4 @@ public class AssertionErrorHandler implements ExceptionMapper<AssertionError> {
                 .type(MediaType.TEXT_PLAIN)
                 .build();
     }
-
 }

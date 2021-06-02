@@ -6,25 +6,25 @@ import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
 import java.security.SecureRandom;
 import java.util.*;
 
-/** Token implenta Flyweight pattern, esso rappresenta un token di autentificazione creato
- * in seguito ad una corretta autentificazione*/
+/**Flyweight*/
 public class Token {
 
-    /**collezione statica di tutti i token che sono generati dal momento dell'accensione del server
-     * fino al suo spegnimento*/
+    /**Mappa statica che mantiene tutte le istanze di token*/
     private static Map<String,Token> tokens= new HashMap<String, Token>();
 
     private final String token;
-
-    /**
-     *java.security.SecureRandom is a class that provides a cryptographically strong random number generator.
+    
+    /**java.security.SecureRandom is a class that provides a cryptographically strong random number generator.
      * Da una sequenza di interi che è meno prevedibile rispetto alla classe java.util.Random*/
     private static final SecureRandom secureRandom = new SecureRandom();
     /**Una classe java che si occupa di effettuare un Encoding in Base64*/
     private static final Base64.Encoder base64Encoder = Base64.getUrlEncoder();
 
-    /**@param usernamePassword  username + password dell'utente loggato senza alcuno spazione
-     * @return  token  */
+    
+    /**Restituisce il token partendo da username e password se presente, altrimenti lo crea e lo aggiunge alla mappa statica
+     * @param usernamePassword username + password dell'utente loggato senza alcuno spazio
+     * @return token  
+     * */
     public static Token getToken(String usernamePassword){
         assert usernamePassword != null: "Username e password non possono essere null";
         if (Token.tokens.containsKey(usernamePassword))
@@ -35,8 +35,9 @@ public class Token {
 
     }
 
-    /**@param token il token di autentificazione di un utente
-     * @return  token se presente altrimenti solleva una eccezzone
+    /**Controlla se è presente il token nella collezione 
+     * @param token il token di autentificazione di un utente
+     * @return Boolean true se presente; false se non è presente
      */
     public static boolean containsToken(String token){
         assert token != null: "il token non puo essere null";
@@ -47,9 +48,10 @@ public class Token {
         return false;
     }
 
-    /**@param token il token di autentificazione di un utente
-     * @return  username:password dell'utente a cui è associato il token
-     * @throws EntityNotFoundException se il token ricercato non è associato a nessun dipendente
+    /**Restituisce il Dipendente a cui è associato il token
+     * @param token il token di autentificazione di un utente
+     * @return Dipendente Utente a cui è associato il token
+     * @throws EntityNotFoundException se il token ricercato non è associato a nessun Dipendente
      */
     public static Dipendente getDipendenteByToken(String token) throws EntityNotFoundException {
         assert token != null: "il token non puo essere null";
@@ -60,22 +62,27 @@ public class Token {
                 String password = tokenizer.nextToken();
                 return MongoDataManager.getInstance().getDipendente(username, password);
             }
-        throw new EntityNotFoundException("Il token non è associato a nessun dipendente");
+        throw new EntityNotFoundException("Il token non è associato a nessun Dipendente");
 
     }
 
-    /**@return il token come stringa */
+    
+    /**Restituisce il token come stringa
+     * @return il token come stringa 
+     */
     public String getValue() {
         return this.token;
     }
 
-    /**costruttore privato per il FlyWeight pattern*/
+    
+    /**Costruttore privato di Token per il FlyWeight pattern*/
     private Token(){
         byte[] randomBytes = new byte[24];
         secureRandom.nextBytes(randomBytes);
         this.token =  base64Encoder.encodeToString(randomBytes);
     }
 
+    
     /**Elimina dalla lista dei token il token passatogli come parametro
      * @param token il token da eliminare
      * @throws EntityNotFoundException se il token che si vuole rimuovere non è presente
@@ -87,9 +94,10 @@ public class Token {
                     Token.tokens.remove(key);
                     return;
                 }
-        } else  throw new EntityNotFoundException("Il token non esiste");
+        } else throw new EntityNotFoundException("Il token non esiste");
     }
 
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -98,11 +106,13 @@ public class Token {
         return token.equals(token1.token);
     }
 
+    
     @Override
     public int hashCode() {
         return Objects.hash(token);
     }
 
+    
     @Override
     public String toString() {
         return "Token{" +

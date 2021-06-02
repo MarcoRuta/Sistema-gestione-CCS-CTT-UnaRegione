@@ -6,6 +6,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 
 public class EntityAlreadyExistsExceptionHandler implements ExceptionMapper<EntityAlreadyExistsException> {
+	
     @Override
     public Response toResponse(EntityAlreadyExistsException exception) {
         return Response

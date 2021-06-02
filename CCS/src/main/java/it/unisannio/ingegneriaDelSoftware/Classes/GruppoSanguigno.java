@@ -57,6 +57,5 @@ public enum GruppoSanguigno {
 	public static Iterator<GruppoSanguigno> puoRicevereDa(GruppoSanguigno gs) {
 		assert gs !=null;
 		return puoRicevereDa.get(gs).iterator();
-	}
-		
+	}	
 }

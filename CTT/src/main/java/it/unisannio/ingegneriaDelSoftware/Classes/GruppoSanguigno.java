@@ -6,24 +6,19 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum GruppoSanguigno {
-	Ap("A+"),
-	Am("A-"),
-	Bp("B+"),
-	Bm("B-"),
-	ZEROp("0+"),
-	ZEROm("0-"),
-	ABp("AB+"),
-	ABm("AB-");
+	Ap,
+	Am,
+	Bp,
+	Bm,
+	ZEROp,
+	ZEROm,
+	ABp,
+	ABm;
 
-	public final String label;
-
-	private GruppoSanguigno(String label) {
-		this.label = label;
-	}
-	
-
-	
 	@SuppressWarnings("serial")
 	private final static HashMap<GruppoSanguigno, List<GruppoSanguigno>> puoDonareA = new HashMap<GruppoSanguigno, List<GruppoSanguigno>>() {
 		{
@@ -37,6 +32,7 @@ public enum GruppoSanguigno {
 			put (ABm, new ArrayList<GruppoSanguigno>(Arrays.asList(ABp,ABm)));
 		}
 	};
+	
 	
 	@SuppressWarnings("serial")
 	private final static HashMap<GruppoSanguigno, List<GruppoSanguigno>> puoRicevereDa = new HashMap<GruppoSanguigno, List<GruppoSanguigno>>() {
@@ -52,23 +48,14 @@ public enum GruppoSanguigno {
 		}
 	};
 	
-	/*
-	 * @pre
-	 * gs not null
-	 */
+
 	public static Iterator<GruppoSanguigno> puoDonareA(GruppoSanguigno gs) {
 		assert gs !=null;
 		return puoDonareA.get(gs).iterator();
 	}
 	
-	/*
-	 * @pre
-	 * gs not null
-	 */
 	public static Iterator<GruppoSanguigno> puoRicevereDa(GruppoSanguigno gs) {
 		assert gs !=null;
 		return puoRicevereDa.get(gs).iterator();
-	}
-		
+	}	
 }
-

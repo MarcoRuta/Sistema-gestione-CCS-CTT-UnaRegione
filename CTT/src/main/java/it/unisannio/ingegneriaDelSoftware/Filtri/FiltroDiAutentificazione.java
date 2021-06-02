@@ -16,33 +16,30 @@ import java.io.IOException;
 import java.security.Principal;
 
 
-/**
- * Filtro di autentificazione, è eseguito per ogni class resource o method resource in cui è presente
- * l'anntoazione @Secured. Esso è eseguito dopo il matching della risorsa da parte dall'api di jersey.
- * Ha una priorita Priorities.AUTHENTICATION che viene eseguita prima di qualsiasi altra Priorities
- * in quanto ha un valore intero più basso delle altre priorità
- * Questo filtro preleva i cookie dalla richieste del browser e verifica che ci sia il cookie con l'accesso token
- * se esso non è presente il filtro impedisce alla richiesta di arrivare alla risorsa prestabilita
- * nel momento in cui il token è presente ed è valido il filtro sovrascrive il Security context con i dati dell'user
- * associato al token*/
+/**Filtro di autentificazione, è eseguito per ogni class resource o method resource in cui è presente l'annotazione @Secured. 
+ * Esso è eseguito dopo il matching della risorsa da parte dall'API di Jersey.
+ * Ha una priorità Priorities.AUTHENTICATION che viene eseguita prima di qualsiasi altra Priorities in quanto ha un valore intero più basso delle altre priorità
+ * Questo filtro preleva i cookie dalla richieste del browser e verifica che ci sia il cookie con l'accesso token.
+ * Se esso non è presente, il filtro impedisce alla richiesta di arrivare alla risorsa prestabilita.
+ * Nel momento in cui il token è presente ed è valido il filtro sovrascrive il Security context con i dati dell'user associato al token.
+ */
 @Provider
 @Secured
 @Priority(Priorities.AUTHENTICATION)
 public class FiltroDiAutentificazione implements ContainerRequestFilter {
-
-    /**
-     * Instead of injecting values directly into field the value can be injected into the setter method which will initialize the field.
+	
+	
+	/**Instead of injecting values directly into field the value can be injected into the setter method which will initialize the field.
      * This injection can be used only with @Context annotation.
-     * resourceInfo contiente i dati relativi alla resource che è stata richiesta attraverso la richiesta intercettata*/
+     * resourceInfo contiene i dati relativi alla resource che è stata richiesta attraverso la richiesta intercettata*/
     @Context
     private ResourceInfo resourceInfo;
-
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
        String header = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
         if(header == null || !tokenValid(header)) {
-            this.refuseRequest(requestContext, "Effettua Prima il login");
+            this.refuseRequest(requestContext, "Effettua prima il login");
             return;
         }
         String token = header.substring(SecurityContext.BASIC_AUTH.length()).trim();
@@ -51,10 +48,10 @@ public class FiltroDiAutentificazione implements ContainerRequestFilter {
             return;
         }
 
-        //recupero username e password usando il token
+        //recupero il dipendente usando il token
         try {
-            Dipendente dip = Token.getDipendenteByToken(token);
-            String ruolo = dip.getRuolo().toString();
+        	 Dipendente dip = Token.getDipendenteByToken(token);
+             String ruolo = dip.getRuolo().toString();
 
             //sovrascrivo il securityContext
             /**The SecurityContext is a class of Spring Security.
@@ -89,16 +86,24 @@ public class FiltroDiAutentificazione implements ContainerRequestFilter {
                     .entity("Dipendente non registrato nel DB").build());
             return;
         }
-
-
     }
 
+    
+    /**Controlla che il token di autentificazione sia valido
+     * @param header
+     * @return true se il token è valido; altrimenti false
+     */
     private boolean tokenValid(String header) {
         if (!header.toUpperCase().startsWith(SecurityContext.BASIC_AUTH+" "))
             return false;
        return true;
     }
 
+    
+    /**Rifiuta la richiesta di autentificazione
+     * @param requestContext
+     * @param message
+     */
     private void refuseRequest(ContainerRequestContext requestContext, String message) {
         requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
                 .entity(message).build());

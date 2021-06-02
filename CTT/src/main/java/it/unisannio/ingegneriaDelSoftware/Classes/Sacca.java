@@ -13,9 +13,10 @@ public class Sacca {
 	private boolean prenotato;
 
 
-	/**@param gs il gruppo sanguigno della sacca
-	 * @param dataProduzione  la data di produzione della sacca
-	 * @param dataScadenza  la data di scadenza della sacca
+	/**Metodo costruttore di Sacca senza conoscere il Seriale
+	 * @param gs il gruppo sanguigno della Sacca
+	 * @param dataProduzione la data di produzione della Sacca
+	 * @param dataScadenza la data di scadenza della Sacca
 	 * @throws IllegalArgumentException se la data di scadenza è precedente a quella di produzione
 	 */
 	public Sacca(GruppoSanguigno gs, LocalDate dataProduzione, LocalDate dataScadenza) throws IllegalArgumentException{
@@ -33,13 +34,14 @@ public class Sacca {
 		this.prenotato = false;
 	}
 
-	/**@param gs il gruppo sanguigno della sacca
-	 * @param dataProduzione  la data di produzione della sacca
-	 * @param dataScadenza  la data di scadenza della sacca
-	 * @param prenotato indica se la sacca è stata prenotata o meno, di default è false
-	 * @param ser  il seriale della sacca
+	/**Metodo costruttore di Sacca
+	 * @param gs il gruppo sanguigno della Sacca
+	 * @param dataProduzione la data di produzione della Sacca
+	 * @param dataScadenza la data di scadenza della Sacca
+	 * @param prenotato indica se la Sacca è stata prenotata o meno, di default è false
+	 * @param ser il seriale della Sacca
 	 * @throws IllegalArgumentException se la data di scadenza è precedente a quella di produzione
-	 * */
+	 */
 	public Sacca(Seriale ser, GruppoSanguigno gs, LocalDate dataProduzione, LocalDate dataScadenza, boolean prenotato) throws IllegalArgumentException{
 		assert gs != null: "Il gruppo sanguigno non può essere null";
 		assert dataProduzione != null: "La data di produzione non può essere null";
@@ -57,39 +59,56 @@ public class Sacca {
 	}
 
 
-
-	/**@return  il seriale della sacca*/
+	/**Restituisce il Seriale della Sacca
+	 * @return il seriale della Sacca
+	 */
 	public Seriale getSeriale() {
 		return this.seriale;
 	}
 
-	/**@return il gruppo sanguigno della sacca*/
+	
+	/**Restituisce il gruppo sanguigno della Sacca
+	 * @return il gruppo sanguigno della Sacca
+	 */
 	public GruppoSanguigno getGruppoSanguigno() {
 		return this.gruppo;
 	}
 
-	/**@return la data di scadenza della sacca*/
+	
+	/**Restituisce la data di scadenza della Sacca
+	 * @return la data di scadenza della Sacca
+	 */
 	public LocalDate getDataScadenza() {
 		return dataScadenza;
 	}
 
-	/**@return la data di produzione della sacca*/
+	
+	/**Restituisce la data di produzione della Sacca
+	 * @return la data di produzione della Sacca
+	 */
 	public LocalDate getDataProduzione() {
 		return dataProduzione;
 	}
 
-	/**@return true se la sacca è prenotata, false altrimenti*/
+	
+	/**Controlla se la Sacca è prenotata
+	 * @return true se la sacca è prenotata, false altrimenti
+	 */
 	public boolean isPrenotato() {
 		return prenotato;
 	}
 
-	/**@return cambio lo stato di una sacca*/
+	
+	/**Modifica lo stato di una Sacca
+	 */
 	public void setPrenotato() {
 		this.prenotato = true;
 	}
 
 
-	/**@param ps  stream di output su cui stampare i dati della sacca*/
+	/**Stampa le informazioni di una Sacca 
+	 * @param ps stream di output su cui stampare i dati della Sacca 
+	 */
 	public void print(PrintStream ps) {
 		ps.println("\n##################################");
 		ps.println("Seriale: "+this.seriale.getSeriale());
@@ -99,7 +118,9 @@ public class Sacca {
 		ps.println("Prenotata: "+isPrenotato());
 	}
 
-	/**@return etichetta  con i dati della sacca*/
+	/**Restituisce l'etichetta DatiSacca
+	 * @return etichetta con i DatiSacca
+	 */
 	public String getEtichettaSacca() {
 		return "Seriale: "+this.seriale.getSeriale()+ "\n"
 			+"Gruppo sanguigno: "+this.gruppo+ "\n"
@@ -107,6 +128,7 @@ public class Sacca {
 			+"Data di scadenza: "+this.dataScadenza+"\n";
 	}
 
+	
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -115,6 +137,7 @@ public class Sacca {
 		return seriale.equals(sacca.seriale);
 	}
 
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(seriale);

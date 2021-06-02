@@ -49,7 +49,7 @@ public class Dipendente {
 		this.password = password;
 	}	
 	
-	/**Restituisce il codice ficale di un Dipendente
+	/**Restituisce il codice fiscale di un Dipendente
 	 * @return codice fiscale
 	 */
 	public Cdf getCdf() {
@@ -141,6 +141,7 @@ public class Dipendente {
 				'}';
 	}
 
+	
 	/**Verifica l'uguaglianza tra due Dipendenti
 	 * @return Un boolean true o false a seconda dell'esito del confronto
 	 */
@@ -152,6 +153,7 @@ public class Dipendente {
 		return cdf.equals(that.cdf);
 	}
 
+	
 	/**Calcola l'hashcode di un Dipendente
 	 * @return Un intero pari all'hashcode generato
 	 */

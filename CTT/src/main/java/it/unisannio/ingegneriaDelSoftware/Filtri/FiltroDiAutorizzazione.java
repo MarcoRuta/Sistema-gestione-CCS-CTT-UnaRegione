@@ -20,7 +20,7 @@ import java.io.IOException;
  * Se è presente @PermitAll non attua nessun filtro
  * Se è presente @RolesAllowed("unRuolo") controlla il ruolo dell'user che ha effettuato il login, se non è tra i roles allowed
  * allora rigetta la richiesta
- * */
+ */
 @Provider
 @Priority(Priorities.AUTHORIZATION)
 public class FiltroDiAutorizzazione implements ContainerRequestFilter {
@@ -51,9 +51,7 @@ public class FiltroDiAutorizzazione implements ContainerRequestFilter {
 
     }
 
-    /**
-     * Perform authorization based on roles.
-     *
+    /**Perform authorization based on roles.
      * @param rolesAllowed
      * @param requestContext  provides request-specific information for the filter,
      * such as request URI, message headers, message entity or request-scoped properties.
@@ -71,9 +69,7 @@ public class FiltroDiAutorizzazione implements ContainerRequestFilter {
         refuseRequest(requestContext);
     }
 
-    /**
-     * Check if the user is authenticated.
-     *
+    /**Check if the user is authenticated.
      * @param requestContext
      * @return
      */
@@ -81,8 +77,7 @@ public class FiltroDiAutorizzazione implements ContainerRequestFilter {
         return requestContext.getSecurityContext().getUserPrincipal() != null;
     }
 
-    /**
-     * Refuse the request.
+    /**Refuse the request.
      * @param requestContext
      */
     private void refuseRequest(ContainerRequestContext requestContext) {

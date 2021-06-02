@@ -1,6 +1,5 @@
 package it.unisannio.ingegneriaDelSoftware;
 
-
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.*;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.ExceptionHandler.*;
@@ -30,9 +29,9 @@ public class CttDataBaseRestApplication extends ResourceConfig {
 
 	public CttDataBaseRestApplication() throws Exception {
 
-		//Filtro per autorizzazzione
+		//Filtro per autorizzazzione]
 		register(FiltroDiAutorizzazione.class);
-		//Filtro per Authentificazione
+		//Filtro per Autentificazione
 		register (FiltroDiAutentificazione.class);
 		//gestione AssertionError
 		register(AssertionErrorHandler.class);
@@ -42,7 +41,6 @@ public class CttDataBaseRestApplication extends ResourceConfig {
 		register(DateTimeParseExceptionHandler.class);
 		register(EntityNotFoundExceptionHandler.class);
 		register(IllegalArgumentExceptionHandler.class);
-
 
 
 		//Endpoint del Magazziniere
@@ -68,10 +66,6 @@ public class CttDataBaseRestApplication extends ResourceConfig {
 
 	public static void main(String[] args) {
 		SpringApplication.run(CttDataBaseRestApplication.class, args);
-		SaccheInScadenzaClientEndPoint saccheInScadenzaClient = new SaccheInScadenzaClientEndPoint();
-		
-		
-	}
-
-	
+		SaccheInScadenzaClientEndPoint saccheInScadenzaClient = new SaccheInScadenzaClientEndPoint();		
+	}	
 }

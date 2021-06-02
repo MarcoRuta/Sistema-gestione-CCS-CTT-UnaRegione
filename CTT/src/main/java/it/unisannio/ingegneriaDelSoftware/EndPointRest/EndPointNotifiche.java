@@ -22,7 +22,7 @@ import java.util.List;
 //@Secured
 public class EndPointNotifiche implements Subject {
 
-    private static  List<Observer> observers = new ArrayList<>();
+    private static List<Observer> observers = new ArrayList<>();
     private MongoDataManager mm = MongoDataManager.getInstance();
 
     static {
@@ -30,7 +30,11 @@ public class EndPointNotifiche implements Subject {
         observers.add(new TerminaleMagazziniereObserver());
     }
 
-
+    
+    /**
+     * @param notificaEvasione
+     * @throws EntityNotFoundException
+     */
     @POST
     @Path("/notificaEvasione")
     @Consumes(MediaType.APPLICATION_JSON)

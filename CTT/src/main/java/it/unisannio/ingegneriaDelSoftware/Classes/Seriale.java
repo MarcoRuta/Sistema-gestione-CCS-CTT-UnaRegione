@@ -16,9 +16,10 @@ public class Seriale {
 	private static int lastAssigned;
 	private final String seriale;
 
+	/**Mappa statica che mantiene tutte le istanze del Seriale*/
 	private static Map<String,Seriale> seriali = new HashMap<String,Seriale>();
 
-	/**Costruisco il seriale a partire da configurazioni presenti in /localsettings/serial_settings.xml*/
+	/**Costruisce il seriale a partire da configurazioni presenti in /localsettings/serial_settings.xml*/
 	static {
 		Properties loadProps = new Properties();
 	    try {
@@ -36,8 +37,8 @@ public class Seriale {
 
 
 
-	/**Ricavo il Seriale se è stato gia creato
-	 * Si evita di creare piu volte lo stesso seriale
+	/**Restituisce il Seriale se è stato già creato
+	 * Si evita di creare piu volte lo stesso Seriale
 	 * @param seriale deve essere una stringa di 15 caratteri con '-' in 6 posizione*/
 	public static Seriale getSeriale(String seriale){
 		assert seriale!= null:"il seriale non puo essere null";
@@ -49,16 +50,16 @@ public class Seriale {
 	}
 
 	
-	/**
-	 * costruisco un seriale, di volta in volta il seriale creato sarà diverso*/
+	/**Costruisce un Seriale, di volta in volta il Seriale creato sarà diverso*/
 	public Seriale() {
 		this.seriale = radice+"-"+(new DecimalFormat("00000000")).format(++lastAssigned);
 		Seriale.seriali.put(this.seriale,this);
 	}
 
-	/**costruisco il seriale a partire da una stringa
+	
+	/**Costruisce il seriale a partire da una stringa
 	 * @param seriale deve essere una stringa di 15 caratteri con '-' in 6 posizione
-	 * */
+	 */
 	private Seriale(String seriale) {
 		assert  seriale != null: "Il seriale non puo essere null";
 		assert 	seriale.length()==15 &&
@@ -68,7 +69,8 @@ public class Seriale {
 	}
 
 
-	/**aggiorno il file xml di settings per la generazione del seriale*/
+	/**Aggiorna il file xml di settings per la generazione del seriale
+	 */
 	public static void updateSettings() {
 		Properties saveProps = new Properties();
 		saveProps.setProperty(TAG_RADICE, radice);
@@ -82,7 +84,9 @@ public class Seriale {
 		}
 	}
 	
-	/**aggiorno il file xml di settings per la generazione del seriale alla sua versione originaria*/
+	
+	/**Aggiorna il file xml di settings per la generazione del seriale alla sua versione originaria
+	 */
 	public static void restartSettings() {
 		Properties saveProps = new Properties();
 		saveProps.setProperty(TAG_RADICE, radice);
@@ -96,6 +100,7 @@ public class Seriale {
 		}
 	}
 	
+	
 	@Override
 	public String toString() {
 		return "Seriale{" +
@@ -103,6 +108,7 @@ public class Seriale {
 				'}';
 	}
 
+	
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -111,16 +117,15 @@ public class Seriale {
 		return seriale.equals(seriale1.seriale);
 	}
 
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(seriale);
 	}
 
-	/**@return  il valore del seriale come stringa*/
+	/**Restituisce il valore del Seriale come stringa
+	 * @return seriale Il valore del Seriale come stringa*/
 	public String getSeriale(){
 		return this.seriale;
 	}
-
-	
-
 }

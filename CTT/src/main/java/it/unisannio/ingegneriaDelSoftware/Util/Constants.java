@@ -1,6 +1,4 @@
 package it.unisannio.ingegneriaDelSoftware.Util;
-
-
 import java.text.SimpleDateFormat;
 
 public class Constants {
@@ -36,6 +34,4 @@ public class Constants {
 
     public static SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 	public static final String DATEFORMAT = "yyyy-MM-dd";
-
-
 }

@@ -7,6 +7,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 
 public class EntityNotFoundExceptionHandler implements ExceptionMapper<EntityNotFoundException>{
+	
     @Override
     public Response toResponse(EntityNotFoundException exception) {
         return Response
