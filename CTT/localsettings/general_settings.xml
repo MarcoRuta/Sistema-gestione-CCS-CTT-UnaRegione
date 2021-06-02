@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <entry key="CCSIP">http://127.0.0.1:8080</entry>
+    <entry key="CCSWebSocketIP">ws://127.0.0.1:8080/ws/saccheInScadenza</entry>
+    <entry key="CCS_retry_connection">30</entry>
+</properties>

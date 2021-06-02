@@ -1,6 +1,7 @@
 package it.unisannio.ingegneriaDelSoftware.ClientRest;
 
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
+import it.unisannio.ingegneriaDelSoftware.Util.Settings;
 
 import javax.ws.rs.ProcessingException;
 import javax.ws.rs.client.Client;
@@ -13,7 +14,7 @@ public class ConnectionVerifier {
         try {
             Client client = ClientBuilder.newClient();
             WebTarget connectionStatus = client
-                    .target(Constants.CCSIP+"/rest/connessione/statoConnessione");
+                    .target(Settings.getInstance().ccsIp+"/rest/connessione/statoConnessione");
             connectionStatus.request().get();
             return true;
         }catch (ProcessingException e) {

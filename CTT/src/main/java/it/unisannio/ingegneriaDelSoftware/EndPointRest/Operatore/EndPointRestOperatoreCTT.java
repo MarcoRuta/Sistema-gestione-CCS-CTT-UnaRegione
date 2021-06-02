@@ -1,4 +1,4 @@
-package it.unisannio.ingegneriaDelSoftware.EndPointRest;
+package it.unisannio.ingegneriaDelSoftware.EndPointRest.Operatore;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -28,6 +28,7 @@ import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointOperatoreCTT;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Searcher;
 import it.unisannio.ingegneriaDelSoftware.Searcher.CompositionSearcher;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
+import it.unisannio.ingegneriaDelSoftware.Util.Settings;
 
 
 @Path("/operatore")
@@ -104,7 +105,7 @@ public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT{
 									  @FormParam("enteRichiedente")String enteRichiedente){
 		CttDataBaseRestApplication.logger.info("L'operatore ha richiesto l'evasione per la sacca: "+seriale);
 		Client client = ClientBuilder.newClient();
-		WebTarget gestioneSaccheInscadenza = client.target(Constants.CCSIP+"/rest/CCS/prenotaSaccaInScadenza/")
+		WebTarget gestioneSaccheInscadenza = client.target(Settings.getInstance().ccsIp+"/rest/CCS/prenotaSaccaInScadenza/")
 				.path(seriale).queryParam("enteRichiedente",enteRichiedente).queryParam("indirizzoEnte",indirizzoEnte);
 		CttDataBaseRestApplication.logger.info("richiesta inoltrata verso: "+gestioneSaccheInscadenza.getUri());
 		return gestioneSaccheInscadenza.request().delete(Response.class);

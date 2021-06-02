@@ -1,7 +1,8 @@
 package WebSocket;
 
-import WebSocket.ServerEndpoint.WebSocketEndPointEvasioneSacche;
-import WebSocket.ServerEndpoint.WebSocketEndPointSaccheInScadenza;
+import it.unisannio.ingegneriaDelSoftware.EndPointRest.Magazziniere.WebSocketEndPointEvasioneSacche;
+import it.unisannio.ingegneriaDelSoftware.EndPointRest.Magazziniere.WebSocketEndPointSmaltimentoSacche;
+import it.unisannio.ingegneriaDelSoftware.EndPointRest.Operatore.WebSocketEndPointSaccheInScadenza;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
@@ -21,6 +22,11 @@ public class WebSocketConfig {
     @Bean
     public WebSocketEndPointSaccheInScadenza webSocketSaccaInScadenzaController() {
         return new WebSocketEndPointSaccheInScadenza();
+    }
+
+    @Bean
+    public WebSocketEndPointSmaltimentoSacche webSocketSaccaSmaltimentoSaccheController() {
+        return new WebSocketEndPointSmaltimentoSacche();
     }
 
     @Bean

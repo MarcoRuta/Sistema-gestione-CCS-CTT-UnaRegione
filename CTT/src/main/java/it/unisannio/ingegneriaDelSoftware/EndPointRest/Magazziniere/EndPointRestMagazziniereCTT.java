@@ -1,4 +1,4 @@
-package it.unisannio.ingegneriaDelSoftware.EndPointRest;
+package it.unisannio.ingegneriaDelSoftware.EndPointRest.Magazziniere;
 
 import com.itextpdf.text.DocumentException;
 import it.unisannio.ingegneriaDelSoftware.Classes.*;
@@ -30,6 +30,7 @@ import java.util.*;
 public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 
 	private MongoDataManager md = MongoDataManager.getInstance();
+	//evasioni del giorno
 	public Map<String,List<Seriale>> evasioni = new HashMap<>();
 	
 
@@ -98,8 +99,6 @@ public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 			md.setEnteRichiedenteDatiSacca(unSeriale, notificaEvasione.getEnteRichiedente());
 			md.setDataAffidamentoDatiSacca(unSeriale, LocalDate.now());
 			md.setIndirizzoEnteDatiSacca(unSeriale,notificaEvasione.getIndirizzoEnte());
-			//recupero il DatiSacca aggiornato
-			DatiSacca datiSacca = md.getDatiSacca(unSeriale);
 			//rimuovo la sacca
 			md.removeSacca(unaSacca.getSeriale());
 		}
@@ -107,6 +106,8 @@ public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 		//registro l'evasione
 		String id_evasione = IDGenerator.getID();
 		this.evasioni.put(id_evasione,notificaEvasione.getListaSeriali());
+		//aggiorno la lista delle evasioni rimuovendo quella appena evasa
+		new EndPointNotificheMagazziniere().removeNotificaEvasione(notificaEvasione);
 
 		return Response
 				.status(Response.Status.CREATED)

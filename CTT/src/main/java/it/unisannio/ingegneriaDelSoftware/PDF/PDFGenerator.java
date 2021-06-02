@@ -4,9 +4,12 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import it.unisannio.ingegneriaDelSoftware.Classes.Seriale;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.stream.Stream;
+import java.util.List;
 
 
 public class PDFGenerator {
@@ -77,6 +80,25 @@ public class PDFGenerator {
         table.addCell(dataAffidamento.toString());
         //aggiungo al pdf
         document.add(table);
+        document.close();
+    }
+
+    public static void makeDocumentSmaltimento(OutputStream output, List<Seriale> serialiDaSmaltire) throws DocumentException, IOException {
+        Document document = new Document();
+        PdfWriter.getInstance(document, output);
+        document.open();
+        Image img = Image.getInstance("localsettings/img/logoCTTpdf.png");
+        img.setAlignment(1);
+        img.setWidthPercentage(20);
+        document.add(img);
+        Paragraph title = new Paragraph("SACCHE DA SMALTIRE");
+        title.setAlignment(1);
+        Font font = FontFactory.getFont(FontFactory.TIMES_ROMAN, 20, Font.BOLD);
+        title.setFont(font);
+        title.setSpacingAfter(10);
+        document.add(title);
+        for(Seriale s : serialiDaSmaltire)
+            document.add(new Paragraph("Seriale: "+s.getSeriale()+"\n"));
         document.close();
     }
 }

@@ -1,4 +1,4 @@
-package it.unisannio.ingegneriaDelSoftware.EndPointRest;
+package it.unisannio.ingegneriaDelSoftware.EndPointRest.Amministratore;
 
 import java.io.IOException;
 import java.io.OutputStream;

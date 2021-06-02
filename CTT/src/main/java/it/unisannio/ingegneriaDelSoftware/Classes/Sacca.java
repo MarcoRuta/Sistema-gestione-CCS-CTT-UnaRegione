@@ -23,7 +23,6 @@ public class Sacca {
 		assert dataProduzione != null: "La data di produzione non può essere null";
 		assert dataScadenza != null: "la data di scadenza non può essere null";
 		if (dataScadenza.isBefore(dataProduzione))throw new IllegalArgumentException( "La data di produzione non può essere precedente a quella di scadenza");
-		if(dataScadenza.isBefore(LocalDate.now()))throw new IllegalArgumentException("La sacca è gia scaduta");
 		if (dataProduzione.isAfter(LocalDate.now())) throw new IllegalArgumentException("Non puoi inserire una sacca non ancora prodotta");
 
 		this.seriale = new Seriale();
@@ -46,7 +45,6 @@ public class Sacca {
 		assert dataScadenza != null: "la data di scadenza non può essere null";
 		assert ser!= null: "Il seriale non puo essere null";
 		if (dataScadenza.isBefore(dataProduzione))throw new IllegalArgumentException( "La data di produzione non può essere precedente a quella di scadenza");
-		if(dataScadenza.isBefore(LocalDate.now()))	throw new IllegalArgumentException("La sacca è gia scaduta");
 		if (dataProduzione.isAfter(LocalDate.now())) throw new IllegalArgumentException("Non puoi inserire una sacca non ancora prodotta");
 
 		this.seriale = ser;

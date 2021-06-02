@@ -1,6 +1,7 @@
 package it.unisannio.ingegneriaDelSoftware.Classes.Notifiche;
 
 import java.util.List;
+import java.util.Objects;
 
 import it.unisannio.ingegneriaDelSoftware.Classes.Seriale;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Notifica;
@@ -49,5 +50,18 @@ public class NotificaEvasione implements Notifica {
 				", enteRichiedente='" + enteRichiedente + '\'' +
 				", indirizzoEnte='" + indirizzoEnte + '\'' +
 				'}';
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		NotificaEvasione that = (NotificaEvasione) o;
+		return listaSeriali.equals(that.listaSeriali);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(listaSeriali);
 	}
 }

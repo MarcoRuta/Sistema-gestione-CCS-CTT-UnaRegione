@@ -2,11 +2,15 @@ package it.unisannio.ingegneriaDelSoftware;
 
 
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.*;
+import it.unisannio.ingegneriaDelSoftware.EndPointRest.Amministratore.EndPointRestAmministratoreCTT;
+import it.unisannio.ingegneriaDelSoftware.EndPointRest.Magazziniere.EndPointNotificheMagazziniere;
+import it.unisannio.ingegneriaDelSoftware.EndPointRest.Magazziniere.EndPointRestMagazziniereCTT;
+import it.unisannio.ingegneriaDelSoftware.EndPointRest.Operatore.EndPointRestOperatoreCTT;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.ExceptionHandler.*;
 import it.unisannio.ingegneriaDelSoftware.Filtri.FiltroDiAutorizzazione;
 import it.unisannio.ingegneriaDelSoftware.SaccheInScadenzaManager.GestioneScadenzeCTT;
-import WebSocket.ClientEndPoint.SaccheInScadenzaClientEndPoint;
+import it.unisannio.ingegneriaDelSoftware.EndPointRest.Operatore.SaccheInScadenzaClientEndPoint;
 import it.unisannio.ingegneriaDelSoftware.Filtri.FiltroDiAutentificazione;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.slf4j.Logger;
@@ -18,7 +22,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.ProcessingException;
 
 
 @SpringBootApplication (scanBasePackages = {"WebSocket", "ingegneriaDelSoftware"})
@@ -55,7 +58,7 @@ public class CttDataBaseRestApplication extends ResourceConfig {
 		//Endpoint Operatore
 		register(EndPointRestOperatoreCTT.class);
 		//endointNotifiche
-		register(EndPointNotifiche.class);
+		register(EndPointNotificheMagazziniere.class);
 
 	}
 
@@ -69,8 +72,6 @@ public class CttDataBaseRestApplication extends ResourceConfig {
 	public static void main(String[] args) throws InterruptedException {
 		SpringApplication.run(CttDataBaseRestApplication.class, args);
 		SaccheInScadenzaClientEndPoint saccheInScadenzaClient = new SaccheInScadenzaClientEndPoint();
-		
-		
 	}
 
 	

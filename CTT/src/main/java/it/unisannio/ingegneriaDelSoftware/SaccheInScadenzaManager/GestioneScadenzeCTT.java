@@ -3,31 +3,30 @@ package it.unisannio.ingegneriaDelSoftware.SaccheInScadenzaManager;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import javax.inject.Singleton;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 
-import WebSocket.ClientEndPoint.SaccheInScadenzaClientEndPoint;
 import it.unisannio.ingegneriaDelSoftware.Classes.*;
+import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaEvasione;
 import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaSaccaInScadenza;
+import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaSmaltimentoSacche;
 import it.unisannio.ingegneriaDelSoftware.ClientRest.ConnectionVerifier;
 import it.unisannio.ingegneriaDelSoftware.CttDataBaseRestApplication;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
+import it.unisannio.ingegneriaDelSoftware.EndPointRest.Magazziniere.EndPointNotificheMagazziniere;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.*;
-import it.unisannio.ingegneriaDelSoftware.Util.Constants;
+import it.unisannio.ingegneriaDelSoftware.Util.Settings;
 
 public class GestioneScadenzeCTT implements CTTFunction {
 
 
-	Client client = ClientBuilder.newClient();
-	WebTarget gestioneSaccheInscadenza = client.target(Constants.CCSIP+"/rest/CCS/saccheInScadenza");
-	MongoDataManager mm = MongoDataManager.getInstance();
+	private Client client = ClientBuilder.newClient();
+	private WebTarget gestioneSaccheInscadenza = client.target(Settings.getInstance().ccsIp +"/rest/CCS/saccheInScadenza");
+	private MongoDataManager mm = MongoDataManager.getInstance();
     
 
 	   
@@ -81,13 +80,14 @@ public class GestioneScadenzeCTT implements CTTFunction {
 	 * @throws EntityNotFoundException Eccezione che si verifica quando la Sacca inserita non viene trovata
 	 */
 	public void removeSaccheScadute() throws EntityNotFoundException  {
-		List<Sacca> listaSacche = mm.getListaSacche();
-
-		for(Sacca sacca : listaSacche) {
+		List<Seriale> serialiDaSmaltire = new ArrayList<>();
+		for(Sacca sacca : mm.getListaSacche())
 			if(sacca.getDataScadenza().isBefore(LocalDate.now())) {
+				serialiDaSmaltire.add(sacca.getSeriale());
 				removeSaccaScaduta(sacca);
 			}
-		}
+		if(!(serialiDaSmaltire.isEmpty()))
+			new EndPointNotificheMagazziniere().notifyMagazziniereObserver(new NotificaSmaltimentoSacche(serialiDaSmaltire));
 	}
 
 

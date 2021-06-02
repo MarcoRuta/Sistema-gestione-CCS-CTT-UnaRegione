@@ -1,4 +1,4 @@
-package WebSocket.ClientEndPoint;
+package it.unisannio.ingegneriaDelSoftware.EndPointRest.Operatore;
 
 import java.io.IOException;
 import java.net.URI;
@@ -8,15 +8,12 @@ import javax.websocket.*;
 
 import WebSocket.Decoders.CTTNameDecoder;
 import WebSocket.Encoders.CTTNameEncoder;
-import WebSocket.ServerEndpoint.WebSocketEndPointSaccheInScadenza;
 import it.unisannio.ingegneriaDelSoftware.Classes.CTTName;
-import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
-import it.unisannio.ingegneriaDelSoftware.Classes.Seriale;
 import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaSaccaInScadenza;
 import WebSocket.Decoders.NotificaSaccaInScadenzaDecoder;
 import WebSocket.Encoders.NotificaSaccaInScadenzaEncoder;
 import it.unisannio.ingegneriaDelSoftware.CttDataBaseRestApplication;
-import it.unisannio.ingegneriaDelSoftware.Util.Constants;
+import it.unisannio.ingegneriaDelSoftware.Util.Settings;
 
 import java.util.List;
 
@@ -27,20 +24,17 @@ decoders = {NotificaSaccaInScadenzaDecoder.class, CTTNameDecoder.class} )
 public class SaccheInScadenzaClientEndPoint {
 
 	 public static List<NotificaSaccaInScadenza> notificheSaccheInScadenza = new ArrayList<NotificaSaccaInScadenza>();
-
-
-	 private final String uri= Constants.CCSWebSocket;
 	 private Session session;
 			  
 
 	 public SaccheInScadenzaClientEndPoint() throws InterruptedException {
 	 	try{
 				WebSocketContainer container=ContainerProvider.getWebSocketContainer();
-				container.connectToServer(this, new URI(uri));
+				container.connectToServer(this, new URI(Settings.getInstance().ccsWebSocket));
 
 	 	}catch(Exception ex){
 			CttDataBaseRestApplication.logger.error("Il CCS è OFFLINE");
-			Thread.sleep(1000*30);
+			Thread.sleep(1000*Settings.getInstance().retry);
 			new SaccheInScadenzaClientEndPoint();
 	 	}
 	 }
@@ -82,11 +76,11 @@ public class SaccheInScadenzaClientEndPoint {
 	public void onClose(Session session) throws InterruptedException {
 		try{
 			WebSocketContainer container=ContainerProvider.getWebSocketContainer();
-			container.connectToServer(this, new URI(uri));
+			container.connectToServer(this, new URI(Settings.getInstance().ccsWebSocket));
 			CttDataBaseRestApplication.logger.error("Connessione con il EndPointSaccheInScadenza del CCS Interrotta");
 		}catch(Exception ex){
 			CttDataBaseRestApplication.logger.error("Il CCS è OFFLINE");
-			Thread.sleep(1000*30);
+			Thread.sleep(1000*Settings.getInstance().retry);
 			new SaccheInScadenzaClientEndPoint();
 		}
 	 }

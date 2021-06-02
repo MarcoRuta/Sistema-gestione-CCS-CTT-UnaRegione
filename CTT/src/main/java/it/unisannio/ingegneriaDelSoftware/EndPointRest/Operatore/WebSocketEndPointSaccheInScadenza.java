@@ -1,6 +1,5 @@
-package WebSocket.ServerEndpoint;
+package it.unisannio.ingegneriaDelSoftware.EndPointRest.Operatore;
 
-import WebSocket.ClientEndPoint.SaccheInScadenzaClientEndPoint;
 import WebSocket.Decoders.NotificaSaccaInScadenzaDecoder;
 import WebSocket.Encoders.NotificaSaccaInScadenzaEncoder;
 import it.unisannio.ingegneriaDelSoftware.CttDataBaseRestApplication;

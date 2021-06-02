@@ -1,18 +1,15 @@
-package WebSocket.ServerEndpoint;
+package it.unisannio.ingegneriaDelSoftware.EndPointRest.Magazziniere;
 
 import WebSocket.Decoders.NotificaEvasioneDecoder;
 import WebSocket.Encoders.NotificaEvasioneEncoder;
-import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaEvasione;
 import it.unisannio.ingegneriaDelSoftware.CttDataBaseRestApplication;
+import it.unisannio.ingegneriaDelSoftware.EndPointRest.Magazziniere.EndPointNotificheMagazziniere;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.websocket.OnClose;
-import javax.websocket.OnError;
-import javax.websocket.OnMessage;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
+import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 
 
@@ -21,15 +18,23 @@ import javax.websocket.server.ServerEndpoint;
         decoders = {NotificaEvasioneDecoder.class} )
 public class WebSocketEndPointEvasioneSacche {
 	
-	public static List<Session> sessions = new ArrayList<Session>();
+	protected static List<Session> sessions = new ArrayList<Session>();
 
 	
 
     @OnOpen
     public void start(Session session) {
-        sessions.add(session);
-        CttDataBaseRestApplication.logger.info("Terminale Magazziniere Connesso alla WebSocket sessione: "+session.getId());
-        //gli inoltro tutte le notifiche che ho ricevuto
+        try {
+            sessions.add(session);
+            CttDataBaseRestApplication.logger.info("Terminale Magazziniere Connesso alla WebSocket sessione: "+session.getId());
+            //gli inoltro tutte le notifiche che ho ricevuto
+            session.getBasicRemote().sendObject(EndPointNotificheMagazziniere.getNotificheEvasione());
+            CttDataBaseRestApplication.logger.info("NotificheSacche in Scadenza inoltrate correttamente");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (EncodeException e) {
+            e.printStackTrace();
+        }
     }
 
    
