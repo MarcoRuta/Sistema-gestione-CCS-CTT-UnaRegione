@@ -1,5 +1,8 @@
 package it.unisannio.ingegneriaDelSoftware.Interfaces;
+
+
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
+
 import javax.ws.rs.core.Response;
 
 public interface EndPointOperatoreCTT {

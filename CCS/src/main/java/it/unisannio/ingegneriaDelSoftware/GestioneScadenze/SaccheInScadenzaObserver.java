@@ -14,10 +14,10 @@ public class SaccheInScadenzaObserver implements Observer {
 
 	@Override
 	public void update(List<Notifica> notifiche) {
-		for(Session s : WebSocketEndpointSaccheInScadenza.sessions) {
+		for(Session s : WebSocketEndpointSaccheInScadenza.sessioniCTT.values()) {
 			try {
 				s.getBasicRemote().sendObject(notifiche);
-				CcsDataBaseRestApplication.logger.info("Ho inviato la lista delle sacche in scadenza alla session "+s.getId());
+				CcsDataBaseRestApplication.logger.info("Ho inviato la lista delle sacche in scadenza alla sessione "+s.getId());
 			} catch (IOException e) {
 				CcsDataBaseRestApplication.logger.error("Non sono riuscito ad inoltrare la lista delle sacche");
 				e.printStackTrace();
@@ -25,6 +25,7 @@ public class SaccheInScadenzaObserver implements Observer {
 				CcsDataBaseRestApplication.logger.error("Problemi con la codifica delle notifiche delle sacche in scadenza");
 				e.printStackTrace();
 			}
-		}		
+		}
+
 	}
 }

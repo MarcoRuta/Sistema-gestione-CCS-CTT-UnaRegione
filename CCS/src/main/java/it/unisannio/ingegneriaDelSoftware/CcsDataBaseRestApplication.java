@@ -1,5 +1,7 @@
 package it.unisannio.ingegneriaDelSoftware;
+import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointConnessione;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.ExceptionHandler.*;
+import it.unisannio.ingegneriaDelSoftware.Util.Settings;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +34,9 @@ public class CcsDataBaseRestApplication extends ResourceConfig {
 		
 		//Endpoint gestione sacche in scadenza
 		register(EndPointRestSaccheInScadenza.class);
+
+		//EndPoint Connessione
+		register(EndPointConnessione.class);
 		
 		//exceptionHandler
 		register(AssertionError.class);

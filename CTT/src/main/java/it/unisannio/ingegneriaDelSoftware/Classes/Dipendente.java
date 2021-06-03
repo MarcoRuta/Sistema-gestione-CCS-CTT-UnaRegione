@@ -6,22 +6,29 @@ import java.util.Objects;
 
 public class Dipendente {
 	
+	/**Codice fiscale del Dipendente */
 	private final Cdf cdf;
+	/**Nome del Dipendente */
 	private final String nome;
+	/**Cognome del Dipendente*/
 	private final String cognome;
+	/**Data di nascita del Dipendente */
 	private final LocalDate dataDiNascita;
+	/**Ruolo del Dipendente */
 	private final RuoloDipendente ruolo;
+	/**Username del Dipendente */
 	private final String username;
+	/**Password del Dipendente */
 	private String password;
 
 	/**Metodo Costruttore dell'oggetto Dipendente
-	 * @param cdf Codice fiscale del dipendente
-	 * @param nome Nome del dipendente
-	 * @param cognome Cognome del del dipendente
-	 * @param dataDiNascita Data di nascita del dipendente
-	 * @param ruolo Ruolo del dipendente nel centro CTT
-	 * @param password Password del dipendente sul sistema CTT
-	 * @param username Username del dipendente sul sistema CTT
+	 * @param cdf Codice fiscale del Dipendente
+	 * @param nome Nome del Dipendente
+	 * @param cognome Cognome del del Dipendente
+	 * @param dataDiNascita Data di nascita del Dipendente
+	 * @param ruolo Ruolo del Dipendente nel centro CTT
+	 * @param password Password del Dipendente sul sistema CTT
+	 * @param username Username del Dipendente sul sistema CTT
 	 */
 	public Dipendente(Cdf cdf, String nome, String cognome, LocalDate dataDiNascita, RuoloDipendente ruolo, String username, String password) {
 		assert cdf!= null: "Il codice fiscale del dipendente non può essere null";

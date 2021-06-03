@@ -6,9 +6,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum GruppoSanguigno {
 	Ap,
 	Am,
@@ -19,6 +16,9 @@ public enum GruppoSanguigno {
 	ABp,
 	ABm;
 
+	
+
+	
 	@SuppressWarnings("serial")
 	private final static HashMap<GruppoSanguigno, List<GruppoSanguigno>> puoDonareA = new HashMap<GruppoSanguigno, List<GruppoSanguigno>>() {
 		{
@@ -32,7 +32,6 @@ public enum GruppoSanguigno {
 			put (ABm, new ArrayList<GruppoSanguigno>(Arrays.asList(ABp,ABm)));
 		}
 	};
-	
 	
 	@SuppressWarnings("serial")
 	private final static HashMap<GruppoSanguigno, List<GruppoSanguigno>> puoRicevereDa = new HashMap<GruppoSanguigno, List<GruppoSanguigno>>() {
@@ -54,8 +53,11 @@ public enum GruppoSanguigno {
 		return puoDonareA.get(gs).iterator();
 	}
 	
+	
 	public static Iterator<GruppoSanguigno> puoRicevereDa(GruppoSanguigno gs) {
 		assert gs !=null;
 		return puoRicevereDa.get(gs).iterator();
-	}	
+	}
+		
 }
+

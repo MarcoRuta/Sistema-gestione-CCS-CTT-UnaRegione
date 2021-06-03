@@ -23,21 +23,13 @@ public interface EndPointAutentificazione {
      * il cookie ha una max-Age pari ad un turno lavorativo di 8 ore"
      * @throws  EntityNotFoundException se il login non va a buon fine
      */
-    @POST
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response login(@FormParam("username") String username,
-                          @FormParam("password") String password) throws EntityNotFoundException;
+    public Response login(String username, String password) throws EntityNotFoundException;
 
     /**Effettua il logout, esso elimina il token dell'utente dal server cosi che esso non sia piu autenticato
      * @param header da rimuovere per effettuare il logout
      * @throws EntityNotFoundException se si sta facendo il logout con un token non valido
      */
-    @DELETE
-    @Path("/logout")
-    @Consumes(MediaType.TEXT_PLAIN)
-    @Produces(MediaType.TEXT_PLAIN)
-    public Response logOut(@HeaderParam(HttpHeaders.AUTHORIZATION) String header)throws EntityNotFoundException;
+    public Response logOut(String header)throws EntityNotFoundException;
 
     
     /**Modifica la password di un utente
@@ -45,9 +37,5 @@ public interface EndPointAutentificazione {
      * @param header il token di autentificazione
      * @throws EntityNotFoundException se si vuole cambiare la password di un dipendente non registrato nel DB
      */
-    @PUT
-    @Path("/cambiopassword/{cdf}")
-    @Consumes(MediaType.TEXT_PLAIN)
-    @Produces(MediaType.TEXT_PLAIN)
-    public Response cambioPassword(@HeaderParam(HttpHeaders.AUTHORIZATION) String header,@PathParam("cdf")String cdf, String password) throws AssertionError, EntityNotFoundException;
+    public Response cambioPassword(String header,String cdf, String password) throws AssertionError, EntityNotFoundException;
 }

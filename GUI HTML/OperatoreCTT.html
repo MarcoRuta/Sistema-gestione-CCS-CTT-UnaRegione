@@ -74,12 +74,7 @@
          
         <div class="boxNotification col-sm-12 border shadow-sm profile-box" style="background-image: url(&quot;assets/img/bg-pattern.png&quot;);">
             <h2>Notifiche</h2>
-            <div class="btnClear">
-                <button class="btn btn-primary" onclick="removeNotification();" type="button" style="background-color: #13958d;width: 177px;">Pulisci notifiche</button>
-            </div>
-            <div class="divNot" id="divNot">
-
-            </div> 
+            <div class="divNotMag" id="divNot"></div>
         </div> 
     </div>
     
@@ -88,6 +83,9 @@
         var ruolo = sessionStorage.getItem("ruolo");
         var name = sessionStorage.getItem("nome");
         var surname = sessionStorage.getItem("cognome");
+        var data;
+        var str;
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
         function start(){
             verificoToken();
@@ -108,39 +106,75 @@
 
         logout = function(){
 
-       var xhttp = new XMLHttpRequest();
-       var host = document.location.origin;
-       var url = host + "/rest/autentificazione/logout";
-       xhttp.onreadystatechange = function() {
-                   if (this.readyState == 4 && this.status == 200 ) {
-                        sessionStorage.removeItem("token");
-                        sessionStorage.removeItem("ruolo");
-                        sessionStorage.removeItem("nome");
-                        sessionStorage.removeItem("cognome");
-                        sessionStorage.removeItem("cdf");
-                        window.location.href='Login.html';
-                   }else {
-                       if(this.readyState == 4 && this.status != 200 ){
-                           alert(this.response);
+           var xhttp = new XMLHttpRequest();
+           var host = document.location.origin;
+           var url = host + "/rest/autentificazione/logout";
+           xhttp.onreadystatechange = function() {
+                       if (this.readyState == 4 && this.status == 200 ) {
+                            sessionStorage.removeItem("token");
+                            sessionStorage.removeItem("ruolo");
+                            sessionStorage.removeItem("nome");
+                            sessionStorage.removeItem("cognome");
+                            sessionStorage.removeItem("cdf");
+                            window.location.href='Login.html';
+                       }else {
+                           if(this.readyState == 4 && this.status != 200 ){
+                               alert(this.response);
+                           }
                        }
-                   }
-       };
+           };
 
 
-        xhttp.onerror = function(){
-                   alert("impossibile inviare la richiesta");
+            xhttp.onerror = function(){
+                       alert("impossibile inviare la richiesta");
+            };
+
+
+            xhttp.open("DELETE", url, true);
+            xhttp.setRequestHeader('Authorization', 'Basic '+token);
+            xhttp.withCredentials = true;
+            xhttp.send();
+
         };
 
 
-        xhttp.open("DELETE", url, true);
-        xhttp.setRequestHeader('Authorization', 'Basic '+token);
-        xhttp.withCredentials = true;
-        xhttp.send();
+        function sessionload() {
+			for(let i = 0; i < localStorage.length; i++) {
+                if(localStorage.key(i).substring(0,15) == "scadenzaBottone") {
+                    data = localStorage.getItem(localStorage.key(i));
+                    addBtn();
+                }
+			}
+        }
 
-        };
+
+      function addBtn() {
+          var array = JSON.parse(data);
+          for(let i =0; i<array.length; i++){
+              var btn = document.createElement("button");
+              str = array[i].seriale;
+              btn.className='btn btn-warning';
+              let date = new Date(array[i].dataScadenza.year, array[i].dataScadenza.monthValue-1, array[i].dataScadenza.dayOfMonth);
+
+              btn.innerHTML = "Sacca: " + str + "<br>Gruppo Sanguigno: " + array[i].gruppoSanguigno + "<br>Data Scadenza: " + date.toLocaleDateString(undefined, options);
+              btn.type = 'submit';
+              btn.value = str;
+              btn.id = 'btnSc';
+              btn.style = 'width: 98%; max-height: 280px; vertical-align: baseline; margin: 1%; text-align: left;';
+
+              /*####### EVASIONE SACCA ######*/
+              btn.onclick = function() {
+                  var x = document.activeElement;
+                  var myWindow = window.open("EvasioneSaccaInScadenzaForm.html?seriale="+x.value, "Evasione", "width=auto,height=auto");
+
+              }
+              document.getElementById("divNot").appendChild(btn);
+          }
+      }
     </script>
     
     <div class="footer"></div>
+    <script src = "assets/js/webSocketScadenze.js"></script>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 </body>

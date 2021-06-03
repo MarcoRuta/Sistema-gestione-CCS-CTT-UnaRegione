@@ -3,18 +3,13 @@ package it.unisannio.ingegneriaDelSoftware.Util;
 import java.text.SimpleDateFormat;
 
 public class Constants {
-	
-	public static final String DB_NAME = "CCS";
-	
-	public static final String COLLECTION_SACCHE = "SACCHE_IN_SCADENZA";
+
 	public static final String ELEMENT_SERIALE = "seriale";
 	public static final String ELEMENT_GRUPPO = "gruppo";
 	public static final String ELEMENT_DATAPRODUZIONE = "dataProduzione";
 	public static final String ELEMENT_DATASCADENZA = "dataScadenza";
 	public static final String ELEMENT_PRENOTATO = "prenotato";
-	
-	public static final String COLLECTION_CTT = "CTT";
-	public static final String ELEMENT_NUMERO = "numero";
+
 	public static final String ELEMENT_DENOMINAZIONE = "denominazione";
 	public static final String ELEMENT_PROVINCIA = "provincia";
 	public static final String ELEMENT_CITTA = "citta";
@@ -23,8 +18,7 @@ public class Constants {
 	public static final String ELEMENT_EMAIL = "e_mail";
 	public static final String ELEMENT_LATITUDINE = "latitudine";
 	public static final String ELEMENT_LONGITUDINE = "longitudine";
-	
-	public static final String COLLECTION_DIPENDENTI = "DIPENDENTI";
+
 	public static final String ELEMENT_CDF = "cdf";
 	public static final String ELEMENT_NOME = "nome";
 	public static final String ELEMENT_COGNOME = "cognome";

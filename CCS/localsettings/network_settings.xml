@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <entry key="CTT001">http://192.168.193.194:8080</entry>
+    <entry key="CTT002">http://192.168.193.220:8080</entry>
+    <entry key="CTT003">http://192.168.193.160:8080</entry>
+    <entry key="CTT004">http://192.168.193.55:8080</entry>
+    <entry key="CTT005"></entry>
+    <entry key="CTT006"></entry>
+    <entry key="CTT007"></entry>
+</properties>

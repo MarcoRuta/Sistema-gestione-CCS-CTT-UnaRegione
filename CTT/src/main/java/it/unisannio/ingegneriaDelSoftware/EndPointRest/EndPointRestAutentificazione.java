@@ -15,12 +15,12 @@ import javax.ws.rs.core.Response;
 
 @Path("/autentificazione")
 @PermitAll
-public class EndPointRestAutentificazione implements EndPointAutentificazione{
+public class EndPointRestAutentificazione implements EndPointAutentificazione {
 
     private MongoDataManager mm = MongoDataManager.getInstance();
 
     /**Login è l'operazione con la quale un generico Dipendente del CTT accede al sistema
-     * @return Response
+     * @Response created 201 se il dipendente è presente nel DataBase
      * esso setta il token di autentificazione nei cookie con cookieName = "access_token
      * il cookie ha una max-Age pari ad un turno lavorativo di 8 ore"
      * @throws  EntityNotFoundException se il login non va a buon fine

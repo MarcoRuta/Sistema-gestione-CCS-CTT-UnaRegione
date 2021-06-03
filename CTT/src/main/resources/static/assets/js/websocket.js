@@ -3,23 +3,23 @@
 	
 	var notify = {};
 
+
 	notify.write = function(data) {
-		
+    	    for(let i = 0; i < localStorage.length; i++) {
+                if(localStorage.key(i) == "evasioneBottone") {
+                   localStorage.removeItem(localStorage.key(i));
 
-		if(localStorage.getItem('j') == null) {
-			  j = 0;
-		}
-		else { j = localStorage.getItem('j');}
-		
-		localStorage.setItem('bottone' + j, data);
-		localStorage.setItem('j',++j);
+                    while (document.getElementById('divNot').childElementCount != 0){
+                        var button = document.getElementById('btnEv');
+                        document.getElementById('divNot').removeChild(button);
+                    }
+                }
+            }
 
-		setTimeout(reload,1000);
-	};
+    		localStorage.setItem('evasioneBottone', data);
+    		sessionload();
+    	};
 
-	function reload(){
-		location.reload();
-	}
 	
 
         var channel = {};

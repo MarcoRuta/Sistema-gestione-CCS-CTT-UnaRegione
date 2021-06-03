@@ -6,8 +6,11 @@ import it.unisannio.ingegneriaDelSoftware.Interfaces.Notifica;
 
 public class NotificaSaccaInScadenza implements Notifica {
 
+	/**Seriale della Sacca in scadenza */
 	private String seriale;
+	/**Data in cui la Sacca scadrà */
 	private LocalDate dataScadenza;
+	/**Gruppo sanguigno della Sacca in scadenza */
 	private String gruppoSanguigno;
 	
 	/**Metodo costruttore di NotificaSaccaInScadenza
@@ -22,7 +25,7 @@ public class NotificaSaccaInScadenza implements Notifica {
 	}
 
 	
-	/**Restituisce il seriale della Sacca
+	/**Restituisce il seriale della Sacca in scadenza
 	 * @return seriale
 	 */
 	public String getSeriale() {
@@ -30,7 +33,7 @@ public class NotificaSaccaInScadenza implements Notifica {
 	}
 
 
-	/*/Modifica il seriale della Sacca
+	/**Modifica il seriale della Sacca in scadenza
 	 * @param seriale
 	 */
 	public void setSeriale(String seriale) {

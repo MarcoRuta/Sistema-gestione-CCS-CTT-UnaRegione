@@ -6,10 +6,15 @@ import java.util.Objects;
 
 public class Sacca {
 	
+	/**Seriale, codice identificativo univoco di una sacca di sangue */
 	private final Seriale seriale;
+	/**Gruppo sanguigno della sacca di sangue*/
 	private final GruppoSanguigno gruppo;
+	/**Data di produzione della sacca di sangue*/
 	private final LocalDate dataProduzione;
+	/**Data di scadenza della sacca di sangue*/
 	private final LocalDate dataScadenza;
+	/**Indicatore dello stato di una sacca di sangue*/
 	private boolean prenotato;
 
 
@@ -24,7 +29,6 @@ public class Sacca {
 		assert dataProduzione != null: "La data di produzione non può essere null";
 		assert dataScadenza != null: "la data di scadenza non può essere null";
 		if (dataScadenza.isBefore(dataProduzione))throw new IllegalArgumentException( "La data di produzione non può essere precedente a quella di scadenza");
-		if(dataScadenza.isBefore(LocalDate.now()))throw new IllegalArgumentException("La sacca è gia scaduta");
 		if (dataProduzione.isAfter(LocalDate.now())) throw new IllegalArgumentException("Non puoi inserire una sacca non ancora prodotta");
 
 		this.seriale = new Seriale();
@@ -46,9 +50,8 @@ public class Sacca {
 		assert gs != null: "Il gruppo sanguigno non può essere null";
 		assert dataProduzione != null: "La data di produzione non può essere null";
 		assert dataScadenza != null: "la data di scadenza non può essere null";
-		assert ser!= null: "Il seriale non puo essere null";
+		assert ser!= null: "Il seriale non può essere null";
 		if (dataScadenza.isBefore(dataProduzione))throw new IllegalArgumentException( "La data di produzione non può essere precedente a quella di scadenza");
-		if(dataScadenza.isBefore(LocalDate.now()))	throw new IllegalArgumentException("La sacca è gia scaduta");
 		if (dataProduzione.isAfter(LocalDate.now())) throw new IllegalArgumentException("Non puoi inserire una sacca non ancora prodotta");
 
 		this.seriale = ser;

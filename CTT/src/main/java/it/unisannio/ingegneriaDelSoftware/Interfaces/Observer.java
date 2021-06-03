@@ -1,9 +1,8 @@
 package it.unisannio.ingegneriaDelSoftware.Interfaces;
+import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaEvasione;
+
+import java.util.List;
 
 public interface Observer {
-	
-	/**Aggiorna le notifiche di ogni sessione, ogni volta che cambia lo stato
-	 * @param notifica
-	 */
-    void update(Notifica notifica);
+    void update(List<NotificaEvasione> notifica);
 }

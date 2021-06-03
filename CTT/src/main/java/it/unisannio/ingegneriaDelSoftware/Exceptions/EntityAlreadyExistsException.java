@@ -1,10 +1,8 @@
 package it.unisannio.ingegneriaDelSoftware.Exceptions;
 
+/**Eccezione che viene lanciata nel momento in cui si prova ad aggiungere al database un'entità già esistente*/
 public class EntityAlreadyExistsException extends Throwable {
-
-	private static final long serialVersionUID = 1L;
-
-	public EntityAlreadyExistsException(String message) {
+    public EntityAlreadyExistsException(String message) {
         super(message);
     }
 }

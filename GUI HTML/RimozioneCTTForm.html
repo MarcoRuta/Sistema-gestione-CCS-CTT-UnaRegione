@@ -63,6 +63,8 @@
         var xhttp = new XMLHttpRequest();
         var token = sessionStorage.getItem("token");
         var ruolo = sessionStorage.getItem("ruolo");
+        var res;
+        var host = document.location.origin;
         
         function start() {
         	verificoToken();
@@ -79,13 +81,13 @@
         function removeCTT(){
             
             
-            var url = "http://127.0.0.1:8080/rest/CCS/rimozioneCTT/"+ numctt.value;
+            var url = host + "/rest/CCS/rimozioneCTT/"+ numctt.value;
           
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
-                    document.getElementById("result").innerHTML = this.response;
-                }else {
-                    document.getElementById("result").innerHTML = this.response;
+                	res = this.response;
+                }else if(this.readyState == 4 && this.status != 200 ){
+                	res = this.response;
                 }
 
             };
@@ -105,7 +107,7 @@
         }
 
         function reloadPage() {
-            alert(document.getElementById("result").textContent);
+            alert(res);
             location.reload();
         }
         
@@ -113,7 +115,7 @@
                 
         	
                 xhttp = new XMLHttpRequest(); 	
-                url = "http://127.0.0.1:8080/rest/CCS/centers";
+                url = host + "/rest/CCS/centers";
                 
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
@@ -140,8 +142,8 @@
                 var option;
                 for(var i=0; i < obj.length; i++) {
                     option = document.createElement('option');
-                    option.appendChild(document.createTextNode(obj[i].posizione.provincia + " - " + obj[i].posizione.citta + " - " + obj[i].denominazione));
-                    option.value=obj[i].numero;
+                    option.appendChild(document.createTextNode(obj[i].posizione.provincia + " - " + obj[i].posizione.citta + " - " + obj[i].denominazione.cttname));
+                    option.value=obj[i].denominazione.cttname;
                     x.appendChild(option);
                 }
             }

@@ -2,7 +2,6 @@ package it.unisannio.ingegneriaDelSoftware.Classes;
 
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
-
 import java.security.SecureRandom;
 import java.util.*;
 
@@ -12,6 +11,7 @@ public class Token {
     /**Mappa statica che mantiene tutte le istanze di token*/
     private static Map<String,Token> tokens= new HashMap<String, Token>();
 
+    /**Token di accesso */
     private final String token;
     
     /**java.security.SecureRandom is a class that provides a cryptographically strong random number generator.

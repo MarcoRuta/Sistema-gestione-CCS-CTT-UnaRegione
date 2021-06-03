@@ -54,6 +54,9 @@
                                 <button class="btn btn-primary" onclick="location.href='AggiungiSaccaForm.html';" type="button" style="background-color: #13958d;width: 210px;">Aggiunta sacca</button>
                             </div>
                         </div>
+                    <div class="row" style="width:75%; margin-top:5%; margin-left: 16%;">
+                        <div class = "divSmaMag col-sm" id ="divSma"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -61,8 +64,7 @@
         <div class="boxNotification col-sm-12 border shadow-sm profile-box" style="background-image: url(&quot;assets/img/bg-pattern.png&quot;);">
             <h2>Notifiche</h2>
             <div class="divNotMag" id="divNot">
-            	
-            </div> 
+            </div>
         </div> 
     </div>
     
@@ -100,7 +102,7 @@
 
     function sessionload() {
 			for(let i = 0; i < localStorage.length; i++) {
-                if(localStorage.key(i).substring(0,7) == "bottone") {
+                if(localStorage.key(i) == "evasioneBottone") {
                     data = localStorage.getItem(localStorage.key(i));
                     addBtn();
                 }
@@ -110,56 +112,55 @@
 
       function addBtn() {
           var obj = JSON.parse(data);
-          str = "";
+          for (var j =0; j<obj.length; j++){
+            str = "";
 
-          for(var i=0; i < obj.listaSeriali.length; i++) {
-           str = str + obj.listaSeriali[i] + ",";
-        }
-          str2 = str.substring(0,str.length-1);
-          var btn = document.createElement("button");
-          btn.className='btn btn-warning';
-          btn.innerHTML = "Sacche: " + str2 + "<br>Ente: " + obj.enteRichiedente + "<br>Indirizzo: " + obj.indirizzoEnte;
-          btn.type = 'submit';
-          btn.value = str;
-          btn.style = 'width: 98%; max-height: 280px; vertical-align: baseline; margin: 1%; text-align: left;';
-          
-          /*####### EVASIONE SACCA ######*/
-          btn.onclick = function() {
+            for(var i=0; i < obj[j].listaSeriali.length; i++) {
+                str = str + obj[j].listaSeriali[i].seriale+",";
+            }
+            str2 = str.substring(0,str.length-1);
+            var btn = document.createElement("button");
+            btn.className='btn btn-warning';
+            btn.innerHTML = "Sacche: " + str2 + "<br>Ente: " + obj[j].enteRichiedente + "<br>Indirizzo: " + obj[j].indirizzoEnte;
+            btn.type = 'submit';
+            btn.value = JSON.stringify(obj[j]);
+            btn.id = 'btnEv';
+            btn.style = 'width: 98%; max-height: 280px; vertical-align: baseline; margin: 1%; text-align: left;';
 
-        	  var x = document.activeElement;
-              var params = 'listaSeriali='+ x.value +'&enteRichiedente='+ obj.enteRichiedente +'&indirizzoEnte='+ obj.indirizzoEnte;
+
+            /*####### EVASIONE SACCA ######*/
+            btn.onclick = function() {
+
+        	    var x = document.activeElement;
+                host = document.location.origin;
+                var url = host+"/rest/magazziniere/evasione";
               
-              host = document.location.origin;
-              var url = host+"/rest/magazziniere/evasione";
-              
-              xhttp.onreadystatechange = function() {
-                  if (this.readyState == 4 && this.status == 201) {
-                	  alert(this.response);
-                      urlPdf = host + xhttp.getResponseHeader("Content-Location");
-                      creaPdf();
-                      setTimeout(removeNotify,1500);
-                  } else if(this.readyState == 4 && this.status != 201) {
-                       alert(this.response);
-                  }
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 201) {
+                        alert(this.response);
+                        urlPdf = host + xhttp.getResponseHeader("Content-Location");
+                        creaPdf();
+                    } else if(this.readyState == 4 && this.status != 201) {
+                           alert(this.response);
+                    }
 
-              };
+                };
 
-              xhttp.onerror = function(){
-                  alert("Sacca non esistente");
-              };
+                xhttp.onerror = function(){
+                    alert("Sacca non esistente");
+                };
 
 
-              xhttp.open("POST", url, true);
-              xhttp.setRequestHeader('Authorization', 'Basic '+token);
-              xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-              xhttp.withCredentials = true;
-              xhttp.send(params);
+                xhttp.open("POST", url, true);
+                xhttp.setRequestHeader('Authorization', 'Basic '+token);
+                xhttp.setRequestHeader('Content-type', 'application/json');
+                xhttp.withCredentials = true;
+                xhttp.send(x.value);
 
-          };
+            };
 
-          /*#############################*/
-              
-          document.getElementById("divNot").appendChild(btn);
+            document.getElementById("divNot").appendChild(btn);
+          }
       }
     
   	/*####### CREA PDF FUNCTION ######*/
@@ -179,23 +180,7 @@
               };
       }
       /*#############################*/
-    
-      /*####### REMOVE FUNCTION ######*/
-      function removeNotify() {
-          var x = document.activeElement;
-          let sr = x.value.substring(0,15);
-          for(let i = 0; i < localStorage.length; i++) {
-                  if(localStorage.key(i).substring(0,7) == "bottone") {
-                          data = localStorage.getItem(localStorage.key(i));
-                          if(JSON.parse(data).listaSeriali[0] == sr) {
-                              localStorage.removeItem(localStorage.key(i));
-                              location.reload();
-                          }
-                      
-                  }
-           }
-          
-      }
+
       /*#############################*/
        
       /*####### LOGOUT FUNCTION ######*/
@@ -232,12 +217,82 @@
   
      };
 
+
+
+
+
+
+    </script>
+    <script>
+
+     var smaltimento;
+     var xhttpSma = new XMLHttpRequest();
+     var token = sessionStorage.getItem("token");
+     var urlSma;
+     var hostSma;
+
+     smaltimentoload = function(){
+        for(let i = 0; i < localStorage.length; i++) {
+                if(localStorage.key(i) == "smaltimentoBottone") {
+                    smaltimento = localStorage.getItem(localStorage.key(i));
+                    addSmaltimento();
+                }
+			}
+     }
+
+     function addSmaltimento() {
+        var objSma = JSON.parse(smaltimento);
+        var btnSma = document.createElement("button");
+        btnSma.className='btn btn-danger';
+        btnSma.innerHTML = "Sacche Da Smaltire"
+        btnSma.type = 'submit';
+        btnSma.id = 'btnSma';
+        btnSma.style = 'width: 210px';
+
+
+        /*####### Smaltimento ######*/
+        btnSma.onclick = function() {
+            hostSma = document.location.origin;
+            var urlSma = hostSma+"/rest/notifica/smaltimento/pdf";
+
+            xhttpSma.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    var blobSrcSma = window.URL.createObjectURL(new Blob([this.response], { type: 'application/pdf'}));
+                    window.open(blobSrcSma);
+                    location.reload();
+                } else if(this.readyState == 4 && this.status != 200) {
+                       alert(this.response);
+                       location.reload();
+                }
+
+            };
+
+            xhttpSma.onerror = function(){
+                alert("Impossibile Conttatare il server");
+                location.reload();
+            };
+
+
+            xhttpSma.open("GET", urlSma, true);
+            xhttpSma.setRequestHeader('Authorization', 'Basic '+token);
+            xhttpSma.withCredentials = true;
+            xhttpSma.responseType = 'arraybuffer';
+            xhttpSma.send();
+
+        };
+
+        document.getElementById("divSma").appendChild(btnSma);
+     }
+
+
+
     </script>
     
     <div class="footer"></div>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/websocket.js"></script>
+    <script src="assets/js/webSocketSmaltimento.js"></script>
 </body>
 
 </html>

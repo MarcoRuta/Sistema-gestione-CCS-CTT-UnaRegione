@@ -44,7 +44,7 @@ public class MongoDataManager {
 	 * Metodo che rimuove un database
 	 */
 	public void dropDB() {
-	    MongoDatabase database = mongoClient.getDatabase(Constants.DB_NAME);
+	    MongoDatabase database = mongoClient.getDatabase(Settings.DB_NAME);
 	    database.drop();
 	}
 	
@@ -53,8 +53,8 @@ public class MongoDataManager {
 	 * @return MongoCollection<SaccaBean>
 	 */
 	private MongoCollection<SaccaBean> getCollectionSacca(){
-	    MongoDatabase database = mongoClient.getDatabase(Constants.DB_NAME);
-	    return  database.getCollection(Constants.COLLECTION_SACCHE, SaccaBean.class);
+	    MongoDatabase database = mongoClient.getDatabase(Settings.DB_NAME);
+	    return  database.getCollection(Settings.COLLECTION_SACCHE, SaccaBean.class);
 	}
 	
 	/**
@@ -62,8 +62,8 @@ public class MongoDataManager {
 	 * @return MongoCollection<CTT>
 	 */
 	private MongoCollection<CTT> getCollectionCTT(){
-	    MongoDatabase database = mongoClient.getDatabase(Constants.DB_NAME);
-	    return  database.getCollection(Constants.COLLECTION_CTT, CTT.class);
+	    MongoDatabase database = mongoClient.getDatabase(Settings.DB_NAME);
+	    return  database.getCollection(Settings.COLLECTION_CTT, CTT.class);
 	}
 	
 	/**
@@ -71,8 +71,8 @@ public class MongoDataManager {
 	 * @return MongoCollection<Dipendente>
 	 */
 	private MongoCollection<Dipendente> getCollectionDipendente(){
-		MongoDatabase database = mongoClient.getDatabase(Constants.DB_NAME);
-	    return database.getCollection(Constants.COLLECTION_DIPENDENTI, Dipendente.class);
+		MongoDatabase database = mongoClient.getDatabase(Settings.DB_NAME);
+	    return database.getCollection(Settings.COLLECTION_DIPENDENTI, Dipendente.class);
 	}
 	
 	/**
@@ -282,5 +282,14 @@ public class MongoDataManager {
 	   Dipendente unDipendente = getDipendente(cdf);
 	   unDipendente.setPassword(password);
 	   getCollectionDipendente().replaceOne(eq(Constants.ELEMENT_CDF),unDipendente);
+	}
+
+	/**Rimuovo le sacche in scadenza appartenenti ad un dato CTT*/
+	public void removeSaccheCttOffline(CTTName cttOffline) throws EntityNotFoundException {
+		List<SaccaBean> listaSacche = this.getListaSacche();
+		for(SaccaBean s : listaSacche)
+			if(s.getSeriale().getSeriale().substring(0,6).equals(cttOffline.getCttname())) {
+				this.removeSacca(s.getSeriale());
+			}
 	}
 }

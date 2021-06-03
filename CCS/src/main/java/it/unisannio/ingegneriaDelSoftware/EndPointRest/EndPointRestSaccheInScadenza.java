@@ -21,6 +21,7 @@ import javax.ws.rs.core.Response;
 import it.unisannio.ingegneriaDelSoftware.CcsDataBaseRestApplication;
 import it.unisannio.ingegneriaDelSoftware.Classes.Beans.SaccaBean;
 import it.unisannio.ingegneriaDelSoftware.Classes.Beans.SerialeBean;
+import it.unisannio.ingegneriaDelSoftware.Classes.CTTName;
 import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaEvasione;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
@@ -31,7 +32,7 @@ import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointSaccheInScadenzaCCS
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Notifica;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Observer;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Subject;
-import it.unisannio.ingegneriaDelSoftware.Util.CTTStaticIpMap;
+import it.unisannio.ingegneriaDelSoftware.Util.Settings;
 
 @Path("/CCS")
 @Singleton
@@ -77,7 +78,9 @@ public class EndPointRestSaccheInScadenza implements EndPointSaccheInScadenzaCCS
 
 		//Recupero l'indirizzo del CTT che possiede la sacca in scadenza
 		String nomeCTT = seriale.substring(0,6);
-		String indirizzoCTT = CTTStaticIpMap.indirizziCTT.get(nomeCTT);
+		String indirizzoCTT = Settings.ip.get(CTTName.getCttName(nomeCTT));
+		CcsDataBaseRestApplication.logger.info("Ecco IP del CTT che possiede la sacca: "+ indirizzoCTT);
+
 		
 		//Elimino la sacca dal database SACCHE_IN_SCADENZA del CCS
 		SerialeBean ser = new SerialeBean();
@@ -85,13 +88,12 @@ public class EndPointRestSaccheInScadenza implements EndPointSaccheInScadenzaCCS
 		mm.removeSacca(ser);
 	
 		//Converto il seriale in modo che coincida con quello accettato dal @POST di notificaevasione
-		List<String> listaSeriali = new ArrayList<String>();
-		listaSeriali.add(seriale);
+		List<SerialeBean> listaSeriali = new ArrayList<SerialeBean>();
+		listaSeriali.add(ser);
 		
 		
 		Client client = ClientBuilder.newClient();
 		WebTarget evasioneSacca = client.target(indirizzoCTT+"/rest/notifica/notificaEvasione");
-		System.err.println(indirizzoCTT);
 		
 		NotificaEvasione notifica = new NotificaEvasione(listaSeriali,ente_richiedente,indirizzo);
 		CcsDataBaseRestApplication.logger.info("Ho creato la notifica evasione Sacca che sto per inoltrare al CTT che possiede la sacca: "+notifica);
@@ -105,7 +107,9 @@ public class EndPointRestSaccheInScadenza implements EndPointSaccheInScadenzaCCS
 	
 	}
 
-	
+	/**Accetto il seriale di una sacca, precedentemente inviata al CCS perchè in scadenza, che è stata prenotata presso
+	 * il CTT mittente.
+	 * La lista delle sacche in scadenza viene aggiornata ed inoltrata a tutti i ctt connessi*/
 	@DELETE
 	@Path("/ritiroAlertCTT/{seriale}")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)

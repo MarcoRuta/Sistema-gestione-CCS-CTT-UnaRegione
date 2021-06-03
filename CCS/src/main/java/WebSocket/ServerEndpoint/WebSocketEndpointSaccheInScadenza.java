@@ -1,63 +1,83 @@
 package WebSocket.ServerEndpoint;
+
+import WebSocket.Decoders.CTTNameDecoder;
 import WebSocket.Decoders.NotificaSaccaInScadenzaDecoder;
+import WebSocket.Encoders.CTTNameEncoder;
 import WebSocket.Encoders.NotificaSaccaInScadenzaEncoder;
 import it.unisannio.ingegneriaDelSoftware.CcsDataBaseRestApplication;
+import it.unisannio.ingegneriaDelSoftware.Classes.CTTName;
 import it.unisannio.ingegneriaDelSoftware.Functional.NotificaSaccaInScadenzaMaker;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
+import it.unisannio.ingegneriaDelSoftware.GestioneScadenze.SaccheInScadenzaObserver;
+import it.unisannio.ingegneriaDelSoftware.Interfaces.Observer;
+
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 
+
+/**Endpoint che permette ai CTT di collegarsi al CCS e ricevere la lista di sacche in scadenza dei vari CTT*/
 @ServerEndpoint(value = "/ws/saccheInScadenza",
-        encoders = {NotificaSaccaInScadenzaEncoder.class},
-        decoders = {NotificaSaccaInScadenzaDecoder.class} )
+        encoders = {NotificaSaccaInScadenzaEncoder.class, CTTNameEncoder.class},
+        decoders = {NotificaSaccaInScadenzaDecoder.class, CTTNameDecoder.class} )
 public class WebSocketEndpointSaccheInScadenza {
-	
-	public static List<Session> sessions = new ArrayList<Session>();
-	private Session session;
-	
-	/**Metodo avviato nel momento in cui un CTT si connette alla rete dei CTT
-	 * @param session La sessione durante la quale il CTT è connesso
-	 */
+
+    /**Mappa statica, quindi unica, per tutte le istanze dell'endPoint che memorizza il CTT con la relativa sessione*/
+    public static ConcurrentMap<CTTName,Session> sessioniCTT = new ConcurrentHashMap<CTTName,Session>();
+    /**observer da notificare nel momento in cui un CTT chiude la sua connessione*/
+    private Observer observer = new SaccheInScadenzaObserver();
+
+
     @OnOpen
     public void start(Session session) {
         CcsDataBaseRestApplication.logger.info("CTT connesso al SaccheInScadenza EndPoint");
+    }
+
+    /**Il CCS puo ricevere dal CTT soltanto il suo nome.
+     * Appena ricevuto il CCS provvede a memorizzarlo nella mappa e ad inoltrare la lista delle sacche in scadenza*/
+    @OnMessage
+    public void receive(CTTName cttName, Session session) {
         try {
-            this.session = session;
+            sessioniCTT.put(cttName, session);
+            CcsDataBaseRestApplication.logger.info("CTT: "+cttName.getCttname()+" connesso con sessione: "+session.getId());
+            CcsDataBaseRestApplication.logger.info("Ecco la lista dei CTT connessi "+ sessioniCTT);
             session.getBasicRemote().sendObject(NotificaSaccaInScadenzaMaker.creaNotificheSaccheInScadenza());
-            sessions.add(session);
-            CcsDataBaseRestApplication.logger.info("Ho inoltrato al CTT la lista delle sacche in scadenza");
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (EncodeException e) {
-            e.printStackTrace();
+            CcsDataBaseRestApplication.logger.info("Ho inoltrato al "+cttName.getCttname()+"la lista delle sacche in scadenza");
+        } catch (IOException | EncodeException e) {
+            CcsDataBaseRestApplication.logger.info("Non sono riuscito a creare una connessione con il CTT con nome:" +cttName.getCttname());
+        }
+
+
+    }
+
+
+    /**Quando il CTT chiude la connessione, le sue sacche in scadenza sono rimosse dal CCS e vengono notificati gli altri CTT*/
+    @OnClose
+    public void end(Session s)  {
+        try {
+            CTTName cttOffline = null;
+            for (CTTName name : sessioniCTT.keySet())
+                if (sessioniCTT.get(name).equals(s)) {
+                    cttOffline = name;
+                    CcsDataBaseRestApplication.logger.info("CTT: " + name.getCttname() + " Disconnesso con sessione: " + s.getId());
+                    sessioniCTT.remove(name);
+                }
+
+            MongoDataManager.getInstance().removeSaccheCttOffline(cttOffline);
+
+            this.observer.update(NotificaSaccaInScadenzaMaker.creaNotificheSaccheInScadenza());
+        } catch (EntityNotFoundException e) {
+            //do nothing
         }
     }
 
-    /**Metodo avviato nel momento in cui un CTT esce dalla rete dei CTT 
-     */
-    @OnClose
-    public void end() {
-    	sessions.remove(session);
-    }
-
-    
-    /**Riceve i messaggi provenienti dalla rete dei CTT
-     * @param message
-     */
-    @OnMessage
-    public void receive(String message) {
-        // Implementato nel branch
-    }
-
-    
-    /**Lancia l'eccezione al verificarsi di un errore
-     * @param t L'eccezione da lanciare
-     * @throws Throwable
-     */
     @OnError
     public void onError(Throwable t) throws Throwable {
-        // Implementato nel branch
+        CcsDataBaseRestApplication.logger.error("Errore :"+ t.getMessage() );
     }
+
+
 }

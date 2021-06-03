@@ -8,23 +8,17 @@ import java.util.Optional;
 public class DatiSacca {
 	
 	/**Seriale della Sacca, è univoco non puo essere modificato una volta creata la Sacca*/
-	private final Seriale seriale;
-	
+	private final Seriale seriale;	
 	/** Gruppo sanguigno della Sacca, non puo essere modificato una volta creata la Sacca*/
-	private final GruppoSanguigno gruppo;
-	
+	private final GruppoSanguigno gruppo;	
 	/** Data di arrivo della Sacca, viene aggiunta quando la Sacca è inserita nel magazzino, non puo essere modificata*/
-	private final LocalDate dataArrivo;
-	
+	private final LocalDate dataArrivo;	
 	/** Data in cui la Sacca viene affidata ad un ente esterno*/
-	private Optional<LocalDate> dataAffidamento;
-	
+	private Optional<LocalDate> dataAffidamento;	
 	/**Ente da cui proviene la Sacca, nel momento in cui la Sacca è creata lo si conosce e non puo essere modificato*/
-	private final String enteDonatore;
-	
+	private final String enteDonatore;	
 	/**Colui che richiede la Sacca, viene aggiunto nel momento in cui la Sacca è affidata*/
-	private Optional<String> enteRichiedente;
-	
+	private Optional<String> enteRichiedente;	
 	/**L'indirizzo di colui che richiede la Sacca, viene aggiunto nel momento in cui la Sacca è affidata*/
 	private Optional<String> indirizzoEnte;
 	
@@ -43,7 +37,7 @@ public class DatiSacca {
 		assert gruppoSanguigno!= null: "Il gruppo sanguigno non può essere nullo";
 		assert dataArrivo != null: "La data di arrivo non può essere nulla";
 		assert enteDonatore != null: "L'ente donatore non può essere nullo";
-		if(dataAffidamento != null && dataAffidamento.isBefore(dataArrivo))
+		if(dataAffidamento != null && dataAffidamento.isBefore(dataArrivo) && !dataAffidamento.isEqual(dataArrivo))
 			throw new IllegalArgumentException("La data di affidamento non può essere precedente a quella di arrivo");
 		
 		this.seriale = seriale;

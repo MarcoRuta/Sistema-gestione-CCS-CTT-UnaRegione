@@ -9,11 +9,13 @@ import java.util.*;
 public class Seriale {
 
 	/** tag usati per i settings all'interno del file XML*/
-	private static final String TAG_RADICE = "radice";
 	private static final String TAG_LAST_ASSIGNED = "last_assigned";
 
+	/**Radice, prima parte del Seriale comune a tutte le Sacche prodotte dallo stesso CTT */
 	private final static String radice;
+	/**lastAssigned, seconda parte del Seriale diversa per ogni Sacca, valore incrementale*/
 	private static int lastAssigned;
+	/**rappresentazione come stringa del Seriale*/
 	private final String seriale;
 
 	/**Mappa statica che mantiene tutte le istanze del Seriale*/
@@ -31,7 +33,7 @@ public class Seriale {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	    radice = loadProps.getProperty(TAG_RADICE);
+	    radice = CTTName.getInstance().getCttname();
 	    lastAssigned = Integer.valueOf(loadProps.getProperty(TAG_LAST_ASSIGNED));
 	}
 
@@ -73,7 +75,6 @@ public class Seriale {
 	 */
 	public static void updateSettings() {
 		Properties saveProps = new Properties();
-		saveProps.setProperty(TAG_RADICE, radice);
 		saveProps.setProperty(TAG_LAST_ASSIGNED, Integer.toString(lastAssigned));
 		try {
 			FileOutputStream fos = new FileOutputStream("localsettings/serial_settings.xml");
@@ -89,7 +90,6 @@ public class Seriale {
 	 */
 	public static void restartSettings() {
 		Properties saveProps = new Properties();
-		saveProps.setProperty(TAG_RADICE, radice);
 		saveProps.setProperty(TAG_LAST_ASSIGNED, Integer.toString(0));
 		try {
 			FileOutputStream fos = new FileOutputStream("localsettings/serial_settings.xml");

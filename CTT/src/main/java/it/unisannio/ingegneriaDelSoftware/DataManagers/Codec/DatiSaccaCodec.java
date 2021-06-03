@@ -13,7 +13,7 @@ import org.bson.codecs.EncoderContext;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-/**Codec usato per salvare {@link DatiSacca} all'interno del DB*/
+/**Codec usato per salvare {@link DatiSacca} all'interno  del DB*/
 public class DatiSaccaCodec implements Codec<DatiSacca> {
 
 
@@ -31,7 +31,7 @@ public class DatiSaccaCodec implements Codec<DatiSacca> {
         LocalDate dataAffidamento = dateBuffer.length()==0?null: LocalDate.parse(dateBuffer,
                 DateTimeFormatter.ofPattern(Constants.DATEFORMAT));
 
-        //costruisce la Sacca recuperando gli ultimi valori
+        //costruisco la sacca recuperando gli ultimi valori
         DatiSacca unaSacca = new DatiSacca(seriale,gs,dataArrivo,dataAffidamento,
                 reader.readString(Constants.ELEMENT_ENTEDONATORE),
                 reader.readString(Constants.ELEMENT_ENTERICHIEDENTE),
@@ -41,7 +41,6 @@ public class DatiSaccaCodec implements Codec<DatiSacca> {
         return unaSacca;
     }
 
-    
     @Override
     public void encode(BsonWriter writer, DatiSacca value, EncoderContext encoderContext) {
         writer.writeStartDocument();
@@ -59,7 +58,6 @@ public class DatiSaccaCodec implements Codec<DatiSacca> {
 
     }
 
-    
     @Override
     public Class<DatiSacca> getEncoderClass() {
         return DatiSacca.class;

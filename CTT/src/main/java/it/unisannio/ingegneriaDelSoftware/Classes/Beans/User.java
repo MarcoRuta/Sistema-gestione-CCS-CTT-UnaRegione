@@ -4,10 +4,16 @@ import java.util.Objects;
 
 /**A user bean class*/
 public class User {
+	
+	/**Token di accesso relativo all'user */
     private String token;
+    /**Ruolo dell'user */
     private String ruolo;
+    /**Nome dell'user */
     private String nome;
+    /**Cognome dell'user */
     private String cognome;
+    /**Codice fiscale dell'user */
     private String cdf;
 
     /**Metodo costruttore di User 
