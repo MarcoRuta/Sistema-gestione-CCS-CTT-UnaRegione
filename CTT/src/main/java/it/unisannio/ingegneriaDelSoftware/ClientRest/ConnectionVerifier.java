@@ -7,7 +7,10 @@ import javax.ws.rs.ProcessingException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
+import java.io.IOException;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 
 
 /**Client REST che viene utilizzato per verificare lo stato di connessione con il CCS*/
@@ -17,17 +20,15 @@ public class ConnectionVerifier {
 	 * @return true se il CCS è collegato correttamente, false se non è stato possibile contattare il CCS
 	 */
     public static boolean isCCSOnline(){
-    	try {
-			CttDataBaseRestApplication.logger.error("Controllo che il CCS sia online");
-			Client client = ClientBuilder.newClient();
-			WebTarget verificoConnessione = client
-					.target("http://"+Settings.ccsIp+":"+Settings.ccsIpPort+"/rest/connessione");
-			verificoConnessione.request().get();
-    		return true;
-    	}catch(ProcessingException p) {
-    		CttDataBaseRestApplication.logger.error("L'endPoint rest CCS è OFFLINE");
-    		return false;
-    	}
+		try{
+			Socket socket = new Socket();
+			socket.connect(new InetSocketAddress(Settings.ccsIp, Integer.parseInt(Settings.ccsIpPort)), 5000);
+			CttDataBaseRestApplication.logger.info("EndPointRest CCS è online");
+			return true;
+		} catch (IOException e) {
+			CttDataBaseRestApplication.logger.info("EndPointRest CCS è offline");
+			return false; // Either timeout or unreachable or failed DNS lookup.
+		}
     }
 }
 
