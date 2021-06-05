@@ -1,4 +1,4 @@
-package WebSocket.ServerEndpoint;
+package it.unisannio.ingegneriaDelSoftware.EndPointRest.SaccheInScadenza;
 
 import WebSocket.Decoders.CTTNameDecoder;
 import WebSocket.Decoders.NotificaSaccaInScadenzaDecoder;
@@ -6,10 +6,10 @@ import WebSocket.Encoders.CTTNameEncoder;
 import WebSocket.Encoders.NotificaSaccaInScadenzaEncoder;
 import it.unisannio.ingegneriaDelSoftware.CcsDataBaseRestApplication;
 import it.unisannio.ingegneriaDelSoftware.Classes.CTTName;
+import it.unisannio.ingegneriaDelSoftware.EndPointRest.SaccheInScadenza.SaccheInScadenzaObserver;
 import it.unisannio.ingegneriaDelSoftware.Functional.NotificaSaccaInScadenzaMaker;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
-import it.unisannio.ingegneriaDelSoftware.GestioneScadenze.SaccheInScadenzaObserver;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Observer;
 
 import java.io.IOException;
@@ -26,7 +26,7 @@ import javax.websocket.server.ServerEndpoint;
 public class WebSocketEndpointSaccheInScadenza {
 
     /**Mappa statica, quindi unica, per tutte le istanze dell'endPoint che memorizza il CTT con la relativa sessione*/
-    public static ConcurrentMap<CTTName,Session> sessioniCTT = new ConcurrentHashMap<CTTName,Session>();
+    protected static ConcurrentMap<CTTName,Session> sessioniCTT = new ConcurrentHashMap<CTTName,Session>();
     /**observer da notificare nel momento in cui un CTT chiude la sua connessione*/
     private Observer observer = new SaccheInScadenzaObserver();
 

@@ -5,10 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.DecimalFormat;
-import java.util.HashMap;
-import java.util.InvalidPropertiesFormatException;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 
 /**FlyWeight*/
@@ -61,11 +58,7 @@ public class CTTName {
         return cttname;
     }
 
-    
-    public static String getTagLastAssigned() {
-        return TAG_LAST_ASSIGNED;
-    }
-
+  
     
     /**Costruisce un seriale, di volta in volta il seriale creato sarà diverso*/
     public CTTName() {
@@ -119,5 +112,18 @@ public class CTTName {
         return "CTTName{" +
                 "cttname='" + cttname + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CTTName cttName = (CTTName) o;
+        return cttname.equals(cttName.cttname);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(cttname);
     }
 }

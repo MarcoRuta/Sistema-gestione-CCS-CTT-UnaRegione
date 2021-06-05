@@ -6,11 +6,12 @@ import it.unisannio.ingegneriaDelSoftware.EndPointRest.Amministratore.EndPointRe
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.Magazziniere.EndPointNotificheMagazziniere;
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.Magazziniere.EndPointRestMagazziniereCTT;
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.Operatore.EndPointRestOperatoreCTT;
+import it.unisannio.ingegneriaDelSoftware.EndPointRest.Operatore.RicercaGlobale.EndPointNotificheOperatore;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.ExceptionHandler.*;
 import it.unisannio.ingegneriaDelSoftware.Filtri.FiltroDiAutorizzazione;
 import it.unisannio.ingegneriaDelSoftware.SaccheInScadenzaManager.GestioneScadenzeCTT;
-import it.unisannio.ingegneriaDelSoftware.EndPointRest.Operatore.SaccheInScadenzaClientEndPoint;
+import it.unisannio.ingegneriaDelSoftware.EndPointRest.Operatore.SaccheInScadenza.SaccheInScadenzaClientEndPoint;
 import it.unisannio.ingegneriaDelSoftware.Filtri.FiltroDiAutentificazione;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.slf4j.Logger;
@@ -41,7 +42,7 @@ public class CttDataBaseRestApplication extends ResourceConfig {
 		//gestione AssertionError
 		register(AssertionErrorHandler.class);
 		//gestione Exception
-		register(ExceptionHandler.class);
+		//register(ExceptionHandler.class);
 		register(EntityAlreadyExistsExceptionHandler.class);
 		register(DateTimeParseExceptionHandler.class);
 		register(EntityNotFoundExceptionHandler.class);
@@ -57,12 +58,14 @@ public class CttDataBaseRestApplication extends ResourceConfig {
 		register(EndPointRestAmministratoreCTT.class);
 		//Endpoint Operatore
 		register(EndPointRestOperatoreCTT.class);
-		//endointNotifiche
+		//endointNotifichemagazzinere
 		register(EndPointNotificheMagazziniere.class);
+		//endPointNotificheOperatore
+		register(EndPointNotificheOperatore.class);
 
 	}
 
-	@Scheduled(cron = "*/60 * * * * *")
+	@Scheduled(cron = "*/120 * * * * *")
 	public void gestioneSaccheInScadenza() throws EntityNotFoundException {
 		CttDataBaseRestApplication.logger.info("Inizio il controllo per inoltrare le sacche in scadenza al CCS");
 		GestioneScadenzeCTT ctt = new GestioneScadenzeCTT();

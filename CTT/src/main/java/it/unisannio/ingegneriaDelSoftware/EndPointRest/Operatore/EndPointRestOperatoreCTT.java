@@ -14,29 +14,35 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import it.unisannio.ingegneriaDelSoftware.Annotazioni.Secured;
 import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
-import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaEvasione;
+import it.unisannio.ingegneriaDelSoftware.Classes.Wrapper.SaccaWrapper;
+import it.unisannio.ingegneriaDelSoftware.ClientRest.CTTRestClient;
 import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
 import it.unisannio.ingegneriaDelSoftware.Classes.Seriale;
-import it.unisannio.ingegneriaDelSoftware.ClientRest.CCtRestClient;
-import it.unisannio.ingegneriaDelSoftware.ClientRest.ConnectionVerifier;
 import it.unisannio.ingegneriaDelSoftware.CttDataBaseRestApplication;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.SaccheInLocaleNotFoundException;
+import it.unisannio.ingegneriaDelSoftware.Functional.ConnectionVerifier;
+import it.unisannio.ingegneriaDelSoftware.Functional.ScadenzeComparator;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointOperatoreCTT;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Searcher;
 import it.unisannio.ingegneriaDelSoftware.Searcher.CompositionSearcher;
+import it.unisannio.ingegneriaDelSoftware.Searcher.SearcherCCS;
+import it.unisannio.ingegneriaDelSoftware.Searcher.SearcherCompatibile;
+import it.unisannio.ingegneriaDelSoftware.Searcher.SearcherLocale;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
+import it.unisannio.ingegneriaDelSoftware.ResponseHandler.ResponseBuilderFactory;
 import it.unisannio.ingegneriaDelSoftware.Util.Settings;
 
 
 @Path("/operatore")
 @Singleton
 @Secured
-@RolesAllowed("OperatoreCTT")
+@RolesAllowed({"OperatoreCTT","CCS"})
 public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT{
 
 
 	/**Composite che effettua la ricerca prima in locale con il gruppo sanguigno specificato e poi in locale con i gs compatibili*/
-	public Searcher aSearcher = new CompositionSearcher();
+	public CompositionSearcher aSearcher = new CompositionSearcher();
+	public SearcherCCS CCSSearcher = new SearcherCCS();
 
 	/**Restituisce la Sacca del GruppoSanguigno richiesto con Data di scadenza più vicina nel DataBase locale.
 	 * @param gruppoSanguigno Gruppo sanguigno ricercato
@@ -54,43 +60,64 @@ public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT{
 									   @QueryParam("enteRichiedente") String enteRichiedente,
 									   @QueryParam("indirizzoEnte") String indirizzoEnte,
 									   @QueryParam("priorità") String priorita) throws InterruptedException {
-		try {
-			CttDataBaseRestApplication.logger.info("Ho ricevuto la richiesta per ricercare "+ numeroSacche +"sacche di gruppo: "+gruppoSanguigno);
-			List<Sacca> saccheTrovate = new ArrayList<Sacca>();
-			List<Seriale> serialiDaEvadere = new ArrayList<>();
-			int numSacche = Integer.parseInt(numeroSacche);
-			saccheTrovate = this.aSearcher.search(GruppoSanguigno.valueOf(gruppoSanguigno),
-					numSacche,
-					LocalDate.parse(dataArrivoMassima, DateTimeFormatter.ofPattern(Constants.DATEFORMAT)));
+	
+		CttDataBaseRestApplication.logger.info("Ho ricevuto la richiesta per ricercare "+ numeroSacche +"sacche di gruppo: "+gruppoSanguigno);
+		
+		List<Sacca> saccheTrovate = new ArrayList<Sacca>();
+		List<Seriale> serialiDaEvadere = new ArrayList<>();
+		int numSacche = Integer.parseInt(numeroSacche);
+		
+		saccheTrovate = this.aSearcher.search(GruppoSanguigno.valueOf(gruppoSanguigno),
+				numSacche,
+				LocalDate.parse(dataArrivoMassima, DateTimeFormatter.ofPattern(Constants.DATEFORMAT)));
 
-			if (!saccheTrovate.isEmpty()) {
-				for (Sacca sacca : saccheTrovate) {
-					if((sacca.getDataScadenza().isBefore(LocalDate.now().plusDays(3))
-							|| sacca.getDataScadenza().isEqual(LocalDate.now().plusDays(3)))
-							&& ConnectionVerifier.isCCSOnline())
-						//contatto il ccs dato che è online
-						CCtRestClient.notifyEvasioneSaccaToCCS(sacca);
+		if (!saccheTrovate.isEmpty()) {
+			for (Sacca sacca : saccheTrovate) {
+				if((sacca.getDataScadenza().isBefore(LocalDate.now().plusDays(3))
+						|| sacca.getDataScadenza().isEqual(LocalDate.now().plusDays(3)))
+						&& ConnectionVerifier.isCCSOnline())
+					//contatto il ccs dato che è online
+					CTTRestClient.notifyEvasioneSaccaToCCS(sacca);
 
-					serialiDaEvadere.add(sacca.getSeriale());
-				}
-				CttDataBaseRestApplication.logger.info("Ho trovato delle sacche in locale");
+				serialiDaEvadere.add(sacca.getSeriale());
 			}
-
-			if (saccheTrovate.size() < numSacche) throw new SaccheInLocaleNotFoundException("Verra contattato il CSS");
-
-			return Response
-					.status(Response.Status.OK) //In questo caso sono state trovate tutte le sacche, va inviata risposta 200 OK 
-					.entity(new NotificaEvasione(serialiDaEvadere, enteRichiedente, indirizzoEnte))//Va gestito l'inoltro della notifica di evasione sacche presso l'interfaccia REST del magazziniere
-					.build();
-		} catch (SaccheInLocaleNotFoundException e) {
-			return Response //in realtà deve avviare RicercaSaccaGlobale e passare i parametri al CCS
-					.status(Response.Status.NOT_FOUND)
-					.entity(e.getMessage())
-					.build();
 		}
+
+		CttDataBaseRestApplication.logger.info("Ricerca conclusa ecco le sacche che ho trovato: "+serialiDaEvadere);
+
+		return ResponseBuilderFactory.GetResponseHandler(serialiDaEvadere,numSacche).makeResearchResponse(numSacche, serialiDaEvadere, enteRichiedente, indirizzoEnte, dataArrivoMassima, priorita, gruppoSanguigno);
 	}
 
 
+
+
+	/**Restituisce tutte le sacche del tipo indicato e compatibili che hanno data di scadenza successiva alla data dell'utilizzo
+	 * @param gruppoSanguigno Gruppo sanguigno ricercato
+	 * @param dataArrivoMassima Data entro la quale la Sacca non deve scadere e deve arrivare all'Ente richiedente
+	 * @return Response, 200 ok se le sacche sono state trovate e evase in locale, 404 NOT_FOUND non è stato possibile soddisfare la ricerca in locale
+	 */
+	@GET
+	@Path("/listaSaccheCompatibili/{gs}/{data}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response ricercaSaccheCCS(@PathParam("gs") String gruppoSanguigno,
+									 @PathParam("data") String dataArrivoMassima){
+		
+
+		int x = 0;
+		CttDataBaseRestApplication.logger.info("Ho ricevuto la richiesta da parte del CCS per ricercare delle sacche di gruppo: "+gruppoSanguigno);
+		List<Sacca> saccheTrovate =
+				new SearcherLocale().search(GruppoSanguigno.valueOf(gruppoSanguigno),x,LocalDate.parse(dataArrivoMassima, DateTimeFormatter.ofPattern(Constants.DATEFORMAT)));
+
+		saccheTrovate.addAll(new SearcherCompatibile().search(GruppoSanguigno.valueOf(gruppoSanguigno),x,LocalDate.parse(dataArrivoMassima, DateTimeFormatter.ofPattern(Constants.DATEFORMAT))));
+		saccheTrovate.sort(new ScadenzeComparator());
+		return Response
+				.status(Response.Status.OK)
+				.entity(new SaccaWrapper(saccheTrovate))
+				.build();
+}
+
+	
+	
 
 	/**
 	 * 

@@ -1,4 +1,3 @@
-	var j= 0;
 	var hostWS;
 
 	var notify = {};

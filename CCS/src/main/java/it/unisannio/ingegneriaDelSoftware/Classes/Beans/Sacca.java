@@ -6,9 +6,9 @@ import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class SaccaBean {
+public class Sacca {
 	
-	private SerialeBean seriale;
+	private Seriale seriale;
 	private GruppoSanguigno gruppo;
 	private LocalDate dataProduzione;
 	private LocalDate dataScadenza;
@@ -23,7 +23,7 @@ public class SaccaBean {
 	 * @param prenotato indica se la Sacca è stata prenotata o meno, di default è false
 	 * @throws IllegalArgumentException se la data di scadenza è precedente a quella di produzione, se la sacca è già scaduta, o se la sacca non èancora stata prodotta
 	 */
-	public SaccaBean(SerialeBean ser, GruppoSanguigno gs, LocalDate dataProduzione, LocalDate dataScadenza, boolean prenotato) throws IllegalArgumentException{
+	public Sacca(Seriale ser, GruppoSanguigno gs, LocalDate dataProduzione, LocalDate dataScadenza, boolean prenotato) throws IllegalArgumentException{
 		assert gs != null: "Il gruppo sanguigno non può essere null";
 		assert dataProduzione != null: "La data di produzione non può essere null";
 		assert dataScadenza != null: "la data di scadenza non può essere null";
@@ -39,12 +39,14 @@ public class SaccaBean {
 		this.prenotato = prenotato;
 	}
 
+	public Sacca() {
+	}
 
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
-		SaccaBean sacca = (SaccaBean) o;
+		Sacca sacca = (Sacca) o;
 		return seriale.equals(sacca.seriale);
 	}
 
@@ -68,14 +70,14 @@ public class SaccaBean {
 	/**Restituisce il seriale della Sacca
 	 * @return seriale
 	 */
-	public SerialeBean getSeriale() {
+	public Seriale getSeriale() {
 		return seriale;
 	}
 
 	/**Modifica il Seriale della Sacca
 	 * @param seriale
 	 */
-	public void setSeriale(SerialeBean seriale) {
+	public void setSeriale(Seriale seriale) {
 		this.seriale = seriale;
 	}
 

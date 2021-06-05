@@ -7,6 +7,5 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface Searcher {
-
-    List<Sacca> search(GruppoSanguigno gs, int numeroSacche, LocalDate dataArrivoMassima);
+    List<Sacca> search(GruppoSanguigno gs,int x, LocalDate dataArrivoMassima);
 }

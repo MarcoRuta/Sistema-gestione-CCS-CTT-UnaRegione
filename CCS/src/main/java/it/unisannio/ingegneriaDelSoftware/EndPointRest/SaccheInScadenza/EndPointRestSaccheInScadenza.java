@@ -1,4 +1,4 @@
-package it.unisannio.ingegneriaDelSoftware.EndPointRest;
+package it.unisannio.ingegneriaDelSoftware.EndPointRest.SaccheInScadenza;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,15 +19,14 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import it.unisannio.ingegneriaDelSoftware.CcsDataBaseRestApplication;
-import it.unisannio.ingegneriaDelSoftware.Classes.Beans.SaccaBean;
-import it.unisannio.ingegneriaDelSoftware.Classes.Beans.SerialeBean;
+import it.unisannio.ingegneriaDelSoftware.Classes.Beans.Sacca;
+import it.unisannio.ingegneriaDelSoftware.Classes.Beans.Seriale;
 import it.unisannio.ingegneriaDelSoftware.Classes.CTTName;
 import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaEvasione;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Functional.NotificaSaccaInScadenzaMaker;
-import it.unisannio.ingegneriaDelSoftware.GestioneScadenze.SaccheInScadenzaObserver;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointSaccheInScadenzaCCS;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Notifica;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Observer;
@@ -36,7 +35,6 @@ import it.unisannio.ingegneriaDelSoftware.Util.Settings;
 
 @Path("/CCS")
 @Singleton
-
 public class EndPointRestSaccheInScadenza implements EndPointSaccheInScadenzaCCS, Subject{
 	
 	MongoDataManager mm = MongoDataManager.getInstance();
@@ -50,9 +48,9 @@ public class EndPointRestSaccheInScadenza implements EndPointSaccheInScadenzaCCS
 	@POST
 	@Path("/saccheInScadenza")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public void aggiungiSaccaInScadenza(SaccaBean[] listaSaccheInScadenza) {
+	public void aggiungiSaccaInScadenza(Sacca[] listaSaccheInScadenza) {
 		CcsDataBaseRestApplication.logger.info("Ho ricevuto una lista di sacche in scadenza da un CTT ");
-		for(SaccaBean s : new ArrayList<>(Arrays.asList(listaSaccheInScadenza))) {
+		for(Sacca s : new ArrayList<>(Arrays.asList(listaSaccheInScadenza))) {
 			try {
 				mm.createSacca(s);
 			} catch (EntityAlreadyExistsException e) {
@@ -83,19 +81,19 @@ public class EndPointRestSaccheInScadenza implements EndPointSaccheInScadenzaCCS
 
 		
 		//Elimino la sacca dal database SACCHE_IN_SCADENZA del CCS
-		SerialeBean ser = new SerialeBean();
+		Seriale ser = new Seriale();
 		ser.setSeriale(seriale);
 		mm.removeSacca(ser);
 	
 		//Converto il seriale in modo che coincida con quello accettato dal @POST di notificaevasione
-		List<SerialeBean> listaSeriali = new ArrayList<SerialeBean>();
+		List<Seriale> listaSeriali = new ArrayList<Seriale>();
 		listaSeriali.add(ser);
 		
 		
 		Client client = ClientBuilder.newClient();
-		WebTarget evasioneSacca = client.target(indirizzoCTT+"/rest/notifica/notificaEvasione");
+		WebTarget evasioneSacca = client.target("http://"+indirizzoCTT+":"+Settings.PORTA+"/rest/notifica/notificaEvasione");
 		
-		NotificaEvasione notifica = new NotificaEvasione(listaSeriali,ente_richiedente,indirizzo);
+		NotificaEvasione notifica = new NotificaEvasione(listaSeriali,ente_richiedente,indirizzo, "La tua sacca è stata richiesta da un CTT");
 		CcsDataBaseRestApplication.logger.info("Ho creato la notifica evasione Sacca che sto per inoltrare al CTT che possiede la sacca: "+notifica);
 		Response response = evasioneSacca.request().post(Entity.entity(notifica, MediaType.APPLICATION_JSON));
 		//Aggiorno la lista delle notifiche presenti sui CTT
@@ -116,7 +114,7 @@ public class EndPointRestSaccheInScadenza implements EndPointSaccheInScadenzaCCS
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response ritiroAlertCTTSacca(@PathParam("seriale") String seriale) throws EntityNotFoundException {
 
-		SerialeBean ser = new SerialeBean();
+		Seriale ser = new Seriale();
 		ser.setSeriale(seriale);
 		mm.removeSacca(ser);
 		CcsDataBaseRestApplication.logger.info("Alert ritirato correttamente per la sacca con seriale: "+seriale);

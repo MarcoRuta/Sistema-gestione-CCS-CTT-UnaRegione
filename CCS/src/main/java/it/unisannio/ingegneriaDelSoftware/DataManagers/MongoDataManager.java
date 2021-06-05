@@ -4,8 +4,8 @@ import com.mongodb.MongoClientOptions;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import it.unisannio.ingegneriaDelSoftware.Classes.*;
-import it.unisannio.ingegneriaDelSoftware.Classes.Beans.SaccaBean;
-import it.unisannio.ingegneriaDelSoftware.Classes.Beans.SerialeBean;
+import it.unisannio.ingegneriaDelSoftware.Classes.Beans.Sacca;
+import it.unisannio.ingegneriaDelSoftware.Classes.Beans.Seriale;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.Codec.CTTCodec;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.Codec.DipendenteCodec;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.Codec.SaccaCodec;
@@ -52,9 +52,9 @@ public class MongoDataManager {
 	 * Restituisce una MongoCollection<SaccaBean> registrando il codec di base di Mongo per la serializzazione in BSON
 	 * @return MongoCollection<SaccaBean>
 	 */
-	private MongoCollection<SaccaBean> getCollectionSacca(){
+	private MongoCollection<Sacca> getCollectionSacca(){
 	    MongoDatabase database = mongoClient.getDatabase(Settings.DB_NAME);
-	    return  database.getCollection(Settings.COLLECTION_SACCHE, SaccaBean.class);
+	    return  database.getCollection(Settings.COLLECTION_SACCHE, Sacca.class);
 	}
 	
 	/**
@@ -80,9 +80,9 @@ public class MongoDataManager {
 	 * @param s Sacca da aggiungere al db
 	 * @throws EntityAlreadyExistsException se la Sacca che si vuole aggiungere è già presente nel DB
 	 */
-	public void createSacca(SaccaBean s) throws EntityAlreadyExistsException {
+	public void createSacca(Sacca s) throws EntityAlreadyExistsException {
 	    if (containsSacca(s.getSeriale())) throw new EntityAlreadyExistsException("Sacca con seriale"+s.getSeriale()+"gia presente nel DB");
-	    MongoCollection<SaccaBean> collection = getCollectionSacca();
+	    MongoCollection<Sacca> collection = getCollectionSacca();
 	    collection.insertOne(s);
 	}
 	
@@ -114,9 +114,9 @@ public class MongoDataManager {
 	 * @return SaccaBean la sacca se è presente nel database
 	 * @throws EntityNotFoundException se l'entità non è presente nel DB
 	 */
-	public SaccaBean getSacca(SerialeBean ser) throws EntityNotFoundException {
-	   MongoCollection<SaccaBean> collection = getCollectionSacca();
-	   SaccaBean unaSacca =collection.find(eq(Constants.ELEMENT_SERIALE, ser.getSeriale())).first();
+	public Sacca getSacca(Seriale ser) throws EntityNotFoundException {
+	   MongoCollection<Sacca> collection = getCollectionSacca();
+	   Sacca unaSacca =collection.find(eq(Constants.ELEMENT_SERIALE, ser.getSeriale())).first();
 	   if (unaSacca != null) return unaSacca;
 	   throw new EntityNotFoundException("La sacca ricercata"+ ser +"non è stata trovata");
 	}
@@ -166,7 +166,7 @@ public class MongoDataManager {
 	 * @param seriale Il seriale della Sacca che si vuole cercare
 	 * @return true se la Sacca è contenuta nel database delle Sacche, false altrimenti
 	 */
-	public  boolean containsSacca(SerialeBean seriale) {
+	public  boolean containsSacca(Seriale seriale) {
 	    try {
 	        getSacca(seriale);
 	        return true;
@@ -208,9 +208,9 @@ public class MongoDataManager {
 	 * @param ser Seriale della Sacca da rimuovere dal database delle sacche
 	 * @throws EntityNotFoundException se la Sacca che si vuole rimuovere non è presente nel database
 	 */
-	public  void removeSacca(SerialeBean ser) throws EntityNotFoundException{
+	public  void removeSacca(Seriale ser) throws EntityNotFoundException{
 	    if(!containsSacca(ser)) throw new EntityNotFoundException("Non è possibile rimuovere una sacca non presente nel database.\nSeriale sacca: "+ser);
-	    MongoCollection<SaccaBean> collection =getCollectionSacca();
+	    MongoCollection<Sacca> collection =getCollectionSacca();
 	    collection.deleteOne(eq(Constants.ELEMENT_SERIALE,ser.getSeriale()));
 	}
 	
@@ -240,11 +240,11 @@ public class MongoDataManager {
 	 * Restituisce una lista contenente tutte le Sacche presenti in magazzino
 	 * @return la lista delle Sacche presenti in magazzino
 	 */
-	public  List<SaccaBean> getListaSacche(){
-	    MongoCollection<SaccaBean> collection = getCollectionSacca();
-	    List<SaccaBean> sacche = new ArrayList<SaccaBean>();
+	public  List<Sacca> getListaSacche(){
+	    MongoCollection<Sacca> collection = getCollectionSacca();
+	    List<Sacca> sacche = new ArrayList<Sacca>();
 	
-	    for (SaccaBean unaSacca : collection.find()) sacche.add(unaSacca);
+	    for (Sacca unaSacca : collection.find()) sacche.add(unaSacca);
 	    return sacche;
 	}
 	
@@ -286,8 +286,8 @@ public class MongoDataManager {
 
 	/**Rimuovo le sacche in scadenza appartenenti ad un dato CTT*/
 	public void removeSaccheCttOffline(CTTName cttOffline) throws EntityNotFoundException {
-		List<SaccaBean> listaSacche = this.getListaSacche();
-		for(SaccaBean s : listaSacche)
+		List<Sacca> listaSacche = this.getListaSacche();
+		for(Sacca s : listaSacche)
 			if(s.getSeriale().getSeriale().substring(0,6).equals(cttOffline.getCttname())) {
 				this.removeSacca(s.getSeriale());
 			}

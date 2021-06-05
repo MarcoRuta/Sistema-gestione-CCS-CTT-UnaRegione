@@ -1,11 +1,11 @@
-package it.unisannio.ingegneriaDelSoftware.GestioneScadenze;
+package it.unisannio.ingegneriaDelSoftware.EndPointRest.SaccheInScadenza;
 
 import java.io.IOException;
 import java.util.List;
 
 import javax.websocket.EncodeException;
 import javax.websocket.Session;
-import WebSocket.ServerEndpoint.WebSocketEndpointSaccheInScadenza;
+
 import it.unisannio.ingegneriaDelSoftware.CcsDataBaseRestApplication;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Notifica;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Observer;

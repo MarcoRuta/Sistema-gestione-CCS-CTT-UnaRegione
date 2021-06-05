@@ -16,7 +16,7 @@ public class CTTNameDecoder implements Decoder.Text<CTTName> {
         try {
             return new ObjectMapper().readValue(s,CTTName.class);
         } catch (JsonProcessingException e) {
-            CcsDataBaseRestApplication.logger.error("Non sono riuscito a deserializzare l'ggetto "+s);
+            CcsDataBaseRestApplication.logger.error("Non sono riuscito a deserializzare l'oggetto "+s);
         }
         return null;
     }

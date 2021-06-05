@@ -121,16 +121,6 @@ public class Sacca {
 		ps.println("Prenotata: "+isPrenotato());
 	}
 
-	/**Restituisce l'etichetta DatiSacca
-	 * @return etichetta con i DatiSacca
-	 */
-	public String getEtichettaSacca() {
-		return "Seriale: "+this.seriale.getSeriale()+ "\n"
-			+"Gruppo sanguigno: "+this.gruppo+ "\n"
-			+"Data produzione: "+this.dataProduzione+"\n"
-			+"Data di scadenza: "+this.dataScadenza+"\n";
-	}
-
 	
 	@Override
 	public boolean equals(Object o) {

@@ -2,7 +2,7 @@ package it.unisannio.ingegneriaDelSoftware.Classes.Beans;
 import java.util.*;
 
 /**FlyWeight*/
-public class SerialeBean {
+public class Seriale {
 	
 	private String seriale;
 	
@@ -18,7 +18,7 @@ public class SerialeBean {
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
-		SerialeBean seriale1 = (SerialeBean) o;
+		Seriale seriale1 = (Seriale) o;
 		return seriale.equals(seriale1.seriale);
 	}
 

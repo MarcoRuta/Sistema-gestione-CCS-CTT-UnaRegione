@@ -2,10 +2,13 @@ package it.unisannio.ingegneriaDelSoftware.Filtri;
 
 import it.unisannio.ingegneriaDelSoftware.Annotazioni.Secured;
 import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
+import it.unisannio.ingegneriaDelSoftware.Classes.RuoloDipendente;
 import it.unisannio.ingegneriaDelSoftware.Classes.Token;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
+import it.unisannio.ingegneriaDelSoftware.Util.Settings;
 
 import javax.annotation.Priority;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
@@ -36,10 +39,19 @@ public class FiltroDiAutentificazione implements ContainerRequestFilter {
      * resourceInfo contiente i dati relativi alla resource che è stata richiesta attraverso la richiesta intercettata*/
     @Context
     private ResourceInfo resourceInfo;
+    @Context
+    private HttpServletRequest servletRequest;
 
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
+
+
+        //sono il CCS
+        if (this.isCCS(requestContext))
+            return;
+
+
        String header = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
         if(header == null || !tokenValid(header)) {
             this.refuseRequest(requestContext, "Effettua Prima il login");
@@ -91,6 +103,41 @@ public class FiltroDiAutentificazione implements ContainerRequestFilter {
         }
 
 
+    }
+
+    private boolean isCCS(ContainerRequestContext requestContext) {
+        String requestIp =this.servletRequest.getRemoteAddr();
+        String ccsIp= Settings.ccsIp;
+        if(requestIp.equals(ccsIp)){
+            //dato che sono il CCS sovarascrivo il securety context
+            final SecurityContext currentSecurityContext = requestContext.getSecurityContext();
+            requestContext.setSecurityContext(new SecurityContext() {
+
+                @Override
+                public Principal getUserPrincipal() {
+                    return () -> "CCS";
+                }
+
+                @Override
+                public boolean isUserInRole(String role) {
+                    return role.equals(RuoloDipendente.CCS.toString());
+                }
+
+                @Override
+                public boolean isSecure() {
+                    return currentSecurityContext.isSecure();
+                }
+
+                @Override
+                public String getAuthenticationScheme() {
+                    return servletRequest.getAuthType();
+                }
+            });
+            //sono il CCS
+            return true;
+        }
+        //non sono il CCS
+        return false;
     }
 
     private boolean tokenValid(String header) {

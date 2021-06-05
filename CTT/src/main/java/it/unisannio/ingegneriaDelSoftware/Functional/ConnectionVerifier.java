@@ -1,4 +1,4 @@
-package it.unisannio.ingegneriaDelSoftware.ClientRest;
+package it.unisannio.ingegneriaDelSoftware.Functional;
 
 import it.unisannio.ingegneriaDelSoftware.CttDataBaseRestApplication;
 import it.unisannio.ingegneriaDelSoftware.Util.Settings;

@@ -66,8 +66,12 @@
                         sessionStorage.setItem("cdf",obj.cdf);
                         window.location.href=obj.ruolo+'.html';
                  	}else{
-                 	if (this.readyState == 4 && this.status !=201)
-                 	    document.getElementById("error").innerHTML="<span style = 'color:red'>"+this.response+"</span>";
+                        if (this.readyState == 4 && this.status ==404){
+                            document.getElementById("error").innerHTML="<span style = 'color:red'>"+this.response+"</span>";
+                        }else{
+                        if (this.readyState ==4 && this.status == 500)
+                            alert(this.response);
+                        }
                  	}
 
                 };

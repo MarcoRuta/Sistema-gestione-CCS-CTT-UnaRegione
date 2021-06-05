@@ -4,23 +4,16 @@ package it.unisannio.ingegneriaDelSoftware.SaccheInScadenzaManager;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
-
 import it.unisannio.ingegneriaDelSoftware.Classes.*;
-import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaEvasione;
-import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaSaccaInScadenza;
 import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaSmaltimentoSacche;
-import it.unisannio.ingegneriaDelSoftware.ClientRest.CCtRestClient;
-import it.unisannio.ingegneriaDelSoftware.ClientRest.ConnectionVerifier;
+import it.unisannio.ingegneriaDelSoftware.ClientRest.CTTRestClient;
 import it.unisannio.ingegneriaDelSoftware.CttDataBaseRestApplication;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.Magazziniere.EndPointNotificheMagazziniere;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
+import it.unisannio.ingegneriaDelSoftware.Functional.ConnectionVerifier;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.*;
-import it.unisannio.ingegneriaDelSoftware.Util.Settings;
+
 
 public class GestioneScadenzeCTT implements CTTFunction {
 
@@ -45,9 +38,7 @@ public class GestioneScadenzeCTT implements CTTFunction {
 		
 		
 		if(ConnectionVerifier.isCCSOnline() && !saccheInScadenza.isEmpty()) {
-			CCtRestClient.notifySaccaInScadenzaToCCS(saccheInScadenza);
-		}else {
-			CttDataBaseRestApplication.logger.error("Non è stato possibile contattare il CCS per inoltrare la lista delle sacche in scadenza");
+			CTTRestClient.notifySaccaInScadenzaToCCS(saccheInScadenza);
 		}
 
 	}

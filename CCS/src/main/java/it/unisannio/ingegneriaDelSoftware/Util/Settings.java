@@ -17,6 +17,7 @@ public class Settings {
     public static final String COLLECTION_DIPENDENTI;
     public static final String COLLECTION_SACCHE;
     public static final String COLLECTION_CTT;
+    public static final String PORTA;
 
     static{
         Properties loadNetworkProps = new Properties();
@@ -30,12 +31,16 @@ public class Settings {
         } catch (FileNotFoundException e) {
             CcsDataBaseRestApplication.logger.error("Impossibile trovare i file dei settings");
         } catch (IOException e) {
-            CcsDataBaseRestApplication.logger.error("errore durante l'apertura dei file del settings");
+            CcsDataBaseRestApplication.logger.error("Errore durante l'apertura dei file del settings");
         }
         //carico indirizzi ip
-        for (Object key :loadNetworkProps.keySet())
-            ip.put(CTTName.getCttName((String)key),loadNetworkProps.getProperty((String)key));
-
+        for (Object key :loadNetworkProps.keySet()) {
+        	String keyS = (String) key;
+        	if(!keyS.equals("PORT"))
+        		ip.put(CTTName.getCttName((String)key),loadNetworkProps.getProperty((String)key));
+        }
+        PORTA = loadNetworkProps.getProperty("PORT");
+        	
         //carico impostazioni DB
         DB_NAME = loadDatabaseProps.getProperty("DB_NAME");
         COLLECTION_DIPENDENTI = loadDatabaseProps.getProperty("COLLECTION_DIPENDENTI");

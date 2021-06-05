@@ -10,7 +10,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import it.unisannio.ingegneriaDelSoftware.Classes.Beans.SaccaBean;
+import it.unisannio.ingegneriaDelSoftware.Classes.Beans.Sacca;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
 
@@ -23,7 +23,7 @@ public interface EndPointSaccheInScadenzaCCS {
 	@POST
 	@Path("/saccheInScadenza")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public void aggiungiSaccaInScadenza(SaccaBean[] listaSaccheInScadenza);
+	public void aggiungiSaccaInScadenza(Sacca[] listaSaccheInScadenza);
 	
 	
 	/**Accetta una delle sacche in scadenza presenti nella rete

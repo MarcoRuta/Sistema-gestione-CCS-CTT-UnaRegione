@@ -19,9 +19,9 @@ public class SearcherLocale implements Searcher {
      * @return List<Sacca> La lista delle sacche disponibili per quei parametri
      */
     @Override
-    public List<Sacca> search(GruppoSanguigno gs, int numeroSacche, LocalDate dataArrivoMassima) {
+    public List<Sacca> search(GruppoSanguigno gs,int x, LocalDate dataArrivoMassima) {
         assert(gs!=null) : "Il gruppo sanguigno non può essere nullo!";
-        assert(dataArrivoMassima!=null) : "la data di arrivo non può essere nulla!";
+        assert(dataArrivoMassima!=null) : "La data di arrivo non può essere nulla!";
 
         MongoDataManager md = MongoDataManager.getInstance();
         List<Sacca> saccheTrovate = new ArrayList<Sacca>();

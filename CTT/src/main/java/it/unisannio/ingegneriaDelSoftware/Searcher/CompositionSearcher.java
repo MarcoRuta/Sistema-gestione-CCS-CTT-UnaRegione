@@ -11,7 +11,7 @@ import java.util.List;
 
 /**Classe che implementa il pattern composite
  */
-public class CompositionSearcher implements Searcher {
+public class CompositionSearcher implements Searcher{
     List<Searcher> searchers ;
 
     public CompositionSearcher(){
@@ -27,7 +27,6 @@ public class CompositionSearcher implements Searcher {
      * @param dataArrivoMassima Specifica la data di arrivo massima entro cui la Sacca deve essere nel nuovo magazzino. Questo in modo da evitare che una Sacca arrivi scaduta a destinazione
      * @return List<Sacca> La lista delle sacche disponibili per quei parametri
      */
-    @Override
     public List<Sacca> search(GruppoSanguigno gs, int numeroSacche, LocalDate dataArrivoMassima) {
         List<Sacca> saccheTrovate = searchers.get(0).search(gs,numeroSacche,dataArrivoMassima);
 

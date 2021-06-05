@@ -21,7 +21,7 @@ public class SearcherCompatibile implements Searcher {
      * @return List<Sacca> La lista delle sacche disponibili per quei parametri
      */
     @Override
-    public List<Sacca> search(GruppoSanguigno gs, int numeroSacche, LocalDate dataArrivoMassima) {
+    public List<Sacca> search(GruppoSanguigno gs,int x, LocalDate dataArrivoMassima) {
         MongoDataManager md = MongoDataManager.getInstance();
         List<Sacca> saccheTrovate = new ArrayList<Sacca>();
         List<Sacca> listaSacche = md.getListaSacche();

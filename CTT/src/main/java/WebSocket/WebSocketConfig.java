@@ -2,14 +2,15 @@ package WebSocket;
 
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.Magazziniere.WebSocketEndPointEvasioneSacche;
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.Magazziniere.WebSocketEndPointSmaltimentoSacche;
-import it.unisannio.ingegneriaDelSoftware.EndPointRest.Operatore.WebSocketEndPointSaccheInScadenza;
+import it.unisannio.ingegneriaDelSoftware.EndPointRest.Operatore.RicercaGlobale.WebSocketEndPointResultRicercaGlobale;
+import it.unisannio.ingegneriaDelSoftware.EndPointRest.Operatore.SaccheInScadenza.WebSocketEndPointSaccheInScadenza;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 
 
-/* classe di configurazione della WebSocket in ambiete Spring Boot */
+/** classe di configurazione della WebSocket in ambiete Spring Boot */
 @Configuration
 @EnableWebSocket
 public class WebSocketConfig {
@@ -27,6 +28,11 @@ public class WebSocketConfig {
     @Bean
     public WebSocketEndPointSmaltimentoSacche webSocketSaccaSmaltimentoSaccheController() {
         return new WebSocketEndPointSmaltimentoSacche();
+    }
+
+    @Bean
+    public WebSocketEndPointResultRicercaGlobale webSocketEndPointResultRicercaGlobaleController() {
+        return new WebSocketEndPointResultRicercaGlobale();
     }
 
     @Bean

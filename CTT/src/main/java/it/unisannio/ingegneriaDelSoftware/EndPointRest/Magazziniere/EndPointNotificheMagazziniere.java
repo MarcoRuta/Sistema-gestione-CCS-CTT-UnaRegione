@@ -1,6 +1,7 @@
 package it.unisannio.ingegneriaDelSoftware.EndPointRest.Magazziniere;
 
 import com.itextpdf.text.DocumentException;
+import it.unisannio.ingegneriaDelSoftware.Annotazioni.Secured;
 import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaEvasione;
 import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaSmaltimentoSacche;
 import it.unisannio.ingegneriaDelSoftware.Classes.Seriale;
@@ -10,6 +11,7 @@ import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Subject;
 import it.unisannio.ingegneriaDelSoftware.PDF.PDFGenerator;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -20,7 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Path("/notifica")
-//@Secured
+@Secured
+@RolesAllowed({"CCS","OperatoreCTT"})
 public class EndPointNotificheMagazziniere implements Subject {
 
 	/**Observer che viene aggiornato ogni volta che arriva una nuova notifica per il magazziniere */

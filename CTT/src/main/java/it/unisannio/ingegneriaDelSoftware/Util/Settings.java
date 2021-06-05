@@ -1,11 +1,6 @@
 package it.unisannio.ingegneriaDelSoftware.Util;
 
-import it.unisannio.ingegneriaDelSoftware.CttDataBaseRestApplication;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;

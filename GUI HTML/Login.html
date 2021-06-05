@@ -48,12 +48,12 @@
     <script type="application/javascript">
         
             var xhttp = new XMLHttpRequest();
+            var host = document.location.origin;
 
             function verifyLogin(){
                 var username = user.value;
                 var password = pass.value;
-                var host = document.location.origin;
-                var url = host + "/rest/autentificazione";
+                var url = host+ "/rest/autentificazione";
                 param = 'username='+username+'&password='+password;
 
                 xhttp.onreadystatechange = function() {
@@ -66,8 +66,12 @@
                         sessionStorage.setItem("cdf",obj.cdf);
                         window.location.href=obj.ruolo+'.html';
                  	}else{
-                 	if (this.readyState == 4 && this.status !=201)
-                 	    document.getElementById("error").innerHTML="<span style = 'color:red'>"+this.response+"</span>";
+                        if (this.readyState == 4 && this.status ==404){
+                            document.getElementById("error").innerHTML="<span style = 'color:red'>"+this.response+"</span>";
+                        }else{
+                        if (this.readyState ==4 && this.status == 500)
+                            alert(this.response);
+                        }
                  	}
 
                 };

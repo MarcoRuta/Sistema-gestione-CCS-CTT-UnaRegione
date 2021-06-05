@@ -1,6 +1,7 @@
 package it.unisannio.ingegneriaDelSoftware.EndPointRest.Magazziniere;
 
 import com.itextpdf.text.DocumentException;
+import it.unisannio.ingegneriaDelSoftware.Annotazioni.Secured;
 import it.unisannio.ingegneriaDelSoftware.Classes.*;
 import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaEvasione;
 import it.unisannio.ingegneriaDelSoftware.CttDataBaseRestApplication;
@@ -13,6 +14,7 @@ import it.unisannio.ingegneriaDelSoftware.PDF.PDFGenerator;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Singleton;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -24,9 +26,8 @@ import java.util.*;
 
 @Path("/magazziniere")
 @Singleton
-//@Secured
-//@RolesAllowed({"MagazziniereCTT","CCS"})
-
+@Secured
+@RolesAllowed({"MagazziniereCTT","CCS"})
 public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 
 	/**Riferimento all'unica istanza del MongoDataManager*/

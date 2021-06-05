@@ -6,7 +6,7 @@ import javax.websocket.EndpointConfig;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.unisannio.ingegneriaDelSoftware.CcsDataBaseRestApplication;
-import it.unisannio.ingegneriaDelSoftware.Classes.Beans.SaccaBean;
+import it.unisannio.ingegneriaDelSoftware.Classes.Beans.Sacca;
 import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaSaccaInScadenza;
 
 public class NotificaSaccaInScadenzaDecoder implements Decoder.Text< ArrayList<NotificaSaccaInScadenza>> {
@@ -32,7 +32,7 @@ public class NotificaSaccaInScadenzaDecoder implements Decoder.Text< ArrayList<N
 	 */
 	public boolean willDecode(String jsonMessage) {
 	    try {
-	      new ObjectMapper().readValue(new String(jsonMessage), SaccaBean[].class);
+	      new ObjectMapper().readValue(new String(jsonMessage), Sacca[].class);
 	      return true;
 	    } catch (Exception e) {
 	      return false;

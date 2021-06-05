@@ -154,19 +154,21 @@
                 var num = numero_sacche.value;
                 var indirizzorichiedente = indirizzo.value;
                 var enterichiedente = enteRic.value;
-                var pr = check.value;
+                var pr = check.checked;
                 var params = 'gruppoSanguigno='+gs+'&numeroSacche='+num+'&dataArrivoMassima='+df+'&enteRichiedente='+enterichiedente+'&indirizzoEnte='+indirizzorichiedente+'&priorità='+pr;
                 
                 host = document.location.origin
                 var url = host+ "/rest/operatore/ricerca?"+params;
 
                 xhttp.onreadystatechange = function() {
-                    if (this.readyState == 4 && this.status == 200) {
+
+                    if ( (this.readyState == 4 && this.status == 200) || (this.readyState == 4 && this.status == 206)) {
                  	    res = JSON.parse(this.response);
                  	    var serialiDaEvadere = new Array();
                  	    for (let i=0; i< res.listaSeriali.length; i++){
                             serialiDaEvadere[i] = res.listaSeriali[i].seriale;
                  	    }
+                 	    alert(res.message);
 
                  	    if (confirm(serialiDaEvadere+"\nConfermare l'evasione?" )){
                  	         let xhttpEvasione = new XMLHttpRequest();
@@ -184,14 +186,12 @@
                              };
 
 
-                 	    }else{
-                 	        reloadPage();
-                 	    }
+                 	    }else{ reloadPage();}
                  	}else{
-                 	    if (this.readyState == 4 && this.status != 200){
+                 	    if (this.readyState == 4 && this.status == 404){
                             alert(this.response);
                         }
-                 	}
+                    }
                 };
                 
                 xhttp.onerror = function(){

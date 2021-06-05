@@ -1,4 +1,4 @@
-package it.unisannio.ingegneriaDelSoftware.EndPointRest.Operatore;
+package it.unisannio.ingegneriaDelSoftware.EndPointRest.Operatore.SaccheInScadenza;
 
 import java.io.IOException;
 import java.net.URI;
@@ -30,7 +30,7 @@ public class SaccheInScadenzaClientEndPoint {
 	 private Session session;
 			  
      /**Costruttore di SaccheInScadenzaClientEndPoint, prova a collegarsi al CCS
-      * se non ci riesce viene aspettato un tempo standard prima di riporvarci (modificabile nei settings.xml)
+      * se non ci riesce viene aspettato un tempo standard prima di riprovarci (modificabile nei settings.xml)
       * @throws InterruptedException
       */
 	 public SaccheInScadenzaClientEndPoint() throws InterruptedException {
@@ -48,7 +48,7 @@ public class SaccheInScadenzaClientEndPoint {
 	 /**Quando viene stabilita una nuova connessione con il CCS il CTT invia il proprio nome in modo che il CCS possa mapparlo */
 	 @OnOpen
 	 public void onOpen(Session session){
-	 	CttDataBaseRestApplication.logger.info("Connesso al ServerEndpointSaccheInScadenza Del CCS");
+	 	CttDataBaseRestApplication.logger.info("Connesso al ServerEndpointSaccheInScadenza del CCS");
 	 	this.session=session;
 		 try {
 			 //Invio del proprio nome
