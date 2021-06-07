@@ -27,9 +27,7 @@ import java.util.Map;
 /**Client REST che viene utilizzato dal CCS per contattare gli EndPointRest dei CTT*/
 public class CCSRestClient {
 
-	/**Contatta il CCS per avvisarlo di aver consumato il locale una sacca per cui era stato inviato un alert
-	 * , la Sacca per la quale si vuole ritirare l'alert
-	 */
+
     public static List<Sacca> RicercaGlobaleSaccheCompatibili(String gs, String dataArrivoMassima, String CTTip, String CTTport){
         Client client = ClientBuilder.newClient();
         WebTarget saccheCompatibili = client
@@ -51,10 +49,6 @@ public class CCSRestClient {
                 .target("http://"+ip+":"+ Settings.PORTA +"/rest/notifica/notificaEvasione");
 
         CcsDataBaseRestApplication.logger.info("Sto per mandare richiesta evasione presso url: "+saccheDaEvadere.getUri());
-
-
-
-        //prenoto la sacca e mando la notifica evasione al magazzinere
         Response r = saccheDaEvadere.request().post(Entity.json(new NotificaEvasione(
                 serialiDaEvadere,enteRichiedente,indirizzoEnte,"Sacche richieste da un altro CTT")));
         CcsDataBaseRestApplication.logger.info("Richiesta evasione mandata");
@@ -82,7 +76,7 @@ public class CCSRestClient {
         return dipendentiCtt;
     }
 
-    public static Map<String, Integer> makeDisponibilitàSaccheRequest(String ip){
+    public static Map<GruppoSanguigno,Integer> makeDisponibilitàSaccheRequest(String ip){
 
         Client client = ClientBuilder.newClient();
         WebTarget sacche = client
@@ -90,13 +84,7 @@ public class CCSRestClient {
 
         Map<GruppoSanguigno,Integer> saccheCtt = sacche.request().get(Map.class);
 
-        Map<String,Integer> saccheCttx = new HashMap<String,Integer>();
-
-        for(GruppoSanguigno s : saccheCtt.keySet()){
-            saccheCttx.put(s.toString(),saccheCtt.get(s));
-        }
-
-        return saccheCttx;
+        return saccheCtt;
     }
 
 
@@ -108,6 +96,16 @@ public class CCSRestClient {
                 .queryParam("dataFine",dataFine);
         List<DatiSacca> datiSaccheInviate = saccheInviateCtt.request().get(ArrayList.class);
         return datiSaccheInviate;
+    }
+
+    public static List<DatiSacca> makeReportSaccheRicevute(String ip, String dataInizio, String dataFine){
+        Client client = ClientBuilder.newClient();
+        WebTarget saccheRicevuteCtt = client
+                .target("http://"+ip+":"+Settings.PORTA+"/rest/amministratore/reportLocaleSaccheRicevute")
+                .queryParam("dataInizio",dataInizio)
+                .queryParam("dataFine",dataFine);
+        List<DatiSacca> datiSaccheRicevute = saccheRicevuteCtt.request().get(ArrayList.class);
+        return datiSaccheRicevute;
     }
 
 

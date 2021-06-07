@@ -1,9 +1,7 @@
 package it.unisannio.ingegneriaDelSoftware.EndPointRest;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Singleton;
@@ -27,7 +25,6 @@ import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 
 import java.time.LocalDate;
 import java.time.format.*;
-import java.util.Map;
 
 @Path("/CCS")
 @Singleton
@@ -246,35 +243,36 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 	public Response reportStatisticoSaccheRegionale(@HeaderParam(HttpHeaders.AUTHORIZATION) String headers){
 
 		CcsDataBaseRestApplication.logger.info("Sto inizializzando il report di disponibilità regionale sacche");
-
+		/**
 		Map<CTTName, String> cttOnline = ConnectionVerifier.isCTTOnline();
+		Map<GruppoSanguigno, Integer> temp = new HashMap<GruppoSanguigno, Integer>();
+		Map<GruppoSanguigno, Integer> risultatoQuery = new HashMap<GruppoSanguigno, Integer>();
+		risultatoQuery.put(GruppoSanguigno.Ap, 0);
+		risultatoQuery.put(GruppoSanguigno.Am, 0);
+		risultatoQuery.put(GruppoSanguigno.Bp, 0);
+		risultatoQuery.put(GruppoSanguigno.Bm, 0);
+		risultatoQuery.put(GruppoSanguigno.ABp, 0);
+		risultatoQuery.put(GruppoSanguigno.ABm, 0);
+		risultatoQuery.put(GruppoSanguigno.ZEROp, 0);
+		risultatoQuery.put(GruppoSanguigno.ZEROm, 0);
 
-		Map<String,Integer> tempMap;
-		Map<String,Integer> risultatoQuery = new HashMap<String,Integer>();
-
-
-		for (CTTName ctt : cttOnline.keySet()) {
-
-			CcsDataBaseRestApplication.logger.info("Sto interrogando il " + ctt + " per ricevere la lista delle sacche");
-			tempMap = CCSRestClient.makeDisponibilitàSaccheRequest(cttOnline.get(ctt));
-			System.err.println(tempMap);
-
-			if (risultatoQuery.isEmpty()){
-				risultatoQuery.putAll(tempMap);
-				System.err.println(risultatoQuery);
-			}
-			else{
-				for(String s : tempMap.keySet()){
-					int x = tempMap.get(s) + risultatoQuery.get(s);
-					risultatoQuery.put(s,x);
-				}
+		for(CTTName ctt : cttOnline.keySet()){
+			CcsDataBaseRestApplication.logger.info("Sto interrogando il " + ctt + " per ricevere la lista delle sacche disponibili");
+			temp.putAll(CCSRestClient.makeDisponibilitàSaccheRequest(cttOnline.get(ctt)));
+			System.err.println(temp);
+			for(String s : Arrays.asList(Enum.values())){
+				System.err.println(s);
+				System.err.println(GruppoSanguigno.valueOf(s));
+				System.err.println(temp.get(GruppoSanguigno.valueOf(s)));
+				System.err.println(risultatoQuery.get(GruppoSanguigno.valueOf(s)));
 			}
 		}
 
 
+		System.err.println(risultatoQuery); */
 		return Response
 				.status(Response.Status.OK)
-				.entity(risultatoQuery)
+				.entity(null)
 				.build();
 
 	}
@@ -287,9 +285,9 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 	 * 	 * @return 400 BAD_REQUEST se i parametri inseriti non sono corretti
 	 */
 	@GET
-	@Path("/reportSaccheAffidateCCS")
+	@Path("/reportSaccheInviateCCS")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response reportSaccheAffidate(@QueryParam("dataInizio")String dataInizio,
+	public Response reportSaccheInviate(@QueryParam("dataInizio")String dataInizio,
 										 @QueryParam("dataFine")String dataFine) {
 
 		CcsDataBaseRestApplication.logger.info("Sto inizializzando il report delle sacche inviate dalla rete tra il "+dataInizio+"e il "+dataFine);
@@ -298,7 +296,8 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 
 		for (CTTName ctt : cttOnline.keySet()) {
 			CcsDataBaseRestApplication.logger.info("Sto interrogando il " + ctt + " per ricevere la lista delle sacche inviate dalla rete tra il "+dataInizio+"e il "+dataFine);
-			risultatoQuery.addAll(CCSRestClient.makeReportSaccheInviate(cttOnline.get(ctt), dataInizio, dataFine));
+			List<DatiSacca> saccheCtt = CCSRestClient.makeReportSaccheInviate(cttOnline.get(ctt), dataInizio, dataFine);
+			risultatoQuery.addAll(saccheCtt);
 		}
 
 		return Response
@@ -307,5 +306,53 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 				.build();
 	}
 
+	/**---------REPORT SACCHE RICEVUTE RETE REGIONALE------------
+	 *Restituisce la lista dei DatiSacche relativi alle sacche che sono state ricevute dalla rete in un determinato arco temporale
+	 * 	 * @param dataInizio Data inizio dell' arco temporale
+	 * 	 * @param dataFine Data fine dell' arco temporale
+	 * 	 * @return Response 200 OK e invia la lista dei datiSacca
+	 * 	 * @return 400 BAD_REQUEST se i parametri inseriti non sono corretti
+	 */
+	@GET
+	@Path("/reportSaccheRicevuteCCS")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response reportSaccheRicevute(@QueryParam("dataInizio")String dataInizio,
+										@QueryParam("dataFine")String dataFine) {
+
+		CcsDataBaseRestApplication.logger.info("Sto inizializzando il report delle sacche ricevute in rete tra il "+dataInizio+"e il "+dataFine);
+		Map<CTTName, String> cttOnline = ConnectionVerifier.isCTTOnline();
+		System.err.println(cttOnline);
+		List<DatiSacca> risultatoQuery = new ArrayList<>();
+
+		for (CTTName ctt : cttOnline.keySet()) {
+			CcsDataBaseRestApplication.logger.info("Sto interrogando il " + ctt + " per ricevere la lista delle sacche ricevute dalla rete tra il "+dataInizio+"e il "+dataFine);
+			List<DatiSacca> saccheCtt = CCSRestClient.makeReportSaccheRicevute(cttOnline.get(ctt), dataInizio, dataFine);
+			risultatoQuery.addAll(saccheCtt);
+		}
+
+		return Response
+				.status(Response.Status.OK)
+				.entity(risultatoQuery)
+				.build();
+	}
+
+	private
+	Map<String, Integer> mergeSumOfMaps(Map<String, Integer>... maps) {
+		final Map<String, Integer> resultMap = new HashMap<>();
+		for (final Map<String, Integer> map : maps) {
+			for (final String key : map.keySet()) {
+				final int value;
+				if (resultMap.containsKey(key)) {
+					final int existingValue = resultMap.get(key);
+					value = map.get(key) + existingValue;
+				}
+				else {
+					value = map.get(key);
+				}
+				resultMap.put(key, value);
+			}
+		}
+		return resultMap;
+	}
 
 }

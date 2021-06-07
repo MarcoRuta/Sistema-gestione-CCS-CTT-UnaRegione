@@ -285,7 +285,7 @@
                 let tableSangueSend = document.getElementById('tableSangueSend');
 
                 let params = "dataInizio=" + datein.value + "&dataFine=" + dateout.value;
-                url = host + "/rest/amministratore/reportLocaleSaccheInviate?"+params;
+                url = host + "/rest/CCS/reportSaccheInviateCCS?"+params;
 
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
@@ -293,9 +293,7 @@
                             if(typeof(el) != 'undefined' && el != null) {
                                 tableSangueSend.removeChild(el);
                             }
-                            else {
                                 addPrintBagsSend(tableSangueSend);
-                            }
 
                         }
                     else if (this.readyState == 4 && this.status != 200) {
@@ -361,7 +359,7 @@
                 let xhttp = new XMLHttpRequest();
                 let tableSangueRec = document.getElementById('tableSangueRec');
                 let params = "dataInizio=" + dateIn.value + "&dataFine=" + dateOut.value;
-                url = host + "/rest/amministratore/reportLocaleSaccheRicevute?"+params;
+                url = host + "/rest/CCS/reportSaccheRicevuteCCS?"+params;
 
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
@@ -369,9 +367,7 @@
                          if(typeof(el) != 'undefined' && el != null) {
                                 tableSangueRec.removeChild(el);
                          }
-                        else {
                             addPrintBagsRec(tableSangueRec);
-                        }
                     }
                     else if (this.readyState == 4 && this.status != 200) {
                       alert(this.response);

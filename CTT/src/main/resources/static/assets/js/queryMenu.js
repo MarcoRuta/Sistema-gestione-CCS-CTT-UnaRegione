@@ -291,9 +291,9 @@
                             if(typeof(el) != 'undefined' && el != null) {
                                 tableSangueSend.removeChild(el);
                             }
-                            else {
-                                addPrintBagsSend(tableSangueSend);
-                            }
+
+                            addPrintBagsSend(tableSangueSend);
+
 
                         }
                     else if (this.readyState == 4 && this.status != 200) {
@@ -367,9 +367,9 @@
                          if(typeof(el) != 'undefined' && el != null) {
                                 tableSangueRec.removeChild(el);
                          }
-                        else {
-                            addPrintBagsRec(tableSangueRec);
-                        }
+
+                         addPrintBagsRec(tableSangueRec);
+
                     }
                     else if (this.readyState == 4 && this.status != 200) {
                       alert(this.response);

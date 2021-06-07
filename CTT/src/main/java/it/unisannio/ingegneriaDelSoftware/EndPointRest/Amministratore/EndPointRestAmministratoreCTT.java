@@ -27,7 +27,7 @@ import it.unisannio.ingegneriaDelSoftware.Util.*;
 @Path("/amministratore")
 @Singleton
 @Secured
-@RolesAllowed("AmministratoreCTT")
+@RolesAllowed({"AmministratoreCTT", "CCS"})
 @PermitAll
 public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT {
 	private MongoDataManager md = MongoDataManager.getInstance();

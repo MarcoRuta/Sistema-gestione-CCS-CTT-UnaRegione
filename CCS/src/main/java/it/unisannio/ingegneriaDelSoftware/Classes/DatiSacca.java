@@ -10,9 +10,9 @@ public class DatiSacca {
 	/**Seriale della Sacca, è univoco non puo essere modificato una volta creata la Sacca*/
 	private String seriale;
 	/** Gruppo sanguigno della Sacca, non puo essere modificato una volta creata la Sacca*/
-	private final GruppoSanguigno gruppo;	
+	private GruppoSanguigno gruppo;
 	/** Data di arrivo della Sacca, viene aggiunta quando la Sacca è inserita nel magazzino, non puo essere modificata*/
-	private final LocalDate dataArrivo;	
+	private LocalDate dataArrivo;
 	/** Data in cui la Sacca viene affidata ad un ente esterno*/
 	private Optional<LocalDate> dataAffidamento;
 	/**Ente da cui proviene la Sacca, nel momento in cui la Sacca è creata lo si conosce e non puo essere modificato*/
@@ -21,7 +21,9 @@ public class DatiSacca {
 	private Optional<String> enteRichiedente;
 	/**L'indirizzo di colui che richiede la Sacca, viene aggiunto nel momento in cui la Sacca è affidata*/
 	private Optional<String> indirizzoEnte;
-	
+
+	public DatiSacca() {
+	}
 
 	/** Metodo costruttore invocato quando la Sacca è inserita nel Magazzino
 	 * @param dataArrivo Data in cui la Sacca è arrivata in magazzino, non può essere temporalmente dopo la data di affidamento
@@ -42,6 +44,7 @@ public class DatiSacca {
 		this.indirizzoEnte = Optional.ofNullable(indirizzoEnte);
 	}
 
+
 	public String getSeriale() {
 		return seriale;
 	}
@@ -54,12 +57,16 @@ public class DatiSacca {
 		return gruppo;
 	}
 
-	public void setEnteDonatore(String enteDonatore) {
-		this.enteDonatore = enteDonatore;
+	public void setGruppo(GruppoSanguigno gruppo) {
+		this.gruppo = gruppo;
 	}
 
 	public LocalDate getDataArrivo() {
 		return dataArrivo;
+	}
+
+	public void setDataArrivo(LocalDate dataArrivo) {
+		this.dataArrivo = dataArrivo;
 	}
 
 	public Optional<LocalDate> getDataAffidamento() {
@@ -72,6 +79,10 @@ public class DatiSacca {
 
 	public String getEnteDonatore() {
 		return enteDonatore;
+	}
+
+	public void setEnteDonatore(String enteDonatore) {
+		this.enteDonatore = enteDonatore;
 	}
 
 	public Optional<String> getEnteRichiedente() {
