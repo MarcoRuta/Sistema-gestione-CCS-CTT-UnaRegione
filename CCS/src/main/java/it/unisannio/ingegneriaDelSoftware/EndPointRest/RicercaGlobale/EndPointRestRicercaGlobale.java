@@ -8,6 +8,8 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
+
+import com.mongodb.Mongo;
 import it.unisannio.ingegneriaDelSoftware.CcsDataBaseRestApplication;
 import it.unisannio.ingegneriaDelSoftware.Classes.Beans.Seriale;
 import it.unisannio.ingegneriaDelSoftware.Classes.CTT;
@@ -66,8 +68,13 @@ public class EndPointRestRicercaGlobale {
 		//devo controllare la risposta da dare al client
 		List<Seriale>serialeList = new ArrayList<>();
 		for (CTTName cttName : cttSacche.keySet())
-			for(Sacca s: cttSacche.get(cttName))
+			for(Sacca s: cttSacche.get(cttName)) {
 				serialeList.add(s.getSeriale());
+				if(MongoDataManager.getInstance().containsSacca(s.getSeriale())){
+					MongoDataManager.getInstance().removeSacca(s.getSeriale());
+					scadenzeObserver.update(NotificaSaccaInScadenzaMaker.creaNotificheSaccheInScadenza());
+				}
+			}
 		
 		CcsDataBaseRestApplication.logger.info("Sacche trovate globalmente: "+ serialeList );
 
