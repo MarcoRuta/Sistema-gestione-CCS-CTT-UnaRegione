@@ -16,8 +16,11 @@ import it.unisannio.ingegneriaDelSoftware.Classes.Beans.Sacca;
 import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaRisultatiRicerca;
 import it.unisannio.ingegneriaDelSoftware.ClientRest.CCSRestClient;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
+import it.unisannio.ingegneriaDelSoftware.EndPointRest.SaccheInScadenza.SaccheInScadenzaObserver;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Functional.ConnectionVerifier;
+import it.unisannio.ingegneriaDelSoftware.Functional.NotificaSaccaInScadenzaMaker;
+import it.unisannio.ingegneriaDelSoftware.Interfaces.Observer;
 import it.unisannio.ingegneriaDelSoftware.Searchers.SearcherFactory;
 import it.unisannio.ingegneriaDelSoftware.Util.Settings;
 
@@ -26,6 +29,7 @@ import it.unisannio.ingegneriaDelSoftware.Util.Settings;
 public class EndPointRestRicercaGlobale {
 
 
+	Observer scadenzeObserver = new SaccheInScadenzaObserver();
 	
 	/**Restituisce la Sacca del GruppoSanguigno richiesto con Data di scadenza più vicina nel DataBase locale.
 	 * @param gruppoSanguigno Gruppo sanguigno ricercato
@@ -98,12 +102,16 @@ public class EndPointRestRicercaGlobale {
 
 	}
 
-	private void prenotaSacca(Map<CTTName, String> cttOnline, Map<CTTName, List<Sacca>> cttSacche, String indirizzoEnte, String enteRichiedente) throws InterruptedException {
+	private void prenotaSacca(Map<CTTName, String> cttOnline, Map<CTTName, List<Sacca>> cttSacche, String indirizzoEnte, String enteRichiedente) throws InterruptedException, EntityNotFoundException {
 		CcsDataBaseRestApplication.logger.info("Inizio la procedura per prenotare le sacche");
 		for (CTTName cttName : cttSacche.keySet()) {
 			List<Seriale> serialiDaEvadere = new ArrayList<>();
-			for (Sacca s : cttSacche.get(cttName))
+			for (Sacca s : cttSacche.get(cttName)) {
 				serialiDaEvadere.add(s.getSeriale());
+				if(MongoDataManager.getInstance().containsSacca(s.getSeriale()))
+					MongoDataManager.getInstance().removeSacca(s.getSeriale());
+				this.scadenzeObserver.update(NotificaSaccaInScadenzaMaker.creaNotificheSaccheInScadenza());
+			}
 
 			CcsDataBaseRestApplication.logger.info("Sto prenotando le sacche presso il : "+cttName.getCttname());
 			CCSRestClient.makeEvasioneRequest(cttOnline.get(cttName),serialiDaEvadere, indirizzoEnte, enteRichiedente);
