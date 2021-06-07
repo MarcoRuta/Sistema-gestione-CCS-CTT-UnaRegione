@@ -2,7 +2,7 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
     <entry key="CTT004">192.168.193.55</entry>
-    <entry key="CTT001">192.168.193.220</entry>
+    <entry key="CTT006">192.168.193.163</entry>
     <entry key="PORT">8081</entry>
 </properties>
         <!-- Marco Ruta : 192.168.193.220

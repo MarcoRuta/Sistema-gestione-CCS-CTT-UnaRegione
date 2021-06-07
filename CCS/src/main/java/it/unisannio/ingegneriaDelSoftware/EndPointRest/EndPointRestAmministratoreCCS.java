@@ -245,31 +245,31 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 		CcsDataBaseRestApplication.logger.info("Sto inizializzando il report di disponibilità regionale sacche");
 
 		Map<CTTName, String> cttOnline = ConnectionVerifier.isCTTOnline();
+
 		Map<GruppoSanguigno, Integer> temp = new HashMap<GruppoSanguigno, Integer>();
 		Map<GruppoSanguigno, Integer> risultatoQuery = new HashMap<GruppoSanguigno, Integer>();
 
-		Integer[] value = new Integer[0];
-		String[] keys = new String[0];
-
 		for(CTTName ctt : cttOnline.keySet()){
 			CcsDataBaseRestApplication.logger.info("Sto interrogando il " + ctt + " per ricevere la lista delle sacche disponibili");
-			temp.putAll(CCSRestClient.makeDisponibilitàSaccheRequest(cttOnline.get(ctt)));
+			temp = CCSRestClient.makeDisponibilitàSaccheRequest(cttOnline.get(ctt)); //Map<GruppoSanguigno, Integer>
 
-			value = temp.values().toArray(new Integer[0]);
-			keys = temp.keySet().toArray(new String[0]);
+			if(!risultatoQuery.isEmpty()) {
+				for(String g : temp.keySet().toArray(new String[0])) {
 
-			if(risultatoQuery.isEmpty()) {
-				for (int i = 0; i < keys.length; i++)
-					risultatoQuery.put(GruppoSanguigno.valueOf(keys[i]), value[i]);
-			}
-			else {
-				for (int i = 0; i < keys.length; i++) {
-					int t = risultatoQuery.get(GruppoSanguigno.valueOf(keys[i]));
-					t = t + value[i];
-					risultatoQuery.put(GruppoSanguigno.valueOf(keys[i]), t);
+					int x = temp.get(g);
+					x += risultatoQuery.get(g);
+
+					if(risultatoQuery.containsKey(g))
+						risultatoQuery.remove(g);
+
+					risultatoQuery.put(GruppoSanguigno.valueOf(g), x);
+
 				}
+
 			}
-		}
+			else
+				risultatoQuery.putAll(temp);
+			}
 
 		return Response
 				.status(Response.Status.OK)

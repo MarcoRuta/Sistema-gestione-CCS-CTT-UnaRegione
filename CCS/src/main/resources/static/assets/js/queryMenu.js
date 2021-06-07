@@ -46,14 +46,12 @@
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
                     objRl = JSON.parse(this.responseText);
-                    alert(this.responseText);
-
-                    //if(table.rows.length != 1) {
-                    //  while(table.rows.length != 1) {
-                    //       table.deleteRow(1);
-                    //  }
-                    // }
-                    //addPrint(table);
+                    if(table.rows.length != 1) {
+                      while(table.rows.length != 1) {
+                           table.deleteRow(1);
+                      }
+                    }
+                    addPrint(table);
                     //creaCanvasDip();
                     }
                 else if (this.readyState == 4 && this.status != 200) {
@@ -74,19 +72,36 @@
 
               let row;
 
-                for(let i = 0; i < objRl.length; i++) {
 
+                for(let o of Object.keys(objRl)) {
+                    console.log(o, objRl[o]);
+                    alert(o, objRl[o]);
+                }
+
+                for (let capital of Object.values(objRl))
+                    console.log(capital);
+
+                for (let [country, capital] of Object.values(objRl))
+                    console.log(country, capital);
+
+
+
+                //for(let i = 0; i < objRl.length; i++) {
+                /*
                   row = document.createElement('tr');
                   row.appendChild(document.createElement('td'));
                   row.appendChild(document.createElement('td'));
                   row.appendChild(document.createElement('td'));
                   row.appendChild(document.createElement('td'));
-                  row.cells[0].innerHTML = objRl[i].cdf.codiceFiscale;
-                  row.cells[1].innerHTML = objRl[i].nome;
-                  row.cells[2].innerHTML = objRl[i].cognome;
-                  row.cells[3].innerHTML = objRl[i].dataDiNascita;
+                  row.appendChild(document.createElement('td'));
+                  row.cells[0].innerHTML = objRl[i].cttname;
+                  row.cells[1].innerHTML = objRl[i].cdf.codiceFiscale;
+                  row.cells[2].innerHTML = objRl[i].nome;
+                  row.cells[3].innerHTML = objRl[i].cognome;
+                  row.cells[4].innerHTML = objRl[i].dataDiNascita;
                   table.appendChild(row);
               }
+              */
 
         }
 
@@ -180,8 +195,7 @@
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
                     obj = JSON.parse(this.responseText);
-                    //setCanvasSacche(obj);
-                    alert(this.response);
+                    setCanvasSacche(obj);
                     }
                 else if (this.readyState == 4 && this.status != 200) {
                   alert(this.response);

@@ -1,10 +1,6 @@
 package it.unisannio.ingegneriaDelSoftware.Classes;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -57,5 +53,6 @@ public enum GruppoSanguigno {
 	public static Iterator<GruppoSanguigno> puoRicevereDa(GruppoSanguigno gs) {
 		assert gs !=null;
 		return puoRicevereDa.get(gs).iterator();
-	}	
+	}
+
 }
