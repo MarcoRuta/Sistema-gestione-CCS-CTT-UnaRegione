@@ -171,7 +171,9 @@
                 var url = host+ "/rest/operatore/ricerca?"+params;
 
                 xhttp.onreadystatechange = function() {
+                    
                     if (this.readyState == 4 && this.status == 200) {
+                        
                  	    res = JSON.parse(this.response);
                  	    var serialiDaEvadere = new Array();
                  	    for (let i=0; i< res.listaSeriali.length; i++){
@@ -197,11 +199,39 @@
                  	    }else{
                  	        reloadPage();
                  	    }
-                 	}else{
-                 	    if (this.readyState == 4 && this.status != 200){
-                            alert(this.response);
+                 	}else {
+                        if (this.readyState == 4 && this.status == 206){
+                            res = JSON.parse(this.response);
+                 	        var serialiDaEvadere = new Array();
+                 	        for (let i=0; i< res.listaSeriali.length; i++){
+                                serialiDaEvadere[i] = res.listaSeriali[i].seriale;
+                 	        }
+                
+                            alert(res.message);
+                            alert("Questa è la lista delle sacche trovate localmente è: "+serialiDaEvadere); 
+
+                 	         let xhttpEvasione = new XMLHttpRequest();
+                 	         let urlEvasione = host + "/rest/notifica/notificaEvasione";
+                 	         xhttpEvasione.open("POST", urlEvasione, true);
+                             xhttpEvasione.setRequestHeader('Authorization', 'Basic '+token);
+                             xhttpEvasione.setRequestHeader('Content-Type', 'application/json');
+                             xhttpEvasione.withCredentials = true;
+                             xhttpEvasione.send(this.response);
+
+                             xhttpEvasione.onreadystatechange = function() {
+                                if (this.readyState == 4 && this.status != 200){
+                                    reloadPage();
+                                }
+                             };
+
                         }
-                 	}
+                        
+                        if(this.readyState == 4 && this.status == 404) {
+                            alert(this.response);
+                            reloadPage();
+                        }
+                    }
+                 	
                 };
                 
                 xhttp.onerror = function(){
@@ -217,13 +247,13 @@
             }
             
             function reloadPage() {
-                gruppo_sanguigno.value = "";
-                dataaff.value= "";
-                numero_sacche.value= "";
-                indirizzo.value= "";
-                enteRic.value="";
-                check.checked=false;
-                location.reload();
+                //gruppo_sanguigno.value = "";
+                //dataaff.value= "";
+                //numero_sacche.value= "";
+                //indirizzo.value= "";
+                //enteRic.value="";
+                //check.checked=false;
+                window.location.href='OperatoreCTT.html';
             }
     </script>
     <div class="footer"></div>

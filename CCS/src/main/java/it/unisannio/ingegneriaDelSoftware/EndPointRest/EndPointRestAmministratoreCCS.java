@@ -1,6 +1,8 @@
 package it.unisannio.ingegneriaDelSoftware.EndPointRest;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.security.RolesAllowed;
@@ -13,9 +15,11 @@ import com.itextpdf.text.DocumentException;
 import it.unisannio.ingegneriaDelSoftware.Annotazioni.Secured;
 import it.unisannio.ingegneriaDelSoftware.CcsDataBaseRestApplication;
 import it.unisannio.ingegneriaDelSoftware.Classes.*;
+import it.unisannio.ingegneriaDelSoftware.ClientRest.CCSRestClient;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
+import it.unisannio.ingegneriaDelSoftware.Functional.ConnectionVerifier;
 import it.unisannio.ingegneriaDelSoftware.Functional.IDGenerator;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointAmministratoreCCS;
 import it.unisannio.ingegneriaDelSoftware.PDF.PDFGenerator;
@@ -23,6 +27,7 @@ import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 
 import java.time.LocalDate;
 import java.time.format.*;
+import java.util.Map;
 
 @Path("/CCS")
 @Singleton
@@ -201,4 +206,106 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 		dipendenti.remove(Token.getDipendenteByToken(header.substring("Basic ".length())));
 		return dipendenti;
 	}
+
+	/**---------REPORT OPERATORI RETE CTT------------
+	 * Restituisce la lista dei Dipendenti di tutti i CTT presenti sulla rete del ruolo selezionato
+	 * @param ruolo Ruolo dei Dipendenti da cercare
+	 * @return Response 200 OK e invia la lista dei dipendenti del ruolo selezionato
+	 */
+	@GET
+	@Path("/reportOperatoriCCS")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response reportOperatoriCCS(@QueryParam("ruolo")String ruolo) {
+
+		CcsDataBaseRestApplication.logger.info("Sto inizializzando il report degli operatori presenti nella rete regionale");
+		Map<CTTName, String> cttOnline = ConnectionVerifier.isCTTOnline();
+		Map<CTTName, List<Dipendente>> risultatoQuery = new HashMap<>();
+
+		for (CTTName ctt : cttOnline.keySet()) {
+			CcsDataBaseRestApplication.logger.info("Sto interrogando il " + ctt + " per ricevere la lista degli " + ruolo);
+			risultatoQuery.put(ctt,
+					CCSRestClient.makeReportOperatoriRequest(cttOnline.get(ctt), ruolo)
+			);
+		}
+
+		return Response
+				.status(Response.Status.OK)
+				.entity(risultatoQuery)
+				.build();
+	}
+
+
+	/**---------REPORT NUMERICO DEI TIPI DI SACCHE PRESENTI A LIVELLO REGIONALE------------
+	 * Restituisce il numero di sacche presenti di ogni tipo nella regione
+	 * @return Response 200 OK e invia una mappa <gs,numeroSacche>
+	 * @return 400 BAD_REQUEST se i parametri inseriti non sono corretti
+	 */
+	@GET
+	@Path("/reportStatisticoSaccheCCS")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response reportStatisticoSaccheRegionale(@HeaderParam(HttpHeaders.AUTHORIZATION) String headers){
+
+		CcsDataBaseRestApplication.logger.info("Sto inizializzando il report di disponibilità regionale sacche");
+
+		Map<CTTName, String> cttOnline = ConnectionVerifier.isCTTOnline();
+
+		Map<String,Integer> tempMap;
+		Map<String,Integer> risultatoQuery = new HashMap<String,Integer>();
+
+
+		for (CTTName ctt : cttOnline.keySet()) {
+
+			CcsDataBaseRestApplication.logger.info("Sto interrogando il " + ctt + " per ricevere la lista delle sacche");
+			tempMap = CCSRestClient.makeDisponibilitàSaccheRequest(cttOnline.get(ctt));
+			System.err.println(tempMap);
+
+			if (risultatoQuery.isEmpty()){
+				risultatoQuery.putAll(tempMap);
+				System.err.println(risultatoQuery);
+			}
+			else{
+				for(String s : tempMap.keySet()){
+					int x = tempMap.get(s) + risultatoQuery.get(s);
+					risultatoQuery.put(s,x);
+				}
+			}
+		}
+
+
+		return Response
+				.status(Response.Status.OK)
+				.entity(risultatoQuery)
+				.build();
+
+	}
+
+	/**---------REPORT SACCHE INVIATE RETE REGIONALE------------
+	 *Restituisce la lista dei DatiSacche relativi alle sacche che sono state affidate in un determinato arco temporale
+	 * 	 * @param dataInizio Data inizio dell' arco temporale
+	 * 	 * @param dataFine Data fine dell' arco temporale
+	 * 	 * @return Response 200 OK e invia la lista dei datiSacca
+	 * 	 * @return 400 BAD_REQUEST se i parametri inseriti non sono corretti
+	 */
+	@GET
+	@Path("/reportSaccheAffidateCCS")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response reportSaccheAffidate(@QueryParam("dataInizio")String dataInizio,
+										 @QueryParam("dataFine")String dataFine) {
+
+		CcsDataBaseRestApplication.logger.info("Sto inizializzando il report delle sacche inviate dalla rete tra il "+dataInizio+"e il "+dataFine);
+		Map<CTTName, String> cttOnline = ConnectionVerifier.isCTTOnline();
+		List<DatiSacca> risultatoQuery = new ArrayList<>();
+
+		for (CTTName ctt : cttOnline.keySet()) {
+			CcsDataBaseRestApplication.logger.info("Sto interrogando il " + ctt + " per ricevere la lista delle sacche inviate dalla rete tra il "+dataInizio+"e il "+dataFine);
+			risultatoQuery.addAll(CCSRestClient.makeReportSaccheInviate(cttOnline.get(ctt), dataInizio, dataFine));
+		}
+
+		return Response
+				.status(Response.Status.OK)
+				.entity(risultatoQuery)
+				.build();
+	}
+
+
 }

@@ -4,6 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import it.unisannio.ingegneriaDelSoftware.CcsDataBaseRestApplication;
 import it.unisannio.ingegneriaDelSoftware.Classes.Beans.Sacca;
 import it.unisannio.ingegneriaDelSoftware.Classes.Beans.Seriale;
+import it.unisannio.ingegneriaDelSoftware.Classes.DatiSacca;
+import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
+import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaEvasione;
 import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaRisultatiRicerca;
 import it.unisannio.ingegneriaDelSoftware.Classes.Wrapper.SaccaWrapper;
@@ -16,7 +19,9 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**Client REST che viene utilizzato dal CCS per contattare gli EndPointRest dei CTT*/
@@ -66,4 +71,44 @@ public class CCSRestClient {
         CcsDataBaseRestApplication.logger.info("Risultati mandati all'uri: "+risultati.getUri());
         CcsDataBaseRestApplication.logger.info("ecco la risposta: "+r.getStatus()+r.readEntity(String.class));
     }
+
+    public static List<Dipendente> makeReportOperatoriRequest(String ip, String ruolo){
+
+        Client client = ClientBuilder.newClient();
+        WebTarget dipendenti = client
+                .target("http://"+ip+":"+Settings.PORTA+"/rest/amministratore/reportOperatoriCtt")
+                .queryParam("ruolo",ruolo);
+        List<Dipendente> dipendentiCtt = dipendenti.request().get(ArrayList.class);
+        return dipendentiCtt;
+    }
+
+    public static Map<String, Integer> makeDisponibilitàSaccheRequest(String ip){
+
+        Client client = ClientBuilder.newClient();
+        WebTarget sacche = client
+                .target("http://"+ip+":"+Settings.PORTA+"/rest/amministratore/reportStatisticoSacche");
+
+        Map<GruppoSanguigno,Integer> saccheCtt = sacche.request().get(Map.class);
+
+        Map<String,Integer> saccheCttx = new HashMap<String,Integer>();
+
+        for(GruppoSanguigno s : saccheCtt.keySet()){
+            saccheCttx.put(s.toString(),saccheCtt.get(s));
+        }
+
+        return saccheCttx;
+    }
+
+
+    public static List<DatiSacca> makeReportSaccheInviate(String ip, String dataInizio, String dataFine){
+        Client client = ClientBuilder.newClient();
+        WebTarget saccheInviateCtt = client
+                .target("http://"+ip+":"+Settings.PORTA+"/rest/amministratore/reportLocaleSaccheInviate")
+                .queryParam("dataInizio",dataInizio)
+                .queryParam("dataFine",dataFine);
+        List<DatiSacca> datiSaccheInviate = saccheInviateCtt.request().get(ArrayList.class);
+        return datiSaccheInviate;
+    }
+
+
 }
