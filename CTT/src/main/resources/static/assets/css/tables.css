@@ -22,32 +22,62 @@
 }
 
 
-#tableSangue {
+#tableSangueSend {
   font-family: Arial, Helvetica, sans-serif;
   border-collapse: collapse;
   width: 100%;
 }
 
-#tableSangue td {
+#tableSangueSend td {
   border: 1px solid #ddd;
   padding: 8px;
-  font-size: 12px;
+  font-size: 16px;
 }
 
-#tableSangue th {
+#tableSangueSend th {
   border: 1px solid #ddd;
   padding: 8px;
 }
 
-#tableSangue tr:nth-child(even){background-color: #f2f2f2;}
+#tableSangueSend tr:nth-child(even){background-color: #f2f2f2;}
 
-#tableSangue tr:hover {background-color: #ddd;}
+#tableSangueSend tr:hover {background-color: #ddd;}
 
-#tableSangue th {
+#tableSangueSend th {
   padding-top: 12px;
   padding-bottom: 12px;
   text-align: left;
   background-color: #17a2b8;
   color: white;
-  font-size: 15px;
+  font-size: 2vh;
+}
+
+#tableSangueRec {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#tableSangueRec td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  font-size: 16px;
+}
+
+#tableSangueRec th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#tableSangueRec tr:nth-child(even){background-color: #f2f2f2;}
+
+#tableSangueRec tr:hover {background-color: #ddd;}
+
+#tableSangueRec th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #17a2b8;
+  color: white;
+  font-size: 2vh;
 }

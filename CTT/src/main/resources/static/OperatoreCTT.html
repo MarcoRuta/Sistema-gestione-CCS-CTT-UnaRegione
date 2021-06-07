@@ -2,59 +2,46 @@
 <html>
 
 <head>
-     <script>
-        /*FUNZIONE PER AGGIUNTA NOTIFICA*/
-         /*function addNotification()
-        {
-            var node = document.getElementById("divNot");
-            htmlContent = node.innerHTML;
-            divNot.innerHTML = htmlContent + "<p class='notification'>> Sacca scaduta del gruppo sanguigno A+ del CTT#3</p>";
-        }*/
-        
-        function removeNotification()
-        {
-            divNot.innerHTML = "";
-        }
-    </script>
-    
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>OperatoreCTTHub</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/stylesDim.css">
 </head>
 
 <body onload="start();">
     <div class="titlePage">
-        <div>
-            <span class="fontTitle">
-                Centro Trasfusionale Territoriale            
-            </span>
-        </div>
-        <div>
-            <img class="logoCTT" src="assets/img/LOGO_CTT.svg">
+        <div class="row">
+            <div class="col">
+                <span class="fontTitle">
+                    Centro Trasfusionale Territoriale
+                </span>
+            </div>
+            <div class="col" style="text-align: right;">
+                <img class="logoCTT" src="assets/img/LOGO_CTT.svg">
+            </div>
         </div>
     </div>
     
     <div class="container">
         
-        <div class="row" style="margin-left:0px; margin-right: 0px">
+        <div class="row" style="margin: auto">
             <div class="border col boxProfile" style="background-image: url(&quot;assets/img/bg-pattern.png&quot;);">
                 <div class="row">
-                    <div class="col-sm">
-                        <img src="assets/img/doctor+pediatrician+icon-1320185104387356300.png" style="width: 200px;margin: 5% 7%;">
-                        <span style="padding-left: 22%">Operatore CTT</span>
+                    <div class="col-sm" style="padding:1%; text-align: center">
+                        <img src="assets/img/doctor+pediatrician+icon-1320185104387356300.png" style="width: 80%">
+                        <span><b>Operatore CTT</b></span>
                     </div>
-                    <div class="col-sm" style="margin-top: 9%; margin-left: -2em">
+                    <div class="col-sm" style="margin: auto">
                         <div>
                             <p id="nome">Nome: </p>
                         </div>
-                        <div style="margin: 30px 0%;">
+                        <div>
                             <p id="cognome">Cognome: </p>
                         </div>
-                        <div style="width: 300px;">
+                        <div style="width: auto; padding-bottom: 2%;">
                             <button class="btn btn-primary" onclick="location.href='ChangePasswordAfterLogin.html';" type="button" style="background-color: #13958d;">Change Password</button>
-                            <button class="btn btn-primary" onclick="logout();" type="button" style="margin: 0% 5%">Log out</button>
+                            <button class="btn btn-primary" onclick="logout();" type="button">Log out</button>
                         </div>
                     </div>
                 </div>
@@ -62,22 +49,22 @@
             
             <div class="border col-sm boxButton" style="background-image: url(&quot;assets/img/bg-pattern.png&quot;);">
                 <div class="containerBtn">
-                        <p style="margin-left: 30%; margin-top: -1.5em "><b>Azioni</b></p>
-                        <div class="row" style="width:75%; margin-top: 5%; margin-left: 16%;">
+                        <p><b>Azioni</b></p>
+                        <div class="row" style="padding-bottom: 3%">
                             <div class="col-sm">
-                                <button class="btn btn-primary" onclick="location.href='RicercaSaccaForm.html';" type="button" style="background-color: #13958d; width: 210px;">Ricerca sacca</button>
+                                <button class="btn btn-primary" onclick="location.href='RicercaSaccaForm.html';" type="button" style="background-color: #13958d; width: auto;">Ricerca sacca</button>
                             </div>
                         </div>
-                    <div class="row" style="width:75%; margin-top:5%; margin-left: 16%;">
-                        <div class = "divSmaMag col-sm" id ="divRis"></div>
-                    </div>
+                        <div class="row">
+                            <div class = "divSmaMag" id ="divRis" style="margin: auto;"></div>
+                        </div>
                 </div>
             </div>
         </div>
          
         <div class="boxNotification col-sm-12 border shadow-sm profile-box" style="background-image: url(&quot;assets/img/bg-pattern.png&quot;);">
             <h2>Notifiche</h2>
-            <div class="divNotMag" id="divNot"></div>
+            <div class="divNot" id="divNot"></div>
         </div> 
     </div>
     
@@ -170,53 +157,51 @@
                   var x = document.activeElement;
                   var myWindow = window.open("EvasioneSaccaInScadenzaForm.html?seriale="+x.value, "Evasione", "width=auto,height=auto");
 
-              }
+              };
               document.getElementById("divNot").appendChild(btn);
           }
       }
-
-
-
-    var dataRisultati;
-    var strRisultati="";
-
-
-
-    function risultatiSessionload() {
-
-        for(let i = 0; i < localStorage.length; i++) {
-            if(localStorage.key(i) == "risultatoBottone") {
-                dataRisultati = localStorage.getItem(localStorage.key(i));
-                addBtnRisultati();
+      
+        var dataRisultati;
+        var strRisultati="";
+    
+    
+    
+        function risultatiSessionload() {
+    
+            for(let i = 0; i < localStorage.length; i++) {
+                if(localStorage.key(i) == "risultatoBottone") {
+                    dataRisultati = localStorage.getItem(localStorage.key(i));
+                    addBtnRisultati();
+                }
             }
+    
         }
-
-    }
-
-
-    function addBtnRisultati() {
-        var notificaRisultati = JSON.parse(dataRisultati);
-        for(let i=0; i<notificaRisultati.serialeList.length; i++){
-            strRisultati = strRisultati+ notificaRisultati.serialeList[i].seriale+",";
+    
+    
+        function addBtnRisultati() {
+            var notificaRisultati = JSON.parse(dataRisultati);
+            for(let i=0; i<notificaRisultati.serialeList.length; i++){
+                strRisultati = strRisultati+ notificaRisultati.serialeList[i].seriale+",";
+            }
+    
+    
+            var btnRis = document.createElement("button");
+            btnRis.className='btn btn-success';
+    
+            btnRis.innerHTML = "Risultato RicercaGlobale";
+            btnRis.type = 'submit';
+            btnRis.id = 'btnRis';
+            btnRis.style = 'width: 210px';
+    
+            btnRis.onclick = function() {
+               alert(notificaRisultati.message+"\n"+strRisultati.substring(0, (strRisultati.length-1) ) );
+               location.reload();
+            };
+    
+            document.getElementById("divRis").appendChild(btnRis);
+    
         }
-
-
-        var btnRis = document.createElement("button");
-        btnRis.className='btn btn-success';
-
-        btnRis.innerHTML = "Risultato RicercaGlobale";
-        btnRis.type = 'submit';
-        btnRis.id = 'btnRis';
-        btnRis.style = 'width: 210px';
-
-        btnRis.onclick = function() {
-           alert(notificaRisultati.message+"\n"+strRisultati.substring(0, (strRisultati.length-1) ) );
-           location.reload();
-        }
-
-        document.getElementById("divRis").appendChild(btnRis);
-
-    }
 
     </script>
     

@@ -37,99 +37,109 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>RicercaSaccaForm</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/styles.css">
-    <link rel="stylesheet" href="assets/css/formStyles.css">
+    <link rel="stylesheet" href="assets/css/stylesDim.css">
+    <link rel="stylesheet" href="assets/css/formStylesDim.css">
 </head>
 
 <body onload="verificoToken();">
     <div class="titlePage">
-        <div>
-            <span class="fontTitle">
-                Ricerca Sacca Form            
-            </span>
-        </div>
-        <div>
-            <img class="logoCTT" src="assets/img/LOGO_CTT.svg">
+        <div class="row" style="min-height: 100%">
+            <div class="col">
+                <span class="fontTitle">
+                    Ricerca Sacca Form
+                </span>
+            </div>
+            <div class="col" style="text-align: right;">
+                <img class="logoCTT" src="assets/img/LOGO_CTT.svg">
+            </div>
         </div>
     </div>
     
-    <div class="container" style="max-width: 1430px; margin: 1.5% auto;">
-        
-        <div class="dateForm">
-            <div class="titleDateForm">
-                <p>Inserisci i dati</p>
-                <button class="btn" onclick="location.href='OperatoreCTT.html';"><img class="return" src="assets/img/return.png" /></button>
-            </div>
-            <div class="containerForm">
-                <form id="myForm">
-                    <div class="form-group row">
-                        <label>Ente richiedente:</label>
-                        <div class="col-sm-10 inputForm">
-                            <input id="enteRic" name="ente_richiedente" oninput="print1();" class="form-control" type="text" placeholder="Ente Richiedente">
-                        </div>  
-                    </div>
-                    <div class="form-group row">
-                            <label>Indirizzo:</label>
-                            <div class="col-sm-10 inputForm">
-                                <input id="indirizzo" name="ind" oninput="print2();" class="form-control" type="text" >
+    <div class="container">
+        <div class="row" style="min-height: 100%">
+            <div class="col">
+                <div class="dateForm">
+                    <div class="titleDateForm">
+                        <div class="row">
+                            <div class="col" style="max-width: 6vmax;">
+                                <button class="btn" onclick="location.href='OperatoreCTT.html';"><img class="return" src="assets/img/return.png"></button>
                             </div>
-                    </div>
-                    <div class="form-group row">
-                        <label>Data affidamento:</label>
-                        <div class="col-sm-10 inputForm">
-                            <input id="dataaff" name="data_affidamento" oninput="print3();" class="form-control" type="date">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label>Tipo di sangue:</label>
-                        <div class="col-sm-10 inputForm">
-                            <select id="gruppo_sanguigno" name="gruppo_sanguigno" oninput="print4();" class="form-control" style="width:364px">
-                                <option value='0'>Seleziona il tipo di sangue</option>
-                                <option value="Ap">A+</option>
-                                <option value="Am">A-</option>
-                                <option value="Bp">B+</option>
-                                <option value="Bm">B-</option>
-                                <option value="ABp">AB+</option>
-                                <option value="ABm">AB-</option>
-                                <option value="ZEROp">0+</option>
-                                <option value="ZEROm">0-</option>
-                            </select>
-                        </div>
-                    </div>
-                     <div class="form-group row">
-                            <label>Numero:</label>
-                            <div class="col-sm-10 inputForm">
-                                <input id="numero_sacche" name="numero_sacche" oninput="print5();" class="form-control" type="number">
+                            <div class="col">
+                                <p style="width:100%; font-size: 2.0vmax;">Inserisci i Dati</p>
                             </div>
                         </div>
-                    <div class="form-group row">
-                        <label>Priorità:</label>
-                        <div class="col-sm-10 inputForm">
-                            <input id="check" oninput="print6();" class="form-control" type="checkbox" style="width: 30px;height: 30px;">
-                        </div>
                     </div>
-                </form>
+                    <div class="containerForm" style= "overflow:auto; padding-left: 7%; max-height: 40vmax;">
+                        <form id="myForm">
+                            <div class="form-group row">
+                                <label>Ente richiedente:</label>
+                                <div class="inputForm">
+                                    <input id="enteRic" name="ente_richiedente" oninput="print1();" class="form-control" type="text" placeholder="Ente Richiedente">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                    <label>Indirizzo:</label>
+                                    <div class="inputForm">
+                                        <input id="indirizzo" name="ind" oninput="print2();" class="form-control" type="text" >
+                                    </div>
+                            </div>
+                            <div class="form-group row">
+                                <label>Data affidamento:</label>
+                                <div class="inputForm">
+                                    <input id="dataaff" name="data_affidamento" oninput="print3();" class="form-control" type="date">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label>Tipo di sangue:</label>
+                                <div class="inputForm">
+                                    <select id="gruppo_sanguigno" name="gruppo_sanguigno" oninput="print4();" class="form-control">
+                                        <option value='0'>Seleziona il tipo di sangue</option>
+                                        <option value="Ap">A+</option>
+                                        <option value="Am">A-</option>
+                                        <option value="Bp">B+</option>
+                                        <option value="Bm">B-</option>
+                                        <option value="ABp">AB+</option>
+                                        <option value="ABm">AB-</option>
+                                        <option value="ZEROp">0+</option>
+                                        <option value="ZEROm">0-</option>
+                                    </select>
+                                </div>
+                            </div>
+                             <div class="form-group row">
+                                    <label>Numero:</label>
+                                    <div class="inputForm">
+                                        <input id="numero_sacche" name="numero_sacche" oninput="print5();" class="form-control" type="number">
+                                    </div>
+                                </div>
+                            <div class="form-group row">
+                                <label>Priorità:</label>
+                                <div class="inputForm">
+                                    <input id="check" oninput="print6();" class="form-control" type="checkbox" style="width: 30px;height: 30px;">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="previewForm">
+                    <div class="titleDateForm">
+                        <p style="margin: auto; font-size: 2vmax;">Anteprima</p>
+                    </div>
+                    <div class="outPreview">
+                        <p id="p1"></p>
+                        <p id="p2"></p>
+                        <p id="p3"></p>
+                        <p id="p4"></p>
+                        <p id="p5"></p>
+                        <p id="p6"></p>
+                    </div>
+                    <div style="margin-top: 2%; text-align: center">
+                        <button class="btn btn-primary" type="button" onclick="loadDoc();" style="font-size: 1.3vmax;font-family: Calibri light;">Conferma</button>
+                    </div>
+                </div>
             </div>
         </div>
-
-        <div class="previewForm">
-            <div class="titleDateForm">
-                <p>Anteprima</p>
-            </div>
-            <div class="outPreview">
-                <p id="p1"></p>
-                <p id="p2"></p>
-                <p id="p3"></p>
-                <p id="p4"></p>
-                <p id="p5"></p>
-                <p id="p6"></p>
-            </div>
-            <div class="outPreview" style="height: 40px;margin: 4% 45px;">
-                <p id = "result"></p>
-            </div>
-            <button class="btn btn-primary" type="button" onclick="loadDoc();" style="margin-left: 73.5%; width: 140px;height: 51px;font-family: Calibri light;font-size: 20px;">Conferma</button>
-        </div>
-        
     </div>
  
     <script type="application/javascript">
@@ -157,18 +167,16 @@
                 var pr = check.checked;
                 var params = 'gruppoSanguigno='+gs+'&numeroSacche='+num+'&dataArrivoMassima='+df+'&enteRichiedente='+enterichiedente+'&indirizzoEnte='+indirizzorichiedente+'&priorità='+pr;
                 
-                host = document.location.origin
+                host = document.location.origin;
                 var url = host+ "/rest/operatore/ricerca?"+params;
 
                 xhttp.onreadystatechange = function() {
-
-                    if ( (this.readyState == 4 && this.status == 200) || (this.readyState == 4 && this.status == 206)) {
+                    if (this.readyState == 4 && this.status == 200) {
                  	    res = JSON.parse(this.response);
                  	    var serialiDaEvadere = new Array();
                  	    for (let i=0; i< res.listaSeriali.length; i++){
                             serialiDaEvadere[i] = res.listaSeriali[i].seriale;
                  	    }
-                 	    alert(res.message);
 
                  	    if (confirm(serialiDaEvadere+"\nConfermare l'evasione?" )){
                  	         let xhttpEvasione = new XMLHttpRequest();
@@ -186,12 +194,14 @@
                              };
 
 
-                 	    }else{ reloadPage();}
+                 	    }else{
+                 	        reloadPage();
+                 	    }
                  	}else{
-                 	    if (this.readyState == 4 && this.status == 404){
+                 	    if (this.readyState == 4 && this.status != 200){
                             alert(this.response);
                         }
-                    }
+                 	}
                 };
                 
                 xhttp.onerror = function(){
@@ -212,7 +222,7 @@
                 numero_sacche.value= "";
                 indirizzo.value= "";
                 enteRic.value="";
-                check.value="";
+                check.checked=false;
                 location.reload();
             }
     </script>

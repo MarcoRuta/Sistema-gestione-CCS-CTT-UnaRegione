@@ -6,41 +6,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>MagazziniereHub</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/stylesDim.css">
 </head>
 
 <body onload="start();">
     
     <div class="titlePage">
-        <div>
-            <span class="fontTitle">
-                Centro Trasfusionale Territoriale
-            </span>
-        </div>
-        <div>
-            <img class="logoCTT" src="assets/img/LOGO_CTT.svg">
+        <div class="row">
+            <div class="col">
+                <span class="fontTitle">
+                    Centro Trasfusionale Territoriale
+                </span>
+            </div>
+            <div class="col" style="text-align: right;">
+                <img class="logoCTT" src="assets/img/LOGO_CTT.svg">
+            </div>
         </div>
     </div>
 
     <div class="container">
         
-        <div class="row" style="margin-left:0px; margin-right: 0px">
+        <div class="row" style="margin: auto;">
             <div class="border col boxProfile" style="background-image: url(&quot;assets/img/bg-pattern.png&quot;);">
                 <div class="row">
-                    <div class="col-sm">
-                        <img src="assets/img/doctor+pediatrician+icon-1320185104387356300.png" style="width: 200px;margin: 5% 7%;">
-                        <span style="padding-left: 17%">Magazziniere CTT</span>
+                    <div class="col-sm" style="padding:1%; text-align: center">
+                        <img src="assets/img/doctor+pediatrician+icon-1320185104387356300.png" style="width: 80%;">
+                        <span><b>Magazziniere CTT</b></span>
                     </div>
-                    <div class="col-sm" style="margin-top: 9%; margin-left: -2em">
+                    <div class="col-sm" style="margin: auto;">
                         <div>
                             <p id="nome">Nome: </p>
                         </div>
-                        <div style="margin: 30px 0%;">
+                        <div>
                             <p id="cognome">Cognome: </p>
                         </div>
-                        <div style="width: 300px;">
+                        <div style="width: auto; padding-bottom: 2%;">
                             <button class="btn btn-primary" onclick="location.href='ChangePasswordAfterLogin.html';" type="button" style="background-color: #13958d;">Change Password</button>
-                            <button class="btn btn-primary" onclick="logout();" type="button" style="margin: 0% 5%">Log out</button>
+                            <button class="btn btn-primary" onclick="logout();" type="button">Log out</button>
                         </div>
                     </div>
                 </div>
@@ -48,241 +50,233 @@
             
             <div class="border col-sm boxButton" style="background-image: url(&quot;assets/img/bg-pattern.png&quot;);">
                 <div class="containerBtn">
-                        <p style="margin-left: 30%; margin-top: -1.5em "><b>Azioni</b></p>
-                        <div class="row" style="width:75%; margin-top:5%; margin-left: 16%;">
+                        <p><b>Azioni</b></p>
+                        <div class="row" style="padding-bottom: 3%">
                             <div class="col-sm">
-                                <button class="btn btn-primary" onclick="location.href='AggiungiSaccaForm.html';" type="button" style="background-color: #13958d;width: 210px;">Aggiunta sacca</button>
+                                <button class="btn btn-primary" onclick="location.href='AggiungiSaccaForm.html';" type="button" style="background-color: #13958d;width: auto;">Aggiunta sacca</button>
                             </div>
                         </div>
-                    <div class="row" style="width:75%; margin-top:5%; margin-left: 16%;">
-                        <div class = "divSmaMag col-sm" id ="divSma"></div>
-                    </div>
+                        <div class="row">
+                            <div class = "divSmaMag" id ="divSma" style="margin: auto;"></div>
+                        </div>
                 </div>
             </div>
         </div>
          
         <div class="boxNotification col-sm-12 border shadow-sm profile-box" style="background-image: url(&quot;assets/img/bg-pattern.png&quot;);">
             <h2>Notifiche</h2>
-            <div class="divNotMag" id="divNot">
+            <div class="divNot" id="divNot">
             </div>
         </div> 
     </div>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
     <script>
-    var xhttp = new XMLHttpRequest();
-    var token = sessionStorage.getItem("token");
-    var ruolo = sessionStorage.getItem("ruolo");
-    var name = sessionStorage.getItem("nome");
-    var surname = sessionStorage.getItem("cognome");
+        var xhttp = new XMLHttpRequest();
+        var token = sessionStorage.getItem("token");
+        var ruolo = sessionStorage.getItem("ruolo");
+        var name = sessionStorage.getItem("nome");
+        var surname = sessionStorage.getItem("cognome");
+        
+        var data;
+        var str;
+        var urlPdf;
+        var host;
+        
+        
+        function start() {
+            verificoToken();
+            sessionload();
+            setPerson();
+        }
     
-    var data;
-    var str;
-    var urlPdf;
-    var host;
-    
-    
-    function start() {
-        verificoToken();
-        sessionload();
-        setPerson();
-    }
-
-    verificoToken = function(){
-             if(token == null || ruolo != 'MagazziniereCTT'){
-              alert("E' necessario effettuare il login per accedere a questa risorsa");
-              window.location.href='Login.html';
-             }
-          };
-          
-    function setPerson(){
-     	document.getElementById("nome").textContent = "Nome: " + name;
-     	document.getElementById("cognome").textContent = "Cognome: " + surname;
-     }
-
-    function sessionload() {
-			for(let i = 0; i < localStorage.length; i++) {
-                if(localStorage.key(i) == "evasioneBottone") {
-                    data = localStorage.getItem(localStorage.key(i));
-                    addBtn();
-                }
-			}
-      }
-    
-
-      function addBtn() {
-          var obj = JSON.parse(data);
-          for (var j =0; j<obj.length; j++){
-            str = "";
-
-            for(var i=0; i < obj[j].listaSeriali.length; i++) {
-                str = str + obj[j].listaSeriali[i].seriale+",";
-            }
-            str2 = str.substring(0,str.length-1);
-            var btn = document.createElement("button");
-            btn.className='btn btn-warning';
-            btn.innerHTML = "Sacche: " + str2 + "<br>Ente: " + obj[j].enteRichiedente + "<br>Indirizzo: " + obj[j].indirizzoEnte;
-            btn.type = 'submit';
-            btn.value = JSON.stringify(obj[j]);
-            btn.id = 'btnEv';
-            btn.style = 'width: 98%; max-height: 280px; vertical-align: baseline; margin: 1%; text-align: left;';
-
-
-            /*####### EVASIONE SACCA ######*/
-            btn.onclick = function() {
-
-        	    var x = document.activeElement;
-                host = document.location.origin;
-                var url = host+"/rest/magazziniere/evasione";
-              
-                xhttp.onreadystatechange = function() {
-                    if (this.readyState == 4 && this.status == 201) {
-                        alert(this.response);
-                        urlPdf = host + xhttp.getResponseHeader("Content-Location");
-                        creaPdf();
-                    } else if(this.readyState == 4 && this.status != 201) {
-                           alert(this.response);
-                    }
-
-                };
-
-                xhttp.onerror = function(){
-                    alert("Sacca non esistente");
-                };
-
-
-                xhttp.open("POST", url, true);
-                xhttp.setRequestHeader('Authorization', 'Basic '+token);
-                xhttp.setRequestHeader('Content-type', 'application/json');
-                xhttp.withCredentials = true;
-                xhttp.send(x.value);
-
-            };
-
-            document.getElementById("divNot").appendChild(btn);
-          }
-      }
-    
-  	/*####### CREA PDF FUNCTION ######*/
-      function creaPdf() {
-              var xhr = new XMLHttpRequest();
-              xhr.open("GET", urlPdf, true);
-              xhr.setRequestHeader('Authorization', 'Basic '+token);
-              xhr.withCredentials = true;
-              xhr.responseType = 'arraybuffer';
-              xhr.send();
-
-              xhr.onreadystatechange = function() {
-                if (xhr.readyState == 4){
-                    var blobSrc = window.URL.createObjectURL(new Blob([this.response], { type: 'application/pdf'}));
-                    window.open(blobSrc);
-                }
+        verificoToken = function(){
+                 if(token == null || ruolo != 'MagazziniereCTT'){
+                  alert("E' necessario effettuare il login per accedere a questa risorsa");
+                  window.location.href='Login.html';
+                 }
               };
-      }
-      /*#############################*/
-
-      /*#############################*/
-       
-      /*####### LOGOUT FUNCTION ######*/
-      logout = function(){
-  
-         var xhttp = new XMLHttpRequest();
-         host = document.location.origin;
-         var url =host+"/rest/autentificazione/logout";
-         xhttp.onreadystatechange = function() {
-                     if (this.readyState == 4 && this.status == 200 ) {
-                          sessionStorage.removeItem("token");
-                          sessionStorage.removeItem("ruolo");
-                          sessionStorage.removeItem("nome");
-                          sessionStorage.removeItem("cognome");
-                          sessionStorage.removeItem("cdf");
-                          window.location.href='Login.html';
-                     }else {
-                         if(this.readyState == 4 && this.status != 200 ){
-                             alert(this.response);
+              
+        function setPerson(){
+            document.getElementById("nome").textContent = "Nome: " + name;
+            document.getElementById("cognome").textContent = "Cognome: " + surname;
+         }
+    
+        function sessionload() {
+                for(let i = 0; i < localStorage.length; i++) {
+                    if(localStorage.key(i) == "evasioneBottone") {
+                        data = localStorage.getItem(localStorage.key(i));
+                        addBtn();
+                    }
+                }
+          }
+        
+    
+          function addBtn() {
+              var obj = JSON.parse(data);
+              for (var j =0; j<obj.length; j++){
+                str = "";
+    
+                for(var i=0; i < obj[j].listaSeriali.length; i++) {
+                    str = str + obj[j].listaSeriali[i].seriale+",";
+                }
+                str2 = str.substring(0,str.length-1);
+                var btn = document.createElement("button");
+                btn.className='btn btn-warning';
+                btn.innerHTML = "Sacche: " + str2 + "<br>Ente: " + obj[j].enteRichiedente + "<br>Indirizzo: " + obj[j].indirizzoEnte;
+                btn.type = 'submit';
+                btn.value = JSON.stringify(obj[j]);
+                btn.id = 'btnEv';
+                btn.style = 'width: 98%; max-height: 280px; vertical-align: baseline; margin: 1%; text-align: left;';
+    
+    
+                /*####### EVASIONE SACCA ######*/
+                btn.onclick = function() {
+    
+                    var x = document.activeElement;
+                    host = document.location.origin;
+                    var url = host+"/rest/magazziniere/evasione";
+                  
+                    xhttp.onreadystatechange = function() {
+                        if (this.readyState == 4 && this.status == 201) {
+                            alert(this.response);
+                            urlPdf = host + xhttp.getResponseHeader("Content-Location");
+                            creaPdf();
+                        } else if(this.readyState == 4 && this.status != 201) {
+                               alert(this.response);
+                        }
+    
+                    };
+    
+                    xhttp.onerror = function(){
+                        alert("Sacca non esistente");
+                    };
+    
+    
+                    xhttp.open("POST", url, true);
+                    xhttp.setRequestHeader('Authorization', 'Basic '+token);
+                    xhttp.setRequestHeader('Content-type', 'application/json');
+                    xhttp.withCredentials = true;
+                    xhttp.send(x.value);
+    
+                };
+    
+                document.getElementById("divNot").appendChild(btn);
+              }
+          }
+        
+        /*####### CREA PDF FUNCTION ######*/
+          function creaPdf() {
+                  var xhr = new XMLHttpRequest();
+                  xhr.open("GET", urlPdf, true);
+                  xhr.setRequestHeader('Authorization', 'Basic '+token);
+                  xhr.withCredentials = true;
+                  xhr.responseType = 'arraybuffer';
+                  xhr.send();
+    
+                  xhr.onreadystatechange = function() {
+                    if (xhr.readyState == 4){
+                        var blobSrc = window.URL.createObjectURL(new Blob([this.response], { type: 'application/pdf'}));
+                        window.open(blobSrc);
+                    }
+                  };
+          }
+          /*#############################*/
+    
+          /*#############################*/
+           
+          /*####### LOGOUT FUNCTION ######*/
+          logout = function(){
+      
+             var xhttp = new XMLHttpRequest();
+             host = document.location.origin;
+             var url =host+"/rest/autentificazione/logout";
+             xhttp.onreadystatechange = function() {
+                         if (this.readyState == 4 && this.status == 200 ) {
+                              sessionStorage.removeItem("token");
+                              sessionStorage.removeItem("ruolo");
+                              sessionStorage.removeItem("nome");
+                              sessionStorage.removeItem("cognome");
+                              sessionStorage.removeItem("cdf");
+                              window.location.href='Login.html';
+                         }else {
+                             if(this.readyState == 4 && this.status != 200 ){
+                                 alert(this.response);
+                             }
                          }
-                     }
+             };
+      
+      
+             xhttp.onerror = function(){
+                        alert("impossibile inviare la richiesta");
+             };
+      
+      
+             xhttp.open("DELETE", url, true);
+             xhttp.setRequestHeader('Authorization', 'Basic '+token);
+             xhttp.withCredentials = true;
+             xhttp.send();
+      
          };
-  
-  
-         xhttp.onerror = function(){
-                    alert("impossibile inviare la richiesta");
-         };
-  
-  
-         xhttp.open("DELETE", url, true);
-         xhttp.setRequestHeader('Authorization', 'Basic '+token);
-         xhttp.withCredentials = true;
-         xhttp.send();
-  
-     };
-
-
-
-
-
-
-    </script>
-    <script>
-
-     var smaltimento;
-     var xhttpSma = new XMLHttpRequest();
-     var token = sessionStorage.getItem("token");
-     var urlSma;
-     var hostSma;
-
-     smaltimentoload = function(){
-        for(let i = 0; i < localStorage.length; i++) {
-                if(localStorage.key(i) == "smaltimentoBottone") {
-                    smaltimento = localStorage.getItem(localStorage.key(i));
-                    addSmaltimento();
+    
+    
+         var smaltimento;
+         var xhttpSma = new XMLHttpRequest();
+         var urlSma;
+         var hostSma;
+    
+         smaltimentoload = function(){
+            for(let i = 0; i < localStorage.length; i++) {
+                    if(localStorage.key(i) == "smaltimentoBottone") {
+                        smaltimento = localStorage.getItem(localStorage.key(i));
+                        addSmaltimento();
+                    }
                 }
-			}
-     }
-
-     function addSmaltimento() {
-        var objSma = JSON.parse(smaltimento);
-        var btnSma = document.createElement("button");
-        btnSma.className='btn btn-danger';
-        btnSma.innerHTML = "Sacche Da Smaltire"
-        btnSma.type = 'submit';
-        btnSma.id = 'btnSma';
-        btnSma.style = 'width: 210px';
-
-
-        /*####### Smaltimento ######*/
-        btnSma.onclick = function() {
-            hostSma = document.location.origin;
-            var urlSma = hostSma+"/rest/notifica/smaltimento/pdf";
-
-            xhttpSma.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    var blobSrcSma = window.URL.createObjectURL(new Blob([this.response], { type: 'application/pdf'}));
-                    window.open(blobSrcSma);
+         };
+    
+         function addSmaltimento() {
+            objSma = JSON.parse(smaltimento);
+            var btnSma = document.createElement("button");
+            btnSma.className='btn btn-danger';
+            btnSma.innerHTML = "Sacche Da Smaltire";
+            btnSma.type = 'submit';
+            btnSma.id = 'btnSma';
+            btnSma.style = 'width: 210px';
+    
+    
+            /*####### Smaltimento ######*/
+            btnSma.onclick = function() {
+                hostSma = document.location.origin;
+                urlSma = hostSma+"/rest/notifica/smaltimento/pdf";
+    
+                xhttpSma.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        var blobSrcSma = window.URL.createObjectURL(new Blob([this.response], { type: 'application/pdf'}));
+                        window.open(blobSrcSma);
+                        location.reload();
+                    } else if(this.readyState == 4 && this.status != 200) {
+                           alert(this.response);
+                           location.reload();
+                    }
+    
+                };
+    
+                xhttpSma.onerror = function(){
+                    alert("Impossibile Conttatare il server");
                     location.reload();
-                } else if(this.readyState == 4 && this.status != 200) {
-                       alert(this.response);
-                       location.reload();
-                }
-
+                };
+    
+    
+                xhttpSma.open("GET", urlSma, true);
+                xhttpSma.setRequestHeader('Authorization', 'Basic '+token);
+                xhttpSma.withCredentials = true;
+                xhttpSma.responseType = 'arraybuffer';
+                xhttpSma.send();
+    
             };
-
-            xhttpSma.onerror = function(){
-                alert("Impossibile Conttatare il server");
-                location.reload();
-            };
-
-
-            xhttpSma.open("GET", urlSma, true);
-            xhttpSma.setRequestHeader('Authorization', 'Basic '+token);
-            xhttpSma.withCredentials = true;
-            xhttpSma.responseType = 'arraybuffer';
-            xhttpSma.send();
-
-        };
-
-        document.getElementById("divSma").appendChild(btnSma);
-     }
+    
+            document.getElementById("divSma").appendChild(btnSma);
+         }
 
 
 
