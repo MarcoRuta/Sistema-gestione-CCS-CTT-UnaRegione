@@ -25,7 +25,6 @@ public class EndPointNotificheOperatore {
     @Path("/risultatiRicercaGlobale")
     @Consumes(MediaType.APPLICATION_JSON)
     public void notifyOperatore(NotificaRisultatiRicerca risultatiRicerca){
-        System.err.println("o so dentrro");
         CttDataBaseRestApplication.logger.info("Mi è arrivata un risultato di una ricerca globale: "+risultatiRicerca);
         notificaRisultatiRicerca= risultatiRicerca;
         for (Session s : WebSocketEndPointResultRicercaGlobale.sessions) {

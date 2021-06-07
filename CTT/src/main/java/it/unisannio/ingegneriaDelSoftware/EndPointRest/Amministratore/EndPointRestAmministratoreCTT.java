@@ -5,9 +5,8 @@ import java.io.OutputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Singleton;
@@ -135,100 +134,96 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 	@Path("/reportOperatoriCtt")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response reportOperatoriCTT(@QueryParam("ruolo")String ruolo){
-	
-			List<Dipendente> listaDipendenti = md.getListaDipendenti();
-			List<Dipendente> risultatoQuery = new ArrayList<Dipendente>();
-			
-			for(Dipendente d : listaDipendenti)
-				if(d.getRuolo().toString().equals(ruolo)) risultatoQuery.add(d);
-			
-			return Response	 		
-					.status(Response.Status.OK)
-					.entity(risultatoQuery)
-					.build();
+
+		List<Dipendente> listaDipendenti = md.getListaDipendenti();
+		List<Dipendente> risultatoQuery = new ArrayList<Dipendente>();
+
+		for(Dipendente d : listaDipendenti)
+			if(d.getRuolo().toString().equals(ruolo)) risultatoQuery.add(d);
+
+		return Response
+				.status(Response.Status.OK)
+				.entity(risultatoQuery)
+				.build();
 	}
 
 
-	/**---------REPORT SACCHE DI UN TIPO PRESENTI NEL DATABASE SACCHE------------
-	 * Restituisce la lista delle Sacche di un determinato Gruppo sanguigno, presenti del database delle Sacche
-	 * @param gs Gruppo sanguigno delle Sacche che si vogliono ricercare
-	 * @return Response 200 OK e invia la lista dei datiSacca 400 BAD_REQUEST se i parametri inseriti non sono corretti
+	/**---------REPORT NUMERICO DEI TIPI DI SACCHE PRESENTI NEL DATABASE------------
+	 * Restituisce il numero di sacche presenti di ogni tipo nel database
+	 * @return Response 200 OK e invia la lista dei datiSacca
+	 * @return 400 BAD_REQUEST se i parametri inseriti non sono corretti
 	 */
 	@GET
 	@Path("/reportStatisticoSacche")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response reportStatisticoSacche(@QueryParam("gs")String gs){
+	public Response reportStatisticoSacche(@HeaderParam(HttpHeaders.AUTHORIZATION) String headers){
 
-		List<Sacca> listaSacche = md.getListaSacche();
-		List<Sacca> risultatoQuery = new ArrayList<Sacca>();
-		
-		for(Sacca s : listaSacche)
-			if(s.getGruppoSanguigno().toString().equals(gs)) risultatoQuery.add(s);
-		
-		return Response	 		
+		Map<GruppoSanguigno,Integer> risultatoQuery = this.getNumeroSaccheDB();
+
+		return Response
 				.status(Response.Status.OK)
 				.entity(risultatoQuery)
 				.build();
-}
+	}
 
+	/**---------REPORT SACCHE INVIATE IN UN PERIODO------------
+	 * Restituisce la lista dei DatiSacche relativi alle sacche che sono state affidate in un determinato arco temporale
+	 * @param dataInizio Data inizio dell' arco temporale
+	 * @param dataFine Data fine dell' arco temporale
+	 * @return Response 200 OK e invia la lista dei datiSacca
+	 * @return 400 BAD_REQUEST se i parametri inseriti non sono corretti
+	 */
+	@GET
+	@Path("/reportLocaleSaccheInviate")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response reportLocaleSaccheInviate(@QueryParam("dataInizio")String dataInizio,
+											  @QueryParam("dataFine")String dataFine) throws DateTimeParseException{
+		LocalDate dataInizioReport = LocalDate.parse(dataInizio, DateTimeFormatter.ofPattern(Constants.DATEFORMAT));
+		LocalDate dataAffidamentoReport = LocalDate.parse(dataFine, DateTimeFormatter.ofPattern(Constants.DATEFORMAT));
+		List <DatiSacca> risultatoQuery = getSaccheInviatePeriodoTemporale(dataInizioReport,dataAffidamentoReport);
+		return Response
+				.status(Response.Status.OK)
+				.entity(risultatoQuery)
+				.build();
+	}
 
-	/**---------REPORT SACCHE INVIATE E RICEVUTE CTT------------
-	 * Restituisce la lista dei DatiSacche relativi alle sacche che sono state caricate o affidate in un determinato arco temporale
+	/**---------REPORT SACCHE RICEVUTE IN UN PERIODO------------
+	 * Restituisce la lista dei DatiSacche relativi alle sacche che sono state ricevute in un determinato arco temporale
 	 * @param dataInizio Data inizio dell' arco temporale
 	 * @param dataFine Data fine dell' arco temporale
 	 * @return Response 200 OK e invia la lista dei datiSacca 400 BAD_REQUEST se i parametri inseriti non sono corretti
 	 */
 	@GET
-	@Path("/reportLocaleSaccheInviateERicevute")
+	@Path("/reportLocaleSaccheRicevute")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response reportLocaleSaccheInviateERicevuteCTT(@QueryParam("dataInizio")String dataInizio,
-															@QueryParam("dataFine")String dataFine) throws DateTimeParseException{
+	public Response reportLocaleSaccheRicevute(@QueryParam("dataInizio")String dataInizio,
+											   @QueryParam("dataFine")String dataFine) throws DateTimeParseException{
 		LocalDate dataInizioReport = LocalDate.parse(dataInizio, DateTimeFormatter.ofPattern(Constants.DATEFORMAT));
 		LocalDate dataAffidamentoReport = LocalDate.parse(dataFine, DateTimeFormatter.ofPattern(Constants.DATEFORMAT));
-		List <DatiSacca> risultatoQuery = getDatiSaccaInATemporalAmount(dataInizioReport,dataAffidamentoReport);
+		List <DatiSacca> risultatoQuery = getSaccheRicevutePeriodoTemporale(dataInizioReport,dataAffidamentoReport);
 		return Response
 				.status(Response.Status.OK)
 				.entity(risultatoQuery)
 				.build();
 	}
 
-
-	/**---------REPORT SACCHE INVIATE E RICEVUTE CTT PER OGNI TIPO DI SANGUE SCELTO------------
-	 * Restituisce il numero di Sacche ricevute e inviate in un arco temporale, per ogni Gruppo sanguigno scelto dall'AmministratoreCTT
-	 * @param listaGS Lista dei Gruppi sanguigni scelti dall'AmministratoreCTT, una strigna con gruppo1:gruppo2:gruppo3
-	 * @param dataInizio Data di inizio dell' arco temporale
-	 * @param dataFine Data di fine dell' arco temporale
-	 * @return Response 200 OK e invia la lista dei datiSacca / 400 BAD_REQUEST se i parametri inseriti non sono corretti
+	/**---------REPORT PERMANENZA MEDIA PER TIPO DI SANGUE------------
+	 *
+	 * @return Response 200 OK e invia la mappa key: gruppoSanguigno, value: permanenza media in giorni 400 BAD_REQUEST se i parametri inseriti non sono corretti
 	 */
 	@GET
-	@Path("/ordinaGruppiSanguigniPerRichieste")
-	@Produces(MediaType.TEXT_PLAIN)
-	public Response ordinaGruppiSanguigniPerRichieste(@QueryParam("listaGS") String listaGS,
-														@QueryParam("dataInizio")String dataInizio,
-														@QueryParam("dataFine")String dataFine) throws DateTimeParseException{
-		String risultatoQuery = "";
-		StringTokenizer aTokenizer = new StringTokenizer(listaGS);
-		//recupero le sacche nll'arco di tempo di interesse
-		LocalDate dataInizioReport = LocalDate.parse(dataInizio, DateTimeFormatter.ofPattern(Constants.DATEFORMAT));
-		LocalDate dataAffidamentoreport = LocalDate.parse(dataFine, DateTimeFormatter.ofPattern(Constants.DATEFORMAT));
-		List<DatiSacca> listaDatiSaccheInIntervallo = this.getDatiSaccaInATemporalAmount(dataInizioReport, dataAffidamentoreport);
+	@Path("/permanenzaMediaSacche")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response permanenzaMedia(){
 
-		// per ogni gruppo sanguigno controllo le sacche che ho avuto di quel tipo in quell'intervalllo
-		while (aTokenizer.hasMoreTokens()) {
-			String gs = aTokenizer.nextToken(":");
-			int contatore = 0;
-			for (DatiSacca ds : listaDatiSaccheInIntervallo)
-				if (gs.equals(ds.getGruppoSanguigno().toString()))
-					contatore++;
-			//aggiorno il risultato
-			risultatoQuery = "Numero di sacche con gruppo sanguigno: " + gs + ": " + contatore;
-			//ora vado al gruppo sanguigno successivo
-		}
+		Map<GruppoSanguigno,Double> risultatoQuery = this.permanenzaMediaMagazzino();
+
 		return Response
 				.status(Response.Status.OK)
 				.entity(risultatoQuery)
 				.build();
 	}
+
 
 	/**Metodo tramite il quale è possibile accedere alla lista di Dipendenti contenuti nel database dei Dipendenti 
 	 * @return la lista di dipendenti che lavorano al CTT*/
@@ -241,23 +236,137 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 		return  dipendenti;
 	}
 
-	/**Restituisce una lista di DatiSacca che sono arrivate dopo di dataInizioReport oppure sono state affidate dopo prima di dataAffidamentoReport
+	/**Metodo tramite il quale è possibile accedere al numero di sacche contenute nel database per tipo
+	 * @return mappa con key: gruppoSanguigno value: numero di sacche
+	 */
+	private Map<GruppoSanguigno,Integer> getNumeroSaccheDB(){
+
+		List<Sacca> listaSacche = md.getListaSacche();
+
+		int x;
+
+		Map<GruppoSanguigno,Integer> risultatoQuery = new HashMap<GruppoSanguigno,Integer>();
+		risultatoQuery.put(GruppoSanguigno.Ap, 0);
+		risultatoQuery.put(GruppoSanguigno.Am, 0);
+		risultatoQuery.put(GruppoSanguigno.Bp, 0);
+		risultatoQuery.put(GruppoSanguigno.Bm, 0);
+		risultatoQuery.put(GruppoSanguigno.ABp, 0);
+		risultatoQuery.put(GruppoSanguigno.ABm, 0);
+		risultatoQuery.put(GruppoSanguigno.ZEROp, 0);
+		risultatoQuery.put(GruppoSanguigno.ZEROm, 0);
+
+
+		for(Sacca s : listaSacche) {
+			x = risultatoQuery.get(s.getGruppoSanguigno());
+			x++;
+			risultatoQuery.put(s.getGruppoSanguigno(), x);
+		}
+
+		return risultatoQuery;
+	}
+
+	/**Restituisce una lista di DatiSacca che sono state inviate dopo di dataInizioReport e prima di dataFineReport
 	 * @param dataInizioReport  data dalla quale si selezionano le Sacche
 	 * @param dataFineReport data oltre la quale non si selezionano più le Sacche
-	 * @return lista di Sacche che erano nel CTT nell'arco temporale dataInizioReport-dataAffidamentoReport*/
-	private List<DatiSacca> getDatiSaccaInATemporalAmount(LocalDate dataInizioReport, LocalDate dataFineReport){
+	 * @return lista di Sacche che sono state inviate dal CTT nel periodo selezionato*/
+	private List<DatiSacca> getSaccheInviatePeriodoTemporale(LocalDate dataInizioReport, LocalDate dataFineReport){
 		List<DatiSacca> datiSaccaTransitati = new ArrayList<>();
-		
+
 		//creo la lista dei dati sacca
 		List<DatiSacca> listaDatiSacca = md.getListaDatiSacche();
 		for (DatiSacca datiSacca : listaDatiSacca)
-			if ((datiSacca.getDataArrivo().isAfter(dataInizioReport) && datiSacca.getDataArrivo().isBefore(dataFineReport))
-					|| (datiSacca.getDataAffidamento().get().isAfter(dataInizioReport) && datiSacca.getDataAffidamento().get().isBefore(dataFineReport))
-					|| (datiSacca.getDataArrivo().isEqual(dataInizioReport) && datiSacca.getDataAffidamento().get().isEqual(dataFineReport)))
-				//se è verificata una delle 4 condizioni aggiungo alla lista
+			if ((datiSacca.getDataAffidamento().get().isAfter(dataInizioReport) || datiSacca.getDataAffidamento().get().isEqual(dataInizioReport))
+					&&
+					(datiSacca.getDataAffidamento().get().isBefore(dataFineReport) || datiSacca.getDataAffidamento().get().isEqual(dataFineReport)))
+
+				//se la sacca è stata inviata in un periodo compreso tra dataInizioReport e dataFineReport viene aggiunta alla lista
 				datiSaccaTransitati.add(datiSacca);
+
 		return datiSaccaTransitati;
 	}
 
+	/**Restituisce una lista di DatiSacca che sono state ricevute dopo di dataInizioReport e prima di dataFineReport
+	 * @param dataInizioReport  data dalla quale si selezionano le Sacche
+	 * @param dataFineReport data oltre la quale non si selezionano più le Sacche
+	 * @return lista di Sacche che sono state ricevute dal CTT nel periodo selezionato*/
+	private List<DatiSacca> getSaccheRicevutePeriodoTemporale(LocalDate dataInizioReport, LocalDate dataFineReport){
+		List<DatiSacca> datiSaccaTransitati = new ArrayList<>();
+
+		//creo la lista dei dati sacca
+		List<DatiSacca> listaDatiSacca = md.getListaDatiSacche();
+		for (DatiSacca datiSacca : listaDatiSacca)
+			if ((datiSacca.getDataArrivo().isAfter(dataInizioReport) || datiSacca.getDataArrivo().isEqual(dataInizioReport))
+					&&
+					(datiSacca.getDataArrivo().isBefore(dataFineReport) || datiSacca.getDataArrivo().isEqual(dataFineReport)))
+
+				//se la sacca è stata inviata in un periodo compreso tra dataInizioReport e dataFineReport viene aggiunta alla lista
+				datiSaccaTransitati.add(datiSacca);
+
+		return datiSaccaTransitati;
+	}
+
+	/**Restituisce la permanenza media delle sacche in magazzino per ogni tipo
+	 *
+	 * @return mappa con key: gruppoSanguigno e value: permanenza media per quel gruppo sanguigno
+	 * */
+	private Map<GruppoSanguigno,Double> permanenzaMediaMagazzino(){
+
+		Double days;
+		int x;
+		Double y;
+
+		//Mappa in cui salvo il numero di sacche trovate per tipo
+		Map<GruppoSanguigno,Integer> saccheTrovate = new HashMap<GruppoSanguigno,Integer>();
+		saccheTrovate.put(GruppoSanguigno.Ap, 0);
+		saccheTrovate.put(GruppoSanguigno.Am, 0);
+		saccheTrovate.put(GruppoSanguigno.Bp, 0);
+		saccheTrovate.put(GruppoSanguigno.Bm, 0);
+		saccheTrovate.put(GruppoSanguigno.ABp, 0);
+		saccheTrovate.put(GruppoSanguigno.ABm, 0);
+		saccheTrovate.put(GruppoSanguigno.ZEROp, 0);
+		saccheTrovate.put(GruppoSanguigno.ZEROm, 0);
+
+		//Mappa in cui salvo la somma delle permanenze delle sacche trovate per tipo
+		Map<GruppoSanguigno,Double> risultatoQuery = new HashMap<GruppoSanguigno,Double>();
+		risultatoQuery.put(GruppoSanguigno.Ap, 0.0);
+		risultatoQuery.put(GruppoSanguigno.Am, 0.0);
+		risultatoQuery.put(GruppoSanguigno.Bp, 0.0);
+		risultatoQuery.put(GruppoSanguigno.Bm, 0.0);
+		risultatoQuery.put(GruppoSanguigno.ABp, 0.0);
+		risultatoQuery.put(GruppoSanguigno.ABm, 0.0);
+		risultatoQuery.put(GruppoSanguigno.ZEROp, 0.0);
+		risultatoQuery.put(GruppoSanguigno.ZEROm, 0.0);
+
+
+		List<DatiSacca> listaDatiSacca = md.getListaDatiSacche();
+
+		for (DatiSacca datiSacca : listaDatiSacca)
+			//se la sacca è stata affidata (la query non vale per sacche non affidate)
+			if (datiSacca.getDataAffidamento().get() != null) {
+
+				//calcolo quanto tempo è stata in magazzino
+				//days = (double) ChronoUnit.DAYS.between(datiSacca.getDataAffidamento().get(), datiSacca.getDataArrivo());
+				days = (double) ChronoUnit.DAYS.between(datiSacca.getDataArrivo(), datiSacca.getDataAffidamento().get());
+
+				//incremento il numero di sacche trovate di quel tipo
+				x = saccheTrovate.get(datiSacca.getGruppoSanguigno());
+				x++;
+				saccheTrovate.put(datiSacca.getGruppoSanguigno(), x);
+
+				//incremento i giorni di permanenza per quel tipo
+				y = risultatoQuery.get(datiSacca.getGruppoSanguigno());
+				y += days;
+				risultatoQuery.put(datiSacca.getGruppoSanguigno(), y);
+			}
+
+		//scorro la mappa e divido il contenuto per il numero di sacche per tipo, in modo da trovare la permanenza media
+		for(GruppoSanguigno gs : risultatoQuery.keySet()) {
+			y = risultatoQuery.get(gs);
+			y = y / (saccheTrovate.get(gs));
+			risultatoQuery.put(gs, y);
+		}
+
+		return risultatoQuery;
+	}
 
 }	

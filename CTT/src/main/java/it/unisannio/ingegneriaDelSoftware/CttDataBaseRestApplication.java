@@ -35,9 +35,9 @@ public class CttDataBaseRestApplication extends ResourceConfig {
 
 	public CttDataBaseRestApplication() throws Exception {
 
-		//Filtro per autorizzazzione
+		//Filtro per autorizzazione
 		register(FiltroDiAutorizzazione.class);
-		//Filtro per Authentificazione
+		//Filtro per Autentificazione
 		register (FiltroDiAutentificazione.class);
 		//gestione AssertionError
 		register(AssertionErrorHandler.class);
@@ -58,9 +58,9 @@ public class CttDataBaseRestApplication extends ResourceConfig {
 		register(EndPointRestAmministratoreCTT.class);
 		//Endpoint Operatore
 		register(EndPointRestOperatoreCTT.class);
-		//endointNotifichemagazzinere
+		//Endpoint NotificheMagazzinere
 		register(EndPointNotificheMagazziniere.class);
-		//endPointNotificheOperatore
+		//EndPoint NotificheOperatore
 		register(EndPointNotificheOperatore.class);
 
 	}
