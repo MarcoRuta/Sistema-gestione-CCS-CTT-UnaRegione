@@ -243,36 +243,37 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 	public Response reportStatisticoSaccheRegionale(@HeaderParam(HttpHeaders.AUTHORIZATION) String headers){
 
 		CcsDataBaseRestApplication.logger.info("Sto inizializzando il report di disponibilità regionale sacche");
-		/**
+
 		Map<CTTName, String> cttOnline = ConnectionVerifier.isCTTOnline();
 		Map<GruppoSanguigno, Integer> temp = new HashMap<GruppoSanguigno, Integer>();
 		Map<GruppoSanguigno, Integer> risultatoQuery = new HashMap<GruppoSanguigno, Integer>();
-		risultatoQuery.put(GruppoSanguigno.Ap, 0);
-		risultatoQuery.put(GruppoSanguigno.Am, 0);
-		risultatoQuery.put(GruppoSanguigno.Bp, 0);
-		risultatoQuery.put(GruppoSanguigno.Bm, 0);
-		risultatoQuery.put(GruppoSanguigno.ABp, 0);
-		risultatoQuery.put(GruppoSanguigno.ABm, 0);
-		risultatoQuery.put(GruppoSanguigno.ZEROp, 0);
-		risultatoQuery.put(GruppoSanguigno.ZEROm, 0);
+
+		Integer[] value = new Integer[0];
+		String[] keys = new String[0];
 
 		for(CTTName ctt : cttOnline.keySet()){
 			CcsDataBaseRestApplication.logger.info("Sto interrogando il " + ctt + " per ricevere la lista delle sacche disponibili");
 			temp.putAll(CCSRestClient.makeDisponibilitàSaccheRequest(cttOnline.get(ctt)));
-			System.err.println(temp);
-			for(String s : Arrays.asList(Enum.values())){
-				System.err.println(s);
-				System.err.println(GruppoSanguigno.valueOf(s));
-				System.err.println(temp.get(GruppoSanguigno.valueOf(s)));
-				System.err.println(risultatoQuery.get(GruppoSanguigno.valueOf(s)));
+
+			value = temp.values().toArray(new Integer[0]);
+			keys = temp.keySet().toArray(new String[0]);
+
+			if(risultatoQuery.isEmpty()) {
+				for (int i = 0; i < keys.length; i++)
+					risultatoQuery.put(GruppoSanguigno.valueOf(keys[i]), value[i]);
+			}
+			else {
+				for (int i = 0; i < keys.length; i++) {
+					int t = risultatoQuery.get(GruppoSanguigno.valueOf(keys[i]));
+					t = t + value[i];
+					risultatoQuery.put(GruppoSanguigno.valueOf(keys[i]), t);
+				}
 			}
 		}
 
-
-		System.err.println(risultatoQuery); */
 		return Response
 				.status(Response.Status.OK)
-				.entity(null)
+				.entity(risultatoQuery)
 				.build();
 
 	}
