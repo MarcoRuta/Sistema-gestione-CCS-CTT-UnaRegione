@@ -15,7 +15,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-public class SaccheNonTrovateInLocaleHandelr implements ResponseHandler {
+public class SaccheNonTrovateInLocaleHandler implements ResponseHandler {
     @Override
     public Response makeResearchResponse(int numSacche, List<Seriale> serialiDaEvadere, String enteRichiedente, String indirizzoEnte, String dataArrivoMassima, String priorita, String gruppoSanguigno) {
 

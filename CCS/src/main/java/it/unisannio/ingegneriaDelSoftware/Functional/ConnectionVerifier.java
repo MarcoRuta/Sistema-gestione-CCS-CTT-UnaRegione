@@ -24,7 +24,7 @@ public class ConnectionVerifier {
     		try{	
 
 				Socket socket = new Socket();
-				socket.connect(new InetSocketAddress(Settings.ip.get(ctt), Integer.parseInt(Settings.PORTA)), 5000);
+				socket.connect(new InetSocketAddress(Settings.ip.get(ctt), Integer.parseInt(Settings.PORTA)), 3000);
 				cttOnline.put(ctt, Settings.ip.get(ctt));;
 				socket.close();	
 		    

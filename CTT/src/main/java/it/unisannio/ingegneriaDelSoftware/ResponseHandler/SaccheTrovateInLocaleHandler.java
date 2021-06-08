@@ -7,7 +7,7 @@ import it.unisannio.ingegneriaDelSoftware.Interfaces.ResponseHandler;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
-public class SacceTrovateInLocaleHandler implements ResponseHandler {
+public class SaccheTrovateInLocaleHandler implements ResponseHandler {
     public  Response makeResearchResponse(int numSacche, List<Seriale> serialiDaEvadere, String enteRichiedente, String indirizzoEnte, String dataArrivoMassima, String priorita, String gruppoSanguigno) {
         return Response
                 .status(Response.Status.OK)

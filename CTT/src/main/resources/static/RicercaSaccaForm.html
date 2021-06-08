@@ -230,7 +230,12 @@
                             alert(this.response);
                             reloadPage();
                         }
+                        if(this.readyState == 4 && this.status == 400) {
+                            alert("Data affidamento inserita non valida.");
+                            reloadPage();
+                        }
                     }
+
                  	
                 };
                 
