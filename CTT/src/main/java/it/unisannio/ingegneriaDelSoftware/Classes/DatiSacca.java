@@ -170,13 +170,5 @@ public class DatiSacca {
 		ps.println("Indirizzo Ente: "+(this.indirizzoEnte.isPresent()?this.indirizzoEnte.get():""));
 	}
 
-	
-	/**Restituisce l'etichetta DatiSacca
-	 * @return etichetta con i DatiSacca
-	 */
-	public String getEtichettaDatiSacca() {
-		return   "Data di ingresso: "+this.dataArrivo+"\n"
-				+"Data di affidamento: "+this.dataAffidamento.get()+"\n"
-				+"Ente donatore: "		+this.enteDonatore + "\n";
-	}
+
 }

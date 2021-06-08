@@ -249,28 +249,57 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 		Map<GruppoSanguigno, Integer> temp = new HashMap<GruppoSanguigno, Integer>();
 		Map<GruppoSanguigno, Integer> risultatoQuery = new HashMap<GruppoSanguigno, Integer>();
 
+		Integer[] value = new Integer[0];
+		String[] keys = new String[0];
+
+		for(CTTName ctt : cttOnline.keySet()){
+			CcsDataBaseRestApplication.logger.info("Sto interrogando il " + ctt + " per ricevere la lista delle sacche disponibili");
+			temp.putAll(CCSRestClient.makeDisponibilitàSaccheRequest(cttOnline.get(ctt)));
+
+			value = temp.values().toArray(new Integer[0]);
+			keys = temp.keySet().toArray(new String[0]);
+
+			if(risultatoQuery.isEmpty())
+				for (int i = 0; i < keys.length; i++)
+					risultatoQuery.put(GruppoSanguigno.valueOf(keys[i]), value[i]);
+			else {
+				for (int i = 0; i < keys.length; i++) {
+					int t = risultatoQuery.get(GruppoSanguigno.valueOf(keys[i]));
+					t = t + value[i];
+					risultatoQuery.put(GruppoSanguigno.valueOf(keys[i]), t);
+				}
+			}
+		}
+
+		/*
 		for(CTTName ctt : cttOnline.keySet()){
 			CcsDataBaseRestApplication.logger.info("Sto interrogando il " + ctt + " per ricevere la lista delle sacche disponibili");
 			temp = CCSRestClient.makeDisponibilitàSaccheRequest(cttOnline.get(ctt)); //Map<GruppoSanguigno, Integer>
-
+			System.err.println(temp);
 			if(!risultatoQuery.isEmpty()) {
+				System.err.println("AOO");
 				for(String g : temp.keySet().toArray(new String[0])) {
-
+					System.err.println("SO DENTRO");
 					int x = temp.get(g);
 					x += risultatoQuery.get(g);
-
-					if(risultatoQuery.containsKey(g))
+					System.err.print(x + " ");
+					if(risultatoQuery.containsKey(g)) {
+						System.err.println("RIMUOVO " + g);
 						risultatoQuery.remove(g);
+					}
 
 					risultatoQuery.put(GruppoSanguigno.valueOf(g), x);
 
 				}
+				System.err.println(risultatoQuery);
 
 			}
-			else
+			else {
 				risultatoQuery.putAll(temp);
+				System.err.println(risultatoQuery);
 			}
-
+			}
+*/
 		return Response
 				.status(Response.Status.OK)
 				.entity(risultatoQuery)
@@ -322,7 +351,6 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 
 		CcsDataBaseRestApplication.logger.info("Sto inizializzando il report delle sacche ricevute in rete tra il "+dataInizio+"e il "+dataFine);
 		Map<CTTName, String> cttOnline = ConnectionVerifier.isCTTOnline();
-		System.err.println(cttOnline);
 		List<DatiSacca> risultatoQuery = new ArrayList<>();
 
 		for (CTTName ctt : cttOnline.keySet()) {
@@ -335,25 +363,6 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 				.status(Response.Status.OK)
 				.entity(risultatoQuery)
 				.build();
-	}
-
-	private
-	Map<String, Integer> mergeSumOfMaps(Map<String, Integer>... maps) {
-		final Map<String, Integer> resultMap = new HashMap<>();
-		for (final Map<String, Integer> map : maps) {
-			for (final String key : map.keySet()) {
-				final int value;
-				if (resultMap.containsKey(key)) {
-					final int existingValue = resultMap.get(key);
-					value = map.get(key) + existingValue;
-				}
-				else {
-					value = map.get(key);
-				}
-				resultMap.put(key, value);
-			}
-		}
-		return resultMap;
 	}
 
 }

@@ -72,36 +72,28 @@
 
               let row;
 
-
                 for(let o of Object.keys(objRl)) {
-                    console.log(o, objRl[o]);
-                    alert(o, objRl[o]);
+                        let name = o.substring(17,23);
+                        console.log(name);
+                    for (let v of Object.values(objRl)) {
+                            for(let i =0; i < v.length; i++) {
+                            row = document.createElement('tr');
+                            row.appendChild(document.createElement('td'));
+                            row.appendChild(document.createElement('td'));
+                            row.appendChild(document.createElement('td'));
+                            row.appendChild(document.createElement('td'));
+                            row.appendChild(document.createElement('td'));
+                            row.cells[0].innerHTML = name;
+                            row.cells[1].innerHTML = v[i].cdf.codiceFiscale;
+                            row.cells[2].innerHTML = v[i].nome;
+                            row.cells[3].innerHTML = v[i].cognome;
+                            row.cells[4].innerHTML = v[i].dataDiNascita;
+                            table.appendChild(row);
+                            console.log(v[i]);
+
+                            }
+                        }
                 }
-
-                for (let capital of Object.values(objRl))
-                    console.log(capital);
-
-                for (let [country, capital] of Object.values(objRl))
-                    console.log(country, capital);
-
-
-
-                //for(let i = 0; i < objRl.length; i++) {
-                /*
-                  row = document.createElement('tr');
-                  row.appendChild(document.createElement('td'));
-                  row.appendChild(document.createElement('td'));
-                  row.appendChild(document.createElement('td'));
-                  row.appendChild(document.createElement('td'));
-                  row.appendChild(document.createElement('td'));
-                  row.cells[0].innerHTML = objRl[i].cttname;
-                  row.cells[1].innerHTML = objRl[i].cdf.codiceFiscale;
-                  row.cells[2].innerHTML = objRl[i].nome;
-                  row.cells[3].innerHTML = objRl[i].cognome;
-                  row.cells[4].innerHTML = objRl[i].dataDiNascita;
-                  table.appendChild(row);
-              }
-              */
 
         }
 

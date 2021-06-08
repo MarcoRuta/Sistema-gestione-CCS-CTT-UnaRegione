@@ -273,15 +273,17 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 		List<DatiSacca> datiSaccaTransitati = new ArrayList<>();
 
 		//creo la lista dei dati sacca
-		List<DatiSacca> listaDatiSacca = md.getListaDatiSacche();
-		for (DatiSacca datiSacca : listaDatiSacca)
-			if ((datiSacca.getDataAffidamento().get().isAfter(dataInizioReport) || datiSacca.getDataAffidamento().get().isEqual(dataInizioReport))
-					&&
-					(datiSacca.getDataAffidamento().get().isBefore(dataFineReport) || datiSacca.getDataAffidamento().get().isEqual(dataFineReport)))
+		try {
+			List<DatiSacca> listaDatiSacca = md.getListaDatiSacche();
+			for (DatiSacca datiSacca : listaDatiSacca)
+				if ((datiSacca.getDataAffidamento().get().isAfter(dataInizioReport) || datiSacca.getDataAffidamento().get().isEqual(dataInizioReport))
+						&&
+						(datiSacca.getDataAffidamento().get().isBefore(dataFineReport) || datiSacca.getDataAffidamento().get().isEqual(dataFineReport)))
 
-				//se la sacca è stata inviata in un periodo compreso tra dataInizioReport e dataFineReport viene aggiunta alla lista
-				datiSaccaTransitati.add(datiSacca);
+					//se la sacca è stata inviata in un periodo compreso tra dataInizioReport e dataFineReport viene aggiunta alla lista
+					datiSaccaTransitati.add(datiSacca);
 
+		}catch(NoSuchElementException e){}
 		return datiSaccaTransitati;
 	}
 

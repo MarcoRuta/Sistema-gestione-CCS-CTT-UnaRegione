@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
+    <entry key="CTT001">192.168.193.194</entry>
+    <entry key="CTT003">192.168.193.220</entry>
     <entry key="CTT004">192.168.193.55</entry>
-    <entry key="CTT006">192.168.193.163</entry>
+    <entry key="CTT007">192.168.193.162</entry>
     <entry key="PORT">8081</entry>
 </properties>
         <!-- Marco Ruta : 192.168.193.220
@@ -12,4 +14,5 @@
                 Marco La Rocca : 192.168.193.160
                 Andrea Albano : 192.168.193.163
                 Salvatore Di Maria : 192.168.193.55
-                Francesco Mazzitelli:-->
+                Francesco Mazzitelli: unknown
+                -->
