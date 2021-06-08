@@ -66,17 +66,17 @@ public class CCSRestClient {
         CcsDataBaseRestApplication.logger.info("ecco la risposta: "+r.getStatus()+r.readEntity(String.class));
     }
 
-    public static List<Dipendente> makeReportOperatoriRequest(String ip, String ruolo){
+    public static List<Dipendente> makeReportDipendenti(String ip, String ruolo){
 
         Client client = ClientBuilder.newClient();
         WebTarget dipendenti = client
-                .target("http://"+ip+":"+Settings.PORTA+"/rest/amministratore/reportOperatoriCtt")
+                .target("http://"+ip+":"+Settings.PORTA+"/rest/amministratore/reportDipendentiCtt")
                 .queryParam("ruolo",ruolo);
         List<Dipendente> dipendentiCtt = dipendenti.request().get(ArrayList.class);
         return dipendentiCtt;
     }
 
-    public static Map<GruppoSanguigno,Integer> makeDisponibilitàSaccheRequest(String ip){
+    public static Map<GruppoSanguigno,Integer> makeReportDisponibilitàSacche(String ip){
 
         Client client = ClientBuilder.newClient();
         WebTarget sacche = client
@@ -109,10 +109,10 @@ public class CCSRestClient {
     }
 
 
-    public static Map<GruppoSanguigno, Double> makePermanenzaSaccheRequest(String ip) {
+    public static Map<GruppoSanguigno, Double> makeReportGiacenzaMediaSacche(String ip) {
         Client client = ClientBuilder.newClient();
         WebTarget permanenza = client
-                .target("http://"+ip+":"+Settings.PORTA+"/rest/amministratore/permanenzaMediaSacche");
+                .target("http://"+ip+":"+Settings.PORTA+"/rest/amministratore/giacenzaMediaSacche");
 
         Map<GruppoSanguigno,Double> permanenzaSacche = permanenza.request().get(Map.class);
 

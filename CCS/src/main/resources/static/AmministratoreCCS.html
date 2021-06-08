@@ -13,6 +13,7 @@
     <title>AmministratoreCSSHub</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/tables.css">
 </head>
 
 <body onload="start();">
@@ -79,12 +80,14 @@
         </div>
          
         <div class="boxNotification col-sm-12 border shadow-sm profile-box" style="background-image: url(&quot;assets/img/bg-pattern.png&quot;);">
-            <h2>Notifiche</h2>
-            <div class="btnClear">
-                <button class="btn btn-primary" onclick="removeNotification();" type="button" style="background-color: #13958d;width: 177px;">Pulisci notifiche</button>
-            </div>
             <div class="divNot" id="divNot">
-            </div> 
+                <table id = "table">
+                    <tr>
+                        <th scope="col"> CTT </th>
+                        <th scope="col"> Stato </th>
+                    </tr>
+                </table>
+            </div>
         </div> 
     </div>
     
@@ -95,11 +98,13 @@
     var name = sessionStorage.getItem("nome");
     var surname = sessionStorage.getItem("cognome");
     var host = document.location.origin;
+    var obj;
     
 
 	function start() {
 		verificoToken();
 		setPerson();
+		statusRete();
 	}
     
 
@@ -148,7 +153,66 @@
 	           xhttp.send();
 
        };
-     
+
+     function statusRete(){
+
+          let table = document.getElementById('table');
+	      var xhttp = new XMLHttpRequest();
+	      var url = host +"/rest/CCS/statusReteCtt";
+	      xhttp.onreadystatechange = function() {
+	                  if (this.readyState == 4 && this.status == 200 ) {
+	                       obj = JSON.parse(this.response);
+	                       if(table.rows.length != 1) {
+                                while(table.rows.length != 1) {
+                                     table.deleteRow(1);
+                                }
+                           }
+	                       addTable(table);
+	                  }
+	      	};
+
+
+          xhttp.onerror = function(){
+                alert("impossibile inviare la richiesta");
+          };
+
+
+          xhttp.open("GET", url, true);
+          xhttp.setRequestHeader('Authorization', 'Basic '+token);
+          xhttp.withCredentials = true;
+          xhttp.send();
+          setTimeout(statusRete,15*1000);
+       };
+
+
+        function addTable(table){
+            let row;
+
+            for(let o of Object.keys(obj)) {
+                let name = o.substring(17,23);
+                let v = obj[o];
+                console.log(o);
+                console.log(v);
+                if(v){
+                   row = document.createElement('tr');
+                   row.className = "bg-success";
+                   row.appendChild(document.createElement('td'));
+                   row.appendChild(document.createElement('td'));
+                   row.cells[0].innerHTML = name;
+                   row.cells[1].innerHTML = "Online";
+                }
+                else{
+                row = document.createElement('tr');
+                row.className = "bg-danger";
+                row.appendChild(document.createElement('td'));
+                row.appendChild(document.createElement('td'));
+                row.cells[0].innerHTML = name;
+                row.cells[1].innerHTML = "Offline";
+                }
+                table.appendChild(row);
+            }
+
+       };
     </script>
     
     <div class="footer">

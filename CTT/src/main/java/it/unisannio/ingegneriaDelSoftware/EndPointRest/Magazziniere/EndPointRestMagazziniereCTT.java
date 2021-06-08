@@ -153,7 +153,7 @@ public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 					String dataAffidamento = unSacca.getDataAffidamento().get().toString();
 					String gruppoSanguigno = unSacca.getGruppoSanguigno().toString();
 					String ente = unSacca.getEnteRichiedente();
-					PDFGenerator.makeDocumentSacca(output, numeroSacche, ente, indirizzo, dataAffidamento, gruppoSanguigno);
+					PDFGenerator.makeDocumentSacca(output, numeroSacche,seriali, ente, indirizzo, dataAffidamento, gruppoSanguigno);
 				} catch (DocumentException | IOException | EntityNotFoundException e) {
 					throw new WebApplicationException(Response
 							.status(Response.Status.INTERNAL_SERVER_ERROR)

@@ -42,7 +42,7 @@ public class EndPointRestRicercaGlobale {
 	 */
 	@GET
 	@Path("/ricercaGlobale")
-	public Response ricercaSaccaLocale(@QueryParam("nome") String nome,
+	public Response ricercaSaccaGlobale(@QueryParam("nome") String nome,
 									   @QueryParam("gruppo") String gruppoSanguigno,
 									   @QueryParam("numero") String numeroSacche,
 									   @QueryParam("dataArrivoMassima") String dataArrivoMassima,

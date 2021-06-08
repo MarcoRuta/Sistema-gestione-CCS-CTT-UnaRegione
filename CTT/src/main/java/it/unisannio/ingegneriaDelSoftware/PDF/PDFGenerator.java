@@ -63,6 +63,7 @@ public class PDFGenerator {
      */
     public static void  makeDocumentSacca(OutputStream output,
                                           int numeroSacche,
+                                          List<Seriale> seriali,
                                           String enteRichiedente,
                                           String indirizzoEnte,
                                           String dataAffidamento,
@@ -74,7 +75,7 @@ public class PDFGenerator {
         img.setAlignment(1);
         img.setWidthPercentage(20);
         document.add(img);
-        Paragraph title = new Paragraph("SACCHE EVASE");
+        Paragraph title = new Paragraph("SACCHE DA EVADERE");
         title.setAlignment(1);
         Font font = FontFactory.getFont(FontFactory.TIMES_ROMAN, 20, Font.BOLD);
         title.setFont(font);
@@ -82,10 +83,13 @@ public class PDFGenerator {
         document.add(title);
         document.add(new Paragraph("Ente richiedente: "+enteRichiedente));
         document.add(new Paragraph("Indirizzo ente richiedente: "+indirizzoEnte));
-        PdfPTable table = new PdfPTable(3);
+        document.add(new Paragraph("Data affidamento: "+dataAffidamento));
+        document.add(new Paragraph("Numero sacche evase: "+numeroSacche));
+
+        PdfPTable table = new PdfPTable(1);
         table.setSpacingBefore(10);
         //sistema header
-        Stream.of("Numero Di Sacche", "Gruppo Sanguigno",  "Data Di Affidamento")
+        Stream.of("Seriale Sacca")
                 .forEach(columnTitle -> {
                     PdfPCell header = new PdfPCell();
                     header.setBackgroundColor(BaseColor.LIGHT_GRAY);
@@ -93,9 +97,9 @@ public class PDFGenerator {
                     header.setPhrase(new Phrase(columnTitle));
                     table.addCell(header);
                 });
-        table.addCell(Integer.toString(numeroSacche));
-        table.addCell(gruppoSanguigno);
-        table.addCell(dataAffidamento.toString());
+        for(Seriale s : seriali) {
+            table.addCell(s.getSeriale());
+        }
         //aggiungo al pdf
         document.add(table);
         document.close();

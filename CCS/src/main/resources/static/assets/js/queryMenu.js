@@ -41,7 +41,7 @@
             }
 
             let xhttp = new XMLHttpRequest();
-            let url = host + "/rest/CCS/reportOperatoriCCS?ruolo="+ruolo;
+            let url = host + "/rest/CCS/reportDipendentiCCS?ruolo="+ruolo;
 
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
@@ -438,7 +438,7 @@
 
             let obj;
             let xhttp = new XMLHttpRequest();
-            let url = host + "/rest/CCS/permanenzaSaccheCCS";
+            let url = host + "/rest/CCS/giacenzaMediaSaccheCCS";
 
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {

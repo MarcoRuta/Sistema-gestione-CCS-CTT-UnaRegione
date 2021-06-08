@@ -43,7 +43,7 @@ public interface EndPointAmministratoreCTT {
 	 * @param ruolo Ruolo dei Dipendenti da cercare
 	 * @return la lista dei Dipendenti del Ruolo scelto
 	 */
-	public Response reportOperatoriCTT(String ruolo);
+	public Response reportDipendentiCTT(String ruolo);
 
 
 	/** Restituisce il numero di sacche presenti di ogni tipo nel database
@@ -74,7 +74,7 @@ public interface EndPointAmministratoreCTT {
 	 *
 	 * @return Response 200 OK e invia la mappa key: gruppoSanguigno, value: permanenza media in giorni 400 BAD_REQUEST se i parametri inseriti non sono corretti
 	 */
-	public Response permanenzaMedia();
+	public Response giacenzaMedia();
 
 	/**Metodo tramite il quale è possibile accedere alla lista di dipendenti che lavorano al CTT
 	 * @return  la lista di dipendenti che lavorano al CTT*/

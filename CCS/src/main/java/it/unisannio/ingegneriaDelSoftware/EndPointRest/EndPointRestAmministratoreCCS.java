@@ -22,6 +22,7 @@ import it.unisannio.ingegneriaDelSoftware.Functional.IDGenerator;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointAmministratoreCCS;
 import it.unisannio.ingegneriaDelSoftware.PDF.PDFGenerator;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
+import it.unisannio.ingegneriaDelSoftware.Util.Settings;
 
 import java.time.LocalDate;
 import java.time.format.*;
@@ -204,15 +205,15 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 		return dipendenti;
 	}
 
-	/**---------REPORT OPERATORI RETE CTT------------
+	/**---------REPORT DIPENDENTI RETE CTT------------
 	 * Restituisce la lista dei Dipendenti di tutti i CTT presenti sulla rete del ruolo selezionato
 	 * @param ruolo Ruolo dei Dipendenti da cercare
 	 * @return Response 200 OK e invia la lista dei dipendenti del ruolo selezionato
 	 */
 	@GET
-	@Path("/reportOperatoriCCS")
+	@Path("/reportDipendentiCCS")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response reportOperatoriCCS(@QueryParam("ruolo")String ruolo) {
+	public Response reportDipendentiCCS(@QueryParam("ruolo")String ruolo) {
 
 		CcsDataBaseRestApplication.logger.info("Sto inizializzando il report degli operatori presenti nella rete regionale");
 		Map<CTTName, String> cttOnline = ConnectionVerifier.isCTTOnline();
@@ -221,7 +222,7 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 		for (CTTName ctt : cttOnline.keySet()) {
 			CcsDataBaseRestApplication.logger.info("Sto interrogando il " + ctt + " per ricevere la lista degli " + ruolo);
 			risultatoQuery.put(ctt,
-					CCSRestClient.makeReportOperatoriRequest(cttOnline.get(ctt), ruolo)
+					CCSRestClient.makeReportDipendenti(cttOnline.get(ctt), ruolo)
 			);
 		}
 
@@ -252,7 +253,7 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 
 		for(CTTName ctt : cttOnline.keySet()){
 			CcsDataBaseRestApplication.logger.info("Sto interrogando il " + ctt + " per ricevere la lista delle sacche disponibili");
-			Map<GruppoSanguigno, Integer> temp = CCSRestClient.makeDisponibilitàSaccheRequest(cttOnline.get(ctt));
+			Map<GruppoSanguigno, Integer> temp = CCSRestClient.makeReportDisponibilitàSacche(cttOnline.get(ctt));
 
 				for(GruppoSanguigno g : GruppoSanguigno.values()) {
 
@@ -336,9 +337,9 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 	 * @return 400 BAD_REQUEST se i parametri inseriti non sono corretti
 	 */
 	@GET
-	@Path("/permanenzaSaccheCCS")
+	@Path("/giacenzaMediaSaccheCCS")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response permanenzaSaccheRegionale(@HeaderParam(HttpHeaders.AUTHORIZATION) String headers){
+	public Response giacenzaMediaSaccheRegionale(@HeaderParam(HttpHeaders.AUTHORIZATION) String headers){
 
 		CcsDataBaseRestApplication.logger.info("Sto inizializzando il report di permanenza regionale sacche");
 
@@ -350,7 +351,7 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 
 		for(CTTName ctt : cttOnline.keySet()){
 			CcsDataBaseRestApplication.logger.info("Sto interrogando il " + ctt + " per ricevere la permanenza delle sacche");
-			Map<GruppoSanguigno, Double> temp = CCSRestClient.makePermanenzaSaccheRequest(cttOnline.get(ctt));
+			Map<GruppoSanguigno, Double> temp = CCSRestClient.makeReportGiacenzaMediaSacche(cttOnline.get(ctt));
 
 			for(GruppoSanguigno g : GruppoSanguigno.values()) {
 
@@ -369,5 +370,35 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 				.build();
 
 	}
+
+
+	/**
+	 * Restituisce una mappa di <CTTName,boolean>, true se il CTT è online
+	 * @return Response 200 OK e invia una mappa <CTTName,boolean>
+	 * @return 400 BAD_REQUEST se i parametri inseriti non sono corretti
+	 */
+	@GET
+	@Path("/statusReteCtt")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response statusReteCtt(@HeaderParam(HttpHeaders.AUTHORIZATION) String headers){
+
+		Map<CTTName,Boolean> statusRete = new HashMap<CTTName, Boolean>();
+
+		for(CTTName ctt : Settings.ip.keySet()) {
+
+			if(ConnectionVerifier.isCTTOnline().keySet().contains(ctt))
+				statusRete.put(ctt, true);
+
+			else statusRete.put(ctt, false);
+		}
+
+		return Response
+				.status(Response.Status.OK)
+				.entity(statusRete)
+				.build();
+
+	}
+
+
 
 }

@@ -28,7 +28,7 @@ import it.unisannio.ingegneriaDelSoftware.Util.*;
 @Singleton
 @Secured
 @RolesAllowed({"AmministratoreCTT", "CCS"})
-@PermitAll
+
 public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT {
 	private MongoDataManager md = MongoDataManager.getInstance();
 
@@ -131,9 +131,9 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 	 * @return Response 200 OK e invia la lista dei dipendenti del ruolo selezionato
 	 */
 	@GET
-	@Path("/reportOperatoriCtt")
+	@Path("/reportDipendentiCtt")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response reportOperatoriCTT(@QueryParam("ruolo")String ruolo){
+	public Response reportDipendentiCTT(@QueryParam("ruolo")String ruolo){
 
 		List<Dipendente> listaDipendenti = md.getListaDipendenti();
 		List<Dipendente> risultatoQuery = new ArrayList<Dipendente>();
@@ -212,11 +212,11 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 	 * @return Response 200 OK e invia la mappa key: gruppoSanguigno, value: permanenza media in giorni 400 BAD_REQUEST se i parametri inseriti non sono corretti
 	 */
 	@GET
-	@Path("/permanenzaMediaSacche")
+	@Path("/giacenzaMediaSacche")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response permanenzaMedia(){
+	public Response giacenzaMedia(){
 
-		Map<GruppoSanguigno,Double> risultatoQuery = this.permanenzaMediaMagazzino();
+		Map<GruppoSanguigno,Double> risultatoQuery = this.giacenzaMediaMagazzino();
 
 		return Response
 				.status(Response.Status.OK)
@@ -232,7 +232,6 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Dipendente> getDipendenti(@HeaderParam(HttpHeaders.AUTHORIZATION) String header) throws EntityNotFoundException {
 		List<Dipendente> dipendenti = md.getListaDipendenti();
-		//dipendenti.remove(Token.getDipendenteByToken(header.substring("Basic ".length())));
 		return  dipendenti;
 	}
 
@@ -304,7 +303,7 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 	 *
 	 * @return mappa con key: gruppoSanguigno e value: permanenza media per quel gruppo sanguigno
 	 * */
-	private Map<GruppoSanguigno,Double> permanenzaMediaMagazzino(){
+	private Map<GruppoSanguigno,Double> giacenzaMediaMagazzino(){
 
 		Double days;
 		int x;

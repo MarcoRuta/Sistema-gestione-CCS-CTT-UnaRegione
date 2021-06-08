@@ -41,7 +41,7 @@
             }
 
             let xhttp = new XMLHttpRequest();
-            let url = host + "/rest/amministratore/reportOperatoriCtt?ruolo="+ruolo;
+            let url = host + "/rest/amministratore/reportDipendentiCtt?ruolo="+ruolo;
 
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
@@ -434,7 +434,7 @@
 
             let obj;
             let xhttp = new XMLHttpRequest();
-            let url = host + "/rest/amministratore/permanenzaMediaSacche";
+            let url = host + "/rest/amministratore/giacenzaMediaSacche";
 
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
