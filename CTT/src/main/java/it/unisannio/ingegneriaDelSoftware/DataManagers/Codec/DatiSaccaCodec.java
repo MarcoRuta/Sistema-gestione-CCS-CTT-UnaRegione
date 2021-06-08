@@ -12,6 +12,7 @@ import org.bson.codecs.EncoderContext;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 /**Codec usato per salvare {@link DatiSacca} all'interno  del DB*/
 public class DatiSaccaCodec implements Codec<DatiSacca> {
@@ -28,7 +29,7 @@ public class DatiSaccaCodec implements Codec<DatiSacca> {
                 DateTimeFormatter.ofPattern(Constants.DATEFORMAT));
         String dateBuffer = reader.readString(Constants.ELEMENT_DATAAFFIDAMENTO);
         //se non ho un valore setto nel DB "" altrimenti salvo il suo valore
-        LocalDate dataAffidamento = dateBuffer.length()==0?null: LocalDate.parse(dateBuffer,
+        LocalDate dataAffidamento = dateBuffer.length()==0?null : LocalDate.parse(dateBuffer,
                 DateTimeFormatter.ofPattern(Constants.DATEFORMAT));
 
         //costruisco la sacca recuperando gli ultimi valori

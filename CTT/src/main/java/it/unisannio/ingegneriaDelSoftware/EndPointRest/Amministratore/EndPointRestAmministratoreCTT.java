@@ -232,7 +232,7 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Dipendente> getDipendenti(@HeaderParam(HttpHeaders.AUTHORIZATION) String header) throws EntityNotFoundException {
 		List<Dipendente> dipendenti = md.getListaDipendenti();
-		dipendenti.remove(Token.getDipendenteByToken(header.substring("Basic ".length())));
+		//dipendenti.remove(Token.getDipendenteByToken(header.substring("Basic ".length())));
 		return  dipendenti;
 	}
 
@@ -246,15 +246,9 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 		int x;
 
 		Map<GruppoSanguigno,Integer> risultatoQuery = new HashMap<GruppoSanguigno,Integer>();
-		risultatoQuery.put(GruppoSanguigno.Ap, 0);
-		risultatoQuery.put(GruppoSanguigno.Am, 0);
-		risultatoQuery.put(GruppoSanguigno.Bp, 0);
-		risultatoQuery.put(GruppoSanguigno.Bm, 0);
-		risultatoQuery.put(GruppoSanguigno.ABp, 0);
-		risultatoQuery.put(GruppoSanguigno.ABm, 0);
-		risultatoQuery.put(GruppoSanguigno.ZEROp, 0);
-		risultatoQuery.put(GruppoSanguigno.ZEROm, 0);
 
+		for(GruppoSanguigno g : GruppoSanguigno.values())
+			risultatoQuery.put(g,0);
 
 		for(Sacca s : listaSacche) {
 			x = risultatoQuery.get(s.getGruppoSanguigno());
@@ -273,17 +267,16 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 		List<DatiSacca> datiSaccaTransitati = new ArrayList<>();
 
 		//creo la lista dei dati sacca
-		try {
-			List<DatiSacca> listaDatiSacca = md.getListaDatiSacche();
-			for (DatiSacca datiSacca : listaDatiSacca)
-				if ((datiSacca.getDataAffidamento().get().isAfter(dataInizioReport) || datiSacca.getDataAffidamento().get().isEqual(dataInizioReport))
-						&&
-						(datiSacca.getDataAffidamento().get().isBefore(dataFineReport) || datiSacca.getDataAffidamento().get().isEqual(dataFineReport)))
+		List<DatiSacca> listaDatiSacca = md.getListaDatiSacche();
+		for (DatiSacca datiSacca : listaDatiSacca)
+			if (datiSacca.getDataAffidamento().isPresent() &&
+					(datiSacca.getDataAffidamento().get().isAfter(dataInizioReport) || datiSacca.getDataAffidamento().get().isEqual(dataInizioReport))
+					&&
+					(datiSacca.getDataAffidamento().get().isBefore(dataFineReport) || datiSacca.getDataAffidamento().get().isEqual(dataFineReport)))
 
-					//se la sacca è stata inviata in un periodo compreso tra dataInizioReport e dataFineReport viene aggiunta alla lista
-					datiSaccaTransitati.add(datiSacca);
+				//se la sacca è stata inviata in un periodo compreso tra dataInizioReport e dataFineReport viene aggiunta alla lista
+				datiSaccaTransitati.add(datiSacca);
 
-		}catch(NoSuchElementException e){}
 		return datiSaccaTransitati;
 	}
 
@@ -319,35 +312,23 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 
 		//Mappa in cui salvo il numero di sacche trovate per tipo
 		Map<GruppoSanguigno,Integer> saccheTrovate = new HashMap<GruppoSanguigno,Integer>();
-		saccheTrovate.put(GruppoSanguigno.Ap, 0);
-		saccheTrovate.put(GruppoSanguigno.Am, 0);
-		saccheTrovate.put(GruppoSanguigno.Bp, 0);
-		saccheTrovate.put(GruppoSanguigno.Bm, 0);
-		saccheTrovate.put(GruppoSanguigno.ABp, 0);
-		saccheTrovate.put(GruppoSanguigno.ABm, 0);
-		saccheTrovate.put(GruppoSanguigno.ZEROp, 0);
-		saccheTrovate.put(GruppoSanguigno.ZEROm, 0);
 
 		//Mappa in cui salvo la somma delle permanenze delle sacche trovate per tipo
 		Map<GruppoSanguigno,Double> risultatoQuery = new HashMap<GruppoSanguigno,Double>();
-		risultatoQuery.put(GruppoSanguigno.Ap, 0.0);
-		risultatoQuery.put(GruppoSanguigno.Am, 0.0);
-		risultatoQuery.put(GruppoSanguigno.Bp, 0.0);
-		risultatoQuery.put(GruppoSanguigno.Bm, 0.0);
-		risultatoQuery.put(GruppoSanguigno.ABp, 0.0);
-		risultatoQuery.put(GruppoSanguigno.ABm, 0.0);
-		risultatoQuery.put(GruppoSanguigno.ZEROp, 0.0);
-		risultatoQuery.put(GruppoSanguigno.ZEROm, 0.0);
+
+		for(GruppoSanguigno g : GruppoSanguigno.values()) {
+			risultatoQuery.put(g, 0.0);
+			saccheTrovate.put(g, 0);
+		}
 
 
 		List<DatiSacca> listaDatiSacca = md.getListaDatiSacche();
 
 		for (DatiSacca datiSacca : listaDatiSacca)
 			//se la sacca è stata affidata (la query non vale per sacche non affidate)
-			if (datiSacca.getDataAffidamento().get() != null) {
+			if (datiSacca.getDataAffidamento().isPresent()) {
 
 				//calcolo quanto tempo è stata in magazzino
-				//days = (double) ChronoUnit.DAYS.between(datiSacca.getDataAffidamento().get(), datiSacca.getDataArrivo());
 				days = (double) ChronoUnit.DAYS.between(datiSacca.getDataArrivo(), datiSacca.getDataAffidamento().get());
 
 				//incremento il numero di sacche trovate di quel tipo
@@ -363,9 +344,11 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 
 		//scorro la mappa e divido il contenuto per il numero di sacche per tipo, in modo da trovare la permanenza media
 		for(GruppoSanguigno gs : risultatoQuery.keySet()) {
-			y = risultatoQuery.get(gs);
-			y = y / (saccheTrovate.get(gs));
-			risultatoQuery.put(gs, y);
+			if(saccheTrovate.get(gs) != 0) {
+				y = risultatoQuery.get(gs);
+				y = y / (saccheTrovate.get(gs));
+				risultatoQuery.put(gs, y);
+			}
 		}
 
 		return risultatoQuery;
