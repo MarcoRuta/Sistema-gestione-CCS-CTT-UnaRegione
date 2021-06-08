@@ -438,7 +438,7 @@
 
             let obj;
             let xhttp = new XMLHttpRequest();
-            let url = host + "/rest/amministratore/permanenzaMediaSacche";
+            let url = host + "/rest/CCS/permanenzaSaccheCCS";
 
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {

@@ -109,4 +109,13 @@ public class CCSRestClient {
     }
 
 
+    public static Map<GruppoSanguigno, Double> makePermanenzaSaccheRequest(String ip) {
+        Client client = ClientBuilder.newClient();
+        WebTarget permanenza = client
+                .target("http://"+ip+":"+Settings.PORTA+"/rest/amministratore/permanenzaMediaSacche");
+
+        Map<GruppoSanguigno,Double> permanenzaSacche = permanenza.request().get(Map.class);
+
+        return permanenzaSacche;
+    }
 }

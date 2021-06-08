@@ -55,9 +55,9 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 						   @FormParam("longitude") String longitudine,
 						   @Context UriInfo uriInfo) throws EntityAlreadyExistsException {
 		CcsDataBaseRestApplication.logger.info("Si è richiesta l'aggiunta di un CTT");
-		CTT ctt = new CTT(new CTTName(), provincia, citta, telefono, indirizzo, email, Double.parseDouble(latitudine), Double.parseDouble(longitudine));
+		CTT ctt = new CTT(new CTTName(),provincia, citta, telefono, indirizzo, email, Double.parseDouble(latitudine), Double.parseDouble(longitudine));
 		mm.createCTT(ctt);
-		CcsDataBaseRestApplication.logger.info("il CTT è stato aggiunto correttamente al DataBase");
+		CcsDataBaseRestApplication.logger.info("CTT aggiunto correttamente al DataBase");
 
 		// The source resource was successfully copied.
 		// The COPY operation resulted in the creation of a new resource.
@@ -328,6 +328,46 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 				.status(Response.Status.OK)
 				.entity(risultatoQuery)
 				.build();
+	}
+
+	/**---------REPORT PERMANENZA MEDIA PER TIPO DI SANGUE A LIVELLO REGIONALE------------
+	 * Restituisce il numero di sacche presenti di ogni tipo nella regione
+	 * @return Response 200 OK e invia una mappa <gs,numeroSacche>
+	 * @return 400 BAD_REQUEST se i parametri inseriti non sono corretti
+	 */
+	@GET
+	@Path("/permanenzaSaccheCCS")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response permanenzaSaccheRegionale(@HeaderParam(HttpHeaders.AUTHORIZATION) String headers){
+
+		CcsDataBaseRestApplication.logger.info("Sto inizializzando il report di permanenza regionale sacche");
+
+		Map<CTTName, String> cttOnline = ConnectionVerifier.isCTTOnline();
+		Map<GruppoSanguigno, Double> risultatoQuery = new HashMap<GruppoSanguigno, Double>();
+
+		for(GruppoSanguigno g: GruppoSanguigno.values())
+			risultatoQuery.put(g,0.0);
+
+		for(CTTName ctt : cttOnline.keySet()){
+			CcsDataBaseRestApplication.logger.info("Sto interrogando il " + ctt + " per ricevere la permanenza delle sacche");
+			Map<GruppoSanguigno, Double> temp = CCSRestClient.makePermanenzaSaccheRequest(cttOnline.get(ctt));
+
+			for(GruppoSanguigno g : GruppoSanguigno.values()) {
+
+				double x = temp.get(g.toString());
+				x += risultatoQuery.get(g);
+
+				risultatoQuery.put(g, x);
+
+			}
+
+		}
+
+		return Response
+				.status(Response.Status.OK)
+				.entity(risultatoQuery)
+				.build();
+
 	}
 
 }

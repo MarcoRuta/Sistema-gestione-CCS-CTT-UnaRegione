@@ -26,8 +26,8 @@ import java.util.*;
 
 @Path("/magazziniere")
 @Singleton
-@Secured
-@RolesAllowed({"MagazziniereCTT","CCS"})
+//@Secured
+//@RolesAllowed({"MagazziniereCTT","CCS"})
 public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 
 	/**Riferimento all'unica istanza del MongoDataManager*/

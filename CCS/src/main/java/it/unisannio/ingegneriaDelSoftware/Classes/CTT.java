@@ -13,6 +13,27 @@ public class CTT{
 	
 
 	/**Metodo Costruttore di CTT
+	 * @param provincia la provincia in cui è situato il CTT
+	 * @param città la città in cui è situato il CTT
+	 * @param telefono il numero di telefono del CTT
+	 * @param indirizzo l'indirizzo del CTT
+	 * @param email l'email ufficiale del CTT
+	 * @param latitudine
+	 * @param longitudine
+	 */
+	public CTT(String provincia, String città, String telefono, String indirizzo, String email, double latitudine, double longitudine) {
+		assert telefono != null: "il telefono non può essere null";
+		assert email != null: "l'e_mail non può essere null";
+		if (telefono.length()!=10 || !(telefono.matches("^[0-9]*$"))) throw new IllegalArgumentException("Formato del numero di telefono non valido");
+		if (!email.matches("^(.+)@(.+)$")) throw new IllegalArgumentException("Formato dell'email non valido");
+
+		this.posizione = new CTTPosition(provincia,città,indirizzo,latitudine,longitudine);
+		this.denominazione = new CTTName();
+		this.telefono = telefono;
+		this.email = email;	
+	}
+
+	/**Metodo Costruttore di CTT
 	 * @param denominazione il nome del CTT
 	 * @param provincia la provincia in cui è situato il CTT
 	 * @param città la città in cui è situato il CTT
@@ -22,8 +43,7 @@ public class CTT{
 	 * @param latitudine
 	 * @param longitudine
 	 */
-	public CTT(CTTName denominazione, String provincia, String città, String telefono, String indirizzo, String email, double latitudine, double longitudine) {
-		assert denominazione != null: "La denominazione non può essere null";
+	public CTT(CTTName denominazione,String provincia, String città, String telefono, String indirizzo, String email, double latitudine, double longitudine) {
 		assert telefono != null: "il telefono non può essere null";
 		assert email != null: "l'e_mail non può essere null";
 		if (telefono.length()!=10 || !(telefono.matches("^[0-9]*$"))) throw new IllegalArgumentException("Formato del numero di telefono non valido");
@@ -32,7 +52,7 @@ public class CTT{
 		this.posizione = new CTTPosition(provincia,città,indirizzo,latitudine,longitudine);
 		this.denominazione = denominazione;
 		this.telefono = telefono;
-		this.email = email;	
+		this.email = email;
 	}
 
 

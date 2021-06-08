@@ -64,7 +64,6 @@ public class CTTName {
     public CTTName() {
         this.cttname = radice+(new DecimalFormat("000")).format(++lastAssigned);
         CTTName.cttNameMap.put(this.cttname,this);
-        CTTName.updateSettings();
     }
 
     /**Costruisce il seriale a partire da una stringa
