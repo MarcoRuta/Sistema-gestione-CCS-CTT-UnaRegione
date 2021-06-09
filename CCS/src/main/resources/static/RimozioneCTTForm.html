@@ -6,56 +6,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>RimozioneCTTForm</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/styles.css">
-    <link rel="stylesheet" href="assets/css/formStyles.css">
+    <link rel="stylesheet" href="assets/css/stylesDim.css">
+    <link rel="stylesheet" href="assets/css/formStylesDim.css">
 </head>
 
 <body onload="start();">
     <div class="titlePage">
-        <div>
-            <span class="fontTitle">
-               Rimozione CTT Form            
-            </span>
-        </div>
-        <div>
-            <img class="logoCCS" src="assets/img/LOGO_CCS.svg">
+        <div class="row">
+            <div class="col">
+                <span class="fontTitle">
+                    Rimozione CTT Form
+                </span>
+            </div>
+            <div class="col" style="text-align: right;">
+                <img class="logo" src="assets/img/LOGO_CCS.svg">
+            </div>
         </div>
     </div>
     
-    <div class="container" style="max-width: 1430px; margin: 1.5% auto;">
-        
-        <div class="dateForm">
-            <div class="titleDateForm">
-                <p>Inserisci CTT da rimuovere</p>
-                <button class="btn" onclick="location.href='AmministratoreCCS.html';"><img class="return" src="assets/img/return.png" /></button>
-            </div>
-            <div class="containerForm">
-                <form id="myForm">
-                    <div class="form-group row" style="margin: 8% 5%">
-                        <label >Numero CTT:</label>
-                        <div class="inputForm">
-                                <select id="numctt" name="numCTT" oninput="printCTT()" class="form-control" onfocus='this.size=5;' onblur='this.size=1;' onchange='this.size=1; this.blur();' style="width: 300px;">
-                                        <option value='0'>Seleziona il CTT da rimuovere</option>
-                                </select>
-                         </div>
+    <div class="container">
+        <div class="row" style="min-height: 100%">
+            <div class="col">
+                <div class="dateForm" style="height: 25.35vmax;">
+                    <div class="titleDateForm">
+                        <div class="row">
+                            <div class="col" style="max-width: 6vmax;">
+                                <button class="btn" onclick="location.href='AmministratoreCCS.html';"><img class="return" src="assets/img/return.png"></button>
+                            </div>
+                            <div class="col">
+                                <p style="width:100%; font-size: 1.8vmax; text-align: left">Seleziona CTT da rimuovere</p>
+                            </div>
+                        </div>
                     </div>
-                </form>
-            </div> 
+                    <div class="containerForm" style= "padding-left: 7%;">
+                        <form id="myForm">
+                            <div class="form-group row">
+                                <label >Numero CTT:</label>
+                                <div class="inputForm">
+                                        <select id="numctt" name="numCTT" oninput="printCTT()" class="form-control" onfocus='this.size=5;' onblur='this.size=1;' onchange='this.size=1; this.blur();'>
+                                                <option value='0'>Seleziona il CTT da rimuovere</option>
+                                        </select>
+                                 </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="previewForm">
+                    <div class="titleDateForm">
+                        <p style="margin: auto; font-size: 2vmax;">Anteprima</p>
+                    </div>
+                    <div class="outPreview">
+                        <p id="p1"></p>
+                    </div>
+                    <div style="margin-top: 2%; text-align: center">
+                        <button class="btn btn-primary" type="submit" onclick = "removeCTT();" style="font-family: Calibri light;font-size: 1.6vmax;">Conferma</button>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <div class="previewForm">
-            <div class="titleDateForm">
-                <p>Anteprima</p>
-            </div>
-            <div class="outPreview">
-                <p id="p1"></p>
-            </div>
-            <div class="outPreview" style="height: 40px;margin: 4% 45px;">
-            	<p id="result"></p>
-            </div>
-            <button class="btn btn-primary" type="submit" onclick = "removeCTT();" style="margin-left: 73.5%; width: 140px;height: 51px;font-family: Calibri light;font-size: 20px;">Conferma</button>
-        </div>
-        
     </div>
     <script type="application/javascript">
     
@@ -153,7 +163,7 @@
             let x = document.getElementById("numctt");
             var inner;
             if(x.getvalue!=0) {
-                inner = "Numero CTT: <span class='textPrint'>" +obj[x.selectedIndex-1].numero+"</span><br>Denominazione: <span class='textPrint'>"+obj[x.selectedIndex-1].denominazione+"</span><br>";
+                inner = "Denominazione: <span class='textPrint'>"+obj[x.selectedIndex-1].denominazione.cttname+"</span><br>";
                 inner = inner + "Provincia: <span class='textPrint'>" +obj[x.selectedIndex-1].posizione.provincia+"</span><br>Città: <span class='textPrint'>"+obj[x.selectedIndex-1].posizione.citta+"</span><br>";
                 inner = inner + "Indirizzo: <span class='textPrint'>" +obj[x.selectedIndex-1].posizione.indirizzo+"</span><br>Telefono: <span class='textPrint'>"+obj[x.selectedIndex-1].telefono+"</span><br>";
                 inner = inner + "E-mail: <span class='textPrint'>" +obj[x.selectedIndex-1].email+"</span><br>Latitude: <span class='textPrint'>"+obj[x.selectedIndex-1].posizione.latitudine+"</span><br>";

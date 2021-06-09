@@ -19,18 +19,10 @@
 	padding: 1vmax 1vmax;
 }
 
-.logoCTT {
+.logo {
 	margin-top: -0.5em;
 	width:10vmax;
 }
-
-.logoCCS {
-	margin-left: 85%;
-	margin-top: -8em;
-	width:192px;
-	height:192px;
-}
-
 
 span.fontTitle {
 	color: rgb(255,255,255);
