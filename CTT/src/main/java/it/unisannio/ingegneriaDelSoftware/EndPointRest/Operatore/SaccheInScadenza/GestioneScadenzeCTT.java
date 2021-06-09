@@ -1,10 +1,12 @@
-package it.unisannio.ingegneriaDelSoftware.SaccheInScadenzaManager;
+package it.unisannio.ingegneriaDelSoftware.EndPointRest.Operatore.SaccheInScadenza;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import it.unisannio.ingegneriaDelSoftware.Classes.*;
 import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaSmaltimentoSacche;
+import it.unisannio.ingegneriaDelSoftware.Classes.Wrapper.SaccaWrapper;
 import it.unisannio.ingegneriaDelSoftware.ClientRest.CTTRestClient;
 import it.unisannio.ingegneriaDelSoftware.CttDataBaseRestApplication;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
@@ -13,12 +15,12 @@ import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Functional.ConnectionVerifier;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.*;
 
+import javax.websocket.EncodeException;
+
 
 public class GestioneScadenzeCTT implements CTTFunction {
 
 	private MongoDataManager mm = MongoDataManager.getInstance();
-
-
 
 
 	/**Metodo che viene schedulato attraverso spring nella classe CttDataBaseRestApplication.
@@ -28,16 +30,22 @@ public class GestioneScadenzeCTT implements CTTFunction {
 	 * * * ? -> Tutti i giorni dell'anno
 	 * @throws EntityNotFoundException Se non ci sono sacche in scadenza
 	 */
-    public void alertSaccheInScadenza() throws EntityNotFoundException {
-    	//rimuovo eventuali saccheScadute
+	public void alertSaccheInScadenza() throws EntityNotFoundException {
+		//rimuovo eventuali saccheScadute
 		removeSaccheScadute();
 
 		//recupero le sacche in scadenza
 		List<Sacca> saccheInScadenza = getSaccheInScadenza();
-		
-		
+
+
 		if(ConnectionVerifier.isCCSOnline() && !saccheInScadenza.isEmpty()) {
-			CTTRestClient.notifySaccaInScadenzaToCCS(saccheInScadenza);
+			try {
+				SaccheInScadenzaClientEndPoint.session.getBasicRemote().sendObject(new SaccaWrapper(saccheInScadenza));
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (EncodeException e) {
+				e.printStackTrace();
+			}
 		}
 
 	}

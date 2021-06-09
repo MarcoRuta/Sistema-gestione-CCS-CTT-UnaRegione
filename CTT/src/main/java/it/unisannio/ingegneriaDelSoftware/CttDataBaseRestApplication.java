@@ -10,7 +10,7 @@ import it.unisannio.ingegneriaDelSoftware.EndPointRest.Operatore.RicercaGlobale.
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.ExceptionHandler.*;
 import it.unisannio.ingegneriaDelSoftware.Filtri.FiltroDiAutorizzazione;
-import it.unisannio.ingegneriaDelSoftware.SaccheInScadenzaManager.GestioneScadenzeCTT;
+import it.unisannio.ingegneriaDelSoftware.EndPointRest.Operatore.SaccheInScadenza.GestioneScadenzeCTT;
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.Operatore.SaccheInScadenza.SaccheInScadenzaClientEndPoint;
 import it.unisannio.ingegneriaDelSoftware.Filtri.FiltroDiAutentificazione;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -65,11 +65,10 @@ public class CttDataBaseRestApplication extends ResourceConfig {
 
 	}
 
-	@Scheduled(cron = "*/120 * * * * *")
+	@Scheduled(fixedDelay = 1000*60*2)
 	public void gestioneSaccheInScadenza() throws EntityNotFoundException {
 		CttDataBaseRestApplication.logger.info("Inizio il controllo per inoltrare le sacche in scadenza al CCS");
-		GestioneScadenzeCTT ctt = new GestioneScadenzeCTT();
-		ctt.alertSaccheInScadenza();
+		new GestioneScadenzeCTT().alertSaccheInScadenza();
 	}
 
 	public static void main(String[] args) throws InterruptedException {

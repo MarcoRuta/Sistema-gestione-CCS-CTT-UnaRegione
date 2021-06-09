@@ -1,5 +1,6 @@
 package WebSocket;
 
+import it.unisannio.ingegneriaDelSoftware.Filtri.FiltroWebSocket;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
@@ -12,7 +13,15 @@ import it.unisannio.ingegneriaDelSoftware.EndPointRest.SaccheInScadenza.WebSocke
 @EnableWebSocket
 public class WebSocketConfig {
 
-	/*Costruisce e restituisce un WebSocketEndpointSaccheInScadenza
+    /**Costruisce e restituisce un FiltroWebSocket
+     * @return FiltroWebSocket
+     */
+    @Bean
+    public FiltroWebSocket filtroWebSocketController() {
+        return new FiltroWebSocket();
+    }
+
+	/**Costruisce e restituisce un WebSocketEndpointSaccheInScadenza
 	 * @return WebSocketEndpointSaccheInScadenza
 	 */
     @Bean
@@ -20,7 +29,7 @@ public class WebSocketConfig {
         return new WebSocketEndpointSaccheInScadenza();
     }
 
-    /*Costruisce e restituisce un ServerEndpointExporter
+    /**Costruisce e restituisce un ServerEndpointExporter
 	 * @return ServerEndpointExporter
 	 */
     @Bean

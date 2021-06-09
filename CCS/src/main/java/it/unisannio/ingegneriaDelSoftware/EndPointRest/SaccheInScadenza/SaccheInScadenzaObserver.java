@@ -14,7 +14,7 @@ public class SaccheInScadenzaObserver implements Observer {
 
 	@Override
 	public void update(List<Notifica> notifiche) {
-		for(Session s : WebSocketEndpointSaccheInScadenza.sessioniCTT.values()) {
+		for(Session s : WebSocketEndpointSaccheInScadenza.sessioniCTT.keySet()) {
 			try {
 				s.getBasicRemote().sendObject(notifiche);
 				CcsDataBaseRestApplication.logger.info("Ho inviato la lista delle sacche in scadenza alla sessione "+s.getId());

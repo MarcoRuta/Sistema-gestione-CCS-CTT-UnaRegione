@@ -13,7 +13,7 @@ public class Sacca {
 	private LocalDate dataProduzione;
 	private LocalDate dataScadenza;
 	private boolean prenotato;
-	
+
 
 	/**Metodo costruttore di SaccaBean
 	 * @param ser il seriale della Sacca
@@ -29,7 +29,6 @@ public class Sacca {
 		assert dataScadenza != null: "la data di scadenza non può essere null";
 		assert ser!= null: "Il seriale non puo essere null";
 		if (dataScadenza.isBefore(dataProduzione))throw new IllegalArgumentException( "La data di produzione non può essere precedente a quella di scadenza");
-		if(dataScadenza.isBefore(LocalDate.now()))	throw new IllegalArgumentException("La sacca è gia scaduta");
 		if (dataProduzione.isAfter(LocalDate.now())) throw new IllegalArgumentException("Non puoi inserire una sacca non ancora prodotta");
 
 		this.seriale = ser;

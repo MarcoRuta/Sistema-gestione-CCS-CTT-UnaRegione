@@ -1,18 +1,24 @@
 package it.unisannio.ingegneriaDelSoftware.EndPointRest.SaccheInScadenza;
 
-import WebSocket.Decoders.CTTNameDecoder;
 import WebSocket.Decoders.NotificaSaccaInScadenzaDecoder;
-import WebSocket.Encoders.CTTNameEncoder;
+import WebSocket.Decoders.SaccaWrapperDecoder;
 import WebSocket.Encoders.NotificaSaccaInScadenzaEncoder;
+import WebSocket.Encoders.SaccaWrapperEncoder;
 import it.unisannio.ingegneriaDelSoftware.CcsDataBaseRestApplication;
+import it.unisannio.ingegneriaDelSoftware.Classes.Beans.Sacca;
 import it.unisannio.ingegneriaDelSoftware.Classes.CTTName;
-import it.unisannio.ingegneriaDelSoftware.EndPointRest.SaccheInScadenza.SaccheInScadenzaObserver;
+import it.unisannio.ingegneriaDelSoftware.Classes.Wrapper.SaccaWrapper;
+import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
 import it.unisannio.ingegneriaDelSoftware.Functional.NotificaSaccaInScadenzaMaker;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
+import it.unisannio.ingegneriaDelSoftware.Interfaces.Notifica;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Observer;
+import it.unisannio.ingegneriaDelSoftware.Interfaces.Subject;
+import it.unisannio.ingegneriaDelSoftware.Util.Settings;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import javax.websocket.*;
@@ -21,54 +27,63 @@ import javax.websocket.server.ServerEndpoint;
 
 /**Endpoint che permette ai CTT di collegarsi al CCS e ricevere la lista di sacche in scadenza dei vari CTT*/
 @ServerEndpoint(value = "/ws/saccheInScadenza",
-        encoders = {NotificaSaccaInScadenzaEncoder.class, CTTNameEncoder.class},
-        decoders = {NotificaSaccaInScadenzaDecoder.class, CTTNameDecoder.class} )
-public class WebSocketEndpointSaccheInScadenza {
+        encoders = {NotificaSaccaInScadenzaEncoder.class, SaccaWrapperEncoder.class},
+        decoders = {NotificaSaccaInScadenzaDecoder.class, SaccaWrapperDecoder.class} )
+public class WebSocketEndpointSaccheInScadenza implements Subject {
 
     /**Mappa statica, quindi unica, per tutte le istanze dell'endPoint che memorizza il CTT con la relativa sessione*/
-    protected static ConcurrentMap<CTTName,Session> sessioniCTT = new ConcurrentHashMap<CTTName,Session>();
+    protected static ConcurrentMap<Session,String> sessioniCTT = new ConcurrentHashMap<Session,String>();
     /**observer da notificare nel momento in cui un CTT chiude la sua connessione*/
     private Observer observer = new SaccheInScadenzaObserver();
+
 
 
     @OnOpen
     public void start(Session session) {
         CcsDataBaseRestApplication.logger.info("CTT connesso al SaccheInScadenza EndPoint");
+        sessioniCTT.put(session,session.getUserPrincipal().getName());
+        try {
+            session.getBasicRemote().sendObject(NotificaSaccaInScadenzaMaker.creaNotificheSaccheInScadenza());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (EncodeException e) {
+            e.printStackTrace();
+        }
     }
 
     /**Il CCS puo ricevere dal CTT soltanto il suo nome.
      * Appena ricevuto il CCS provvede a memorizzarlo nella mappa e ad inoltrare la lista delle sacche in scadenza*/
     @OnMessage
-    public void receive(CTTName cttName, Session session) {
-        try {
-            sessioniCTT.put(cttName, session);
-            CcsDataBaseRestApplication.logger.info("CTT: "+cttName.getCttname()+" connesso con sessione: "+session.getId());
-            CcsDataBaseRestApplication.logger.info("Ecco la lista dei CTT connessi "+ sessioniCTT);
-            session.getBasicRemote().sendObject(NotificaSaccaInScadenzaMaker.creaNotificheSaccheInScadenza());
-            CcsDataBaseRestApplication.logger.info("Ho inoltrato al "+cttName.getCttname()+"la lista delle sacche in scadenza");
-        } catch (IOException | EncodeException e) {
-            CcsDataBaseRestApplication.logger.info("Non sono riuscito a creare una connessione con il CTT con nome:" +cttName.getCttname());
+    public void receive(SaccaWrapper saccheInScadenza, Session session) {
+        CcsDataBaseRestApplication.logger.info("Ho ricevuto delle sacche in scadenza");
+        MongoDataManager mm = MongoDataManager.getInstance();
+
+        for (Sacca s : saccheInScadenza.getSacche()) {
+            try {
+                mm.createSacca(s);
+            } catch (EntityAlreadyExistsException e) {
+                //non fa niente
+            }
         }
 
+        this.notifyCTT(NotificaSaccaInScadenzaMaker.creaNotificheSaccheInScadenza());
 
     }
-
 
     /**Quando il CTT chiude la connessione, le sue sacche in scadenza sono rimosse dal CCS e vengono notificati gli altri CTT*/
     @OnClose
     public void end(Session s)  {
+        CTTName cttOffline = null;
         try {
-            CTTName cttOffline = null;
-            for (CTTName name : sessioniCTT.keySet())
-                if (sessioniCTT.get(name).equals(s)) {
-                    cttOffline = name;
-                    CcsDataBaseRestApplication.logger.info("CTT: " + name.getCttname() + " Disconnesso con sessione: " + s.getId());
-                    sessioniCTT.remove(name);
-                }
+            String ip = sessioniCTT.get(s);
+            for (CTTName ctt : Settings.ip.keySet())
+                if (Settings.ip.get(ctt).equals(ip))
+                    cttOffline = ctt;
 
+            System.err.println("ecco il ctt che si e disconnesso: "+cttOffline);
+            sessioniCTT.remove(s);
             MongoDataManager.getInstance().removeSaccheCttOffline(cttOffline);
-
-            this.observer.update(NotificaSaccaInScadenzaMaker.creaNotificheSaccheInScadenza());
+            this.notifyCTT(NotificaSaccaInScadenzaMaker.creaNotificheSaccheInScadenza());
         } catch (EntityNotFoundException e) {
             //do nothing
         }
@@ -80,4 +95,9 @@ public class WebSocketEndpointSaccheInScadenza {
     }
 
 
+    @Override
+    public void notifyCTT(List<Notifica> notifica) {
+        this.observer.update(notifica);
+
+    }
 }
