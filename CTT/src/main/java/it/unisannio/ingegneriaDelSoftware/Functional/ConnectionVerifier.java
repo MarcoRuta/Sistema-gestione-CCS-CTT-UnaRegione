@@ -3,7 +3,12 @@ package it.unisannio.ingegneriaDelSoftware.Functional;
 import it.unisannio.ingegneriaDelSoftware.CttDataBaseRestApplication;
 import it.unisannio.ingegneriaDelSoftware.Util.Settings;
 
+import javax.ws.rs.ProcessingException;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 

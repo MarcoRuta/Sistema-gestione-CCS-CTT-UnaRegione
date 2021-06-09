@@ -1,5 +1,6 @@
 package it.unisannio.ingegneriaDelSoftware.Classes.Notifiche;
 
+import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
 import it.unisannio.ingegneriaDelSoftware.Classes.Seriale;
 
 import java.util.List;

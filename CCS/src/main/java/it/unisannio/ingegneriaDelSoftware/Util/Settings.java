@@ -48,4 +48,5 @@ public class Settings {
         COLLECTION_CTT = loadDatabaseProps.getProperty("COLLECTION_CTT");
     }
 
+
 }

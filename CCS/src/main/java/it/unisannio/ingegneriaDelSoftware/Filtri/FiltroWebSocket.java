@@ -11,7 +11,7 @@ import java.security.Principal;
 
 /**Tramite questa annotazione stiamo registrando un filtro per le richieste in entrata verso la servlet con
  * uri specificato*/
-@WebFilter(urlPatterns ="/ws/*", dispatcherTypes = {DispatcherType.REQUEST})
+@WebFilter
 public class FiltroWebSocket implements Filter {
 
     @Override
@@ -26,11 +26,11 @@ public class FiltroWebSocket implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-
         // Extract access token from the request
         String ip = servletRequest.getRemoteAddr();
         if (!Settings.ip.containsValue(ip)) {
             returnForbiddenError(response, "Non sei un CTT");
+            return;
         }
 
         //è un CTT

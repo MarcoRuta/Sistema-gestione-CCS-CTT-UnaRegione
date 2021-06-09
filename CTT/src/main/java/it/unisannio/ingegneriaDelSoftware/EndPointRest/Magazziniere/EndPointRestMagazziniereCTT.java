@@ -1,10 +1,10 @@
 package it.unisannio.ingegneriaDelSoftware.EndPointRest.Magazziniere;
 
 import com.itextpdf.text.DocumentException;
+import it.unisannio.ingegneriaDelSoftware.Annotazioni.Secured;
 import it.unisannio.ingegneriaDelSoftware.Classes.*;
 import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaEvasione;
 import it.unisannio.ingegneriaDelSoftware.CttDataBaseRestApplication;
-import it.unisannio.ingegneriaDelSoftware.Annotazioni.Secured;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
@@ -12,6 +12,7 @@ import it.unisannio.ingegneriaDelSoftware.Functional.IDGenerator;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointMagazziniereCTT;
 import it.unisannio.ingegneriaDelSoftware.PDF.PDFGenerator;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
+
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Singleton;
@@ -25,8 +26,8 @@ import java.util.*;
 
 @Path("/magazziniere")
 @Singleton
-@Secured
-@RolesAllowed({"MagazziniereCTT","CCS"})
+//@Secured
+//@RolesAllowed({"MagazziniereCTT","CCS"})
 public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 
 	/**Riferimento all'unica istanza del MongoDataManager*/
@@ -100,7 +101,7 @@ public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 
 
 		for(Seriale unSeriale : notificaEvasione.getListaSeriali()) {
-			//recupero una sacca se presente altrimenti si solleva una eccezione EntityNotFoundException
+			//recupero una sacca se presente altrimenti si solleva una eccezione SaccaNotFoundException
 			Sacca unaSacca = md.getSacca(unSeriale);
 			//aggiorno i dati del dati sacca
 			md.setEnteRichiedenteDatiSacca(unSeriale, notificaEvasione.getEnteRichiedente());

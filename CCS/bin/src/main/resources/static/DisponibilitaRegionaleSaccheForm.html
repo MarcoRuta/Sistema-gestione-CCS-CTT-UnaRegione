@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script>
+        function print1(){
+            if(gruppo_sanguigno.value!=0)
+                document.getElementById("p1").innerHTML = "Tipo di sangue: <span class='textPrint'>"+gruppo_sanguigno.value+"</span>";
+        }
+    </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>DisponibilitàRegionaleSaccheForm</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/formStyles.css">
+</head>
+
+<body style="background-color: #ffffff;" onload="verificoToken();">
+    
+    <div class="titlePage">
+        <div>
+            <span class="fontTitle">
+               Disponibilità regionale sacche form            
+            </span>
+        </div>
+        <div>
+            <img class="logoCCS" src="assets/img/LOGO_CCS.svg">
+    	</div>
+    </div>
+
+    
+    <div class="container" style="max-width: 1430px; margin: 1.5% auto;">
+        
+        <div class="dateForm">
+            <div class="titleDateForm">
+                <p>Inserisci il tipo di sangue</p>
+                <button class="btn" onclick="location.href='MenuDiSelezioneQueryCCS.html';"><img class="return" src="assets/img/return.png" /></button>
+            </div>
+            
+            <div class="containerForm">
+                <form id="myForm">
+                    <div class="form-group row" style="margin: 8% 5%">
+                        <label >Tipo di sangue:</label>
+                        <div class="inputForm">
+                            <select id="gruppo_sanguigno" name="gruppo_sanguigno" oninput="print1();" class="custom-select" style="width:364px;">
+                                <option value='0'>Seleziona il tipo di sangue</option>
+                                <option value="Ap">A+</option>
+                                <option value="Am">A-</option>
+                                <option value="Bp">B+</option>
+                                <option value="Bm">B-</option>
+                                <option value="ABp">AB+</option>
+                                <option value="ABm">AB-</option>
+                                <option value="ZEROp">0+</option>
+                                <option value="ZEROm">0-</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="previewForm">
+            <div class="titleDateForm">
+                <p>Anteprima</p>
+            </div>
+            <div class="outPreview">
+                 <p id="p1"></p>
+            </div>
+            <div class="outPreview" style="height: 40px;margin: 4% 45px;">
+                <p id="result"></p>
+            </div>
+            <button class="btn btn-primary" type="button" style="margin-left: 73.5%; width: 140px;height: 51px;font-family: Calibri light;font-size: 20px;">Conferma</button>
+        </div>
+        
+    </div>
+    
+    <script type="application/javascript">
+
+    var token = sessionStorage.getItem("token");
+    var ruolo = sessionStorage.getItem("ruolo");
+
+
+     verificoToken = function(){
+           if(token == null || ruolo != 'AmministratoreCCS'){
+            alert("E' necessario effettuare il login per accedere a questa risorsa");
+            window.location.href='Login.html';
+           }
+        }
+    </script> 
+    
+    <div class="footer"></div>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>

@@ -4,6 +4,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 
+import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
+
 
 /**Nel momento in cui si verificano degli {@link IllegalArgumentException} significa che sono stati passati dei parmatri errati ad una funzione
 

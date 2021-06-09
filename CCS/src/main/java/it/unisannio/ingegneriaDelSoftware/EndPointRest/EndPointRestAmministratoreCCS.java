@@ -26,6 +26,7 @@ import it.unisannio.ingegneriaDelSoftware.Util.Settings;
 
 import java.time.LocalDate;
 import java.time.format.*;
+import java.util.zip.DataFormatException;
 
 @Path("/CCS")
 @Singleton
@@ -262,7 +263,9 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 					x += risultatoQuery.get(g);
 
 					risultatoQuery.put(g, x);
+
 				}
+
 		}
 
 		return Response
@@ -283,7 +286,7 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 	@Path("/reportSaccheInviateCCS")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response reportSaccheInviate(@QueryParam("dataInizio")String dataInizio,
-										 @QueryParam("dataFine")String dataFine) throws DateTimeParseException{
+										 @QueryParam("dataFine")String dataFine) throws DataFormatException {
 
 		CcsDataBaseRestApplication.logger.info("Sto inizializzando il report delle sacche inviate dalla rete tra il "+dataInizio+"e il "+dataFine);
 		Map<CTTName, String> cttOnline = ConnectionVerifier.isCTTOnline();
@@ -301,7 +304,6 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 				.build();
 	}
 
-	
 	/**---------REPORT SACCHE RICEVUTE RETE REGIONALE------------
 	 *Restituisce la lista dei DatiSacche relativi alle sacche che sono state ricevute dalla rete in un determinato arco temporale
 	 * 	 * @param dataInizio Data inizio dell' arco temporale
@@ -313,7 +315,7 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 	@Path("/reportSaccheRicevuteCCS")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response reportSaccheRicevute(@QueryParam("dataInizio")String dataInizio,
-										@QueryParam("dataFine")String dataFine) throws DateTimeParseException{
+										@QueryParam("dataFine")String dataFine) throws DataFormatException{
 
 		CcsDataBaseRestApplication.logger.info("Sto inizializzando il report delle sacche ricevute in rete tra il "+dataInizio+"e il "+dataFine);
 		Map<CTTName, String> cttOnline = ConnectionVerifier.isCTTOnline();
@@ -332,8 +334,9 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 	}
 
 	/**---------REPORT PERMANENZA MEDIA PER TIPO DI SANGUE A LIVELLO REGIONALE------------
-	 *  Metodo che calcola quanto è il tempo medio di giacenza delle sacche di sangue all'interno dei vari magazzini dei CTT
-	 * @return Response 200 OK e invia una mappa <gs, numeroSacche>
+	 * Restituisce il numero di sacche presenti di ogni tipo nella regione
+	 * @return Response 200 OK e invia una mappa <gs,numeroSacche>
+	 * @return 400 BAD_REQUEST se i parametri inseriti non sono corretti
 	 */
 	@GET
 	@Path("/giacenzaMediaSaccheCCS")
@@ -358,18 +361,23 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 				x += risultatoQuery.get(g);
 
 				risultatoQuery.put(g, x);
+
 			}
+
 		}
 
 		return Response
 				.status(Response.Status.OK)
 				.entity(risultatoQuery)
 				.build();
+
 	}
 
 
-	/**Restituisce una mappa di <CTTName,boolean>, true se il CTT è online, altrimenti false
+	/**
+	 * Restituisce una mappa di <CTTName,boolean>, true se il CTT è online
 	 * @return Response 200 OK e invia una mappa <CTTName,boolean>
+	 * @return 400 BAD_REQUEST se i parametri inseriti non sono corretti
 	 */
 	@GET
 	@Path("/statusReteCtt")

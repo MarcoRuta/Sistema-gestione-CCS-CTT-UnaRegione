@@ -12,6 +12,7 @@ import org.bson.codecs.EncoderContext;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 /**Codec usato per salvare {@link DatiSacca} all'interno  del DB*/
 public class DatiSaccaCodec implements Codec<DatiSacca> {

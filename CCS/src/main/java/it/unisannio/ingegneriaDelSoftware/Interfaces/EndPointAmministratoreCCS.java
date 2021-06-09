@@ -12,7 +12,6 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
@@ -118,74 +117,4 @@ public interface EndPointAmministratoreCCS {
 	@Path("/amministratori")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Dipendente> getAmministratori(@HeaderParam(HttpHeaders.AUTHORIZATION) String header) throws EntityNotFoundException;
-
-	/**---------REPORT DIPENDENTI RETE CTT------------
-	 * Restituisce la lista dei Dipendenti di tutti i CTT presenti sulla rete del ruolo selezionato
-	 * @param ruolo Ruolo dei Dipendenti da cercare
-	 * @return Response 200 OK e invia la lista dei dipendenti del ruolo selezionato
-	 */
-	@GET
-	@Path("/reportDipendentiCCS")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response reportDipendentiCCS(@QueryParam("ruolo")String ruolo);
-	
-	
-	/**---------REPORT NUMERICO DEI TIPI DI SACCHE PRESENTI A LIVELLO REGIONALE------------
-	 * Restituisce il numero di sacche presenti di ogni tipo nella regione
-	 * @return Response 200 OK e invia una mappa <gs,numeroSacche>
-	 * @return 400 BAD_REQUEST se i parametri inseriti non sono corretti
-	 */
-	@GET
-	@Path("/reportStatisticoSaccheCCS")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response reportStatisticoSaccheRegionale(@HeaderParam(HttpHeaders.AUTHORIZATION) String headers);
-	
-	
-	/**---------REPORT SACCHE INVIATE RETE REGIONALE------------
-	 *Restituisce la lista dei DatiSacche relativi alle sacche che sono state affidate in un determinato arco temporale
-	 * 	 * @param dataInizio Data inizio dell' arco temporale
-	 * 	 * @param dataFine Data fine dell' arco temporale
-	 * 	 * @return Response 200 OK e invia la lista dei datiSacca
-	 * 	 * @return 400 BAD_REQUEST se i parametri inseriti non sono corretti
-	 */
-	@GET
-	@Path("/reportSaccheInviateCCS")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response reportSaccheInviate(@QueryParam("dataInizio")String dataInizio,
-										 @QueryParam("dataFine")String dataFine) throws DateTimeParseException;
-	
-	
-	/**---------REPORT SACCHE RICEVUTE RETE REGIONALE------------
-	 *Restituisce la lista dei DatiSacche relativi alle sacche che sono state ricevute dalla rete in un determinato arco temporale
-	 * 	 * @param dataInizio Data inizio dell' arco temporale
-	 * 	 * @param dataFine Data fine dell' arco temporale
-	 * 	 * @return Response 200 OK e invia la lista dei datiSacca
-	 * 	 * @return 400 BAD_REQUEST se i parametri inseriti non sono corretti
-	 */
-	@GET
-	@Path("/reportSaccheRicevuteCCS")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response reportSaccheRicevute(@QueryParam("dataInizio")String dataInizio,
-										@QueryParam("dataFine")String dataFine) throws DateTimeParseException;
-	
-	
-	/**---------REPORT PERMANENZA MEDIA PER TIPO DI SANGUE A LIVELLO REGIONALE------------
-	 * Restituisce il numero di sacche presenti di ogni tipo nella regione
-	 * @return Response 200 OK e invia una mappa <gs,numeroSacche>
-	 * @return 400 BAD_REQUEST se i parametri inseriti non sono corretti
-	 */
-	@GET
-	@Path("/giacenzaMediaSaccheCCS")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response giacenzaMediaSaccheRegionale(@HeaderParam(HttpHeaders.AUTHORIZATION) String headers);
-	
-	
-	/**Restituisce una mappa di <CTTName,boolean>, true se il CTT è online
-	 * @return Response 200 OK e invia una mappa <CTTName,boolean>
-	 * @return 400 BAD_REQUEST se i parametri inseriti non sono corretti
-	 */
-	@GET
-	@Path("/statusReteCtt")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response statusReteCtt(@HeaderParam(HttpHeaders.AUTHORIZATION) String headers);
 }

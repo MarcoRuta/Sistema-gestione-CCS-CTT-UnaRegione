@@ -2,6 +2,7 @@ package it.unisannio.ingegneriaDelSoftware.ResponseHandler;
 
 import it.unisannio.ingegneriaDelSoftware.Classes.CTTName;
 import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
+import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaEvasione;
 import it.unisannio.ingegneriaDelSoftware.Classes.Seriale;
 import it.unisannio.ingegneriaDelSoftware.ClientRest.CTTRestClient;
 import it.unisannio.ingegneriaDelSoftware.CttDataBaseRestApplication;
@@ -33,7 +34,7 @@ public class SaccheNonTrovateInLocaleHandler implements ResponseHandler {
             return Response
                     .status(Response.Status.NOT_FOUND)
                     .entity("Localmente non è stata trovata nessuna sacca.\n" +
-                            "Inoltro la richiesta al CCS")
+                            "Inoltriamo la richiesta al CCS")
                     .build();
         }
 

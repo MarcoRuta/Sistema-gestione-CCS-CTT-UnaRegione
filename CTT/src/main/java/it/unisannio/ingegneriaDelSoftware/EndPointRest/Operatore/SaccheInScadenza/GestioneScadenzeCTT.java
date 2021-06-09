@@ -7,6 +7,7 @@ import java.util.List;
 import it.unisannio.ingegneriaDelSoftware.Classes.*;
 import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaSmaltimentoSacche;
 import it.unisannio.ingegneriaDelSoftware.Classes.Wrapper.SaccaWrapper;
+import it.unisannio.ingegneriaDelSoftware.ClientRest.CTTRestClient;
 import it.unisannio.ingegneriaDelSoftware.CttDataBaseRestApplication;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.Magazziniere.EndPointNotificheMagazziniere;
@@ -100,4 +101,6 @@ public class GestioneScadenzeCTT implements CTTFunction {
 		CttDataBaseRestApplication.logger.info("Ho rimosso la sacca: "+s.getSeriale().getSeriale()+" perchè era scaduta!");
 	}
 
+
+	
 }

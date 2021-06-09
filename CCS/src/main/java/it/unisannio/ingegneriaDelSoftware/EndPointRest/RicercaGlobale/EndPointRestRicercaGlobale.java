@@ -9,6 +9,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
+import com.mongodb.Mongo;
 import it.unisannio.ingegneriaDelSoftware.CcsDataBaseRestApplication;
 import it.unisannio.ingegneriaDelSoftware.Classes.Beans.Seriale;
 import it.unisannio.ingegneriaDelSoftware.Classes.CTT;
@@ -32,7 +33,7 @@ public class EndPointRestRicercaGlobale {
 
 	Observer scadenzeObserver = new SaccheInScadenzaObserver();
 	
-	/**Restituisce le Sacche del GruppoSanguigno richiesto con Data di scadenza più vicina nel DataBase locale.
+	/**Restituisce la Sacca del GruppoSanguigno richiesto con Data di scadenza più vicina nel DataBase locale.
 	 * @param gruppoSanguigno Gruppo sanguigno ricercato
 	 * @param numeroSacche il numero di sacche richieste
 	 * @param dataArrivoMassima Data entro la quale la Sacca non deve scadere e deve arrivare all'Ente richiedente
@@ -97,15 +98,17 @@ public class EndPointRestRicercaGlobale {
 		}
 
 
+
 		//non ho trovato nulla
 		this.prenotaSacca(cttOnline,cttSacche,indirizzoEnte,enteRichiedente);
 		CCSRestClient.sendRisultatiRicerca(Settings.ip.get(CTTName.getCttName(nome)),
 				new NotificaRisultatiRicerca(serialeList, "Nessuna sacca trovata presso i CTT della rete CCS"));
 		CcsDataBaseRestApplication.logger.info("Non sono riuscito a trovare nessuna sacca per il "+nome);
 		return Response.status(Response.Status.NOT_FOUND).build();
+
+
 	}
 
-	
 	private void prenotaSacca(Map<CTTName, String> cttOnline, Map<CTTName, List<Sacca>> cttSacche, String indirizzoEnte, String enteRichiedente) throws InterruptedException, EntityNotFoundException {
 		CcsDataBaseRestApplication.logger.info("Inizio la procedura per prenotare le sacche");
 		for (CTTName cttName : cttSacche.keySet()) {
@@ -120,5 +123,8 @@ public class EndPointRestRicercaGlobale {
 			CcsDataBaseRestApplication.logger.info("Sto prenotando le sacche presso il : "+cttName.getCttname());
 			CCSRestClient.makeEvasioneRequest(cttOnline.get(cttName),serialiDaEvadere, indirizzoEnte, enteRichiedente);
 		}
+
 	}
+
+
 }

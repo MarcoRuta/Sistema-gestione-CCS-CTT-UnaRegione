@@ -1,5 +1,6 @@
 package it.unisannio.ingegneriaDelSoftware.Functional;
 
+import it.unisannio.ingegneriaDelSoftware.CcsDataBaseRestApplication;
 import it.unisannio.ingegneriaDelSoftware.Classes.CTTName;
 import it.unisannio.ingegneriaDelSoftware.Util.Settings;
 import java.io.IOException;
@@ -12,8 +13,8 @@ import java.util.Map;
 /**Client REST che viene utilizzato per verificare lo stato di connessione con il CCS*/
 public class ConnectionVerifier {
 
-	/**Verifica lo stato di connessione dei CTT con il CCS, inviando un PING
-	 * @return Map<CTTName,String> cttOnline Mappa che associa ad ogni CTT il proprio indirizzo IP
+	/**Verifica lo stato di connessione del CTT con il CCS, inviando un PING
+	 * @return true se il CCS è collegato correttamente, false se non è stato possibile contattare il CCS
 	 */
     public static Map<CTTName,String> isCTTOnline(){
     	
@@ -32,5 +33,8 @@ public class ConnectionVerifier {
     		}
     	}
 	return cttOnline;
-    }   
+    }
+    
+    
 }
+

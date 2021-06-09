@@ -100,7 +100,7 @@ public class EndPointRestSaccheInScadenza implements EndPointSaccheInScadenzaCCS
 		this.notifyCTT(NotificaSaccaInScadenzaMaker.creaNotificheSaccheInScadenza());
 		
 		if (response.getStatus() == 204){
-			return Response.status(Response.Status.OK).entity("Sacca in scadenza prenotata correttamente").header("Access-Control-Allow-Origin","*").build();
+			return Response.status(Response.Status.OK).entity("Sacca In Scadenza Prenotata Correttamente").header("Access-Control-Allow-Origin","*").build();
 		} else return response;
 	
 	}

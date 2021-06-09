@@ -11,10 +11,11 @@ public enum GruppoSanguigno {
 	Am,
 	Bp,
 	Bm,
-	ABp,
-	ABm,
 	ZEROp,
-	ZEROm;
+	ZEROm,
+	ABp,
+	ABm;
+
 	
 
 	

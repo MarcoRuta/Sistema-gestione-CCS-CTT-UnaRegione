@@ -12,6 +12,7 @@ import it.unisannio.ingegneriaDelSoftware.EndPointRest.SaccheInScadenza.EndPoint
 import it.unisannio.ingegneriaDelSoftware.Filtri.FiltroDiAutentificazione;
 
 import javax.ws.rs.ApplicationPath;
+import java.util.Map;
 
 @SpringBootApplication (scanBasePackages = {"WebSocket", "ingegneriaDelSoftware"})
 @ApplicationPath("/rest")
@@ -45,6 +46,8 @@ public class CcsDataBaseRestApplication extends ResourceConfig {
 		register(ExceptionHandler.class);
 		register(IllegalArgumentExceptionHandler.class);
 		register(NumberFormaExceptionHandler.class);
+
+	
 	}
 
 	public static void main(String[] args) {
