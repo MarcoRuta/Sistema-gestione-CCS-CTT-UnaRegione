@@ -5,9 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>RimozioneDipendenteForm</title>
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/stylesDim.css">
-    <link rel="stylesheet" href="assets/css/formStylesDim.css">
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/stylesPage.css">
+    <link rel="stylesheet" href="assets/css/formStylesPage.css">
 </head>
 
 <body onload="start()">
@@ -19,7 +19,7 @@
                 </span>
             </div>
             <div class="col" style="text-align: right;">
-                <img class="logoCTT" src="assets/img/LOGO_CTT.svg">
+                <img class="logo" src="assets/img/LOGO_CTT.svg">
             </div>
         </div>
     </div>
@@ -39,7 +39,7 @@
                         </div>
                     </div>
                     
-                    <div class="containerForm" style= "padding-left: 7%;" >
+                    <div style= "padding-left: 7%;" >
                         <form id="myForm">
                             <div class="form-group row">
                                     <label>Codice fiscale:</label>
@@ -87,7 +87,7 @@
                   	alert("E' necessario effettuare il login per accedere a questa risorsa");
                   	window.location.href='Login.html';
                    }
-         }
+         };
 
 
    	 	rimozione = function(){
@@ -97,12 +97,10 @@
 	        
 	        xhttp.onreadystatechange = function() {
 	                    if (this.readyState == 4 && this.status == 200 ) {
-	                        res ="Dipendente "+codice.value+" rimosso correttamente"
-	                        //document.getElementById("result").innerHTML = "Dipendente "+codice.value+" rimosso correttamente";
+	                        res ="Dipendente "+codice.value+" rimosso correttamente";
 	                 	}else {
 	                 	    if(this.readyState == 4 && this.status != 200 ){
 	                 	    res =this.response;
-	                 	    //document.getElementById("result").innerHTML = this.response;
 	
 	                 	    }
 	                 	}
@@ -120,7 +118,7 @@
 	        xhttp.withCredentials = true;
 	        xhttp.send();
 
-    	}
+    	};
    	 	
 	   	 function reloadPage() {
 	         alert(res);
@@ -182,8 +180,6 @@
     </script>
         
     <div class="footer"></div>
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/scriptControl.js"></script>
 </body>
 
