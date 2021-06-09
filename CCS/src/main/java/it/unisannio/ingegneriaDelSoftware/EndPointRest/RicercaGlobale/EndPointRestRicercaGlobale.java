@@ -92,7 +92,7 @@ public class EndPointRestRicercaGlobale {
 			this.prenotaSacca(cttOnline,cttSacche,indirizzoEnte,enteRichiedente);
 			CCSRestClient.sendRisultatiRicerca(Settings.ip.get(CTTName.getCttName(nome)),
 					new NotificaRisultatiRicerca(serialeList, "Esito ricerca globale: completata parzialmente.\n" +
-							"Mancano: "+ (Integer.parseInt(numeroSacche)-serialeList.size())+"sacche."));
+							"Mancano: "+ (Integer.parseInt(numeroSacche)-serialeList.size())+" sacche."));
 			CcsDataBaseRestApplication.logger.info("Non è stato possibile soddisfare la richiesta del "+nome);
 			return Response.status(Response.Status.NO_CONTENT).build();
 		}

@@ -58,6 +58,7 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 		CcsDataBaseRestApplication.logger.info("Si è richiesta l'aggiunta di un CTT");
 		CTT ctt = new CTT(new CTTName(),provincia, citta, telefono, indirizzo, email, Double.parseDouble(latitudine), Double.parseDouble(longitudine));
 		mm.createCTT(ctt);
+		CTTName.updateSettings();
 		CcsDataBaseRestApplication.logger.info("CTT aggiunto correttamente al DataBase");
 
 		// The source resource was successfully copied.
