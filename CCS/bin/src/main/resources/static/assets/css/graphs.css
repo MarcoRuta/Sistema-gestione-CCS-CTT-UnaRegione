@@ -1,0 +1,56 @@
+#grafico {
+width: 60%;
+height: 300px;
+margin: 0;
+padding: 0;
+}
+
+#ay {
+width: 1em;
+float: left;
+font-weight: bold;
+margin: 0;
+}
+
+#contenitore {
+float: left;
+width: 90%;
+margin: 0;
+height: 300px;
+border-left: 1px solid #000;
+border-bottom: 1px solid #000;
+}
+
+.barra {
+float: left;
+width: 10%;
+height: 300px;
+margin: 0 0 0 0.5em;
+display: inline;
+background: #ccc;
+color: #000;
+}
+
+
+#b1, #b2, #b3, #b4, #b5, #b6 {
+margin: 0;
+display: block;
+width: 100%;
+background: #fff;
+color: #000;
+}
+
+#b1 {height: 5px;}
+#b2 {height: 20px;}
+#b3 {height: 35px;}
+#b4 {height: 40px;}
+#b5 {height: 55px;}
+#b6 {height: 70px;}
+
+#ax {
+margin: 0;
+text-align: right;
+font-weight: bold;
+clear: both;
+width: 90%;
+}

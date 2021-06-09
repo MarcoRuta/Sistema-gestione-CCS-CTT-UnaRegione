@@ -262,9 +262,7 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 					x += risultatoQuery.get(g);
 
 					risultatoQuery.put(g, x);
-
 				}
-
 		}
 
 		return Response
@@ -285,7 +283,7 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 	@Path("/reportSaccheInviateCCS")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response reportSaccheInviate(@QueryParam("dataInizio")String dataInizio,
-										 @QueryParam("dataFine")String dataFine) {
+										 @QueryParam("dataFine")String dataFine) throws DateTimeParseException{
 
 		CcsDataBaseRestApplication.logger.info("Sto inizializzando il report delle sacche inviate dalla rete tra il "+dataInizio+"e il "+dataFine);
 		Map<CTTName, String> cttOnline = ConnectionVerifier.isCTTOnline();
@@ -303,6 +301,7 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 				.build();
 	}
 
+	
 	/**---------REPORT SACCHE RICEVUTE RETE REGIONALE------------
 	 *Restituisce la lista dei DatiSacche relativi alle sacche che sono state ricevute dalla rete in un determinato arco temporale
 	 * 	 * @param dataInizio Data inizio dell' arco temporale
@@ -314,7 +313,7 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 	@Path("/reportSaccheRicevuteCCS")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response reportSaccheRicevute(@QueryParam("dataInizio")String dataInizio,
-										@QueryParam("dataFine")String dataFine) {
+										@QueryParam("dataFine")String dataFine) throws DateTimeParseException{
 
 		CcsDataBaseRestApplication.logger.info("Sto inizializzando il report delle sacche ricevute in rete tra il "+dataInizio+"e il "+dataFine);
 		Map<CTTName, String> cttOnline = ConnectionVerifier.isCTTOnline();
@@ -333,9 +332,8 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 	}
 
 	/**---------REPORT PERMANENZA MEDIA PER TIPO DI SANGUE A LIVELLO REGIONALE------------
-	 * Restituisce il numero di sacche presenti di ogni tipo nella regione
-	 * @return Response 200 OK e invia una mappa <gs,numeroSacche>
-	 * @return 400 BAD_REQUEST se i parametri inseriti non sono corretti
+	 *  Metodo che calcola quanto è il tempo medio di giacenza delle sacche di sangue all'interno dei vari magazzini dei CTT
+	 * @return Response 200 OK e invia una mappa <gs, numeroSacche>
 	 */
 	@GET
 	@Path("/giacenzaMediaSaccheCCS")
@@ -360,23 +358,18 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 				x += risultatoQuery.get(g);
 
 				risultatoQuery.put(g, x);
-
 			}
-
 		}
 
 		return Response
 				.status(Response.Status.OK)
 				.entity(risultatoQuery)
 				.build();
-
 	}
 
 
-	/**
-	 * Restituisce una mappa di <CTTName,boolean>, true se il CTT è online
+	/**Restituisce una mappa di <CTTName,boolean>, true se il CTT è online, altrimenti false
 	 * @return Response 200 OK e invia una mappa <CTTName,boolean>
-	 * @return 400 BAD_REQUEST se i parametri inseriti non sono corretti
 	 */
 	@GET
 	@Path("/statusReteCtt")

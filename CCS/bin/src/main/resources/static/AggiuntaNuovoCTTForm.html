@@ -43,98 +43,109 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>AggiuntaNuovoCTTForm</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/styles.css">
-    <link rel="stylesheet" href="assets/css/formStyles.css">
+    <link rel="stylesheet" href="assets/css/stylesDim.css">
+    <link rel="stylesheet" href="assets/css/formStylesDim.css">
 </head>
 
 <body onload="verificoToken();">
         <div class="titlePage">
-        <div>
-            <span class="fontTitle">
-                Aggiunta Nuovo CTT Form            
-            </span>
-        </div>
-        <div>
-            <img class="logoCCS" src="assets/img/LOGO_CCS.svg">
+            <div class="row">
+                <div class="col">
+                <span class="fontTitle" style="2.7vmax">
+                    Aggiunta Nuovo CTT Form
+                </span>
+                </div>
+                <div class="col" style="text-align: right;">
+                    <img class="logo" src="assets/img/LOGO_CCS.svg">
+                </div>
+            </div>
         </div>
     </div>
     
-    <div class="container" style="max-width: 1430px; margin: 1.5% auto;">
-        
-        <div class="dateForm">
-            <div class="titleDateForm">
-                <p>Inserisci i Dati:</p>
-                <button class="btn" onclick="location.href='AmministratoreCCS.html';"><img class="return" src="assets/img/return.png" /></button>
+    <div class="container">
+        <div class="row" style="min-height: 100%">
+            <div class="col">
+                <div class="dateForm">
+                    <div class="titleDateForm">
+                        <div class="row">
+                            <div class="col" style="max-width: 6vmax;">
+                                <button class="btn" onclick="location.href='AmministratoreCCS.html';"><img class="return" src="assets/img/return.png"></button>
+                            </div>
+                            <div class="col">
+                                <p style="width:100%; font-size: 2.0vmax;">Inserisci i Dati</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="containerForm" style= "overflow: auto; padding-left: 7%; max-height: 40vmax;" >
+                        <form id="myForm">
+                                <div class="form-group row">
+                                    <label>Provincia:</label>
+                                    <div class="inputForm">
+                                        <input id="provincia" name="prov" oninput="print3();" class="form-control" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label>Città:</label>
+                                    <div class="inputForm">
+                                        <input id="citta" name="city" oninput="print4();" class="form-control" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label>Indirizzo:</label>
+                                    <div class="inputForm">
+                                        <input id="indirizzo" name="street" oninput="print5();" class="form-control" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label>Telefono:</label>
+                                    <div class="inputForm">
+                                        <input id="telefono" name="phone" onchange="controllaTelefono();" oninput="print6();" class="form-control" type="text" placeholder="minimo 10 numeri">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label>E-mail:</label>
+                                    <div class="inputForm">
+                                        <input id="mail" name="email" onchange="controllaEmail();" oninput="print7();" class="form-control" type="text" placeholder="esempio@gmail.com">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label>Latitudine:</label>
+                                    <div class="inputForm">
+                                        <input id="latitude" name="lat" onchange="controllaLatitude();" oninput="print8();" class="form-control" type="text" placeholder="-90 a 90 gradi">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label>Longitudine:</label>
+                                    <div class="inputForm">
+                                        <input id="longitude" name="lon" onchange="controllaLongitude();" oninput="print9();" class="form-control" type="text" placeholder="-180 a 180 gradi">
+                                    </div>
+                                </div>
+                        </form>
+                    </div>
+                </div>
             </div>
-            <div class="containerForm" style= "overflow: auto; max-height: 440px; max-width: 705px" >
-                <form id="myForm">
-                        <div class="form-group row">
-                            <label>Provincia:</label>
-                            <div class="inputForm">
-                                <input id="provincia" name="prov" oninput="print3();" class="form-control" type="text">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label>Città:</label>
-                            <div class="inputForm">
-                                <input id="citta" name="city" oninput="print4();" class="form-control" type="text">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label>Indirizzo:</label>
-                            <div class="inputForm">
-                                <input id="indirizzo" name="street" oninput="print5();" class="form-control" type="text">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label>Telefono:</label>
-                            <div class="inputForm">
-                                <input id="telefono" name="phone" onchange="controllaTelefono();" oninput="print6();" class="form-control" type="text" placeholder="minimo 10 numeri">
-                            </div>
-                        </div> 
-                        <div class="form-group row">
-                            <label>E-mail:</label>
-                            <div class="inputForm">
-                                <input id="mail" name="email" onchange="controllaEmail();" oninput="print7();" class="form-control" type="text" placeholder="esempio@gmail.com">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label>Latitudine:</label>
-                            <div class="inputForm">
-                                <input id="latitude" name="lat" onchange="controllaLatitude();" oninput="print8();" class="form-control" type="text" placeholder="-90 a 90 gradi">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label>Longitudine:</label>
-                            <div class="inputForm">
-                                <input id="longitude" name="lon" onchange="controllaLongitude();" oninput="print9();" class="form-control" type="text" placeholder="-180 a 180 gradi">
-                            </div>
-                        </div>
-                </form>
+            <div class="col-sm">
+                <div class="previewForm">
+                    <div class="titleDateForm">
+                        <p style="margin: auto; font-size: 2vmax;">Anteprima</p>
+                    </div>
+                    <div class="outPreview">
+                        <p id="p1"></p>
+                        <p id="p2"></p>
+                        <p id="p3"></p>
+                        <p id="p4"></p>
+                        <p id="p5"></p>
+                        <p id="p6"></p>
+                        <p id="p7"></p>
+                        <p id="p8"></p>
+                        <p id="p9"></p>
+                    </div>
+                    <div style="margin-top: 2%; text-align: center">
+                        <button class="btn btn-primary" type="submit" onclick="loadCTT();" style="font-family: Calibri light;font-size: 1.6vmax;">Conferma</button>
+                    </div>
+                </div>
             </div>
-        </div>
-
-        <div class="previewForm">
-            <div class="titleDateForm">
-                <p>Anteprima</p>
-            </div>
-            <div class="outPreview">
-                <p id="p1"></p>
-                <p id="p2"></p>
-                <p id="p3"></p>
-                <p id="p4"></p>
-                <p id="p5"></p>
-                <p id="p6"></p>
-                <p id="p7"></p> 
-                <p id="p8"></p>
-                <p id="p9"></p>
-            </div>
-            <div class="outPreview" style="height: 40px;margin: 4% 45px;">
-                <p id="result"></p>
-            </div>
-            <button class="btn btn-primary" type="submit" onclick="loadCTT();" style="margin-left: 73.5%; width: 140px;height: 51px;font-family: Calibri light;font-size: 20px;">Conferma</button>
-        </div>
-        
+       </div>
     </div>
      
     <script type="application/javascript">

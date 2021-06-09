@@ -7,7 +7,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
-import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Singleton;
 import javax.ws.rs.*;
@@ -232,7 +231,7 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Dipendente> getDipendenti(@HeaderParam(HttpHeaders.AUTHORIZATION) String header) throws EntityNotFoundException {
 		List<Dipendente> dipendenti = md.getListaDipendenti();
-		return  dipendenti;
+		return dipendenti;
 	}
 
 	/**Metodo tramite il quale è possibile accedere al numero di sacche contenute nel database per tipo

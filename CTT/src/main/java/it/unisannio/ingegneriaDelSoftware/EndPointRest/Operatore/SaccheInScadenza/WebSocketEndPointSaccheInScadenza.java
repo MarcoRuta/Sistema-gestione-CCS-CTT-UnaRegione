@@ -3,7 +3,6 @@ package it.unisannio.ingegneriaDelSoftware.EndPointRest.Operatore.SaccheInScaden
 import WebSocket.Decoders.NotificaSaccaInScadenzaDecoder;
 import WebSocket.Encoders.NotificaSaccaInScadenzaEncoder;
 import it.unisannio.ingegneriaDelSoftware.CttDataBaseRestApplication;
-import it.unisannio.ingegneriaDelSoftware.EndPointRest.Operatore.SaccheInScadenza.SaccheInScadenzaClientEndPoint;
 
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;

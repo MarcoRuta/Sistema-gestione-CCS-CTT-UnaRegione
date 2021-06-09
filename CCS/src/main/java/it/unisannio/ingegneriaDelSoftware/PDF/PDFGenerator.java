@@ -1,11 +1,9 @@
 package it.unisannio.ingegneriaDelSoftware.PDF;
 import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.stream.Stream;
 
 /**Classe utilizzata per la creazione dei vari pdf */
 public class PDFGenerator {
@@ -42,6 +40,4 @@ public class PDFGenerator {
         document.add(table);
         document.close();
     }
-
-
 }

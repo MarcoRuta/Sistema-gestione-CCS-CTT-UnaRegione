@@ -25,16 +25,16 @@ public class EndPointNotificheOperatore {
     @Path("/risultatiRicercaGlobale")
     @Consumes(MediaType.APPLICATION_JSON)
     public void notifyOperatore(NotificaRisultatiRicerca risultatiRicerca){
-        CttDataBaseRestApplication.logger.info("Mi è arrivata un risultato di una ricerca globale: "+risultatiRicerca);
+        CttDataBaseRestApplication.logger.info("Mi è arrivato il risultato di una ricerca globale: "+risultatiRicerca);
         notificaRisultatiRicerca= risultatiRicerca;
         for (Session s : WebSocketEndPointResultRicercaGlobale.sessions) {
             try {
                 s.getBasicRemote().sendObject(risultatiRicerca);
                 CttDataBaseRestApplication.logger.info("Notifica risultati ricerca inoltrata correttamente al terminale operatore con sessione"+s.getId());
             } catch (IOException e) {
-                CttDataBaseRestApplication.logger.error("Impossibile inoltrare al'operatore con sessione "+s.getId()+" i risultati della ricerca");
+                CttDataBaseRestApplication.logger.error("Impossibile inoltrare all'operatore con sessione "+s.getId()+" i risultati della ricerca");
             } catch (EncodeException e) {
-                CttDataBaseRestApplication.logger.error("Impossibile  serializzare la lista delle sacche trovate online con sessione "+s.getId());
+                CttDataBaseRestApplication.logger.error("Impossibile serializzare la lista delle sacche trovate online con sessione "+s.getId());
             }
         }
     }

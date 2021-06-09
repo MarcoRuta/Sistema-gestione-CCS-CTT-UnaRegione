@@ -2,50 +2,47 @@
 <html>
 
 <head>
-     <script>        
-        function removeNotification()
-        {
-            divNot.innerHTML = "";
-        }
-    </script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>AmministratoreCSSHub</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/stylesDim.css">
+    <link rel="stylesheet" href="assets/css/tables.css">
 </head>
 
 <body onload="start();">
     <div class="titlePage">
-        <div>
-            <span class="fontTitle">
-                Centro Controllo Smistamento    
-            </span>
-        </div>
-        <div>
-            <img class="logoCCS" src="assets/img/LOGO_CCS.svg">
+        <div class="row">
+            <div class="col">
+                <span class="fontTitle">
+                    Centro Controllo Smistamento
+                </span>
+            </div>
+            <div class="col" style="text-align: right;">
+                <img class="logo" src="assets/img/LOGO_CCS.svg">
+            </div>
         </div>
 	</div>
     
     <div class="container">
         
-        <div class="row" style="margin-left:0px; margin-right: 0px">
+        <div class="row" style="margin: auto">
             <div class="border col boxProfile" style="background-image: url(&quot;assets/img/bg-pattern.png&quot;);">
                 <div class="row">
-                    <div class="col-sm">
-                        <img src="assets/img/doctor+pediatrician+icon-1320185104387356300.png" style="width: 200px;margin: 5% 7%;">
-                        <span>Amministratore CSS</span>
+                    <div class="col-sm" style="padding:1%; text-align: center">
+                        <img src="assets/img/doctor+pediatrician+icon-1320185104387356300.png" style="width: 80%;">
+                        <span><b>Amministratore CSS</b></span>
                     </div>
-                    <div class="col-sm" style="margin-top: 9%; margin-left: -2em">
+                    <div class="col-sm" style="margin: auto;">
                         <div>
                             <p id="nome">Nome: </p>
                         </div>
-                        <div style="margin: 30px 0%;">
+                        <div>
                             <p id="cognome">Cognome: </p>
                         </div>
-                        <div style="width: 300px;">
+                        <div style="width: auto; padding-bottom: 2%;">
                             <button class="btn btn-primary" onclick="location.href='ChangePasswordAfterLogin.html';" type="button" style="background-color: #13958d;">Change Password</button>
-                            <button class="btn btn-primary" onclick="logout();" type="button" style="margin: 0% 5%">Log out</button>
+                            <button class="btn btn-primary" onclick="logout();" type="button">Log out</button>
                         </div>
                     </div>
                 </div>
@@ -53,25 +50,25 @@
             
             <div class="border col-sm boxButton" style="background-image: url(&quot;assets/img/bg-pattern.png&quot;);">
                 <div class="containerBtn">
-                        <div class="row" style="width:75%">
+                        <div class="row" style="padding-bottom: 5%">
                             <div class="col-sm">
-                                <button class="btn btn-primary" onclick="location.href='AggiuntaNuovoCTTForm.html';" type="button" style="background-color: #13958d;width: 210px;">Aggiunta nuovo CTT</button>
+                                <button class="btn btn-primary" onclick="location.href='AggiuntaNuovoCTTForm.html';" type="button" style="background-color: #13958d;width: auto;">Aggiunta nuovo CTT</button>
                             </div>
                             <div class="col-sm">
-                                <button class="btn btn-primary" onclick="location.href='AggiuntaNuovoAmministratoreCCSForm.html';" type="button" style="background-color: #13958d; width: 210px;">Aggiungi Amministratore</button>
+                                <button class="btn btn-primary" onclick="location.href='AggiuntaNuovoAmministratoreCCSForm.html';" type="button" style="background-color: #13958d; width: auto;">Aggiungi Amministratore</button>
                              </div>
                         </div>
-                        <div class="row" style="width:75%; margin-top: 5%">
+                        <div class="row" style="padding-bottom: 5%">
                             <div class="col-sm">
-                                <button class="btn btn-primary" onclick="location.href='RimozioneCTTForm.html';" type="button" style="background-color: #13958d; width: 210px;">Rimozione CTT</button>
+                                <button class="btn btn-primary" onclick="location.href='RimozioneCTTForm.html';" type="button" style="background-color: #13958d; width: auto;">Rimozione CTT</button>
                             </div>
                             <div class="col-sm">
-                                <button class="btn btn-primary" onclick="location.href='RimozioneAmministratoreCCSForm.html';" type="button" style="background-color: #13958d; width: 210px;">Rimuovi Amministratore</button>
+                                <button class="btn btn-primary" onclick="location.href='RimozioneAmministratoreCCSForm.html';" type="button" style="background-color: #13958d; width: auto;">Rimuovi Amministratore</button>
                             </div>
                         </div>
-                        <div class="row" style="width:75%; margin-top: 5%; margin-left: 16%;">
+                        <div class="row" style="padding-bottom: 3%">
                             <div class="col-sm">
-                                <button class="btn btn-primary" onclick="location.href='MenuDiSelezioneQueryCCS.html';" type="button" style="background-color: #13958d; width: 210px;">Report statistici</button>
+                                <button class="btn btn-primary" onclick="location.href='QueryMenuCCS.html';" type="button" style="background-color: #13958d; width: auto;">Report statistici</button>
                             </div>
                         </div>
                 </div>
@@ -79,12 +76,14 @@
         </div>
          
         <div class="boxNotification col-sm-12 border shadow-sm profile-box" style="background-image: url(&quot;assets/img/bg-pattern.png&quot;);">
-            <h2>Notifiche</h2>
-            <div class="btnClear">
-                <button class="btn btn-primary" onclick="removeNotification();" type="button" style="background-color: #13958d;width: 177px;">Pulisci notifiche</button>
-            </div>
             <div class="divNot" id="divNot">
-            </div> 
+                <table id = "table">
+                    <tr>
+                        <th scope="col"> CTT </th>
+                        <th scope="col"> Stato </th>
+                    </tr>
+                </table>
+            </div>
         </div> 
     </div>
     
@@ -95,11 +94,13 @@
     var name = sessionStorage.getItem("nome");
     var surname = sessionStorage.getItem("cognome");
     var host = document.location.origin;
+    var obj;
     
 
 	function start() {
 		verificoToken();
 		setPerson();
+		statusRete();
 	}
     
 
@@ -148,7 +149,66 @@
 	           xhttp.send();
 
        };
-     
+
+     function statusRete(){
+
+          let table = document.getElementById('table');
+	      var xhttp = new XMLHttpRequest();
+	      var url = host +"/rest/CCS/statusReteCtt";
+	      xhttp.onreadystatechange = function() {
+	                  if (this.readyState == 4 && this.status == 200 ) {
+	                       obj = JSON.parse(this.response);
+	                       if(table.rows.length != 1) {
+                                while(table.rows.length != 1) {
+                                     table.deleteRow(1);
+                                }
+                           }
+	                       addTable(table);
+	                  }
+	      	};
+
+
+          xhttp.onerror = function(){
+                alert("impossibile inviare la richiesta");
+          };
+
+
+          xhttp.open("GET", url, true);
+          xhttp.setRequestHeader('Authorization', 'Basic '+token);
+          xhttp.withCredentials = true;
+          xhttp.send();
+          setTimeout(statusRete,5*1000);
+       };
+
+
+        function addTable(table){
+            let row;
+
+            for(let o of Object.keys(obj)) {
+                let name = o.substring(17,23);
+                let v = obj[o];
+                console.log(o);
+                console.log(v);
+                if(v){
+                   row = document.createElement('tr');
+                   row.className = "bg-success";
+                   row.appendChild(document.createElement('td'));
+                   row.appendChild(document.createElement('td'));
+                   row.cells[0].innerHTML = name;
+                   row.cells[1].innerHTML = "Online";
+                }
+                else{
+                row = document.createElement('tr');
+                row.className = "bg-danger";
+                row.appendChild(document.createElement('td'));
+                row.appendChild(document.createElement('td'));
+                row.cells[0].innerHTML = name;
+                row.cells[1].innerHTML = "Offline";
+                }
+                table.appendChild(row);
+            }
+
+       };
     </script>
     
     <div class="footer">

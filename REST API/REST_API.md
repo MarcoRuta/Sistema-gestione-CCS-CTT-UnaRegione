@@ -1,10 +1,8 @@
-
-
 # REST API 
 
 ## Autentificazione 
 
-Metodi necessari per autentificarsi con il sistemaCTT/CCS
+Metodi necessari per autentificarsi con il SistemaCTT/CCS
 
 [login](#login)
 
@@ -14,10 +12,9 @@ Metodi necessari per autentificarsi con il sistemaCTT/CCS
 
 [recuperoPassword](#recuperoPassword)
 
-
 ## CTT
 
-Metodi presenti sull'interfaccia rest dell'OperatoreCTT
+Metodi presenti sull'interfaccia REST dell'OperatoreCTT
 
 [ricercaSaccaLocale](#ricercaSaccaLocale)
 
@@ -27,7 +24,7 @@ Metodi presenti sull'interfaccia rest dell'OperatoreCTT
 
 [notifyOperatore](#notifyOperatore)
 
-Metodi presenti sull'interfaccia rest del MagazziniereCTT
+Metodi presenti sull'interfaccia REST del MagazziniereCTT
 
 [inoltroNotificaEvasione](#inoltroNotificaEvasione)
 
@@ -39,7 +36,7 @@ Metodi presenti sull'interfaccia rest del MagazziniereCTT
 
 [getPDF(@PathParam)](#getPDF(@PathParam))
 
-Metodi presenti sull'interfaccia rest dell'AmministratoreCTT
+Metodi presenti sull'interfaccia REST dell'AmministratoreCTT
 
 [getPDF](#getPDF)
 
@@ -47,7 +44,7 @@ Metodi presenti sull'interfaccia rest dell'AmministratoreCTT
 
 [removeDipendente](#removeDipendente)
 
-[reportDipedentiCTT](#reportDipendentiCTT)
+[reportDipendentiCTT](#reportDipendentiCTT)
 
 [reportStatisticoSacche](#reportStatisticoSacche)
 
@@ -61,7 +58,7 @@ Metodi presenti sull'interfaccia rest dell'AmministratoreCTT
 
 ## CCS
 
-Metodi presenti sull'interfaccia rest dell'AmministratoreCCS
+Metodi presenti sulle interfacce REST del CCS
 
 [ricercaSaccaGlobale](#ricercaSaccaGlobale)
 
@@ -70,6 +67,8 @@ Metodi presenti sull'interfaccia rest dell'AmministratoreCCS
 [prenotaSacca](#prenotaSacca)
 
 [ritiroAlertCTTSacca](#ritiroAlertCTTSacca)
+
+Metodi presenti sull'interfaccia REST dell'AmministratoreCCS
 
 [addCTT](#addCTT)
 
@@ -93,13 +92,15 @@ Metodi presenti sull'interfaccia rest dell'AmministratoreCCS
 
 [reportSaccheRicevute](#reportSaccheRicevute)
 
-[giacenzaMediaCCS](#giacenzaMediaCCS)
+[giacenzaMediaSaccheRegionale](#giacenzaMediaSaccheRegionale)
+
+[statusReteCtt](#statusReteCtt)
 
 # login
 
-  Metodo che permette ad un generico user di accedere alla piattaforma CTT/CCS
+        Metodo che permette ad un generico user di accedere alla piattaforma CTT/CCS
 
-* **URL**
+* **URL:**
 
         /rest/autentificazione
 
@@ -107,14 +108,14 @@ Metodi presenti sull'interfaccia rest dell'AmministratoreCCS
   
         POST
   
-*  **URL Params**
+*  **URL Params:**
 
         @FormParam username String username
-        @FormParam password String password (almeno 8 caratteri di cui almeno 1 numerico)
+        @FormParam password String password
    
-**Required:**
+* **Required:**
  
-         String password formata da almeno 8 caratteri di cui almeno 1 numerico.
+        String password formata da almeno 8 caratteri di cui almeno 1 numerico.
 
 * **Success Response:**
         
@@ -131,7 +132,7 @@ Metodi presenti sull'interfaccia rest dell'AmministratoreCCS
 
   Metodo che permette ad un generico user  di uscire dalla piattaforma CTT/CCS
 
-* **URL**
+* **URL:**
 
         /rest/autentificazione/logout
 
@@ -139,7 +140,7 @@ Metodi presenti sull'interfaccia rest dell'AmministratoreCCS
   
         DELETE
   
-*  **URL Params**
+*  **URL Params:**
 
         @HeaderParam(HttpHeaders.AUTHORIZATION) String header
    
@@ -158,17 +159,18 @@ Metodi presenti sull'interfaccia rest dell'AmministratoreCCS
 
   Metodo che permette ad un generico user  di cambiare la password di accesso alla piattaforma CTT/CCS
 
-* **URL**
+* **URL:**
 
-        /rest/autentificazione/cambiopassword/DCFSDF34F45E564R
+        /rest/autentificazione/cambiopassword/{cdf}
 
 * **Method:**
   
         PUT
   
-*  **URL Params**
+*  **URL Params:**
 
-       @HeaderParam(HttpHeaders.AUTHORIZATION) String header,@PathParam("cdf")String cdf, String password
+       @HeaderParam(HttpHeaders.AUTHORIZATION) String header,
+       @PathParam("cdf")String cdf, String password
 
 *  **Required:**
  
@@ -183,26 +185,26 @@ Metodi presenti sull'interfaccia rest dell'AmministratoreCCS
 * **Error Response:**
 
         Code: 400 BAD_REQUEST
-        Content: Formato password errato
+        Content: Formato dati errato
 
         OR
 
         Code: 404 NOT_FOUND
-        Content: Formato password errato
+        Content: Utente non trovato 
 
 # recuperoPassword
 
   Metodo che permette ad un generico user  di recuperare la propria password di accesso alla piattaforma CTT/CCS
 
-* **URL**
+* **URL:**
 
-        /rest/autentificazione/recuperoPassword/DCFSDF34F45E564R
+        /rest/autentificazione/recuperoPassword/{cdf}
 
 * **Method:**
   
         PUT
   
-*  **URL Params**
+*  **URL Params:**
 
        @PathParam("cdf")String cdf, String username
 
@@ -223,13 +225,18 @@ Metodi presenti sull'interfaccia rest dell'AmministratoreCCS
         OR
 
         Code: 404 NOT_FOUND
-        Content: Formato password errato
+        Content: Utente non trovato
+
+        OR 
+
+        Code: 403 FORBIDDEN
+        Content: username e codice fiscale non coincidono
 
 # ricercaSaccaLocale
 
 Metodo che ritorna una lista di sacche ricercate dall'OperatoreCTT 
 
-* **URL**
+* **URL:**
 
         /rest/operatore/ricerca
 
@@ -237,7 +244,7 @@ Metodo che ritorna una lista di sacche ricercate dall'OperatoreCTT
   
        GET
   
-*  **URL Params**
+*  **URL Params:**
 
         @QueryParam gruppoSanguigno String gruppoSanguigno 
         @QueryParam numeroSacche String numeroSacche
@@ -248,9 +255,10 @@ Metodo che ritorna una lista di sacche ricercate dall'OperatoreCTT
 
  * **Required:**
  
-         String gruppoSanguigno uno tra [Ap,Am,Bp,Bm,ZEROp,ZEROm,ABp,ABm]
+         String gruppoSanguigno uno tra [Ap,Am,Bp,Bm,ABp,ABm,ZEROp,ZEROm]
          String dataArrivoMassima nel formato [yyyy-MM-dd]
          String priorita uno tra [TRUE,FALSE]
+
 * **Success Response:**
   
         Code: 200 OK
@@ -259,7 +267,7 @@ Metodo che ritorna una lista di sacche ricercate dall'OperatoreCTT
 * **Error Response:**
 
         Code: 404 NOT_FOUND
-        Content: Localmente non è stata trovata nessuna sacca.Inoltriamo la richiesta al CCS.
+        Content: Localmente non è stata trovata nessuna sacca.Inoltro la richiesta al CCS.
 
         OR
 
@@ -279,28 +287,28 @@ Metodo che ritorna una lista di sacche ricercate dall'OperatoreCTT
         OR
 
         Code: 500 INTERNAL_SERVER_ERROR
-        Content: Non è stato possibile ripetere la richiesta per allinearsi con lo stato del CCS.Contattare il CCS per risolvere il problema.
+        Content: Non è stato possibile completare la richiesta per allinearsi con lo stato del CCS.Contattare il CCS per risolvere il problema.
  
 # ricercaSaccheCCS
 
 Metodo che ritorna una lista di sacche ricercate dall'OperatoreCTT dopo una richiesta proveniente dal CCS
 
-* **URL**
+* **URL:**
 
-        /rest/operatore/listaSaccheCompatibili/ZEROm/2021-06-22
+        /rest/operatore/listaSaccheCompatibili/{gs}/{data}
 
 * **Method:**
   
        GET
   
-*  **URL Params**
+*  **URL Params:**
 
         @PathParam("gs") String gruppoSanguigno,
         @PathParam("data") String dataArrivoMassima
 
  * **Required:**
  
-         String gruppoSanguigno uno tra [Ap,Am,Bp,Bm,ZEROp,ZEROm,ABp,ABm]
+         String gruppoSanguigno uno tra [Ap,Am,Bp,Bm,ABp,ABm,ZEROp,ZEROm]
          String dataArrivoMassima nel formato [yyyy-MM-dd]
 
 * **Success Response:**
@@ -310,17 +318,16 @@ Metodo che ritorna una lista di sacche ricercate dall'OperatoreCTT dopo una rich
 
 # prenotaSaccaAlert
 
-Metodo che permette di prenotare delle sacche in scadenza provenienti da altri CTT sul terminale dell'Operatore, in seguito ad un alert inviato dal CCS
+Metodo che permette di prenotare delle sacche in scadenza provenienti da altri CTT sul terminale dell'Operatore, in seguito ad un alert inviato dal CCS. Rimuove la notifica della sacca in scadenza sui terminali degli operatoriCTT
 
-* **URL**
+* **URL:**
 
-        /rest/operatore/prenotaSaccaInScadenza/CTT001-00000001, CTT002-00000022
-
+        /rest/operatore/prenotaSaccaInScadenza/{seriale}
 * **Method:**
   
        POST
   
-*  **URL Params**
+*  **URL Params:**
 
         @PathParam("seriale") String seriale,
         @FormParam("indirizzoEnte") String indirizzoEnte,
@@ -328,17 +335,17 @@ Metodo che permette di prenotare delle sacche in scadenza provenienti da altri C
 
  * **Required:**
  
-         String seriale nel seguente formato: 15 caratteri [CTT+numeroCTT(max 3 interi)+'-'+numeroSacca(8 interi)].
+         String seriale nel seguente formato: 15 caratteri ['CTT'+numeroCTT(max 3 interi)+'-'+numeroSacca(8 interi)].
 
 * **Success Response:**
   
-        Rimuove la notifica della sacca in scadenza sui terminali degli operatoriCTT
+        Code: 204 NO_CONTENT
 
 # notifyOperatore
 
 Metodo che notifica sul terminale dell'OperatoreCTT il risultato della ricerca globale
 
-* **URL**
+* **URL:**
 
         /rest/notificheOperatore/risultatiRicercaGlobale
 
@@ -346,27 +353,27 @@ Metodo che notifica sul terminale dell'OperatoreCTT il risultato della ricerca g
   
        POST
 
-* **Data Param:**
+* **Data Params:**
 
         NotificaRisultatiRicerca risultatiRicerca
 
 * **Success Response:**
   
-        Notifica risultati ricerca inoltrata correttamente al terminale operatore con sessione.
+        Notifica risultati ricerca inoltrata correttamente al terminale operatore con sessione "id sessione".
  
 * **Error Response:**
 
-        Impossibile inoltrare al'operatore con sessione i risultati della ricerca
+        Impossibile inoltrare all'operatore con sessione "id sessione" i risultati della ricerca
 
         OR
 
-        Impossibile  serializzare la lista delle sacche trovate online con sessione.
+        Impossibile serializzare la lista delle sacche trovate online con sessione "id sessione".
 
 # inoltroNotificaEvasione
 
  Metodo che aggiunge una notifica alla lista delle notifiche delle sacche da evadere da parte del MagazziniereCTT dopo una richiesta da parte dell'OperatoreCTT
  
-* **URL**
+* **URL:**
 
       /rest/notifica/notificaEvasione
 
@@ -374,47 +381,46 @@ Metodo che notifica sul terminale dell'OperatoreCTT il risultato della ricerca g
   
       POST 
   
-* **Data Param**
+* **Data Params**
 
       NotificaEvasione notificaEvasione
 
 * **Success Response:**
   
-  Compare una notifica sul terminale del MagazziniereCTT
+        Compare una notifica sul terminale del MagazziniereCTT
  
 * **Error Response:**
 
-      Code: 404 NOT_FOUND La notifica della sacca da evadere non è stata trovata
+        La notifica della sacca da evadere non è stata trovata.
+
+        Code: 404 NOT_FOUND 
 
 # getPDF()
 
  Metodo che genera il PDF con la lista delle sacche scadute da smaltire da parte del MagazziniereCTT
  
-* **URL**
+* **URL:**
 
       /rest/notifica/smaltimento/pdf
 
 * **Method:**
   
       GET
-  
-* **Data Param**
-
-      OutputStream output
 
 * **Success Response:**
   
-  Viene ritornato il pdf generato
+        Viene ritornato lo StreamingOutput da dove verrà aperto il pdf generato
  
 * **Error Response:**
 
-      Code: 500 INTERNAL_SERVER_ERROR Impossibile recuperare il PDF per lo smaltimento
+      Code: 500 INTERNAL_SERVER_ERROR
+      Content: Impossibile recuperare il PDF per lo smaltimento
 
 # aggiuntaSaccaMagazzino
 
- Metodo che aggiunge una sacca al database CTT, presente nel MagazziniereRestEndpoint
+ Metodo che aggiunge una sacca al database CTT, presente nell' EndpointRestMagazziniere
 
-* **URL**
+* **URL:**
 
       /rest/magazziniere/aggiuntaSacca
 
@@ -422,21 +428,21 @@ Metodo che notifica sul terminale dell'OperatoreCTT il risultato della ricerca g
   
       POST 
   
-* **URL Params**
+* **URL Params:**
 
        @FormParam("gruppo_sanguigno") String gruppo_sanguigno,
-       @FormParam("data_scadenza") String data_scadenza,   @FormParam("data_produzione") String data_produzione,
+       @FormParam("data_scadenza") String data_scadenza,   
+       @FormParam("data_produzione") String data_produzione,
        @FormParam("ente_donatore") String ente_donatore
        @Context UriInfo uriInfo
 
 * **Required:**
  
-         String gruppo_sanguigno uno tra [Ap,Am,Bp,Bm,ZEROp,ZEROm,ABp,ABm]
+         String gruppo_sanguigno uno tra [Ap,Am,Bp,Bm,ABp,ABm,ZEROp,ZEROm]
          String data_scadenza nel formato [yyyy-MM-dd]
          String data_produzione nel formato [yyyy-MM-dd]
+
 * **Success Response:**
-  
-  La sacca è stata creata e aggiunta correttamente al database
 
       Code: 201 CREATED
       Content: "Sacca con seriale " + *SERIALE GENERATO DAL SISTEMA* + " aggiunta correttamente"
@@ -449,13 +455,13 @@ Metodo che notifica sul terminale dell'OperatoreCTT il risultato della ricerca g
       OR
 
       Code: 400 BAD_REQUEST
-      Content: Sacca già esistente
+      Content: Sacca già esistente nel database
 
 # evasioneSacca
 
  Metodo che riceve una notifica evasione sacca e rimuove la sacca dal database delle sacche, aggiornando i dati sacca. Inoltre crea il PDF con i dati dell'evasione della sacca
 
-* **URL**
+* **URL:**
 
       /rest/magazziniere/evasione
 
@@ -469,23 +475,20 @@ Metodo che notifica sul terminale dell'OperatoreCTT il risultato della ricerca g
         @Context UriInfo uriInfo
 
 * **Success Response:**
-  
-  L'ordine è stato evaso correttamente, si prepara il PDF da stampare per la consegna
 
       Code: 201 CREATED
       Content: Sacche evase correttamente
-* **Error Response:**
 
-  Errore dovuto ad un inserimento errato dei dati (ad esempio un seriale non registrato)
+* **Error Response:**
 
       Code: 404 NOT_FOUND 
       Content: Sacca da evadere non trovata
 
 # getPDF(@PathParam)
 
- Metodo che permette di ottenere i dati di una evasione sottoforma di PDF.
+ Metodo che permette di ottenere i dati di una evasione sotto forma di PDF.
 
-* **URL**
+* **URL:**
 
       /rest/magazziniere/evasione/pdf/{id_evasione}
 
@@ -493,17 +496,15 @@ Metodo che notifica sul terminale dell'OperatoreCTT il risultato della ricerca g
   
         GET 
   
-* **Data Params**
+* **URL Params:**
 
         @PathParam("id_evasione")String id_evasione
 
 * **Success Response:**
         
-        Il PDF viene creato correttamente e visualizzato su una nuova finestra.
+        Viene ritornato lo StreamingOutput da dove verrà aperto il pdf generato
          
 * **Error Response:**
-
-  Errore dovuto ad un inserimento errato dei dati (ad esempio un seriale non registrato)
 
       Code: 404 NOT_FOUND 
       Content: Evasione non trovata
@@ -511,23 +512,23 @@ Metodo che notifica sul terminale dell'OperatoreCTT il risultato della ricerca g
       OR
 
       Code : 500 INTERNAL_SERVER_ERROR
-      Content: Impossibile creare il PDF per l'evasione con id +id_evasione
+      Content: Impossibile creare il PDF per l'evasione con id "id evasione"
 
 # getPDF()
 
- Metodo che genera il PDF con la lista delle sacche scadute da smaltire da parte del MagazziniereCTT
+ Metodo che permette di ottenere i dati di accesso di un dipendente appena aggiunto sotto forma di PDF.
  
-* **URL**
+* **URL:**
 
-      /rest/amministratore/aggiuntaDipendente/pdf/DCFSDF34F45E564R
+      /rest/amministratore/aggiuntaDipendente/pdf/{cdf}
 
 * **Method:**
   
       GET
   
-* **URL Param**
+* **URL Params:**
 
-      @PathParam("cdf")String cdf
+      @PathParam("cdf") String cdf
 
 *  **Required:**
  
@@ -535,7 +536,7 @@ Metodo che notifica sul terminale dell'OperatoreCTT il risultato della ricerca g
 
 * **Success Response:**
   
-   Viene ritornato il pdf generato
+   Viene ritornato lo StreamingOutput da dove verrà aperto il pdf generato
  
 * **Error Response:**
 
@@ -551,7 +552,7 @@ Metodo che notifica sul terminale dell'OperatoreCTT il risultato della ricerca g
 
  Metodo che aggiunge un dipendente al database CTT
 
-* **URL**
+* **URL:**
 
         /rest/amministratore/aggiuntaDipendente
 
@@ -559,7 +560,7 @@ Metodo che notifica sul terminale dell'OperatoreCTT il risultato della ricerca g
   
         POST 
 
-* **Data Params**
+* **URL Params:**
 
         @FormParam("cdf")String cdf,
         @FormParam("nome")String nome,
@@ -588,7 +589,7 @@ Metodo che notifica sul terminale dell'OperatoreCTT il risultato della ricerca g
       OR
 
       Code: 400 BAD REQUEST 
-      Content: Formato dati errati
+      Content: Formato dati errato
 
       OR
 
@@ -604,17 +605,17 @@ Metodo che notifica sul terminale dell'OperatoreCTT il risultato della ricerca g
 
   Metodo che rimuove un dipendente dal database del CTT
 
-* **URL**
+* **URL:**
 
-        /rest/amministratore/rimozioneDipendente/DCFSDF34F45E564R
+        /rest/amministratore/rimozioneDipendente/{cdf}
 
 * **Method:**
   
         DELETE
   
-*  **URL Params**
+*  **URL Params:**
 
-       @HeaderParam(HttpHeaders.AUTHORIZATION)String header
+       @HeaderParam(HttpHeaders.AUTHORIZATION) String header
        @PathParam("cdf") String cdf
    
 *  **Required:**
@@ -624,7 +625,7 @@ Metodo che notifica sul terminale dell'OperatoreCTT il risultato della ricerca g
 * **Success Response:**
   
         Code: 200 OK
-        Content: "Corretta rimozione del Dipendente: + cdf
+        Content: Corretta rimozione del Dipendente: "cdf"
  
 * **Error Response:**
   
@@ -636,21 +637,21 @@ Metodo che notifica sul terminale dell'OperatoreCTT il risultato della ricerca g
         Code: 403 FORBIDDEN
         Content: Non puoi cancellare te stesso
 
-# reportOperatoriCTT
+# reportDipendentiCtt
 
   Metodo che restituisce la lista dei Dipendenti del CTT che occupano il Ruolo scelto
 
-* **URL**
+* **URL:**
 
-        /rest/amministratore/reportOperatoriCtt
+        /rest/amministratore/reportDipendentiCtt
 
 * **Method:**
   
         GET
   
-*  **URL Params**
+*  **URL Params:**
 
-       @QueryParam("ruolo")String ruolo
+       @QueryParam("ruolo") String ruolo
    
 *  **Required:**
  
@@ -659,13 +660,13 @@ Metodo che notifica sul terminale dell'OperatoreCTT il risultato della ricerca g
 * **Success Response:**
   
         Code: 200 OK
-        Content: Query elaborata con successo
+        Content: risultatoQuery
 
 # reportStatisticoSacche
 
   Metodo che restituisce il numero di sacche presenti di ogni tipo nel database
 
-* **URL**
+* **URL:**
 
         /rest/amministratore/reportStatisticoSacche
 
@@ -673,20 +674,20 @@ Metodo che notifica sul terminale dell'OperatoreCTT il risultato della ricerca g
   
         GET
   
-*  **URL Params**
+*  **URL Params:**
 
        @HeaderParam(HttpHeaders.AUTHORIZATION) String headers
 
 * **Success Response:**
   
         Code: 200 OK
-        Content: Query elaborata con successo
+        Content: risultatoQuery
 
 # reportLocaleSaccheInviate
 
   Metodo che restituisce la lista dei DatiSacche relativi alle sacche che sono state affidate in un determinato arco temporale
 
-* **URL**
+* **URL:**
 
         /rest/amministratore/reportLocaleSaccheInviate
 
@@ -694,10 +695,10 @@ Metodo che notifica sul terminale dell'OperatoreCTT il risultato della ricerca g
   
         GET
   
-*  **URL Params**
+*  **URL Params:**
 
-       @QueryParam("dataInizio")String dataInizio,
-       @QueryParam("dataFine")String dataFine
+       @QueryParam("dataInizio") String dataInizio,
+       @QueryParam("dataFine") String dataFine
 
  * **Required:**
  
@@ -707,18 +708,18 @@ Metodo che notifica sul terminale dell'OperatoreCTT il risultato della ricerca g
 * **Success Response:**
   
         Code: 200 OK
-        Content: Query elaborata con successo
+        Content: risultatoQuery
  
  * **Error Response:**
-
-      Code: 400 BAD_REQUEST
-      Content: Formato data errato
+  
+        Code: 400 BAD_REQUEST
+        Content: Formato data errato
 
 # reportLocaleSaccheRicevute
 
-  Metodo che restituisce la lista dei DatiSacche relativi alle sacche che sono state affidate in un determinato arco temporale
+  Metodo che restituisce la lista dei DatiSacche relativi alle sacche che sono state ricevute in un determinato arco temporale
 
-* **URL**
+* **URL:**
 
         /rest/amministratore/reportLocaleSaccheRicevute
 
@@ -726,10 +727,10 @@ Metodo che notifica sul terminale dell'OperatoreCTT il risultato della ricerca g
   
         GET
   
-*  **URL Params**
+*  **URL Params:**
 
-       @QueryParam("dataInizio")String dataInizio,
-       @QueryParam("dataFine")String dataFine
+       @QueryParam("dataInizio") String dataInizio,
+       @QueryParam("dataFine") String dataFine
 
  * **Required:**
  
@@ -739,20 +740,20 @@ Metodo che notifica sul terminale dell'OperatoreCTT il risultato della ricerca g
 * **Success Response:**
   
         Code: 200 OK
-        Content: Query elaborata con successo
+        Content: risultatoQuery
  
  * **Error Response:**
 
-      Code: 400 BAD_REQUEST
-      Content: Formato data errato
+        Code: 400 BAD_REQUEST
+        Content: Formato data errato
 
 # giacenzaMedia
 
   Metodo che calcola quanto è il tempo medio di giacenza delle sacche di sangue all'interno del magazzino
 
-* **URL**
+* **URL:**
 
-        /rest/amministratore/permanenzaMediaSacche
+        /rest/amministratore/giacenzaMediaSacche
 
 * **Method:**
   
@@ -761,13 +762,18 @@ Metodo che notifica sul terminale dell'OperatoreCTT il risultato della ricerca g
 * **Success Response:**
   
         Code: 200 OK
-        Content: Query elaborata con successo
+        Content: risultatoQuery
 
+ * **Error Response:**
+
+        Code: 400 BAD_REQUEST
+        Content: Formato data errato
+      
 # getDipendenti
 
-Metodo che ritorna la lista di tutti i dependenti che lavorano all'interno del CTT 
+Metodo che ritorna la lista di tutti i dipendenti che lavorano all'interno del CTT 
 
-* **URL**
+* **URL:**
 
         /rest/amministratore/dipendenti
 
@@ -775,7 +781,7 @@ Metodo che ritorna la lista di tutti i dependenti che lavorano all'interno del C
   
         GET
 
-* **URL Param**
+* **URL Params:**
 
         @HeaderParam(HttpHeaders.AUTHORIZATION) String header
 
@@ -786,13 +792,13 @@ Metodo che ritorna la lista di tutti i dependenti che lavorano all'interno del C
 * **Error Response**
 
         Code: 404 NOT_FOUND
-        Content: Dipendenti non trovati
+        Content: Dipendenti non trovati nel database
 
 # ricercaSaccaGlobale
 
-Metodo che le sacche di sacche del gruppo sanguigno richiesto cercando nei database dei vari CTT
+Metodo che ricerca le sacche del gruppo sanguigno richiesto cercando nei database dei CTT
 
-* **URL**
+* **URL:**
 
         /rest/CCS/ricercaGlobale
 
@@ -800,7 +806,7 @@ Metodo che le sacche di sacche del gruppo sanguigno richiesto cercando nei datab
   
        GET
   
-*  **URL Params**
+*  **URL Params:**
 
         @QueryParam("nome") String nome,
         @QueryParam("gruppo") String gruppoSanguigno,
@@ -812,37 +818,38 @@ Metodo che le sacche di sacche del gruppo sanguigno richiesto cercando nei datab
 
  * **Required:**
  
-         String gruppoSanguigno uno tra [Ap,Am,Bp,Bm,ZEROp,ZEROm,ABp,ABm]
+         String gruppoSanguigno uno tra [Ap,Am,Bp,Bm,ABp,ABm,ZEROp,ZEROm]
          String dataArrivoMassima nel formato [yyyy-MM-dd]
          String priorita uno tra [TRUE,FALSE]
+         
 * **Success Response:**
   
+        Esito ricerca globale: completata totalmente.
         Code: 204 NO_CONTENT
-        Content:Esito ricerca globale: completata totalmente.
 
         OR
 
+        Esito ricerca globale: completata parzialmente. Mancano: "numeroSaccheMancanti" sacche.
         Code: 204 NO_CONTENT
-        Content: Esito ricerca globale: completata parzialmente. Mancano: + numeroSaccheMancanti.
 
 * **Error Response:**
 
+        Nessuna sacca trovata presso i CTT della rete CCS.
         Code: 404 NOT_FOUND
-        Content: Nessuna sacca trovata presso i CTT della rete CCS
 
         OR
 
         Code: 404 NOT_FOUND
-        Content: Entity not found
+        Content: Nessun CTT online
 
         Code: 500 INTERNAL_SERVER_ERROR
-        Content: Non è stato possibile ripetere la richiesta per allinearsi con lo stato del CCS.Contattare il CCS per risolvere il problema.
+        Content: Non è stato possibile completare la richiesta per allinearsi con lo stato del CCS. Contattare il CCS per risolvere il problema.
 
 # aggiungiSaccaInScadenza
 
 Metodo che aggiunge al database delle sacche in scadenza una lista di sacche in scadenza a partire da quelle presenti nei database dei vari CTT
 
-* **URL**
+* **URL:**
 
         /rest/CCS/saccheInScadenza
 
@@ -850,33 +857,33 @@ Metodo che aggiunge al database delle sacche in scadenza una lista di sacche in 
   
        POST
   
-*  **Data Param**
+*  **Data Params**
 
         Sacca[] listaSaccheInScadenza
 
 * **Success Response:**
   
-        Sacca aggiunta correttamente al DB
+        Sacca in scadenza aggiunta correttamente al DB
 
 * **Error Response**
 
         Code: 400 BAD_REQUEST
-        Content: Sacca già presente nel database
+        Content: Sacca in scadenza già presente nel database
 
 # prenotaSacca
 
 Metodo che accetta una delle sacche in scadenza presenti nella rete. L'iterazione del metodo termina con una richiesta di evasione presso il CTT che possiede tale sacca e una notifica di conferma per il CTT che l'ha richiesta.
 	 
 
-* **URL**
+* **URL:**
 
-        /rest/CCS/prenotaSaccaInScadenza/CTT001-00000021
+        /rest/CCS/prenotaSaccaInScadenza/{seriale}
 
 * **Method:**
   
-       GET
+       DELETE
   
-*  **URL Params**
+*  **URL Params:**
 
         @PathParam("seriale") String seriale,
         @QueryParam("enteRichiedente") String ente_richiedente,
@@ -884,53 +891,53 @@ Metodo che accetta una delle sacche in scadenza presenti nella rete. L'iterazion
 
  * **Required:**
  
-         String seriale nel seguente formato: 15 caratteri [CTT+numeroCTT(max 3 interi)+'-'+numeroSacca(8 interi)].
+         String seriale nel seguente formato: 15 caratteri ['CTT'+numeroCTT(max 3 interi)+'-'+numeroSacca(8 interi)].
 
 * **Success Response:**
   
         Code: 200 OK
-        Content:Sacca In Scadenza Prenotata Correttamente.
+        Content: Sacca in scadenza prenotata correttamente
 
 * **Error Response:**
 
         Code: 404 NOT_FOUND
-        Content: Entity not found
+        Content: Sacca in scadenza non trovata
 
 # ritiroAlertCTTSacca
 
 Metodo che accetta il seriale di una sacca, precedentemente inviata al CCS perchè in scadenza, successivamente prenotata e quindi da rimuovere dalla lista.
 	
-* **URL**
+* **URL:**
 
-        /rest/CCS/ritiroAlertCTT/CTT002-00000009
+        /rest/CCS/ritiroAlertCTT/{seriale}
 
 * **Method:**
   
        GET
   
-*  **URL Params**
+*  **URL Params:**
 
         @PathParam("seriale") String seriale
 
  * **Required:**
  
-         String seriale nel seguente formato: 15 caratteri [CTT+numeroCTT(max 3 interi)+'-'+numeroSacca(8 interi)].
+         String seriale nel seguente formato: 15 caratteri ['CTT'+numeroCTT(max 3 interi)+'-'+numeroSacca(8 interi)].
 
 * **Success Response:**
   
         Code: 200 Ok
-        Content:Alert Ritirato.
+        Content: Alert Ritirato.
 
 * **Error Response:**
 
         Code: 404 NOT_FOUND
-        Content: Entity not found
+        Content: Sacca non trovata nel database
 
  # addCTT
 
  Metodo che aggiunge un CTT al database CCS
 
-* **URL**
+* **URL:**
 
         /rest/CCS/aggiuntaCTT
 
@@ -938,7 +945,7 @@ Metodo che accetta il seriale di una sacca, precedentemente inviata al CCS perch
 
         POST 
   
-* **URL Params**
+* **URL Params:**
 
         @FormParam("provincia") String provincia,
         @FormParam("citta") String citta,
@@ -952,33 +959,33 @@ Metodo che accetta il seriale di una sacca, precedentemente inviata al CCS perch
 * **Success Response:**
 
       Code: 200 OK
-      Content: CTT +nomeCTT+ aggiunto correttamente"
+      Content: "nomeCTT" aggiunto correttamente"
  
 * **Error Response:**
 
-      Code: 500 INTERNAL SERVER ERROR
+      Code: 500 INTERNAL_SERVER_ERROR
       Content: CTT già presente nel database
 
 # removeCTT
 
   Metodo che rimuove un CTT dal database del CCS
 
-* **URL**
+* **URL:**
 
-        /rest/CCS/rimozioneCTT/CTT001
+        /rest/CCS/rimozioneCTT/{cttName}
 
 * **Method:**
   
         DELETE
   
-*  **URL Params**
+*  **URL Params:**
 
         @PathParam("cttName") String cttName
    
 * **Success Response:**
   
         Code: 200 OK
-        Content: CTT  +nomeCTT+ rimosso correttamente
+        Content: "nomeCTT" rimosso correttamente
  
 * **Error Response:**
  
@@ -994,7 +1001,7 @@ Metodo che accetta il seriale di una sacca, precedentemente inviata al CCS perch
 
   Metodo che restituisce la lista di tutti i CTT presenti nel database del CCS
 	 
-* **URL**
+* **URL:**
 
         /rest/CCS/centers
 
@@ -1004,13 +1011,13 @@ Metodo che accetta il seriale di una sacca, precedentemente inviata al CCS perch
    
 * **Success Response:**
   
-        La lista dei CTT presenti nel database
+        La lista dei CTT presenti nel database dei CTT
 
 # addAmministratore
 
- Metodo che aggiunge un amministratoreCCS al database CCS
+ Metodo che aggiunge un amministratoreCCS al database dei dipendenti CCS
 
-* **URL**
+* **URL:**
 
         /rest/CCS/aggiuntaAmministratore
 
@@ -1018,7 +1025,7 @@ Metodo che accetta il seriale di una sacca, precedentemente inviata al CCS perch
 
         POST 
   
-* **URL Params**
+* **URL Params:**
 
         @FormParam("cdf")String cdf,
         @FormParam("nome")String nome,
@@ -1045,33 +1052,33 @@ Metodo che accetta il seriale di una sacca, precedentemente inviata al CCS perch
       OR
 
       Code: 400 BAD_REQUEST 
-      Content: dati non corretti
+      Content: Dati non corretti
 
       OR
 
       Code: 400 BAD_REQUEST 
-      Content: Formato cdf non corretto
+      Content: Formato codice fiscale non corretto
 
       OR
 
       Code: 500 INTERNAL_SERVER_ERROR 
-      Content: Dipendente già presente nel database.
+      Content: Dipendente già presente nel database dei dipendenti.
 
 # getPDF
 
- Metodo che recupera un pdf con cdf, username e password di un dipendente
+Metodo che permette di ottenere i dati di accesso di un amministratoreCCS appena aggiunto sotto forma di PDF.
 
-* **URL**
+* **URL:**
 
-        /rest/CCS/aggiuntaAmministratore/pdf/DCFSDF34F45E564R
+        /rest/CCS/aggiuntaAmministratore/pdf/{cdf}
 
 * **Method:**
 
         GET 
   
-* **URL Param**
+* **URL Params:**
 
-        @PathParam("cdf")String cdf
+        @PathParam("cdf") String cdf
 
 * **Required**
 
@@ -1079,7 +1086,7 @@ Metodo che accetta il seriale di una sacca, precedentemente inviata al CCS perch
 
 * **Success Response:**
   
-       Viene ritornato il pdf generato
+        Viene ritornato lo StreamingOutput da dove verrà aperto il pdf generato
  
 * **Error Response:**
 
@@ -1091,21 +1098,21 @@ Metodo che accetta il seriale di una sacca, precedentemente inviata al CCS perch
       Code: 500 INTERNAL_SERVER_ERROR 
       Content: Impossibile creare il dipendente
 
-**removeAmministratore**
+# removeAmministratore
 
   Metodo che rimuove un AmministratoreCCS dal database dei dipendenti
 
-* **URL**
+* **URL:**
 
-        /rest/CCS/rimozioneAmministratore/DCFSDF34F45E564R
+        /rest/CCS/rimozioneAmministratore/{cdf}
 
 * **Method:**
   
         DELETE
   
-*  **URL Params**
+*  **URL Params:**
 
-        HttpHeaders.AUTHORIZATION)String header,
+        HttpHeaders.AUTHORIZATION) String header,
         @PathParam("cdf") String cdf 
 
 * **Required**
@@ -1115,7 +1122,7 @@ Metodo che accetta il seriale di una sacca, precedentemente inviata al CCS perch
 * **Success Response:**
   
         Code: 200 OK
-        Content: Corretta rimozione del Dipendente + cdf.
+        Content: Corretta rimozione del Dipendente "codice fiscale".
  
 * **Error Response:**
   
@@ -1125,13 +1132,13 @@ Metodo che accetta il seriale di una sacca, precedentemente inviata al CCS perch
         OR
 
         Code: 404 NOT_FOUND
-        Content: Entity not found
+        Content: Dipendente da rimuovere non presente nel database dei dipendenti
 
 # getAmministratori
 
 Metodo che ritorna la lista di tutti i dipendenti che lavorano all'interno del CTT 
 
-* **URL**
+* **URL:**
 
         /rest/CCS/amministratori
 
@@ -1139,34 +1146,24 @@ Metodo che ritorna la lista di tutti i dipendenti che lavorano all'interno del C
   
         GET
 
-* **URL Param**
+* **URL Params:**
 
         @HeaderParam(HttpHeaders.AUTHORIZATION) String header
 
 * **Success Response:**
   
-    La lista dei dipendenti
+        La lista dei dipendenti presenti nel database dei dipendenti
 
 * **Error Response**
 
         Code: 404 NOT_FOUND
-        Content: Dipendenti non trovati
-
-reportDipendentiCCS](#reportDipendentiCCS)
-
-[reportStatisticoSaccheRegionale](#reportStatisticoSaccheRegionale)
-
-[reportSaccheInviate](#reportSaccheInviate)
-
-[reportSaccheRicevute](#reportSaccheRicevute)
-
-[giacenzaMediaCCS](#giacenzaMediaCCS)
+        Content: Non è presente nessun dipendente nel database
 
 # reportDipendentiCCS
 
-  Metodo che restituisce la lista di tutti i dipendenti dei CTT che occupano il ruolo scelto
+  Metodo che restituisce la lista di tutti i dipendenti di tutti i CTT che occupano il ruolo scelto
 
-* **URL**
+* **URL:**
 
         /rest/CCS/reportDipendentiCCS
 
@@ -1174,9 +1171,9 @@ reportDipendentiCCS](#reportDipendentiCCS)
   
         GET
   
-*  **URL Param**
+*  **URL Params:**
 
-       @QueryParam("ruolo")String ruolo
+       @QueryParam("ruolo") String ruolo
    
 *  **Required:**
  
@@ -1185,13 +1182,13 @@ reportDipendentiCCS](#reportDipendentiCCS)
 * **Success Response:**
   
         Code: 200 OK
-        Content: Query elaborata con successo
+        Content: risultatoQuery
 
-# reportStatisticoSacche
+# reportStatisticoSaccheRegionale
 
-  Metodo che restituisce il numero di sacche presenti di ogni tipo nella regione
+  Metodo che restituisce il numero di sacche presenti di ogni gruppo sanguigno nella regione
 
-* **URL**
+* **URL:**
 
         /rest/CCS/reportStatisticoSaccheCCS
 
@@ -1199,20 +1196,20 @@ reportDipendentiCCS](#reportDipendentiCCS)
   
         GET
   
-*  **URL Params**
+*  **URL Params:**
 
        @HeaderParam(HttpHeaders.AUTHORIZATION) String headers
 
 * **Success Response:**
   
         Code: 200 OK
-        Content: Query elaborata con successo
+        Content: risultatoQuery
 
 # reportSaccheInviate
 
   Metodo che restituisce la lista dei DatiSacche relativi alle sacche che sono state affidate in un determinato arco temporale
 
-* **URL**
+* **URL:**
 
         /rest/CCS/reportSaccheInviateCCS
 
@@ -1220,10 +1217,10 @@ reportDipendentiCCS](#reportDipendentiCCS)
   
         GET
   
-*  **URL Params**
+*  **URL Params:**
 
-       @QueryParam("dataInizio")String dataInizio,
-       @QueryParam("dataFine")String dataFine
+       @QueryParam("dataInizio") String dataInizio,
+       @QueryParam("dataFine") String dataFine
 
  * **Required:**
  
@@ -1233,7 +1230,7 @@ reportDipendentiCCS](#reportDipendentiCCS)
 * **Success Response:**
   
         Code: 200 OK
-        Content: Query elaborata con successo
+        Content: risultatoQuery
  
  * **Error Response:**
 
@@ -1244,7 +1241,7 @@ reportDipendentiCCS](#reportDipendentiCCS)
 
   Metodo che restituisce la lista dei DatiSacche relativi alle sacche che sono state ricevute dalla rete in un determinato arco temporale
 
-* **URL**
+* **URL:**
 
         /rest/CCS/reportSaccheRicevuteCCS
 
@@ -1252,10 +1249,10 @@ reportDipendentiCCS](#reportDipendentiCCS)
   
         GET
   
-*  **URL Params**
+*  **URL Params:**
 
-       @QueryParam("dataInizio")String dataInizio,
-       @QueryParam("dataFine")String dataFine
+       @QueryParam("dataInizio") String dataInizio,
+       @QueryParam("dataFine") String dataFine
 
  * **Required:**
  
@@ -1265,26 +1262,51 @@ reportDipendentiCCS](#reportDipendentiCCS)
 * **Success Response:**
   
         Code: 200 OK
-        Content: Query elaborata con successo
+        Content: risultatoQuery
  
  * **Error Response:**
 
-      Code: 400 BAD_REQUEST
-      Content: Formato data errato
+        Code: 400 BAD_REQUEST
+        Content: Formato data errato
 
-# giacenzaMediaCCS
+# giacenzaMediaSaccheRegionale
 
   Metodo che calcola quanto è il tempo medio di giacenza delle sacche di sangue all'interno dei vari magazzini dei CTT
 
-* **URL**
+* **URL:**
 
-        /rest/CCS/giacenzaMediaCCS
+        /rest/CCS/giacenzaMediaSaccheCCS
 
 * **Method:**
   
         GET
 
+  **URL Params:**
+
+       @HeaderParam(HttpHeaders.AUTHORIZATION) String headers
+
 * **Success Response:**
   
         Code: 200 OK
-        Content: Query elaborata con successo.
+        Content: risultatoQuery.
+
+# statusReteCtt
+
+  Metodo che restituisce una mappa di <CTTName,boolean>, true se il CTT è online, altrimenti false
+
+* **URL:**
+
+        /rest/CCS/statusReteCtt
+
+* **Method:**
+  
+        GET
+
+  **URL Params:**
+
+       @HeaderParam(HttpHeaders.AUTHORIZATION) String headers
+
+* **Success Response:**
+  
+        Code: 200 OK
+        Content: statusRete.
