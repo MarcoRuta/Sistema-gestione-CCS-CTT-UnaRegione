@@ -1,3 +1,14 @@
+.container {
+	height: 50vh;
+	max-width: 100%;
+	margin: 1.5% auto;
+}
+
+.containerForm {
+	overflow:auto; 
+	padding-left: 4%;
+}
+
 .dateForm {
     min-height: 100%;
 	background-color: #13958d;
@@ -10,33 +21,27 @@
 }
 
 div.titleDateForm button {
-	color: rgb(255,255,255);
-	font-family: muli,sans-serif;
-	margin-top: 0.5em;
+	margin-top: 5%;
 }
 
-.dateFormQuery {
-	height: 500px;
-	width: 340px;
-	background-color: #13958d;
-	background-image: linear-gradient(#005C56,#13958d);
+.inputForm {
+	width: 20%;
+	height: 1%;
+	margin: -3em 40%;
 }
 
-div.titleDateFormQuery p {
-	color: rgb(255,255,255);
-	font-size: 34px;
-	text-align: center;
-	height: 40px;
-	font-family: muli,sans-serif;
+
+div.inputForm input {
+	width: 250%;
+	font-size: 19px;
+	font-family: Calibri light;
 }
 
-div.titleDateFormQuery button {
-	color: rgb(255,255,255);
-	font-family: muli,sans-serif;
-	margin-left: 2%;
-	margin-top: 2%;
+div.inputForm select {
+	width: 250%;
+	font-size: 19px;
+	font-family: Calibri light;
 }
-
 
 .previewForm {
 	height: 100%;
@@ -44,13 +49,6 @@ div.titleDateFormQuery button {
 	background-image: linear-gradient(#005C56,#13958d);
 }
 
-.previewFormQuery {
-	width: 1040px;
-	height: 500px;
-	margin: -500px 355px;
-	background-color: #13958d;
-	background-image: linear-gradient(#005C56,#13958d);
-}
 
 .outPreview {
 	height: 50%;
@@ -60,6 +58,7 @@ div.titleDateFormQuery button {
 	background-color: #ffffff;
 	overflow: auto;
 }
+
 
 div.row .outPreview p {
 	margin: 0px;
@@ -72,26 +71,9 @@ div.row .outPreview p {
 }
 
 
-.outPreviewQuery {
-	height: 84%;
-	width: 95%;
-	margin: auto;
-	background-color: #ffffff;
-	overflow: auto;
-}
-
-
 .return {
  	max-width: 40px;
 	max-height: 30px;
-}
-
-
-
-.container {
-	height: 50vh;
-	max-width: 100%;
-	margin: 1.5% auto;
 }
 
 
@@ -118,25 +100,6 @@ div.row label{
 	margin: 1% 4%;
 }
 
-.inputForm {
-	width: 20%;
-	height: 1%;
-	margin: -3em 40%;
-}
-
-
-div.inputForm input {
-	width: 250%;
-	font-size: 19px;
-	font-family: Calibri light;
-}
-
-div.inputForm select {
-	width: 250%;
-	font-size: 19px;
-	font-family: Calibri light;
-}
-
 
 .textPrint {
 	color: #13958d;
@@ -149,26 +112,6 @@ div.inputForm select {
 	font-size: 16px;
 }
 
-.containerTable {
-	width: 1000px;
-	height: 400px;
-	margin: auto;
-
-}
-
-tbody.tableStyle p {
-	height: 50px;
-	color: rgb(255,255,255);
-	font-family: Calibri light;
-	font-weight: bold;
-	font-size: 25px;
-	width: auto;
-	margin: 0px auto;
-}
-
-tbody.tableStyle td {
-	height: 85px;
-}
 
 .box {
 	height: 50%;
