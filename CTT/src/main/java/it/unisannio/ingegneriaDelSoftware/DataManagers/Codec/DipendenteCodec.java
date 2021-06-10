@@ -50,4 +50,5 @@ public class DipendenteCodec implements Codec<Dipendente> {
     public Class<Dipendente> getEncoderClass() {
         return Dipendente.class;
     }
+    
 }

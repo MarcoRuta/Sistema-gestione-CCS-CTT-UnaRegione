@@ -4,13 +4,13 @@ import java.util.*;
 
 /**FlyWeight*/
 public class Cdf {
+
 	private String codiceFiscale;
 	
-    /**Mappa statica che mantiene tutte le istanze di CTTName*/
+    /**Mappa statica che mantiene tutte le istanze di CDF*/
 	private static Map<String, Cdf> cdfs = new HashMap<String,Cdf>();
 
-
-	/**Costruisce un' istanza di Cdf solo se non è stata già istanziata in precedenza
+	/**Costruisce un'istanza di Cdf solo se non è stata già istanziata in precedenza
 	 * @param cdf Codice fiscale in formato Stringa
 	 * @throws AssertionError, IllegalArgumentException
 	 */
@@ -24,7 +24,7 @@ public class Cdf {
 	}
 
 	/**Restituisce il Codice fiscale in formato Cdf partendo da una stringa
-	 * @param cdf Codice fiscale, che deve essere una stringa di 16 caratteri
+	 * @param cdf Codice fiscale nel seguente formato:[CCCCCCNNCNNCNNNC] con C: char[A-Z] && N: int[1-9]
 	 * @throws IllegalArgumentException se la String non rispetta lo standard del codice fiscale
 	 */
 	private Cdf(String cdf) throws IllegalArgumentException{
@@ -33,7 +33,7 @@ public class Cdf {
     }
 	
 	/**Restituisce il codice fiscale come stringa
-	 * @return codice fiscale*/
+	 * @return codice fiscale Il codice fiscale dello user*/
 	public String getCodiceFiscale() {
 		return codiceFiscale;
 	}

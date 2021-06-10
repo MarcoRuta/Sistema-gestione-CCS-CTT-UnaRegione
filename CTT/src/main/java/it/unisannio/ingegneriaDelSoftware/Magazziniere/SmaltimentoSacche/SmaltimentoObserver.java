@@ -25,7 +25,7 @@ public class SmaltimentoObserver implements Observer {
         try {
             for (Session s : WebSocketEndPointSmaltimentoSacche.sessions) {
                 s.getBasicRemote().sendObject(notificaSmaltimentoSacche);
-                CttRestApplication.logger.info("Ho Inviato La notifica smaltimento al TerminaleMagazziniere con session " + s.getId());
+                CttRestApplication.logger.info("Ho inviato La notifica smaltimento al TerminaleMagazziniere con session " + s.getId());
             }
         }catch (EncodeException e) {
             CttRestApplication.logger.error("Problemi con la codifica delle notifiche smaltimento");

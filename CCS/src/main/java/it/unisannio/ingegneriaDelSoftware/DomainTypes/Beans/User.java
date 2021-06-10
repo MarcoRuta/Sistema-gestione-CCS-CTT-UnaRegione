@@ -11,11 +11,11 @@ public class User {
     private String cdf;
 
     /**Metodo costruttore di User 
-     * @param token
-     * @param ruolo
-     * @param nome
-     * @param cognome
-     * @param cdf
+     * @param token Oggetto che il server restituito al client dopo che un generico user si è correttamente loggato, valido per tutta la sessione
+     * @param ruolo Ruolo recuperato dalla fase di login
+     * @param nome Nome recuperato dalla fase di login
+     * @param cognome Cognome recuperato dalla fase di login
+     * @param cdf CDF recuperato dalla fase di login
      */
     public User(String token, String ruolo, String nome, String cognome, String cdf){
         this.ruolo = ruolo;
@@ -24,88 +24,79 @@ public class User {
         this.cognome = cognome;
         this.cdf = cdf;
     }
-    
-    
-    /**Metodo costruttore di User
+
+    /**Metodo costruttore di User senza argomenti
      */
     public User(){};
 
-    
-    /**Restituisce il Codice fiscale dell'User
-	 * @return cdf
-     */
-    public String getCdf() {
-        return cdf;
-    }
-
-    
-    /**Modifica il Codice fiscale dell'User
-     * @param cdf
-     */
-    public void setCdf(String cdf) {
-        this.cdf = cdf;
-    }
-
-    
-    /**Modifica il Token dell'User
-     * @param token
-     */
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    
-    /**Modifica il Ruolo dell'User
-     * @param ruolo
-     */
-    public void setRuolo(String ruolo) {
-        this.ruolo = ruolo;
-    }
-
-    
-    /**Restituisce il Token dell'User 
-     * @return token
+    /**Restituisce il token dell'User
+     * @return token Token dell'User
      */
     public String getToken() {
         return token;
     }
 
-    
-    /**Restituisce il Ruolo dell'User
+    /**Modifica il token dell'User
+     * @param token Token dell'User
+     */
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    /**Restituisce il ruolo dell'User
      * @return Ruolo
      */
     public String getRuolo() {
         return ruolo;
     }
 
-    
-    /**Restituisce il Cognome dell'User
-     * @return cognome
+    /**Modifica il ruolo dell'User
+     * @param ruolo Ruolo dell'user
      */
-    public String getCognome() {
-        return cognome;
+    public void setRuolo(String ruolo) {
+        this.ruolo = ruolo;
     }
 
-    
     /**Restituisce il nome dell'User
-     * @return nome
+     * @return nome Nome dell'user
      */
     public String getNome() {
         return nome;
     }
 
+    /**Modifica il Nome dell'User
+     * @param nome Nome dell'user
+     */
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    /**Restituisce il cognome dell'User
+     * @return cognome Cognome dell'User
+     */
+    public String getCognome() {
+        return cognome;
+    }
+
     /**Modifica il Cognome dell'User
-     * @param cognome
+     * @param cognome Cognome dell'User
      */
     public void setCognome(String cognome) {
         this.cognome = cognome;
     }
 
-    /**Modifica il Nome dell'User
-     * @param nome
+    /**Restituisce il Codice fiscale dell'User
+     * @return cdf Codice Fiscale dello user
      */
-    public void setNome(String nome) {
-        this.nome = nome;
+    public String getCdf() {
+        return cdf;
+    }
+
+    /**Modifica il Codice fiscale dell'User
+     * @param cdf Codice Fiscale dello user
+     */
+    public void setCdf(String cdf) {
+        this.cdf = cdf;
     }
 
     @Override

@@ -7,7 +7,6 @@ import java.text.DecimalFormat;
 import java.util.InvalidPropertiesFormatException;
 import java.util.Properties;
 
-
 /**Singleton*/
 public class CTTName {
 
@@ -41,25 +40,27 @@ public class CTTName {
         cttNameInstance = new CTTName();
     }
 
+    
     /**Restituisce il nome del CTT come stringa
      * @return cttname il nome del CTT come stringa */
     public String getCttname() {
         return cttname;
     }
 
+    
     /**Costruttore privato di CTTName*/
     private CTTName() {
         this.cttname = radice+(new DecimalFormat("000")).format(number);
     }
 
+    
     /**Restituisce l'istanza caricata in memoria di CTTName
      * @return cttNameInstance */
     public static CTTName getInstance(){
         return cttNameInstance;
     }
 
-
-
+    
     @Override
     public String toString() {
         return "CTTName{" +

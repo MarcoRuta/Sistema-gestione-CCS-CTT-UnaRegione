@@ -7,7 +7,6 @@ import it.unisannio.ingegneriaDelSoftware.Interfaces.Notifica;
 
 public class NotificaEvasione implements Notifica {
 	
-
 	/**Lista dei seriali da evadere */
 	private List<Seriale> listaSeriali;
 	/**Ente che ha richiesto tali sacche */
@@ -55,6 +54,7 @@ public class NotificaEvasione implements Notifica {
 		return enteRichiedente;
 	}
 	
+	
 	/**Modifica l'ente richiedente
 	 * @param enteRichiedente
 	 */
@@ -70,12 +70,14 @@ public class NotificaEvasione implements Notifica {
 		return indirizzoEnte;
 	}
 	
+	
 	/**Modifica l'indirizzo ente
 	 * @param indirizzoEnte
 	 */
 	public void setIndirizzoEnte(String indirizzoEnte) {
 		this.indirizzoEnte = indirizzoEnte;
 	}
+	
 	
 	/**Restituisce il messaggio contenuto nella notifica
 	 * @return message 
@@ -84,6 +86,7 @@ public class NotificaEvasione implements Notifica {
 		return message;
 	}
 
+	
 	/**Modifica il messaggio presente sulla notifica
 	 * @param message
 	 */
@@ -98,6 +101,7 @@ public class NotificaEvasione implements Notifica {
 				+ ", indirizzoEnte=" + indirizzoEnte + ", message=" + message + "]";
 	}
 
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -109,6 +113,7 @@ public class NotificaEvasione implements Notifica {
 		return result;
 	}
 
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -140,8 +145,5 @@ public class NotificaEvasione implements Notifica {
 			return false;
 		return true;
 	}
-
-	
-	
 	
 }

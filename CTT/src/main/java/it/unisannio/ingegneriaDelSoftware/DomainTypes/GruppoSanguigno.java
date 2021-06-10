@@ -14,9 +14,7 @@ public enum GruppoSanguigno {
 	ZEROp,
 	ZEROm,
 	ABp,
-	ABm;
-
-	
+	ABm;	
 
 	
 	@SuppressWarnings("serial")
@@ -32,6 +30,7 @@ public enum GruppoSanguigno {
 			put (ABm, new ArrayList<GruppoSanguigno>(Arrays.asList(ABp,ABm)));
 		}
 	};
+	
 	
 	@SuppressWarnings("serial")
 	private final static HashMap<GruppoSanguigno, List<GruppoSanguigno>> puoRicevereDa = new HashMap<GruppoSanguigno, List<GruppoSanguigno>>() {
@@ -60,4 +59,3 @@ public enum GruppoSanguigno {
 	}
 		
 }
-

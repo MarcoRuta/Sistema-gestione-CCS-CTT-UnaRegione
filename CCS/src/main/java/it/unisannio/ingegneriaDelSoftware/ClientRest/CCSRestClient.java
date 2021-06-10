@@ -1,4 +1,5 @@
 package it.unisannio.ingegneriaDelSoftware.ClientRest;
+
 import it.unisannio.ingegneriaDelSoftware.CcsDataBaseRestApplication;
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.Beans.Sacca;
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.Beans.Seriale;
@@ -18,10 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-
 /**Client REST che viene utilizzato dal CCS per contattare gli EndPointRest dei CTT*/
 public class CCSRestClient {
-
 
     public static List<Sacca> RicercaGlobaleSaccheCompatibili(String gs, String dataArrivoMassima, String CTTip, String CTTport){
         Client client = ClientBuilder.newClient();
@@ -35,8 +34,6 @@ public class CCSRestClient {
         if(sacche.size()!=0)CcsDataBaseRestApplication.logger.info("Sacche compatibili trovate presso un CTT");
             return sacche;
     }
-
-
 
     public static void makeEvasioneRequest(String ip, List<Seriale> serialiDaEvadere, String indirizzoEnte, String enteRichiedente) {
         Client client = ClientBuilder.newClient();
@@ -82,7 +79,6 @@ public class CCSRestClient {
         return saccheCtt;
     }
 
-
     public static List<DatiSacca> makeReportSaccheInviate(String ip, String dataInizio, String dataFine){
         Client client = ClientBuilder.newClient();
         WebTarget saccheInviateCtt = client
@@ -102,7 +98,6 @@ public class CCSRestClient {
         List<DatiSacca> datiSaccheRicevute = saccheRicevuteCtt.request().get(ArrayList.class);
         return datiSaccheRicevute;
     }
-
 
     public static Map<GruppoSanguigno, Double> makeReportGiacenzaMediaSacche(String ip) {
         Client client = ClientBuilder.newClient();

@@ -1,4 +1,5 @@
 package it.unisannio.ingegneriaDelSoftware.PDF;
+
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
@@ -15,8 +16,7 @@ public class PDFGenerator {
 	 * @param cdf codice fiscale del Dipendente 
 	 * @param username username del Dipendente 
 	 * @param password password provvisoria del Dipendente 
-	 * @throws DocumentException 
-	 * @throws IOException
+	 * @throws DocumentException,IOException
 	 */
     public static void  makeDocumentDipendente(OutputStream output, String cdf, String username , String password) throws DocumentException, IOException {
         Document document = new Document();
@@ -42,6 +42,4 @@ public class PDFGenerator {
         document.add(table);
         document.close();
     }
-
-
 }

@@ -1,4 +1,5 @@
 package it.unisannio.ingegneriaDelSoftware.DomainTypes.Beans;
+
 import java.util.*;
 
 /**FlyWeight*/
@@ -13,7 +14,6 @@ public class Seriale {
 				'}';
 	}
 
-	
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -22,23 +22,20 @@ public class Seriale {
 		return seriale.equals(seriale1.seriale);
 	}
 
-	
 	@Override
 	public int hashCode() {
 		return Objects.hash(seriale);
 	}
 
-	
 	/**Restituisce il seriale della Sacca
 	 * @return il valore del seriale come stringa
 	 */
 	public String getSeriale(){
 		return this.seriale;
 	}
-	
-	
+
 	/**Modifica il seriale della Sacca
-	 * @param il valore del seriale come stringa
+	 * @param seriale Il valore del seriale come stringa
 	 */
 	public void setSeriale(String seriale){
 		this.seriale = seriale;

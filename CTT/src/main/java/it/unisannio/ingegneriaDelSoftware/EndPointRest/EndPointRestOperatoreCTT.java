@@ -37,7 +37,6 @@ import it.unisannio.ingegneriaDelSoftware.Util.Settings;
 @RolesAllowed({"OperatoreCTT","CCS"})
 public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT{
 
-
 	/**Composite che effettua la ricerca prima in locale con il gruppo sanguigno specificato e poi in locale con i gs compatibili*/
 	public CompositionSearcher aSearcher = new CompositionSearcher();
 	public SearcherCCS CCSSearcher = new SearcherCCS();
@@ -47,7 +46,7 @@ public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT{
 	 * @param numeroSacche il numero di sacche richieste
 	 * @param dataArrivoMassima Data entro la quale la Sacca non deve scadere e deve arrivare all'Ente richiedente
 	 * @param enteRichiedente Ente richiedente della Sacca
-	 * @return Response, 200 ok se le sacche sono state trovate e evase in locale, 404 NOT_FOUND non è stato possibile soddisfare la ricerca in locale
+	 * @return Response
 	 */
 	@GET
 	@Path("/ricerca")
@@ -84,18 +83,16 @@ public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT{
 			}
 		}
 
-		CttRestApplication.logger.info("Ricerca conclusa ecco le sacche che ho trovato: "+serialiDaEvadere);
+		CttRestApplication.logger.info("Ricerca conclusa, ecco le sacche che ho trovato: "+serialiDaEvadere);
 
 		return ResponseBuilderFactory.GetResponseHandler(serialiDaEvadere,numSacche).makeResearchResponse(numSacche, serialiDaEvadere, enteRichiedente, indirizzoEnte, dataArrivoMassima, priorita, gruppoSanguigno);
 	}
 
 
-
-
 	/**Restituisce tutte le sacche del tipo indicato e compatibili che hanno data di scadenza successiva alla data dell'utilizzo
 	 * @param gruppoSanguigno Gruppo sanguigno ricercato
 	 * @param dataArrivoMassima Data entro la quale la Sacca non deve scadere e deve arrivare all'Ente richiedente
-	 * @return Response, 200 ok se le sacche sono state trovate e evase in locale, 404 NOT_FOUND non è stato possibile soddisfare la ricerca in locale
+	 * @return Response
 	 */
 	@GET
 	@Path("/listaSaccheCompatibili/{gs}/{data}")
@@ -103,7 +100,6 @@ public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT{
 	public Response ricercaSaccheCCS(@PathParam("gs") String gruppoSanguigno,
 									 @PathParam("data") String dataArrivoMassima){
 		
-
 		int x = 0;
 		CttRestApplication.logger.info("Ho ricevuto la richiesta da parte del CCS per ricercare delle sacche di gruppo: "+gruppoSanguigno);
 		List<Sacca> saccheTrovate =
@@ -118,14 +114,11 @@ public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT{
 }
 
 	
-	
-
 	/**
-	 * 
-	 * @param seriale
-	 * @param indirizzoEnte
-	 * @param enteRichiedente
-	 * @return
+	 * @param seriale Il Seriale della Sacca
+	 * @param indirizzoEnte L'indirizzo dell'ente che ha richiesto la Sacca
+	 * @param enteRichiedente L'ente che ha richiesto la Sacca
+	 * @return Response
 	 */
 	@POST
 	@Path("/prenotaSaccaInScadenza/{seriale}")
@@ -137,7 +130,7 @@ public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT{
 		Client client = ClientBuilder.newClient();
 		WebTarget gestioneSaccheInscadenza = client.target("http://"+Settings.ccsIp+":"+Settings.ccsIpPort+"/rest/CCS/prenotaSaccaInScadenza")
 				.path(seriale).queryParam("enteRichiedente",enteRichiedente).queryParam("indirizzoEnte",indirizzoEnte);
-		CttRestApplication.logger.info("richiesta inoltrata verso: "+gestioneSaccheInscadenza.getUri());
+		CttRestApplication.logger.info("Richiesta inoltrata verso: "+gestioneSaccheInscadenza.getUri());
 		return gestioneSaccheInscadenza.request().delete(Response.class);
 	}
 

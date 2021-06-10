@@ -1,14 +1,12 @@
 package it.unisannio.ingegneriaDelSoftware.EndPointRest;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.*;
-
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Singleton;
-
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-
 import com.itextpdf.text.DocumentException;
 import it.unisannio.ingegneriaDelSoftware.Annotazioni.Secured;
 import it.unisannio.ingegneriaDelSoftware.CcsDataBaseRestApplication;
@@ -23,7 +21,6 @@ import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointAmministratoreCCS;
 import it.unisannio.ingegneriaDelSoftware.PDF.PDFGenerator;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 import it.unisannio.ingegneriaDelSoftware.Util.Settings;
-
 import java.time.LocalDate;
 import java.time.format.*;
 import java.util.zip.DataFormatException;
@@ -43,6 +40,7 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 	 * @param email L'email del CTT che si vuole aggiungere
 	 * @param latitudine La latitudine del CTT che si vuole aggiungere
 	 * @param longitudine La longitudine del CTT che si vuole aggiungere
+	 * @param uriInfo Informazioni riguardo l'uri
 	 * @return Response */
 	@POST
 	@Path("/aggiuntaCTT")
@@ -62,17 +60,15 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 		CTTName.updateSettings();
 		CcsDataBaseRestApplication.logger.info("CTT aggiunto correttamente al DataBase");
 
-		// The source resource was successfully copied.
-		// The COPY operation resulted in the creation of a new resource.
 		return Response
 				.status(Response.Status.OK)
 				.entity(ctt.getDenominazione().getCttname() + " aggiunto correttamente")
 				.header(HttpHeaders.LOCATION, uriInfo.getBaseUri()+"/centers/"+ctt.getDenominazione().getCttname())
 				.build();
 	}
-	
-	
+
 	/**Rimuove un CTT dal Database dei CTT
+	 * @param cttName Il nome del CTT da rimuovere
 	 * @return Response 
 	 */
 	@DELETE
@@ -89,9 +85,9 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 				.build();
 	}
 
-	
 	/**Restituisce la lista di tutti i CTT presenti nel Database dei CTT, utilizzato per l' aggiunta automatica dei CTT
-	 * @return List<CTT> */
+	 * @return La lista dei CTT
+	 */
 	@GET
 	@Path("/centers")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -99,8 +95,7 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 		CcsDataBaseRestApplication.logger.info("Si è richiesta la lista dei CTT presenti nel DataBase");
 		return mm.getListaCTT();	
 	}
-	
-	
+
 	/**Aggiunge un AmministratoreCCS nel Database dei Dipendenti
 	 * @param cdf Codice fiscale del Dipendente da aggiungere al DataBase
 	 * @param nome Nome del Dipendente da aggiungere al DataBase
@@ -121,12 +116,10 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 								  @Context UriInfo uriInfo) throws DateTimeParseException, IllegalArgumentException, AssertionError, EntityAlreadyExistsException {
 
 		CcsDataBaseRestApplication.logger.info("Si è richiesta l'aggiunta di un' Amministratore");
-		//creo un dipendente
 		String password = IDGenerator.getID();
 		Dipendente d = new Dipendente(Cdf.getCDF(cdf), nome, cognome,
 				LocalDate.parse(dataDiNascita, DateTimeFormatter.ofPattern(Constants.DATEFORMAT)),
 				RuoloDipendente.AmministratoreCCS, username, password);
-		//aggiungo il dipendente al DB
 		mm.createDipendente(d);
 		CcsDataBaseRestApplication.logger.info("L'amministratore "+d.getCdf().getCodiceFiscale()+" è stato aggiunto correttamente al DataBase");
 		return Response
@@ -135,12 +128,12 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 				.header(HttpHeaders.CONTENT_LOCATION,uriInfo.getAbsolutePath().getPath()+"/pdf/"+d.getCdf().getCodiceFiscale())
 				.build();
 	}
-
 	
 	/**Recupera un pdf con cdf, username e password di un Dipendente
 	 * @param cdf il cdf del Dipendente di cui si vogliono recuperare i dati
-	 * @return StreamingOutput
-	 * */
+	 * @return StreamingOutput Lo streaming di output del PDF
+	 * @throws WebApplicationException
+	 */
 	@GET
 	@Path("aggiuntaAmministratore/pdf/{cdf}")
 	@Produces("application/pdf")
@@ -167,10 +160,11 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 		};
 	}
 
-	
 	/**Rimuove un Dipendente dal DataBase
+	 * @param header Il token di autentificazione
 	 * @param cdf Codice fiscale del Dipendente da rimuovere dal DataBase
 	 * @return Response
+	 * @throws EntityNotFoundException, WebApplicationException
 	 */
 	@DELETE
 	@Path("/rimozioneAmministratore/{cdf}")
@@ -193,9 +187,10 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 				.build();
 	}
 	
-	
     /**Restituisce la lista di tutti i Dipendenti presenti nel database dei Dipendenti
-	 * @return List<Dipendente> Lista di tutti i Dipendenti
+	 * @param header Il token di autentificazione
+	 * @return dipendenti Lista di tutti i Dipendenti
+	 * @throws EntityNotFoundException
 	 */
 	@GET
 	@Path("/amministratori")
@@ -207,10 +202,10 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 		return dipendenti;
 	}
 
-	/**---------REPORT DIPENDENTI RETE CTT------------
-	 * Restituisce la lista dei Dipendenti di tutti i CTT presenti sulla rete del ruolo selezionato
-	 * @param ruolo Ruolo dei Dipendenti da cercare
-	 * @return Response 200 OK e invia la lista dei dipendenti del ruolo selezionato
+	//--------------------REPORT DIPENDENTI RETE CTT--------------------
+	/**Restituisce la lista dei Dipendenti di tutti i CTT presenti sulla rete del ruolo selezionato
+	 *  @param ruolo Ruolo dei Dipendenti da cercare
+	 * @return Response
 	 */
 	@GET
 	@Path("/reportDipendentiCCS")
@@ -234,11 +229,10 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 				.build();
 	}
 
-
-	/**---------REPORT NUMERICO DEI TIPI DI SACCHE PRESENTI A LIVELLO REGIONALE------------
-	 * Restituisce il numero di sacche presenti di ogni tipo nella regione
-	 * @return Response 200 OK e invia una mappa <gs,numeroSacche>
-	 * @return 400 BAD_REQUEST se i parametri inseriti non sono corretti
+	//--------------------REPORT STATISTICO DEL NUMERO DI SACCHE PRESENTI A LIVELLO REGIONALE PER CIASCUN GRUPPO SANGUIGNO--------------------
+	 /**Restituisce il numero di sacche presenti di ogni tipo nella regione
+	  * @param headers Il token di autentificazione
+	  * @return Response
 	 */
 	@GET
 	@Path("/reportStatisticoSaccheCCS")
@@ -275,12 +269,12 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 
 	}
 
-	/**---------REPORT SACCHE INVIATE RETE REGIONALE------------
-	 *Restituisce la lista dei DatiSacche relativi alle sacche che sono state affidate in un determinato arco temporale
-	 * 	 * @param dataInizio Data inizio dell' arco temporale
-	 * 	 * @param dataFine Data fine dell' arco temporale
-	 * 	 * @return Response 200 OK e invia la lista dei datiSacca
-	 * 	 * @return 400 BAD_REQUEST se i parametri inseriti non sono corretti
+	//--------------------REPORT SACCHE INVIATE RETE REGIONALE--------------------
+	/**Restituisce la lista dei DatiSacche relativi alle sacche che sono state affidate in un determinato arco temporale
+	 * @param dataInizio Data inizio dell' arco temporale
+	 * @param dataFine Data fine dell' arco temporale
+	 * @return Response
+	 * @throws DataFormatException
 	 */
 	@GET
 	@Path("/reportSaccheInviateCCS")
@@ -304,12 +298,12 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 				.build();
 	}
 
-	/**---------REPORT SACCHE RICEVUTE RETE REGIONALE------------
-	 *Restituisce la lista dei DatiSacche relativi alle sacche che sono state ricevute dalla rete in un determinato arco temporale
-	 * 	 * @param dataInizio Data inizio dell' arco temporale
-	 * 	 * @param dataFine Data fine dell' arco temporale
-	 * 	 * @return Response 200 OK e invia la lista dei datiSacca
-	 * 	 * @return 400 BAD_REQUEST se i parametri inseriti non sono corretti
+	//--------------------REPORT SACCHE RICEVUTE RETE REGIONALE--------------------
+	/**Restituisce la lista dei DatiSacche relativi alle sacche che sono state ricevute dalla rete in un determinato arco temporale
+	 * @param dataInizio Data inizio dell' arco temporale
+	 * @param dataFine Data fine dell' arco temporale
+	 * @return Response
+	 * @throws DataFormatException
 	 */
 	@GET
 	@Path("/reportSaccheRicevuteCCS")
@@ -333,10 +327,10 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 				.build();
 	}
 
-	/**---------REPORT PERMANENZA MEDIA PER TIPO DI SANGUE A LIVELLO REGIONALE------------
-	 * Restituisce il numero di sacche presenti di ogni tipo nella regione
-	 * @return Response 200 OK e invia una mappa <gs,numeroSacche>
-	 * @return 400 BAD_REQUEST se i parametri inseriti non sono corretti
+	//--------------------REPORT PERMANENZA MEDIA DELLE SACCHE DI SANGUE PER GRUPPO SANGUIGNO A LIVELLO REGIONALE--------------------
+	/**Restituisce la giacenza media delle sacche di sangue all'interno dei magazzini dei CTT raggruppate per gruppo sanguigno
+	 * @param headers Il token di autentificazione
+	 * @return Response
 	 */
 	@GET
 	@Path("/giacenzaMediaSaccheCCS")
@@ -373,11 +367,10 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 
 	}
 
-
-	/**
-	 * Restituisce una mappa di <CTTName,boolean>, true se il CTT è online
-	 * @return Response 200 OK e invia una mappa <CTTName,boolean>
-	 * @return 400 BAD_REQUEST se i parametri inseriti non sono corretti
+	/**Restituisce una mappa di <String,Boolean>, true se il CTT è online, false altrimenti
+	 * @param headers Il token di autentificazione
+	 * @return Response
+	 * @throws EntityNotFoundException
 	 */
 	@GET
 	@Path("/statusReteCtt")
@@ -402,7 +395,4 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 				.build();
 
 	}
-
-
-
 }

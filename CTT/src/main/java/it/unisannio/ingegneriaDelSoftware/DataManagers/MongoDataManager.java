@@ -35,7 +35,7 @@ public class MongoDataManager implements DataManager {
         return instance;
     }
 
-    /**Costruisce un istanza di mongoClient*/
+    /**Costruisce un' istanza di mongoClient*/
    private MongoDataManager(){
         CodecRegistry pojoCodecRegistry =fromRegistries(
                 CodecRegistries.fromCodecs(new SaccaCodec(), new DipendenteCodec(), new DatiSaccaCodec()),
@@ -45,7 +45,7 @@ public class MongoDataManager implements DataManager {
     }
 
     /**Rimuove il CTT DataBase*/
-    public  void dropDB() {
+    public void dropDB() {
         MongoDatabase database = mongoClient.getDatabase(Settings.DB_NAME);
         database.drop();
         Seriale.restartSettings();
@@ -91,7 +91,7 @@ public class MongoDataManager implements DataManager {
      * @param s DatiSacca da aggiungere al db
      * @throws EntityAlreadyExistsException se l'entita è già presente nel DB
      */
-    public  void createDatiSacca(DatiSacca s) throws EntityAlreadyExistsException {
+    public void createDatiSacca(DatiSacca s) throws EntityAlreadyExistsException {
         if(containsDatiSacca(s.getSeriale())) throw new EntityAlreadyExistsException("Dati Sacca con seriale"+s.getSeriale().getSeriale() +" già presente nel DB");
         MongoCollection<DatiSacca> collection = getCollectionDatiSacca();
         collection.insertOne(s);
@@ -114,9 +114,9 @@ public class MongoDataManager implements DataManager {
     /**Restituisce una Sacca ricercata sul database dalle Sacche tramite il Seriale
      * @param ser Seriale della Sacca da ricercare
      * @return null se la Sacca non è stata trovata; la Sacca se essa è stata trovata
-     * @throws EntityNotFoundException se l'entità non è presente nel DB
+     * @throws EntityNotFoundException se la Sacca non è presente nel DB
      */
-    public  Sacca getSacca(Seriale ser) throws EntityNotFoundException {
+    public Sacca getSacca(Seriale ser) throws EntityNotFoundException {
         MongoCollection<Sacca> collection = getCollectionSacca();
        Sacca unaSacca =collection.find(eq(Constants.ELEMENT_SERIALE, ser.getSeriale())).first();
        if (unaSacca != null)
@@ -124,12 +124,13 @@ public class MongoDataManager implements DataManager {
         throw new EntityNotFoundException("La sacca ricercata"+ ser.getSeriale() +"non è stata trovata");
     }
 
+    
     /**Restituisce una DatiSacca ricercata sul database dalle DatiSacche tramite il Seriale
      * @param ser Seriale della DatiSacca da ricercare
      * @return null se la DatiSacca non è stata trovata; la DatiSacca se essa è stata trovata
-     * @throws EntityNotFoundException se l'entità non è presente nel DB
+     * @throws EntityNotFoundException se i DatiSacca non sono presenti nel DB
      */
-    public  DatiSacca getDatiSacca(Seriale ser) throws EntityNotFoundException {
+    public DatiSacca getDatiSacca(Seriale ser) throws EntityNotFoundException {
         MongoCollection<DatiSacca> collection = getCollectionDatiSacca();
         DatiSacca unDatiSacca = collection.find(eq(Constants.ELEMENT_SERIALE,ser.getSeriale())).first();
         if (unDatiSacca != null)
@@ -137,12 +138,13 @@ public class MongoDataManager implements DataManager {
         throw new EntityNotFoundException("Il DatiSacca ricercato"+ ser.getSeriale() +"non è stato trovato");
     }
 
+    
     /**Restituisce un Dipendente ricercato sul database dei Dipendenti tramite il CodiceFiscale
      * @param cdf Codice fiscale del Dipendente da ricercare
      * @return null se il Dipendente non è stato trovato; il Dipendente se è stato trovato
-     * @throws EntityNotFoundException se l'entità non è presente nel DB
+     * @throws EntityNotFoundException se il Dipendente non è presente nel DB
      */
-    public  Dipendente getDipendente(Cdf cdf) throws EntityNotFoundException{
+    public Dipendente getDipendente(Cdf cdf) throws EntityNotFoundException{
         MongoCollection<Dipendente> collection = getCollectionDipendente();
         Dipendente unDipendente = collection.find(eq(Constants.ELEMENT_CDF,cdf.getCodiceFiscale())).first();
         if(unDipendente != null)
@@ -150,13 +152,14 @@ public class MongoDataManager implements DataManager {
         throw new EntityNotFoundException("Il dipendente ricercato"+ cdf.getCodiceFiscale() +"non è stata trovato");
     }
 
+    
     /**Cerca e restituisce un Dipendente con un determinato Username e Password, presente all'interno del database dei Dipendenti
      * @param username Username del Dipendente
      * @param password Password del Dipendente
      * @return Dipendente cercato
-     * @throws EntityNotFoundException se l'entità non è presente nel DB
+     * @throws EntityNotFoundException se il Dipendente non è presente nel DB, oppure se non esiste un Dipendente con quella combinazione di username e password
      */
-    public  Dipendente getDipendente(String username, String password) throws EntityNotFoundException{
+    public Dipendente getDipendente(String username, String password) throws EntityNotFoundException{
         MongoCollection<Dipendente> collection = getCollectionDipendente();
 
        Dipendente unDipendente = collection.find(and(eq(Constants.ELEMENT_USERNAME, username),
@@ -213,12 +216,11 @@ public class MongoDataManager implements DataManager {
 
 
 
-
     /**Rimuove una Sacca dal DataBase identificata tramite il Seriale, solo se essa è gia presente
      * @param ser Seriale della Sacca da rimuovere dal db delle sacche
      * @throws EntityNotFoundException se la Sacca che si vuole rimuovere non è presente nel DB
      */
-    public  void removeSacca(Seriale ser) throws EntityNotFoundException{
+    public void removeSacca(Seriale ser) throws EntityNotFoundException{
         if(!containsSacca(ser)) throw new EntityNotFoundException("Non è possibile rimuovere una sacca non presente nel DB.\nSeriale sacca: "+ser.getSeriale());
         MongoCollection<Sacca> collection =getCollectionSacca();
         collection.deleteOne(eq(Constants.ELEMENT_SERIALE,ser.getSeriale()));
@@ -228,7 +230,7 @@ public class MongoDataManager implements DataManager {
      * @param cdf Codice fiscale del Dipendente da eliminare
      * @throws EntityNotFoundException se il Dipendente che si vuole eliminare non è presente nel DB
      */
-    public  void removeDipendente(Cdf cdf) throws EntityNotFoundException{
+    public void removeDipendente(Cdf cdf) throws EntityNotFoundException{
         if (!containsDipendente(cdf)) throw new EntityNotFoundException("Non è possibile rimuovere un Dipendente che non è presente nel db.\nCodiceFiscale del dipendente: "+cdf.getCodiceFiscale());
         MongoCollection<Dipendente> collection = getCollectionDipendente();
        collection.deleteOne(eq(Constants.ELEMENT_CDF, cdf.getCodiceFiscale()));
@@ -241,7 +243,7 @@ public class MongoDataManager implements DataManager {
     /**Restituisce la lista dei Dipendenti del CTT presenti nel database dei Dipendenti
      * @return la lista dei Dipendenti del CTT
      */
-    public  List<Dipendente> getListaDipendenti(){
+    public List<Dipendente> getListaDipendenti(){
         MongoCollection<Dipendente> collection = getCollectionDipendente();
         List<Dipendente> dipendenti = new ArrayList<>();
         for(Dipendente unDipendente : collection.find())
@@ -252,7 +254,7 @@ public class MongoDataManager implements DataManager {
     /** Restituisce una lista contenente tutte le Sacche nel database delle sacche
      * @return la lista delle Sacche presenti in magazzino
      */
-    public  List<Sacca> getListaSacche(){
+    public List<Sacca> getListaSacche(){
         MongoCollection<Sacca> collection = getCollectionSacca();
         List<Sacca> sacche = new ArrayList<Sacca>();
 
@@ -262,7 +264,7 @@ public class MongoDataManager implements DataManager {
     }
 
     /**Restituisce la lista dei datiSacche presenti nel database dei DatiSacca
-     * @return la lista dei DatiSacca che sono presenti nel database
+     * @return la lista dei DatiSacca che sono presenti nel database dei DatiSacca
      */
     public  List<DatiSacca> getListaDatiSacche(){
         MongoCollection<DatiSacca> collection =getCollectionDatiSacca();
@@ -281,7 +283,7 @@ public class MongoDataManager implements DataManager {
      * @param seriale Seriale della Sacca da ricercare
      * @throws EntityNotFoundException se la Sacca di cui si vuole aggiornare il valore non è presente nel DB
      */
-    public  void setPrenotatoSacca(Seriale seriale)throws EntityNotFoundException{
+    public void setPrenotatoSacca(Seriale seriale)throws EntityNotFoundException{
         if (!containsSacca(seriale)) throw new EntityNotFoundException("Non puoi aggiornare lo stato di una sacca che non è presente nel DB. Seriale della sacca: "+seriale.getSeriale());
         Sacca sacca = getSacca(seriale);
         sacca.setPrenotato();
@@ -294,7 +296,7 @@ public class MongoDataManager implements DataManager {
      * @param enteRichiedente Ente a cui sarà affidata la Sacca
      * @throws EntityNotFoundException se il DatiSacca che si vuole aggiornare non è presente nel DB
      */
-    public  void setEnteRichiedenteDatiSacca(Seriale seriale, String enteRichiedente) throws EntityNotFoundException{
+    public void setEnteRichiedenteDatiSacca(Seriale seriale, String enteRichiedente) throws EntityNotFoundException{
         if(!containsDatiSacca(seriale)) throw new EntityNotFoundException("Non puoi settare l'ente richiedente di un DatiSacca non presente nel DB. Seriale del DatiSacca: "+seriale.getSeriale());
         DatiSacca datiSacca = getDatiSacca(seriale);
         datiSacca.setEnteRichiedente(enteRichiedente);
@@ -306,7 +308,7 @@ public class MongoDataManager implements DataManager {
      * @param indirizzoEnte indirizzo dell'ente a cui sarà affidata la Sacca
      * @throws EntityNotFoundException se il DatiSacca di cui si vuole settare l'indiirzzo dell'ente non è presente nel DB
      */
-    public  void setIndirizzoEnteDatiSacca(Seriale seriale, String indirizzoEnte) throws EntityNotFoundException{
+    public void setIndirizzoEnteDatiSacca(Seriale seriale, String indirizzoEnte) throws EntityNotFoundException{
         if(!containsDatiSacca(seriale)) throw new EntityNotFoundException("Non puoi cambiare l'indirizzo dell'ente richiedente di una sacca non presente nel DB. Seriale del DatiSacca: "+seriale.getSeriale());
         DatiSacca datiSacca = getDatiSacca(seriale);
         datiSacca.setIndirizzoEnte(indirizzoEnte);
@@ -318,7 +320,7 @@ public class MongoDataManager implements DataManager {
      * @param dataAffidamento Data in cui è stata affidata la Sacca
      * @throws EntityNotFoundException se il DatiSacca di cui si vuole settare la data di affidamento non è presente nel DB
      */
-    public  void setDataAffidamentoDatiSacca(Seriale seriale, LocalDate dataAffidamento) throws EntityNotFoundException{
+    public void setDataAffidamentoDatiSacca(Seriale seriale, LocalDate dataAffidamento) throws EntityNotFoundException{
         if (!containsDatiSacca(seriale)) throw new EntityNotFoundException("Non puoi cambiare la data di affidamento di una sacca non presente nel DB. Seriale del DatiSacca: "+seriale.getSeriale());
         DatiSacca datiSacca = getDatiSacca(seriale);
         datiSacca.setDataAffidamento(dataAffidamento);
@@ -330,7 +332,7 @@ public class MongoDataManager implements DataManager {
      * @param cdf  il codice fiscale del Dipendente di cui si vuole aggiornare la password
      * @throws EntityNotFoundException se il dipendente di cui si vule cambiare la password non è presente nel DB
      * */
-    public  void setPassword(Cdf cdf, String password) throws EntityNotFoundException {
+    public void setPassword(Cdf cdf, String password) throws EntityNotFoundException {
         if (!containsDipendente(cdf)) throw new EntityNotFoundException( "Non puoi cambiare la password di un utente non presente nel DB. Codice Fiscale del dipendente: "+cdf.getCodiceFiscale());
         Dipendente unDipendente = this.getDipendente(cdf);
         unDipendente.setPassword(password);

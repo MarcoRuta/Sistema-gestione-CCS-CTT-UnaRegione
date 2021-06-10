@@ -28,17 +28,17 @@ Metodi presenti sull'interfaccia REST del MagazziniereCTT
 
 [inoltroNotificaEvasione](#inoltroNotificaEvasione)
 
-[getPDF()](#getPDF())
+[getPDF(smaltimento)](#getPDF(smaltimento))
 
 [aggiuntaSaccaMagazzino](#aggiuntaSaccaMagazzino)
 
 [evasioneSacca](#evasioneSacca)
 
-[getPDF(@PathParam)](#getPDF(@PathParam))
+[getPDF(evasione)](#getPDF(evasione))
 
 Metodi presenti sull'interfaccia REST dell'AmministratoreCTT
 
-[getPDF](#getPDF)
+[getPDF(aggiuntaDipendenteCTT)](#getPDF(aggiuntaDipendenteCTT))
 
 [addDipendente](#addDipendente)
 
@@ -78,7 +78,7 @@ Metodi presenti sull'interfaccia REST dell'AmministratoreCCS
 
 [addAmministratore](#addAmministratore)
 
-[getPDF](#getPDF)
+[getPDF(aggiuntaAmministratoreCCS)](#getPDF(aggiuntaAmministratoreCCS))
 
 [removeAmministratore](#removeAmministratore)
 
@@ -395,7 +395,7 @@ Metodo che notifica sul terminale dell'OperatoreCTT il risultato della ricerca g
 
         Code: 404 NOT_FOUND 
 
-# getPDF()
+# getPDF(smaltimento)
 
  Metodo che genera il PDF con la lista delle sacche scadute da smaltire da parte del MagazziniereCTT
  
@@ -484,7 +484,7 @@ Metodo che notifica sul terminale dell'OperatoreCTT il risultato della ricerca g
       Code: 404 NOT_FOUND 
       Content: Sacca da evadere non trovata
 
-# getPDF(@PathParam)
+# getPDF(evasione)
 
  Metodo che permette di ottenere i dati di una evasione sotto forma di PDF.
 
@@ -514,7 +514,7 @@ Metodo che notifica sul terminale dell'OperatoreCTT il risultato della ricerca g
       Code : 500 INTERNAL_SERVER_ERROR
       Content: Impossibile creare il PDF per l'evasione con id "id evasione"
 
-# getPDF()
+# getPDF(aggiuntaDipendenteCTT)
 
  Metodo che permette di ottenere i dati di accesso di un dipendente appena aggiunto sotto forma di PDF.
  
@@ -1064,7 +1064,7 @@ Metodo che accetta il seriale di una sacca, precedentemente inviata al CCS perch
       Code: 500 INTERNAL_SERVER_ERROR 
       Content: Dipendente già presente nel database dei dipendenti.
 
-# getPDF
+# getPDF(aggiuntaAmministratoreCCS)
 
 Metodo che permette di ottenere i dati di accesso di un amministratoreCCS appena aggiunto sotto forma di PDF.
 

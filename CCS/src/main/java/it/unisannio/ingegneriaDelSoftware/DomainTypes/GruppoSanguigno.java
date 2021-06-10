@@ -1,7 +1,6 @@
 package it.unisannio.ingegneriaDelSoftware.DomainTypes;
 
 import java.util.*;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
@@ -28,8 +27,7 @@ public enum GruppoSanguigno {
 			put (ABm, new ArrayList<GruppoSanguigno>(Arrays.asList(ABp,ABm)));
 		}
 	};
-	
-	
+
 	@SuppressWarnings("serial")
 	private final static HashMap<GruppoSanguigno, List<GruppoSanguigno>> puoRicevereDa = new HashMap<GruppoSanguigno, List<GruppoSanguigno>>() {
 		{
@@ -43,7 +41,6 @@ public enum GruppoSanguigno {
 			put (ABm, new ArrayList<GruppoSanguigno>(Arrays.asList(ABm,Am,Bm,ZEROm)));
 		}
 	};
-	
 
 	public static Iterator<GruppoSanguigno> puoDonareA(GruppoSanguigno gs) {
 		assert gs !=null;
@@ -54,5 +51,4 @@ public enum GruppoSanguigno {
 		assert gs !=null;
 		return puoRicevereDa.get(gs).iterator();
 	}
-
 }

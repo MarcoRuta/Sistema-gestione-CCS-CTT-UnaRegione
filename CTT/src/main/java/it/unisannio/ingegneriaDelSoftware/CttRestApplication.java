@@ -1,6 +1,5 @@
 package it.unisannio.ingegneriaDelSoftware;
 
-
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.*;
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointRestAmministratoreCTT;
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointRestNotificheMagazziniere;
@@ -9,7 +8,6 @@ import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointRestOperatoreCTT;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Subject;
 import it.unisannio.ingegneriaDelSoftware.Magazziniere.EvasioneSacche.EvasioneObserver;
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointRestNotificheOperatore;
-import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.ExceptionHandler.*;
 import it.unisannio.ingegneriaDelSoftware.Filtri.FiltroDiAutorizzazione;
 import it.unisannio.ingegneriaDelSoftware.Magazziniere.SmaltimentoSacche.SmaltimentoObserver;
@@ -24,9 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 
 import javax.ws.rs.ApplicationPath;
 

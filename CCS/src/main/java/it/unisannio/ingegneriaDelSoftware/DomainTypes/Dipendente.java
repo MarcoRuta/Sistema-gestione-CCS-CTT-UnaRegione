@@ -50,55 +50,54 @@ public class Dipendente {
 	}	
 	
 	/**Restituisce il codice fiscale di un Dipendente
-	 * @return codice fiscale
+	 * @return codice fiscale Il codice fiscale di un Dipendente
 	 */
 	public Cdf getCdf() {
 		return cdf;
 	}
 
 	/**Restituisce il nome del Dipendente
-	 * @return nome
+	 * @return nome Il nome del Dipendente
 	 */
 	public String getNome() {
 		return nome;
 	}
 
 	/**Restituisce il cognome del Dipendente
-	 * @return cognome
+	 * @return cognome Il cognome del Dipendente
 	 */
 	public String getCognome() {
 		return cognome;
 	}
 
 	/**Restituisce la data di nascita del Dipendente
-	 * @return data di nascita
+	 * @return datadiNascita La data di nascita del Dipendente
 	 */
 	public LocalDate getDataDiNascita() {
 		return dataDiNascita;
 	}
 
 	/**Restituisce il ruolo del Dipendente
-	 * @return ruolo
+	 * @return ruolo Il ruolo del Dipendente
 	 */
 	public RuoloDipendente getRuolo() {
 		return ruolo;
 	}
 
 	/**Restituisce l'username del Dipendente
-	 * @return username
+	 * @return username L'username del Dipendente
 	 */
 	public String getUsername() {
 		return username;
 	}
 
 	/**Restituisce la password del Dipendente
-	 * @return password
+	 * @return password La password del Dipendente
 	 */
 	public String getPassword() {
 		return password;
 	}
 
-	
 	/**Setta la nuova password del Dipendente
 	 *@param password La nuova password del Dipendente sul sistema CTT che deve contenere almeno un numero
 	 */
@@ -109,8 +108,7 @@ public class Dipendente {
 		this.password = password;
 	}
 
-	
-	/**Stampa le informazioni di un Dipendente 
+	/**Stampa le informazioni di un Dipendente
 	 * @param ps stream di output su cui stampare i dati del Dipendente 
 	 */
 	public void print(PrintStream ps) {
@@ -124,10 +122,6 @@ public class Dipendente {
 		ps.println("Password: "+this.password);
 	}
 
-	
-	/**Concatena in un'unica stringa le informazioni del Dipendente
-	 * @return La stringa concatenata
-	 */
 	@Override
 	public String toString() {
 		return "Dipendente{" +
@@ -141,10 +135,6 @@ public class Dipendente {
 				'}';
 	}
 
-	
-	/**Verifica l'uguaglianza tra due Dipendenti
-	 * @return Un boolean true o false a seconda dell'esito del confronto
-	 */
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -153,10 +143,6 @@ public class Dipendente {
 		return cdf.equals(that.cdf);
 	}
 
-	
-	/**Calcola l'hashcode di un Dipendente
-	 * @return Un intero pari all'hashcode generato
-	 */
 	@Override
 	public int hashCode() {
 		return Objects.hash(cdf);

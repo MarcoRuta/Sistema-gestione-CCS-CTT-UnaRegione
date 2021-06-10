@@ -18,11 +18,9 @@ import javax.ws.rs.ext.Provider;
 import java.io.IOException;
 import java.security.Principal;
 
-
-/**
- * Filtro di autentificazione, è eseguito per ogni class resource o method resource in cui è presente
- * l'anntoazione @Secured. Esso è eseguito dopo il matching della risorsa da parte dall'api di jersey.
- * Ha una priorita Priorities.AUTHENTICATION che viene eseguita prima di qualsiasi altra Priorities
+/**Filtro di autentificazione, è eseguito per ogni class resource o method resource in cui è presente
+ * l'annotazione @Secured. Esso è eseguito dopo il matching della risorsa da parte dall'api di jersey.
+ * Ha una priorità Priorities.AUTHENTICATION che viene eseguita prima di qualsiasi altra Priorities
  * in quanto ha un valore intero più basso delle altre priorità
  * Questo filtro preleva i cookie dalla richieste del browser e verifica che ci sia il cookie con l'accesso token
  * se esso non è presente il filtro impedisce alla richiesta di arrivare alla risorsa prestabilita
@@ -33,10 +31,9 @@ import java.security.Principal;
 @Priority(Priorities.AUTHENTICATION)
 public class FiltroDiAutentificazione implements ContainerRequestFilter {
 
-    /**
-     * Instead of injecting values directly into field the value can be injected into the setter method which will initialize the field.
+    /**Instead of injecting values directly into field the value can be injected into the setter method which will initialize the field.
      * This injection can be used only with @Context annotation.
-     * resourceInfo contiente i dati relativi alla resource che è stata richiesta attraverso la richiesta intercettata*/
+     * resourceInfo contenente i dati relativi alla resource che è stata richiesta attraverso la richiesta intercettata*/
     @Context
     private ResourceInfo resourceInfo;
     @Context
@@ -46,15 +43,13 @@ public class FiltroDiAutentificazione implements ContainerRequestFilter {
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
 
-
         //sono il CCS
         if (this.isCCS(requestContext))
             return;
 
-
        String header = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
         if(header == null || !tokenValid(header)) {
-            this.refuseRequest(requestContext, "Effettua Prima il login");
+            this.refuseRequest(requestContext, "Effettua prima il login");
             return;
         }
         String token = header.substring(SecurityContext.BASIC_AUTH.length()).trim();
@@ -101,15 +96,18 @@ public class FiltroDiAutentificazione implements ContainerRequestFilter {
                     .entity("Dipendente non registrato nel DB").build());
             return;
         }
-
-
     }
 
+    
+    /**Controlla se è il CCS
+     * @param requestContext
+     * @return true se è il CCS, altrimenti false
+     */
     private boolean isCCS(ContainerRequestContext requestContext) {
         String requestIp =this.servletRequest.getRemoteAddr();
         String ccsIp= Settings.ccsIp;
         if(requestIp.equals(ccsIp)){
-            //dato che sono il CCS sovarascrivo il securety context
+            //dato che sono il CCS sovrascrivo il security context
             final SecurityContext currentSecurityContext = requestContext.getSecurityContext();
             requestContext.setSecurityContext(new SecurityContext() {
 
@@ -140,12 +138,22 @@ public class FiltroDiAutentificazione implements ContainerRequestFilter {
         return false;
     }
 
+    
+    /**Controlla se il Token ha un formato valido
+     *@param header
+     *@return true se il Token ha un formato valido, altrimenti false
+     */
     private boolean tokenValid(String header) {
         if (!header.toUpperCase().startsWith(SecurityContext.BASIC_AUTH+" "))
             return false;
        return true;
     }
 
+    
+    /**Rifiuta la richiesta 
+     * @param requestContext
+     * @param message
+     */
     private void refuseRequest(ContainerRequestContext requestContext, String message) {
         requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
                 .entity(message).build());

@@ -33,9 +33,9 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 
 
 	/**Metodo tramite il quale è possibile recuperare un pdf con cdf, username e password di un dipendente
-	 * @param cdf il cdf del dipendente di cui si vogliono recuperare i dati
-	 * @return StreamingOutput
-	 * */
+	 * @param cdf il cdf del Dipendente di cui si vogliono recuperare i dati
+	 * @return StreamingOutput StreamingOutput da dove verrà aperto il pdf generato
+	 */
 	@GET
 	@Path("aggiuntaDipendente/pdf/{cdf}")
 	@Produces("application/pdf")
@@ -60,15 +60,17 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 			}
 		};
 	}
-
+	
+	
 	/**Aggiunge un Dipendente al DataBase
 	 * @param cdf Dipendente da aggiungere al DataBase
-	 * @param nome
-	 * @param cognome
-	 * @param dataDiNascita
-	 * @param ruolo
-	 * @param username
-	 * @return Response 201 CREATED, ed un messaggio di ACK.
+	 * @param nome Il nome del Dipendente
+	 * @param cognome Il cognome del Dipendente
+	 * @param dataDiNascita La data di nascita del Dipendente
+	 * @param ruolo Il ruolo del Dipendente
+	 * @param username L'useername del Dipendente
+	 * @return Response
+	 * @throws DateTimeParseException, IllegalArgumentException, AssertionError, EntityAlreadyExistsException
 	 */
 	@POST
 	@Path("/aggiuntaDipendente")
@@ -99,8 +101,8 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 
 	/**Rimuove un Dipendente dal DataBase
 	 * @param cdf Codice fiscale del Dipendente da rimuovere dal DataBase
-	 * @return Response 200 OK
-	 * @throws  EntityNotFoundException se si vuole rimuovere un dipendente non presente nel DB
+	 * @return Response 
+	 * @throws EntityNotFoundException se si vuole rimuovere un Dipendente non presente nel DB
 	 */
 	@DELETE
 	@Path("/rimozioneDipendente/{cdf}")
@@ -124,10 +126,10 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 	}
 
 
-	/**---------REPORT OPERATORI CTT------------
-	 * Restituisce la lista dei Dipendenti del CTT che occupano il Ruolo scelto
+	/*---------REPORT OPERATORI CTT------------
+	 /**Restituisce la lista dei Dipendenti del CTT che occupano il Ruolo scelto
 	 * @param ruolo Ruolo dei Dipendenti da cercare
-	 * @return Response 200 OK e invia la lista dei dipendenti del ruolo selezionato
+	 * @return Response
 	 */
 	@GET
 	@Path("/reportDipendentiCtt")
@@ -147,10 +149,9 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 	}
 
 
-	/**---------REPORT NUMERICO DEI TIPI DI SACCHE PRESENTI NEL DATABASE------------
-	 * Restituisce il numero di sacche presenti di ogni tipo nel database
-	 * @return Response 200 OK e invia la lista dei datiSacca
-	 * @return 400 BAD_REQUEST se i parametri inseriti non sono corretti
+	/*---------REPORT NUMERICO DEI TIPI DI SACCHE PRESENTI NEL DATABASE------------
+	 /**Restituisce il numero di Sacche presenti di ogni gruppo sanguigno nel database delle Sacche
+	 * @return Response 
 	 */
 	@GET
 	@Path("/reportStatisticoSacche")
@@ -165,12 +166,12 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 				.build();
 	}
 
-	/**---------REPORT SACCHE INVIATE IN UN PERIODO------------
-	 * Restituisce la lista dei DatiSacche relativi alle sacche che sono state affidate in un determinato arco temporale
+	
+	/*---------REPORT SACCHE INVIATE IN UN PERIODO------------
+	 /**Restituisce la lista dei DatiSacche relativi alle sacche che sono state affidate in un determinato arco temporale
 	 * @param dataInizio Data inizio dell' arco temporale
 	 * @param dataFine Data fine dell' arco temporale
-	 * @return Response 200 OK e invia la lista dei datiSacca
-	 * @return 400 BAD_REQUEST se i parametri inseriti non sono corretti
+	 * @return Response
 	 */
 	@GET
 	@Path("/reportLocaleSaccheInviate")
@@ -186,11 +187,12 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 				.build();
 	}
 
-	/**---------REPORT SACCHE RICEVUTE IN UN PERIODO------------
-	 * Restituisce la lista dei DatiSacche relativi alle sacche che sono state ricevute in un determinato arco temporale
+	
+	/*---------REPORT SACCHE RICEVUTE IN UN PERIODO------------
+	 /**Restituisce la lista dei DatiSacche relativi alle sacche che sono state ricevute in un determinato arco temporale
 	 * @param dataInizio Data inizio dell' arco temporale
 	 * @param dataFine Data fine dell' arco temporale
-	 * @return Response 200 OK e invia la lista dei datiSacca 400 BAD_REQUEST se i parametri inseriti non sono corretti
+	 * @return Response
 	 */
 	@GET
 	@Path("/reportLocaleSaccheRicevute")
@@ -206,9 +208,10 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 				.build();
 	}
 
-	/**---------REPORT PERMANENZA MEDIA PER TIPO DI SANGUE------------
-	 *
-	 * @return Response 200 OK e invia la mappa key: gruppoSanguigno, value: permanenza media in giorni 400 BAD_REQUEST se i parametri inseriti non sono corretti
+	
+	/*---------REPORT PERMANENZA MEDIA PER TIPO DI SANGUE------------
+	 /**Calcola quanto è il tempo medio di giacenza delle Sacche di sangue all'interno del magazzino
+	 * @return Response
 	 */
 	@GET
 	@Path("/giacenzaMediaSacche")
@@ -216,7 +219,6 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 	public Response giacenzaMedia(){
 
 		Map<GruppoSanguigno,Double> risultatoQuery = this.giacenzaMediaMagazzino();
-
 		return Response
 				.status(Response.Status.OK)
 				.entity(risultatoQuery)
@@ -224,25 +226,25 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 	}
 
 
-	/**Metodo tramite il quale è possibile accedere alla lista di Dipendenti contenuti nel database dei Dipendenti 
-	 * @return la lista di dipendenti che lavorano al CTT*/
+	/**Restituisce la lista di Dipendenti contenuti nel database dei Dipendenti 
+	 * @return la lista di Dipendenti che lavorano al CTT
+	 * @throws EntityNotFoundException*/
 	@GET
 	@Path("/dipendenti")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Dipendente> getDipendenti(@HeaderParam(HttpHeaders.AUTHORIZATION) String header) throws EntityNotFoundException {
 		List<Dipendente> dipendenti = md.getListaDipendenti();
-		return  dipendenti;
+		return dipendenti;
 	}
 
-	/**Metodo tramite il quale è possibile accedere al numero di sacche contenute nel database per tipo
+	
+	/**Restituisce una mappa con il numero di Sacche contenute nel database per ogni gruppo sanguigno
 	 * @return mappa con key: gruppoSanguigno value: numero di sacche
 	 */
 	private Map<GruppoSanguigno,Integer> getNumeroSaccheDB(){
 
 		List<Sacca> listaSacche = md.getListaSacche();
-
 		int x;
-
 		Map<GruppoSanguigno,Integer> risultatoQuery = new HashMap<GruppoSanguigno,Integer>();
 
 		for(GruppoSanguigno g : GruppoSanguigno.values())
@@ -253,12 +255,12 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 			x++;
 			risultatoQuery.put(s.getGruppoSanguigno(), x);
 		}
-
 		return risultatoQuery;
 	}
 
-	/**Restituisce una lista di DatiSacca che sono state inviate dopo di dataInizioReport e prima di dataFineReport
-	 * @param dataInizioReport  data dalla quale si selezionano le Sacche
+	
+	/**Restituisce una lista di DatiSacca che sono state inviate tra dataInizioReport e dataFineReport
+	 * @param dataInizioReport data dalla quale si selezionano le Sacche
 	 * @param dataFineReport data oltre la quale non si selezionano più le Sacche
 	 * @return lista di Sacche che sono state inviate dal CTT nel periodo selezionato*/
 	private List<DatiSacca> getSaccheInviatePeriodoTemporale(LocalDate dataInizioReport, LocalDate dataFineReport){
@@ -278,8 +280,9 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 		return datiSaccaTransitati;
 	}
 
-	/**Restituisce una lista di DatiSacca che sono state ricevute dopo di dataInizioReport e prima di dataFineReport
-	 * @param dataInizioReport  data dalla quale si selezionano le Sacche
+	
+	/**Restituisce una lista di DatiSacca che sono state ricevute tra dataInizioReport e dataFineReport
+	 * @param dataInizioReport data dalla quale si selezionano le Sacche
 	 * @param dataFineReport data oltre la quale non si selezionano più le Sacche
 	 * @return lista di Sacche che sono state ricevute dal CTT nel periodo selezionato*/
 	private List<DatiSacca> getSaccheRicevutePeriodoTemporale(LocalDate dataInizioReport, LocalDate dataFineReport){
@@ -298,12 +301,11 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 		return datiSaccaTransitati;
 	}
 
+	
 	/**Restituisce la permanenza media delle sacche in magazzino per ogni tipo
-	 *
 	 * @return mappa con key: gruppoSanguigno e value: permanenza media per quel gruppo sanguigno
-	 * */
+	 */
 	private Map<GruppoSanguigno,Double> giacenzaMediaMagazzino(){
-
 		Double days;
 		int x;
 		Double y;
@@ -319,7 +321,6 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 			saccheTrovate.put(g, 0);
 		}
 
-
 		List<DatiSacca> listaDatiSacca = md.getListaDatiSacche();
 
 		for (DatiSacca datiSacca : listaDatiSacca)
@@ -329,7 +330,7 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 				//calcolo quanto tempo è stata in magazzino
 				days = (double) ChronoUnit.DAYS.between(datiSacca.getDataArrivo(), datiSacca.getDataAffidamento().get());
 
-				//incremento il numero di sacche trovate di quel tipo
+				//incremento il numero di sacche trovate di quel gruppo
 				x = saccheTrovate.get(datiSacca.getGruppoSanguigno());
 				x++;
 				saccheTrovate.put(datiSacca.getGruppoSanguigno(), x);
@@ -348,7 +349,6 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 				risultatoQuery.put(gs, y);
 			}
 		}
-
 		return risultatoQuery;
 	}
 

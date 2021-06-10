@@ -19,10 +19,12 @@ public class NotificaSmaltimentoSacche implements Notifica {
         this.serialeList = serialeList;
     }
 
+    
     /**Metodo costruttore senza parametri*/
     public NotificaSmaltimentoSacche() {
     }
 
+    
     /**Restituisce la lista dei seriali delle sacche scadute
 	 * @return serialeList
 	 */
@@ -30,6 +32,7 @@ public class NotificaSmaltimentoSacche implements Notifica {
         return serialeList;
     }
 
+    
     /**Modifica la lista dei seriali delle sacche scadute
 	 * @param serialeList
 	 */
@@ -37,6 +40,7 @@ public class NotificaSmaltimentoSacche implements Notifica {
         this.serialeList = serialeList;
     }
 
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -45,15 +49,18 @@ public class NotificaSmaltimentoSacche implements Notifica {
         return serialeList.equals(that.serialeList);
     }
 
+    
     @Override
     public int hashCode() {
         return Objects.hash(serialeList);
     }
 
+    
     @Override
     public String toString() {
         return "NotificaSmaltimentoSacche{" +
                 "serialeList=" + serialeList +
                 '}';
     }
+    
 }

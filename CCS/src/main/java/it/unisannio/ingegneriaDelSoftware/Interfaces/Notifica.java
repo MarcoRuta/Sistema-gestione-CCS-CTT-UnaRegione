@@ -1,5 +1,3 @@
 package it.unisannio.ingegneriaDelSoftware.Interfaces;
 
-public interface Notifica {
-
-}
+public interface Notifica {}

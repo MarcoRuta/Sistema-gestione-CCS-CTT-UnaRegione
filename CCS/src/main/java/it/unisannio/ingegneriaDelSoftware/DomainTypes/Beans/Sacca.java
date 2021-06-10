@@ -1,8 +1,6 @@
 package it.unisannio.ingegneriaDelSoftware.DomainTypes.Beans;
 
-
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.GruppoSanguigno;
-
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -13,7 +11,6 @@ public class Sacca {
 	private LocalDate dataProduzione;
 	private LocalDate dataScadenza;
 	private boolean prenotato;
-
 
 	/**Metodo costruttore di SaccaBean
 	 * @param ser il seriale della Sacca
@@ -38,6 +35,8 @@ public class Sacca {
 		this.prenotato = prenotato;
 	}
 
+	/**Metodo costruttore senza argomenti
+	 */
 	public Sacca() {
 	}
 
@@ -64,79 +63,72 @@ public class Sacca {
 				", prenotato=" + prenotato +
 				'}';
 	}
-	
-	
-	/**Restituisce il seriale della Sacca
-	 * @return seriale
+
+	/**Restituisce il seriale della sacca
+	 * @return seriale seriale della sacca
 	 */
 	public Seriale getSeriale() {
 		return seriale;
 	}
 
-	/**Modifica il Seriale della Sacca
-	 * @param seriale
+	/**Modifica il seriale della acca
+	 * @param seriale Seriale della acca
 	 */
 	public void setSeriale(Seriale seriale) {
 		this.seriale = seriale;
 	}
-
 	
-	/**Restituisce il GruppoSanguigno della Sacca
-	 * @return gruppo
+	/**Restituisce il gruppo sanguigno della sacca
+	 * @return gruppo Gruppo sanguigno della sacca
 	 */
 	public GruppoSanguigno getGruppoSanguigno() {
 		return gruppo;
 	}
 
-	/**Modifica il GruppoSanguigno della Sacca
-	 * @param gruppo
+	/**Modifica il gruppo sanguigno della Sacca
+	 * @param gruppo Gruppo sanguigno della sacca
 	 */
 	public void setGruppoSanguigno(GruppoSanguigno gruppo) {
 		this.gruppo = gruppo;
 	}
 
-	
-	/**Restituisce la DataProduzione della Sacca
-	 * @return dataProduzione
+	/**Restituisce la data produzione della Sacca
+	 * @return dataProduzione Data produzione della sacca
 	 */
 	public LocalDate getDataProduzione() {
 		return dataProduzione;
 	}
 
-	
 	/**Modifica la data di produzione della Sacca
-	 * @param dataProduzione
+	 * @param dataProduzione Data produzione della sacca
 	 */
 	public void setDataProduzione(LocalDate dataProduzione) {
 		this.dataProduzione = dataProduzione;
 	}
 
-	
 	/**Restituisce la data di scadenza della Sacca
-	 * @return dataScadenza
+	 * @return dataScadenza Data scadenza della sacca
 	 */
 	public LocalDate getDataScadenza() {
 		return dataScadenza;
 	}
 
-	
 	/**Modifica la data di scadenza della Sacca
-	 * @param dataScadenza
+	 * @param dataScadenza Data scadenza della sacca
 	 */
 	public void setDataScadenza(LocalDate dataScadenza) {
 		this.dataScadenza = dataScadenza;
 	}
 
 	/**Restituisce lo stato della Sacca
-	 * @return prenotato
+	 * @return prenotato Lo stato della sacca(true o false)
 	 */
 	public boolean isPrenotato() {
 		return prenotato;
 	}
 
-	
-	/**Modifica lo stato della Sacca da false a true
-	 * @param prenotato
+	/**Modifica lo stato della Sacca
+	 * @param prenotato Lo stato della sacca(true o false)
 	 */
 	public void setPrenotato(boolean prenotato) {
 		this.prenotato = prenotato;

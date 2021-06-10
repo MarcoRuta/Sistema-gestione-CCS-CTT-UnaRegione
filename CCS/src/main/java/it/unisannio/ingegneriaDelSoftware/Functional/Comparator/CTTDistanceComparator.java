@@ -5,13 +5,17 @@ import it.unisannio.ingegneriaDelSoftware.DomainTypes.CTT;
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.CTTName;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
-
 import javax.ws.rs.WebApplicationException;
 
+/**
+ * Classe utilizzata per confrontare i CTT sulla base della loro posizione geografica.
+ * Una volta confrontati avremo una mappa dei CTT ordinati per distanza geografica rispetto al CTT richiedente.
+ * Il CTT più vicino sarà quello dal quale prenderemo le sacche in ricerca globale prioritaria
+ */
 
 public class CTTDistanceComparator implements Comparator<CTTName> {
-    public CTT cttRichiedente;
 
+    public CTT cttRichiedente;
     public CTTDistanceComparator(CTT cttRichiedente) {
         this.cttRichiedente = cttRichiedente;
     }

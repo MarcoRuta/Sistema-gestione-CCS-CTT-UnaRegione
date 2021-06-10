@@ -6,15 +6,15 @@ import java.util.Objects;
 
 public class Sacca {
 	
-	/**Seriale, codice identificativo univoco di una sacca di sangue */
+	/**Seriale, codice identificativo univoco di una Sacca di sangue */
 	private final Seriale seriale;
-	/**Gruppo sanguigno della sacca di sangue*/
+	/**Gruppo sanguigno della Sacca di sangue*/
 	private final GruppoSanguigno gruppo;
-	/**Data di produzione della sacca di sangue*/
+	/**Data di produzione della Sacca di sangue*/
 	private final LocalDate dataProduzione;
-	/**Data di scadenza della sacca di sangue*/
+	/**Data di scadenza della Sacca di sangue*/
 	private final LocalDate dataScadenza;
-	/**Indicatore dello stato di una sacca di sangue*/
+	/**Indicatore dello stato di una Sacca di sangue*/
 	private boolean prenotato;
 
 

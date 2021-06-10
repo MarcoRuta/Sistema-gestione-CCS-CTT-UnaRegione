@@ -7,14 +7,16 @@ import it.unisannio.ingegneriaDelSoftware.ClientRest.CCSRestClient;
 import it.unisannio.ingegneriaDelSoftware.Functional.Comparator.CTTDistanceComparator;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Searcher;
 import it.unisannio.ingegneriaDelSoftware.Util.Settings;
-
 import java.util.*;
 
+/**
+ * Classe utilizzata per la ricerca priorità fra i vari CTT.
+ * E' un oggetto composite del Composite Pattern derivante dal Component SearcherFactory
+ */
 public class PrioritySearcher implements Searcher {
 
     @Override
     public Map<CTTName, List<Sacca>> search(Map<CTTName, String> cttOnline, CTT cttRichiedente, String dataArrivoMassima, String gruppoSanguigno, int numeroSacche) {
-
 
         //CTT ordinati in base alla vicinanza da quello richiedente
         Set<CTTName> cttOrdinati = new TreeSet<>(new CTTDistanceComparator(cttRichiedente));

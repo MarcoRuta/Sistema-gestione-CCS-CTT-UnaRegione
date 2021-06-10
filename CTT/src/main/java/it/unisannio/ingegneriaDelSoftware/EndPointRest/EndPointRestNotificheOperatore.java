@@ -9,13 +9,10 @@ import it.unisannio.ingegneriaDelSoftware.Interfaces.Subject;
 import it.unisannio.ingegneriaDelSoftware.Operatore.RicercaGlobale.RisultatiRicercaGlobaleObserver;
 
 import javax.annotation.security.RolesAllowed;
-import javax.websocket.EncodeException;
-import javax.websocket.Session;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
-import java.io.IOException;
 
 @Secured
 @RolesAllowed("CCS")
@@ -42,6 +39,7 @@ public class EndPointRestNotificheOperatore extends OperatoreSubject {
         this.notifyRicercaGlobaleObserver();
     }
 
+    
     @Override
     public void notifyRicercaGlobaleObserver() {
         for(Observer obs : Subject.observerList)
@@ -49,8 +47,10 @@ public class EndPointRestNotificheOperatore extends OperatoreSubject {
                 obs.update();
     }
 
+    
     @Override
     public void notifySaccheInScadenzaObserver() {
         //do nothing
     }
+
 }

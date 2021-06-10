@@ -34,20 +34,12 @@ import java.util.List;
 @Component
 public class EndPointRestNotificheMagazziniere extends MagazziniereSubject {
 
-    /**
-     * Riferimento all'unica istanza del MongoDataManager
-     */
+    /**Riferimento all'unica istanza del MongoDataManager*/
     private MongoDataManager mm = MongoDataManager.getInstance();
-    /**
-     * Lista delle notifiche di evasione sacche, mantenuta staticamente
-     */
+    /**Lista delle notifiche di evasione sacche, mantenuta staticamente*/
     private static List<NotificaEvasione> notificheEvasione = new ArrayList<>();
-    /**
-     * Notifica di smaltimento sacche, mantenuta staticamente
-     */
+    /**Notifica di smaltimento sacche, mantenuta staticamente*/
     public static NotificaSmaltimentoSacche serialiDaSmaltire;
-
-
 
 
     /**
@@ -60,9 +52,7 @@ public class EndPointRestNotificheMagazziniere extends MagazziniereSubject {
     }
 
 
-    /**
-     * Restituisce la lista delle notifiche di evasione
-     *
+    /**Restituisce la lista delle notifiche di evasione
      * @return notificheEvasione
      */
     public static List<NotificaEvasione> getNotificheEvasione() {
@@ -70,11 +60,7 @@ public class EndPointRestNotificheMagazziniere extends MagazziniereSubject {
     }
 
 
-
-
-    /**
-     * Aggiunge una notifica alla lista notifiche evasione vista dal magazziniere
-     *
+    /**Aggiunge una notifica alla lista notifiche evasione vista dal magazziniere
      * @param notificaEvasione la notifica che si vuole aggiungere alla lista di notifiche evasione
      * @throws EntityNotFoundException nel caso in cui si sta tentando di prenotare una sacca non presente
      */
@@ -89,9 +75,8 @@ public class EndPointRestNotificheMagazziniere extends MagazziniereSubject {
         this.notifyEvasioneObserver();
     }
 
-    /**
-     * Stampa su un pdf un ordine di evasione
-     *
+    
+    /**Stampa su un pdf un ordine di evasione
      * @return StreamingOutput il file su cui viene stampata la lettera di evasione
      */
     @GET
@@ -114,10 +99,9 @@ public class EndPointRestNotificheMagazziniere extends MagazziniereSubject {
         };
     }
 
-    /**
-     * Rimuove dalla lista notifiche una notifica relativa ad un ordine evaso
+    
+    /**Rimuove dalla lista notifiche una notifica relativa ad un ordine evaso
      * Questo metodo viene attivato dal magazziniere nel momento in cui evade un ordine
-     *
      * @param notificaEvasione
      */
     public void removeNotificaEvasione(NotificaEvasione notificaEvasione) {
@@ -125,9 +109,6 @@ public class EndPointRestNotificheMagazziniere extends MagazziniereSubject {
         notificheEvasione.remove(notificaEvasione);
         this.notifyEvasioneObserver();
     }
-
-
-
 
 
     @Override
@@ -148,15 +129,13 @@ public class EndPointRestNotificheMagazziniere extends MagazziniereSubject {
                 obs.update();
     }
 
-
     @Scheduled(fixedDelay = 1000*60*2)
+    /** */
     private void updateSaccheScadute() throws EntityNotFoundException {
-        System.err.println("partita la ricerca per le sacche scadure");
+        System.err.println("Ricerca per le sacche scadute avviata");
         serialiDaSmaltire =SaccheScaduteRemover.getSmaltimentoSacche();
         if(serialiDaSmaltire != null)
             this.notifySmaltimentoObserver();
     }
-
-
 
 }

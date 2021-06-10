@@ -9,12 +9,11 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-
-/**Classe che implementa il pattern composite
- */
+/**Classe che implementa il pattern composite*/
 public class CompositionSearcher implements Searcher{
     List<Searcher> searchers ;
 
+    /**Metodo costruttore di CompositionSearcher*/
     public CompositionSearcher(){
         searchers =  new ArrayList<>();
         searchers.add(new SearcherLocale());
@@ -22,8 +21,8 @@ public class CompositionSearcher implements Searcher{
     }
 
 
-    /**Ricerca la sacche filtrandole tramite i parametri passati come argomento
-     * @param gs Gruppo sanguigno della sacca
+    /**Ricerca le sacche filtrandole tramite i parametri passati come argomento
+     * @param gs Gruppo sanguigno della Sacca
      * @param numeroSacche Il quantitativo di sacche che si vuole ricercare
      * @param dataArrivoMassima Specifica la data di arrivo massima entro cui la Sacca deve essere nel nuovo magazzino. Questo in modo da evitare che una Sacca arrivi scaduta a destinazione
      * @return List<Sacca> La lista delle sacche disponibili per quei parametri

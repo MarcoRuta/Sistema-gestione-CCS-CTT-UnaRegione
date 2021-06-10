@@ -4,7 +4,6 @@ import it.unisannio.ingegneriaDelSoftware.Annotazioni.Secured;
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.Dipendente;
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.Token;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
-
 import javax.annotation.Priority;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
@@ -14,7 +13,6 @@ import javax.ws.rs.core.*;
 import javax.ws.rs.ext.Provider;
 import java.io.IOException;
 import java.security.Principal;
-
 
 /**Filtro di autentificazione, è eseguito per ogni class resource o method resource in cui è presente l'annotazione @Secured. 
  * Esso è eseguito dopo il matching della risorsa da parte dall'API di Jersey.
@@ -27,8 +25,7 @@ import java.security.Principal;
 @Secured
 @Priority(Priorities.AUTHENTICATION)
 public class FiltroDiAutentificazione implements ContainerRequestFilter {
-	
-	
+
 	/**Instead of injecting values directly into field the value can be injected into the setter method which will initialize the field.
      * This injection can be used only with @Context annotation.
      * resourceInfo contiene i dati relativi alla resource che è stata richiesta attraverso la richiesta intercettata*/
@@ -88,10 +85,9 @@ public class FiltroDiAutentificazione implements ContainerRequestFilter {
         }
     }
 
-    
     /**Controlla che il token di autentificazione sia valido
-     * @param header
-     * @return true se il token è valido; altrimenti false
+     * @param header Il token di autentificazione
+     * @return true se il token è valido, altrimenti false
      */
     private boolean tokenValid(String header) {
         if (!header.toUpperCase().startsWith(SecurityContext.BASIC_AUTH+" "))
@@ -99,7 +95,6 @@ public class FiltroDiAutentificazione implements ContainerRequestFilter {
        return true;
     }
 
-    
     /**Rifiuta la richiesta di autentificazione
      * @param requestContext
      * @param message

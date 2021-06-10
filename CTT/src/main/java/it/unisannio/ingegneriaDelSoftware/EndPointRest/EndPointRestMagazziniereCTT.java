@@ -4,6 +4,7 @@ import com.itextpdf.text.DocumentException;
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.*;
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.Notifiche.NotificaEvasione;
 import it.unisannio.ingegneriaDelSoftware.CttRestApplication;
+import it.unisannio.ingegneriaDelSoftware.Annotazioni.Secured;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
@@ -12,7 +13,7 @@ import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointMagazziniereCTT;
 import it.unisannio.ingegneriaDelSoftware.PDF.PDFGenerator;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 
-
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Singleton;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -24,8 +25,8 @@ import java.util.*;
 
 @Path("/magazziniere")
 @Singleton
-//@Secured
-//@RolesAllowed({"MagazziniereCTT","CCS"})
+@Secured
+@RolesAllowed({"MagazziniereCTT","CCS"})
 public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 
 	/**Riferimento all'unica istanza del MongoDataManager*/
@@ -36,14 +37,13 @@ public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 	
 
 	/**Metodo con il quale il Magazziniere aggiunge una Sacca al DataBase
-	 *
 	 * @param gruppo_sanguigno Gruppo sanguigno della Sacca
 	 * @param data_scadenza Data di scadenza della Sacca
 	 * @param data_produzione Data di produzione della Sacca
 	 * @param ente_donatore Ente di provenienza della Sacca
-	 * @param uriInfo  info dell'uri relativo alla risorsa richiesta
-	 * @return Messaggio di errore in caso di problema di inserimento dati;
-	 * @throws EntityAlreadyExistsException se si vuole aggiungere una sacca già presente nel DB
+	 * @param uriInfo info dell'uri relativo alla risorsa richiesta
+	 * @return Response
+	 * @throws EntityAlreadyExistsException se si vuole aggiungere una Sacca già presente nel DB
 	 */
 	@POST
 	@Path("/aggiuntaSacca")
@@ -83,9 +83,8 @@ public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 
 
 	/**Metodo attivato dal magazziniere quando riceve una notifica evasione Sacca esso aggiorna i datiSacca e rimuove la Sacca dal DB attivo
-	 *
-	 * @param uriInfo  info dell'uri relativo alla risorsa richiesta
-	 * @return messaggio di corretta evasione.
+	 * @param uriInfo info dell'uri relativo alla risorsa richiesta
+	 * @return Response
 	 * @throws EntityNotFoundException se la sacca da evadere non è presente nel DB
 	 */
 	@POST
@@ -97,14 +96,13 @@ public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 
 		CttRestApplication.logger.info("Il terminale del magazzinere ha ricevuto una notifica di evasione: "+notificaEvasione);
 
-
 		for(Seriale unSeriale : notificaEvasione.getListaSeriali()) {
 			//recupero una sacca se presente altrimenti si solleva una eccezione SaccaNotFoundException
 			Sacca unaSacca = md.getSacca(unSeriale);
 			//aggiorno i dati del dati sacca
 			md.setEnteRichiedenteDatiSacca(unSeriale, notificaEvasione.getEnteRichiedente());
 			md.setDataAffidamentoDatiSacca(unSeriale, LocalDate.now());
-			md.setIndirizzoEnteDatiSacca(unSeriale,notificaEvasione.getIndirizzoEnte());
+			md.setIndirizzoEnteDatiSacca(unSeriale, notificaEvasione.getIndirizzoEnte());
 			//rimuovo la sacca
 			md.removeSacca(unaSacca.getSeriale());
 		}
@@ -123,10 +121,10 @@ public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 				.build();
 	}
 
-	/**
-	 *Metodo che permette di ottenere i dati di una evasione sottoforma di PDF
+	
+	/**Ottiene i dati di una evasione sotto forma di PDF
 	 * @param id_evasione id dell'evasione cercata
-	 * @return StreamingOutput
+	 * @return StreamingOutput StreamingOutput da dove verrà aperto il pdf generato
 	 * */
 	@GET
 	@Path("/evasione/pdf/{id_evasione}")
@@ -161,7 +159,5 @@ public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 			}
 		};
 	}
-
-
 
 }

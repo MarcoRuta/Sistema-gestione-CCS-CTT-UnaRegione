@@ -9,13 +9,11 @@ import org.bson.BsonWriter;
 import org.bson.codecs.Codec;
 import org.bson.codecs.DecoderContext;
 import org.bson.codecs.EncoderContext;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 /**Codec usato per salvare {@link Sacca} all'interno del DB*/
 public class SaccaCodec implements Codec<Sacca> {
-
 
     @Override
     public Sacca decode(BsonReader reader, DecoderContext decoderContext) {
@@ -35,7 +33,6 @@ public class SaccaCodec implements Codec<Sacca> {
         return unaSacca;
     }
 
-    
     @Override
     public void encode(BsonWriter writer, Sacca value, EncoderContext encoderContext) {
 
@@ -48,7 +45,6 @@ public class SaccaCodec implements Codec<Sacca> {
         writer.writeEndDocument();
     }
 
-    
     @Override
     public Class<Sacca> getEncoderClass() {
         return Sacca.class;

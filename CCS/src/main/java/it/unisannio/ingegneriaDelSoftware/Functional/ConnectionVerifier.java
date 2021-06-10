@@ -8,7 +8,6 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 
-
 /**Client REST che viene utilizzato per verificare lo stato di connessione con il CCS*/
 public class ConnectionVerifier {
 
@@ -33,7 +32,4 @@ public class ConnectionVerifier {
     	}
 	return cttOnline;
     }
-    
-    
 }
-

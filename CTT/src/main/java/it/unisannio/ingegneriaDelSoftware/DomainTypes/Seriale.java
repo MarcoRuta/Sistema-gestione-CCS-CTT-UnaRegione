@@ -15,7 +15,7 @@ public class Seriale {
 	private final static String radice;
 	/**lastAssigned, seconda parte del Seriale diversa per ogni Sacca, valore incrementale*/
 	private static int lastAssigned;
-	/**rappresentazione come stringa del Seriale*/
+	/**Rappresentazione come stringa del Seriale*/
 	private final String seriale;
 
 	/**Mappa statica che mantiene tutte le istanze del Seriale*/
@@ -63,7 +63,7 @@ public class Seriale {
 	 * @param seriale deve essere una stringa di 15 caratteri con '-' in 6 posizione
 	 */
 	private Seriale(String seriale) {
-		assert  seriale != null: "Il seriale non puo essere null";
+		assert  seriale != null: "Il seriale non può essere null";
 		assert 	seriale.length()==15 &&
 				seriale.charAt(6)=='-' &&
 				seriale.substring(7).matches("^[0-9]*$"): "Formato del seriale non valido";

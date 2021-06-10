@@ -1,4 +1,6 @@
 package it.unisannio.ingegneriaDelSoftware;
+
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointRestRicercaGlobale;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.ExceptionHandler.*;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -10,7 +12,6 @@ import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointRestAmministrator
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointRestAutentificazione;
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointRestSaccheInScadenza;
 import it.unisannio.ingegneriaDelSoftware.Filtri.FiltroDiAutentificazione;
-
 import javax.ws.rs.ApplicationPath;
 
 @SpringBootApplication (scanBasePackages = {"WebSocket", "ingegneriaDelSoftware"})
@@ -45,8 +46,6 @@ public class CcsDataBaseRestApplication extends ResourceConfig {
 		register(ExceptionHandler.class);
 		register(IllegalArgumentExceptionHandler.class);
 		register(NumberFormaExceptionHandler.class);
-
-	
 	}
 
 	public static void main(String[] args) {

@@ -15,7 +15,6 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
 import it.unisannio.ingegneriaDelSoftware.CcsDataBaseRestApplication;
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.Beans.Seriale;
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.CTTName;
@@ -37,10 +36,13 @@ public class EndPointRestSaccheInScadenza implements EndPointSaccheInScadenzaCCS
 	MongoDataManager mm = MongoDataManager.getInstance();
 	Observer cttObserver = new SaccheInScadenzaObserver();
 
-
 	/**Accetta una delle sacche in scadenza presenti nella rete
 	 * L'iterazione del metodo termina con una richiesta di evasione presso il CTT che mantiene tale Sacca e una notifica di conferma per il CTT che l'ha richiesta
-	 * @throws EntityNotFoundException 
+	 * @param seriale Seriale della sacca
+	 * @param indirizzo Indirizzo ente richiedente
+	 * @param ente_richiedente Ente richiedente
+	 * @return Response
+	 * @throws EntityNotFoundException
 	 */
 	@DELETE
 	@Path("/prenotaSaccaInScadenza/{seriale}")
@@ -54,7 +56,6 @@ public class EndPointRestSaccheInScadenza implements EndPointSaccheInScadenzaCCS
 		String indirizzoCTT = Settings.ip.get(CTTName.getCttName(nomeCTT));
 		CcsDataBaseRestApplication.logger.info("Ecco IP del CTT che possiede la sacca: "+ indirizzoCTT);
 
-		
 		//Elimino la sacca dal database SACCHE_IN_SCADENZA del CCS
 		Seriale ser = new Seriale();
 		ser.setSeriale(seriale);
@@ -63,8 +64,7 @@ public class EndPointRestSaccheInScadenza implements EndPointSaccheInScadenzaCCS
 		//Converto il seriale in modo che coincida con quello accettato dal @POST di notificaevasione
 		List<Seriale> listaSeriali = new ArrayList<Seriale>();
 		listaSeriali.add(ser);
-		
-		
+
 		Client client = ClientBuilder.newClient();
 		WebTarget evasioneSacca = client.target("http://"+indirizzoCTT+":"+Settings.PORTA+"/rest/notifica/notificaEvasione");
 		
@@ -80,9 +80,12 @@ public class EndPointRestSaccheInScadenza implements EndPointSaccheInScadenzaCCS
 	
 	}
 
-	/**Accetto il seriale di una sacca, precedentemente inviata al CCS perchè in scadenza, che è stata prenotata presso
-	 * il CTT mittente.
-	 * La lista delle sacche in scadenza viene aggiornata ed inoltrata a tutti i ctt connessi*/
+	/**Accetto il seriale di una sacca, precedentemente inviata al CCS perchè in scadenza, che è stata prenotata pressoil CTT mittente.
+	 * La lista delle sacche in scadenza viene aggiornata ed inoltrata a tutti i ctt connessi
+	 * @param seriale Seriale della sacca da prenotare
+	 * @return Response
+	 * @throws EntityNotFoundException
+	 */
 	@DELETE
 	@Path("/ritiroAlertCTT/{seriale}")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -99,7 +102,6 @@ public class EndPointRestSaccheInScadenza implements EndPointSaccheInScadenzaCCS
 
 		return Response.status(Response.Status.OK).entity("Alert Ritirato").build();
 	}
-
 
 	@Override
 	public void notifyCTT(List<Notifica> notifiche) {

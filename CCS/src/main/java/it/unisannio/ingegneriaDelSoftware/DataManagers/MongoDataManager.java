@@ -1,4 +1,5 @@
 package it.unisannio.ingegneriaDelSoftware.DataManagers;
+
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
 import com.mongodb.client.MongoCollection;
@@ -24,6 +25,7 @@ public class MongoDataManager {
 	
 	private MongoClient mongoClient;
 	private static MongoDataManager instance = new MongoDataManager();
+
 	/**
 	 * Metodo che offre un'istanza di un MongoDataManager
 	 * @return Istanza di un MongoDataManager
@@ -284,7 +286,10 @@ public class MongoDataManager {
 	   getCollectionDipendente().replaceOne(eq(Constants.ELEMENT_CDF),unDipendente);
 	}
 
-	/**Rimuovo le sacche in scadenza appartenenti ad un dato CTT*/
+	/**
+	 * Rimuovo le sacche in scadenza appartenenti ad un dato CTT quando va offline
+	 * @throws EntityNotFoundException se il CTT non viene trovato
+	 */
 	public void removeSaccheCttOffline(CTTName cttOffline) throws EntityNotFoundException {
 		List<Sacca> listaSacche = this.getListaSacche();
 		for(Sacca s : listaSacche)

@@ -10,7 +10,6 @@ public class CTTPosition {
 	private final double latitudine;
 	private final double longitudine;
 
-	
 	/**Metodo costruttore di CTTPosition
 	 * @param provincia Provincia di appartenenza del CTT
 	 * @param citta Città di appartenenza del CTT
@@ -35,10 +34,7 @@ public class CTTPosition {
 		this.latitudine = latitudine;
 		this.longitudine = longitudine;	
 	}
-	
-	/**Concatena in un'unica stringa le informazioni della posizione del CTT
-	 * @return La stringa concatenata
-	 */
+
 	@Override
 	public String toString() {
 		return "CTTPosition{" +
@@ -63,35 +59,35 @@ public class CTTPosition {
 	}
 	
 	/**Restituisce la provincia del CTT
-	 * @return provincia
+	 * @return provincia La provincia del CTT
 	 */
 	public String getProvincia() {
 		return provincia;
 	}
 	
 	/**Restituisce la città del CTT
-	 * @return città
+	 * @return città La città del CTT
 	 */
 	public String getCitta() {
 		return citta;
 	}
 	
 	/**Restituisce l'indirizzo del CTT
-	 * @return indirizzo
+	 * @return indirizzo Indirizzo del CTT
 	 */
 	public String getIndirizzo() {
 		return indirizzo;
 	}
 	
 	/**Restituisce la latitudine del CTT
-	 * @return latitudine
+	 * @return latitudine Latitudine del CTT
 	 */
 	public double getLatitudine() {
 		return latitudine;
 	}
 	
 	/**Restituisce la longitudine del CTT
-	 * @return longitudine
+	 * @return longitudine Longitudine del CTT
 	 */
 	public double getLongitudine() {
 		return longitudine;

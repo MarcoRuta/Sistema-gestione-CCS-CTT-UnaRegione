@@ -11,7 +11,7 @@ import org.bson.codecs.EncoderContext;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-/**Codec usato per salvare {@link Sacca} all'interno  del DB*/
+/**Codec usato per salvare {@link Sacca} all'interno del DB*/
 public class SaccaCodec implements Codec<Sacca> {
 
 
@@ -47,4 +47,5 @@ public class SaccaCodec implements Codec<Sacca> {
     public Class<Sacca> getEncoderClass() {
         return Sacca.class;
     }
+    
 }

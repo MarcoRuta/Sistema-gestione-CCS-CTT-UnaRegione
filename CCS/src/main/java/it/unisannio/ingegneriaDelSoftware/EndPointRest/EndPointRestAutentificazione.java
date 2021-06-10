@@ -5,7 +5,6 @@ import it.unisannio.ingegneriaDelSoftware.DomainTypes.Beans.User;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Functional.IDGenerator;
-
 import javax.annotation.security.PermitAll;
 import javax.ws.rs.*;
 import javax.ws.rs.core.HttpHeaders;
@@ -18,10 +17,10 @@ public class EndPointRestAutentificazione {
 
     private MongoDataManager mm = MongoDataManager.getInstance();
 
-    /**Login è l'operazione con la quale un generico Dipendente del CTT accede al sistema
-     * @return il ruolo con il quale si è registrati
-     * esso setta il token di autentificazione nei cookie con cookieName = "access_token
-     * il cookie ha una max-Age pari ad un turno lavorativo di 8 ore"
+    /**Login è l'operazione con la quale un generico Dipendente del CTT accede al sistema.
+     * @param username Username dello user che intende autentificarsi
+     * @param password Password dello user che intende autentificarsi
+     * @return Response
      * @throws EntityNotFoundException se il login non va a buon fine
      */
     @POST
@@ -37,9 +36,8 @@ public class EndPointRestAutentificazione {
                 .build();
     }
 
-    
     /**Effettua il logout, esso elimina il token dell'utente dal server cosi che esso non sia piu autenticato
-     * @param header da rimuovere per effettuare il logout
+     * @param header Il token di autentificazione
      * @throws EntityNotFoundException se si sta facendo il logout con un token non valido
      */
     @DELETE
@@ -53,11 +51,12 @@ public class EndPointRestAutentificazione {
                     .build();
     }
 
-
     /**Modifica la password di un utente
+     * @param header Il token di autentificazione
+     * @param cdf Il cdf dell'utente
      * @param password la nuova password
-     * @param header il token di autentificazione
-     * @throws EntityNotFoundException se si vuole cambiare la password di un dipendente non registrato nel DB
+     * @return Response
+     * @throws EntityNotFoundException,AssertionError,WebApplicationException se si vuole cambiare la password di un dipendente non registrato nel DB
      */
     @PUT
     @Path("/cambiopassword/{cdf}")
@@ -78,11 +77,10 @@ public class EndPointRestAutentificazione {
 
     }
 
-
     /**Recupera la password di un Utente
      * @param username L'username dell'Utente che ha perso la password
      * @param cdf cdf dell'Utente che vuole recuperare la password
-     * @throws EntityNotFoundException se si vuole recuperare la password di un utente non presente nel DB
+     * @throws EntityNotFoundException,AssertionError,WebApplicationException se si vuole recuperare la password di un utente non presente nel DB
      */
     @PUT
     @Path("/recuperoPassword/{cdf}")

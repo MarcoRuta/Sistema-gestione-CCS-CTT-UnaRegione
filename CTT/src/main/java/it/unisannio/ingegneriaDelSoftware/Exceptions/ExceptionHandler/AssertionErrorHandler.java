@@ -14,7 +14,7 @@ public class AssertionErrorHandler implements ExceptionMapper<AssertionError> {
 
     @Override
     public Response toResponse(AssertionError exception) {
-       return   Response
+       return Response
                 .status(Response.Status.BAD_REQUEST)
                 .entity(exception.getMessage())
                 .type(MediaType.TEXT_PLAIN)

@@ -16,14 +16,12 @@ import it.unisannio.ingegneriaDelSoftware.Interfaces.Notifica;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Observer;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Subject;
 import it.unisannio.ingegneriaDelSoftware.Util.Settings;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
-
 
 /**Endpoint che permette ai CTT di collegarsi al CCS e ricevere la lista di sacche in scadenza dei vari CTT*/
 @ServerEndpoint(value = "/ws/saccheInScadenza",
@@ -35,8 +33,6 @@ public class WebSocketEndpointSaccheInScadenza implements Subject {
     protected static ConcurrentMap<Session,String> sessioniCTT = new ConcurrentHashMap<Session,String>();
     /**observer da notificare nel momento in cui un CTT chiude la sua connessione*/
     private Observer observer = new SaccheInScadenzaObserver();
-
-
 
     @OnOpen
     public void start(Session session) {
@@ -93,7 +89,6 @@ public class WebSocketEndpointSaccheInScadenza implements Subject {
     public void onError(Throwable t) throws Throwable {
         CcsDataBaseRestApplication.logger.error("Errore :"+ t.getMessage() );
     }
-
 
     @Override
     public void notifyCTT(List<Notifica> notifica) {

@@ -10,7 +10,6 @@ public class CTT{
 	private final String telefono;
 	private final String email;
 	private final CTTPosition posizione;
-	
 
 	/**Metodo Costruttore di CTT
 	 * @param provincia la provincia in cui è situato il CTT
@@ -18,8 +17,8 @@ public class CTT{
 	 * @param telefono il numero di telefono del CTT
 	 * @param indirizzo l'indirizzo del CTT
 	 * @param email l'email ufficiale del CTT
-	 * @param latitudine
-	 * @param longitudine
+	 * @param latitudine La latitudine del CTT compresa fra -90° e 90°
+	 * @param longitudine La longitudine del CTT compresa fra -180° e 180°
 	 */
 	public CTT(String provincia, String città, String telefono, String indirizzo, String email, double latitudine, double longitudine) {
 		assert telefono != null: "il telefono non può essere null";
@@ -33,15 +32,15 @@ public class CTT{
 		this.email = email;	
 	}
 
-	/**Metodo Costruttore di CTT
+	/**Metodo Costruttore di un CTT con denominazione
 	 * @param denominazione il nome del CTT
 	 * @param provincia la provincia in cui è situato il CTT
 	 * @param città la città in cui è situato il CTT
 	 * @param telefono il numero di telefono del CTT
 	 * @param indirizzo l'indirizzo del CTT
 	 * @param email l'email ufficiale del CTT
-	 * @param latitudine
-	 * @param longitudine
+	 * @param latitudine La latitudine del CTT compresa fra -90° e 90°
+	 * @param longitudine La longitudine del CTT compresa fra -180° e 180°
 	 */
 	public CTT(CTTName denominazione,String provincia, String città, String telefono, String indirizzo, String email, double latitudine, double longitudine) {
 		assert telefono != null: "il telefono non può essere null";
@@ -54,7 +53,6 @@ public class CTT{
 		this.telefono = telefono;
 		this.email = email;
 	}
-
 
 	/**Metodo costruttore di CTT con CTTPosition
 	 * @param denominazione  il nome del CTT
@@ -75,8 +73,6 @@ public class CTT{
 		this.posizione = posizione;
 	}
 
-
-
 	/**Stampa le informazioni di un CTT
 	 * @param ps stream di output su cui stampare i dati del CTT
 	 */
@@ -88,10 +84,9 @@ public class CTT{
 		this.getPosizione().print(ps);
 	}
 
-	
 	/**Calcola la distanza tra due punti applicando la formula dell'emisenoverso
-	 * @param CTT Il ctt da cui s vuole calcolare la distanza rispetto a quello attuale
-	 * @return La distanza tra i due CTT
+	 * @param c Il ctt da cui si vuole calcolare la distanza rispetto a quello invocante
+	 * @return distanza La distanza tra i due CTT
 	 */
 	public double distanzaDalCtt(CTT c){
 		double distanza = -1;
@@ -105,33 +100,29 @@ public class CTT{
 		return distanza;
 	}
 
-
-	
 	/**Restituisce il recapito telefonico del CTT
-	 * @return Telefono Numero di telefono del CTT
+	 * @return telefono Numero di telefono del CTT
 	 */
 	public String getTelefono() {
 		return telefono;
 	}
-	
-	
+
 	/**Restituisce l'email del CTT
-	 * @return Email
+	 * @return email Email del CTT
 	 */
 	public String getEmail() {
 		return email;
 	}
-	
-	
+
 	/**Restituisce l'ubicazione del CTT
-	 * @return Ubicazione
+	 * @return posizione La posizione del CTT
 	 */
 	public CTTPosition getPosizione() {
 		return posizione;
 	}
 
 	/**Restituisce la denominazione del CTT
-	 * @return denominazione
+	 * @return denominazione La denominazione del CTT
 	 */
 	public CTTName getDenominazione() {
 		return denominazione;

@@ -5,6 +5,11 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import java.time.format.DateTimeParseException;
 
+/**Nel momento in cui si verificano degli {@link DateTimeParseException} significa che il formato della data passato non è corretto
+
+ /**Un handler che si occupa di elaborare una risposta nel momento in cui viene sollevata dal server
+ * una {@link DateTimeParseException}*/
+
 public class DateTimeParseExceptionHandler implements ExceptionMapper<DateTimeParseException> {
 	
     @Override

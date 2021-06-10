@@ -15,7 +15,7 @@ public class Cdf {
 	 * @throws AssertionError, IllegalArgumentException
 	 */
 	public static Cdf getCDF(String cdf) throws AssertionError, IllegalArgumentException{
-		assert cdf != null: "Il cdf non puo essere null";
+		assert cdf != null: "Il cdf non può essere null";
 		if (Cdf.cdfs.containsKey(cdf))
 			return Cdf.cdfs.get(cdf);
 		Cdf aCdf = new Cdf(cdf);

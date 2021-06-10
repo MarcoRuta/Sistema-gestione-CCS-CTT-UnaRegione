@@ -50,41 +50,43 @@ public class DatiSacca {
 	}
 
 	
-	/**@return il seriale della sacca*/
+	/**Restituisce il seriale della Sacca
+	 * @return seriale il seriale della Sacca*/
 	public Seriale getSeriale() {
 		return seriale;
 	}
 
 	
-	/**@return il gruppo sanguigno della Sacca*/
+	/**Restituisce il gruppo sanguigno della Sacca
+	 * @return il gruppo sanguigno della Sacca*/
 	public GruppoSanguigno getGruppoSanguigno() {
 		return gruppo;
 	}
 
 	
-	/**@return la data di arrivo della Sacca*/
+	/**Restituisce la data di arrivo della Sacca
+	 * @return la data di arrivo della Sacca*/
 	public LocalDate getDataArrivo() {
 		return dataArrivo;
 	}
 
 	
-	/**@return Restituisce la data di affidamento se presente, altrimenti restituisce una data con giorno, mese, anno settati a 0*/
+	/**Restituisce la data di affidamento se presente, altrimenti restituisce una data con giorno, mese, anno settati a 0
+	 * @return dataAffidamento data di affidamento se presente, altrimenti restituisce una data con giorno, mese, anno settati a 0*/
 	public Optional<LocalDate> getDataAffidamento() {
 		return dataAffidamento;
 	}
 
 	
-	/**Restituisce l'ente donatore
-	 * @return enteDonatore
-	 */
+	/**Restituisce l'ente donatore della Sacca
+	 * @return enteDonatore l'ente donatore della Sacca*/
 	public String getEnteDonatore() {
 		return enteDonatore;
 	}
 
 	
 	/**Restituisce l'ente richiedente se presente, altrimenti restituisce una stringa vuota
-	 * @return 
-	 */
+	 * @return L'ente richiedente se presente, altrimenti restituisce una stringa vuota*/
 	public String getEnteRichiedente() {
 		return enteRichiedente.isPresent()?enteRichiedente.get():"";
 	}
@@ -110,10 +112,10 @@ public class DatiSacca {
 	
 	
 	/**Imposta l'ente richiedente
-	 * @param enteRichiedente  l'ente che ha richiesto la Sacca. Non può essere null
+	 * @param enteRichiedente l'ente che ha richiesto la Sacca. Non può essere null
 	 */
 	public void setEnteRichiedente(String enteRichiedente)throws AssertionError{
-		assert enteRichiedente != null: "l'ente richiedente non può essere null";
+		assert enteRichiedente != null: "L'ente richiedente non può essere null";
 		this.enteRichiedente = Optional.of(enteRichiedente);
 	}
 	
@@ -122,7 +124,7 @@ public class DatiSacca {
 	 * @param indirizzoEnte l'indirizzo dell'ente che ha richiesto la Sacca. Non può essere null.
 	 */
 	public void setIndirizzoEnte(String indirizzoEnte) throws AssertionError{
-		assert indirizzoEnte != null: "L'indirizzo dell'ente non puo essere null";
+		assert indirizzoEnte != null: "L'indirizzo dell'ente non può essere null";
 		this.indirizzoEnte = Optional.of(indirizzoEnte);
 	}
 	
@@ -169,6 +171,5 @@ public class DatiSacca {
 		ps.println("Ente richiedente: "+(this.enteRichiedente.isPresent()?this.enteRichiedente.get():""));
 		ps.println("Indirizzo Ente: "+(this.indirizzoEnte.isPresent()?this.indirizzoEnte.get():""));
 	}
-
 
 }

@@ -55,7 +55,6 @@ public class DatiSaccaCodec implements Codec<DatiSacca> {
         writer.writeString(Constants.ELEMENT_ENTERICHIEDENTE, value.getEnteRichiedente());
         writer.writeString(Constants.ELEMENT_INDIRIZZOENTE, value.getIndirizzoEnte());
         writer.writeEndDocument();
-
     }
 
     @Override

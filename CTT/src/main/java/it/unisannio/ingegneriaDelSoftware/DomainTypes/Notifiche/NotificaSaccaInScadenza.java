@@ -64,6 +64,7 @@ public class NotificaSaccaInScadenza implements Notifica {
 		return gruppoSanguigno;
 	}
 
+	
 	/**Modifica il gruppo sanguigno della Sacca
 	 * @param gruppoSanguigno
 	 */

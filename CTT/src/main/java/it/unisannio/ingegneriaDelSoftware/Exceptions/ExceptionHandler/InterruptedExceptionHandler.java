@@ -6,7 +6,7 @@ import javax.ws.rs.ext.ExceptionMapper;
 /**Nel momento in cui si verificano degli {@link InterruptedException} significa che un thread si trova in uno stato non aspettato (es. wait/sleep)
 
 /**Un handler che si occupa di elaborare una risposta nel momento in cui viene sollevata dal server
- * una {@link InterruptedException} exception*/
+ * una {@link InterruptedException}*/
 public class InterruptedExceptionHandler implements ExceptionMapper<InterruptedException> {
     @Override
     public Response toResponse(InterruptedException exception) {

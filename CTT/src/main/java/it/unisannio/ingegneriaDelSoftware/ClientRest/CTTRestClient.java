@@ -15,10 +15,10 @@ import javax.ws.rs.core.Response;
 import java.time.LocalDate;
 import java.util.List;
 
-/**Client REST che viene utilizzato dal CTT per ritirare l'alert di una sacca in scadenza*/
+/**Client REST che viene utilizzato dal CTT per ritirare l'alert di una Sacca in scadenza*/
 public class CTTRestClient {
 
-	/**Contatta il CCS per avvisarlo di aver consumato il locale una sacca per cui era stato inviato un alert
+	/**Contatta il CCS per avvisarlo di aver consumato in locale una Sacca per cui era stato inviato un alert
 	 * @param sacca, la Sacca per la quale si vuole ritirare l'alert
 	 */
     public static void notifyEvasioneSaccaToCCS(Sacca sacca){
