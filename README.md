@@ -10,7 +10,7 @@ Il sistema è composto da più CTT ed unico CCS, opportunamente distribuiti in r
 
 Le funzionalità offerte da un singolo CTT sono:
 
->[Aggiungere una nuova sacca sul sistema](#Aggiungere%20una%20nuova%20sacca%20sul%20sistema)  
+>[Aggiungere una nuova sacca sul sistema](#Aggiungere-una-nuova-sacca-sul-sistema)  
 >[Effettuare una ricerca di sacche per conto di un ente esterno](#Effettuare%20una%20ricerca%20di%20sacche%20per%20conto%20di%20un%20ente%20esterno)   
 >[Evadere un ordine di sacche verso un ente esterno](#Evadere%20un%20ordine%20di%20sacche%20verso%20un%20ente%20esterno)   
 >[Aggiungere un nuovo dipendente al CTT](#Aggiungere%20un%20nuovo%20dipendente%20al%20CTT)  
