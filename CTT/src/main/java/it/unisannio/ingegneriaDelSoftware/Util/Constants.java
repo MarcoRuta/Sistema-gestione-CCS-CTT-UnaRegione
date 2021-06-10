@@ -1,10 +1,8 @@
 package it.unisannio.ingegneriaDelSoftware.Util;
 
-
 import java.text.SimpleDateFormat;
 
 public class Constants {
-
 
 	public static final String ELEMENT_SERIALE = "seriale";
 	public static final String ELEMENT_GRUPPO = "gruppo";
@@ -26,9 +24,7 @@ public class Constants {
 	public static final String ELEMENT_USERNAME = "username";
 	public static final String ELEMENT_PASSWORD = "password";
 
-
     public static SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 	public static final String DATEFORMAT = "yyyy-MM-dd";
-
 
 }

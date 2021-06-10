@@ -13,20 +13,19 @@ import javax.ws.rs.ext.Provider;
 import java.io.IOException;
 
 /**
- * Filtro di autorizzazzione, è eseguito per ogni class resource o method resource.
- * Ha una priorita Priorities.AUTHORIZATION che viene eseguita dopo Priorities.AUTHENTICATION.
+ * Filtro di autorizzazione, è eseguito per ogni class resource o method resource.
+ * Ha una priorità Priorities.AUTHORIZATION che viene eseguita dopo Priorities.AUTHENTICATION.
  *
  * Questo filtro preleva la resource class injected nel ResourceInfo object e controlla le annotazioni che la decorano.
  * Se è presente @PermitAll non attua nessun filtro
  * Se è presente @RolesAllowed("unRuolo") controlla il ruolo dell'user che ha effettuato il login, se non è tra i roles allowed
  * allora rigetta la richiesta
- * */
+ */
 @Provider
 @Priority(Priorities.AUTHORIZATION)
 public class FiltroDiAutorizzazione implements ContainerRequestFilter {
 
-    /**
-     * Instead of injecting values directly into field the value can be injected into the setter method which will initialize the field.
+    /**Instead of injecting values directly into field the value can be injected into the setter method which will initialize the field.
      * This injection can be used only with @Context annotation.
      * resourceInfo contiente i dati relativi alla resource che è stata richiesta attraverso la richiesta intercettata*/
     @Context
@@ -51,10 +50,8 @@ public class FiltroDiAutorizzazione implements ContainerRequestFilter {
 
     }
 
-    /**
-     * Perform authorization based on roles.
-     *
-     * @param rolesAllowed
+    /**Perform authorization based on roles.
+     * @param rolesAllowed Lista di ruoli che hanno il permesso
      * @param requestContext  provides request-specific information for the filter,
      * such as request URI, message headers, message entity or request-scoped properties.
      * cookies contiene tutti i cookie della richiesta.
@@ -71,18 +68,15 @@ public class FiltroDiAutorizzazione implements ContainerRequestFilter {
         refuseRequest(requestContext);
     }
 
-    /**
-     * Check if the user is authenticated.
-     *
+    /**Controlla se l'utente è autenticato
      * @param requestContext
-     * @return
+     * @return true se l'utente è autenticato, altrimenti false
      */
     private boolean isAuthenticated(final ContainerRequestContext requestContext) {
         return requestContext.getSecurityContext().getUserPrincipal() != null;
     }
 
-    /**
-     * Refuse the request.
+    /**Rifiuta la richiesta per accedere alla risorsa.
      * @param requestContext
      */
     private void refuseRequest(ContainerRequestContext requestContext) {

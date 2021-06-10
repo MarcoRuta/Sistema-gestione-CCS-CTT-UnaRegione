@@ -1,8 +1,5 @@
 package it.unisannio.ingegneriaDelSoftware.Util;
 
-
-import it.unisannio.ingegneriaDelSoftware.DomainTypes.CTTName;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -11,7 +8,7 @@ import java.util.InvalidPropertiesFormatException;
 import java.util.List;
 import java.util.Properties;
 
-/**Classe che carica i settings dai fil XML presenti in /localsettings*/
+/**Classe che carica i settings dai file XML presenti in /localsettings*/
 public class Settings {
 
     public static final String ccsIp;
@@ -56,15 +53,5 @@ public class Settings {
         COLLECTION_SACCHE = loadDatabaseProps.getProperty("COLLECTION_SACCHE");
         COLLECTION_DATISACCHE = loadDatabaseProps.getProperty("COLLECTION_DATISACCHE");
     }
-
-
-
-
-
-
-
-
-
-
 
 }

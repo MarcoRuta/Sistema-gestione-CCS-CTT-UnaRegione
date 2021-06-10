@@ -114,7 +114,7 @@ public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT{
 }
 
 	
-	/**
+	/**Alert della prenotazione della Sacca
 	 * @param seriale Il Seriale della Sacca
 	 * @param indirizzoEnte L'indirizzo dell'ente che ha richiesto la Sacca
 	 * @param enteRichiedente L'ente che ha richiesto la Sacca

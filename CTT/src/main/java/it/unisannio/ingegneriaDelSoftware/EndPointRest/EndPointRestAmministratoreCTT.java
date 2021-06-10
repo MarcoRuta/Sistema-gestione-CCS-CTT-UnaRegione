@@ -32,36 +32,6 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 	private MongoDataManager md = MongoDataManager.getInstance();
 
 
-	/**Metodo tramite il quale è possibile recuperare un pdf con cdf, username e password di un dipendente
-	 * @param cdf il cdf del Dipendente di cui si vogliono recuperare i dati
-	 * @return StreamingOutput StreamingOutput da dove verrà aperto il pdf generato
-	 */
-	@GET
-	@Path("aggiuntaDipendente/pdf/{cdf}")
-	@Produces("application/pdf")
-	@Consumes(MediaType.TEXT_PLAIN)
-	public StreamingOutput getPDF(@PathParam("cdf")String cdf){
-		return new StreamingOutput() {
-			public void write(OutputStream output){
-				try {
-					Dipendente dip = md.getDipendente(Cdf.getCDF(cdf));
-					PDFGenerator.makeDocumentDipendente(output, cdf,dip.getUsername(),dip.getPassword());
-				} catch (DocumentException | IOException e) {
-					throw new WebApplicationException(Response
-							.status(Response.Status.INTERNAL_SERVER_ERROR)
-							.entity("Impossibile creare il dipendente")
-							.build());
-				} catch (EntityNotFoundException e) {
-					throw new WebApplicationException(Response
-							.status(Response.Status.NOT_FOUND)
-							.entity("Impossibile creare il dipendente")
-							.build());
-				}
-			}
-		};
-	}
-	
-	
 	/**Aggiunge un Dipendente al DataBase
 	 * @param cdf Dipendente da aggiungere al DataBase
 	 * @param nome Il nome del Dipendente
@@ -99,6 +69,36 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 	}
 
 
+	/**Metodo tramite il quale è possibile recuperare un pdf con cdf, username e password di un dipendente
+	 * @param cdf il cdf del Dipendente di cui si vogliono recuperare i dati
+	 * @return StreamingOutput StreamingOutput da dove verrà aperto il pdf generato
+	 */
+	@GET
+	@Path("aggiuntaDipendente/pdf/{cdf}")
+	@Produces("application/pdf")
+	@Consumes(MediaType.TEXT_PLAIN)
+	public StreamingOutput getPDF(@PathParam("cdf")String cdf){
+		return new StreamingOutput() {
+			public void write(OutputStream output){
+				try {
+					Dipendente dip = md.getDipendente(Cdf.getCDF(cdf));
+					PDFGenerator.makeDocumentDipendente(output, cdf,dip.getUsername(),dip.getPassword());
+				} catch (DocumentException | IOException e) {
+					throw new WebApplicationException(Response
+							.status(Response.Status.INTERNAL_SERVER_ERROR)
+							.entity("Impossibile creare il dipendente")
+							.build());
+				} catch (EntityNotFoundException e) {
+					throw new WebApplicationException(Response
+							.status(Response.Status.NOT_FOUND)
+							.entity("Impossibile creare il dipendente")
+							.build());
+				}
+			}
+		};
+	}
+	
+	
 	/**Rimuove un Dipendente dal DataBase
 	 * @param cdf Codice fiscale del Dipendente da rimuovere dal DataBase
 	 * @return Response 

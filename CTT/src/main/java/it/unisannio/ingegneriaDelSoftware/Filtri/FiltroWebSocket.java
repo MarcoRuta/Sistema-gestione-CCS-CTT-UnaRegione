@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.Principal;
 
-/**Tramite questa annotazione stiamo registrando un filtro per le richieste in entrata verso la servlet con
+/**Tramite questa annotazione si registra un filtro per le richieste in entrata verso la servlet con
  * uri specificato*/
 @WebFilter
 public class FiltroWebSocket implements Filter {
@@ -20,8 +20,7 @@ public class FiltroWebSocket implements Filter {
         Filter.super.init(filterConfig);
     }
 
-    /**Sovrascrivendo il metodo doFilter diamo una nostra implementazione del filtro.
-     * Le richieste consentite sono solo quelle provenienti dagli Ip pubblici registrati dei CTT*/
+    /**Le richieste consentite sono solo quelle provenienti dagli Ip pubblici registrati dei CTT*/
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
@@ -46,17 +45,27 @@ public class FiltroWebSocket implements Filter {
         Filter.super.destroy();
     }
 
-    /**Non essendo un CTT blocco la request ed inoltro una risposta di errore al mittente*/
+    
+    /**Blocca la request ed inoltra una risposta di errore al mittente
+     * @param response Risposta Http
+     * @param message Messaggio descrittivo
+     * @throws IOException
+     */
     private void returnForbiddenError(HttpServletResponse response, String message) throws IOException {
         response.sendError(HttpServletResponse.SC_FORBIDDEN, message);
     }
 
 
-    /**Se è un CTT, inserisco all'interno della response il suo Ip come UserPrincipal cosi che possa recuperarlo lato websocket*/
+    /**Inserisce all'interno della response l'IP del CTT come UserPrincipal in modo che possa recuperarlo lato websocket*/
     private static class AuthenticatedRequest extends HttpServletRequestWrapper {
 
+    	/**Indirizzo IP*/
         private String ip;
 
+        /**Metodo costruttore di AuthenticatedRequest
+         * @param request Richiesta Http
+         * @param ip Indirizzo ip
+         */
         public AuthenticatedRequest(HttpServletRequest request, String ip) {
             super(request);
             this.ip = ip;

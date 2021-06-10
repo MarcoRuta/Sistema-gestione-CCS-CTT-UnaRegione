@@ -20,7 +20,6 @@ public class CompositionSearcher implements Searcher{
         searchers.add(new SearcherCompatibile());
     }
 
-
     /**Ricerca le sacche filtrandole tramite i parametri passati come argomento
      * @param gs Gruppo sanguigno della Sacca
      * @param numeroSacche Il quantitativo di sacche che si vuole ricercare
