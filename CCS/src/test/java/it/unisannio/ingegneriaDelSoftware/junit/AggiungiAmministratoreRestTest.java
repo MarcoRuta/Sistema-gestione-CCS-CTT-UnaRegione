@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -13,9 +12,7 @@ import javax.ws.rs.core.Form;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +22,8 @@ import it.unisannio.ingegneriaDelSoftware.DomainTypes.RuoloDipendente;
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.Beans.User;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 
-public class AggiungiAmministratoreRestTest {	
+public class AggiungiAmministratoreRestTest {
+
 	static String token = null;
 	Client client = ClientBuilder.newClient();
 	WebTarget aggiuntaAmministratore = client.target("http://127.0.0.1:8080/rest/CCS/aggiuntaAmministratore");
@@ -42,7 +40,7 @@ public class AggiungiAmministratoreRestTest {
 	        RuoloDipendente ruolo = RuoloDipendente.AmministratoreCCS;
 	        String username = "username 002";
 	        String password = "Password2";
-	        Dipendente dip2 = new Dipendente(cdf, "Pino", "Sfatto", ld, ruolo, username, password);
+	        Dipendente dip2 = new Dipendente(cdf, "Pino", "Perugini", ld, ruolo, username, password);
 	        listaDipendenti.add(dip2);  
 	        
 	        cdf = Cdf.getCDF("CZGMJS46A28I333C");
@@ -74,7 +72,7 @@ public class AggiungiAmministratoreRestTest {
 	        ruolo = RuoloDipendente.AmministratoreCCS;
 	        username = "username 006";
 	        password = "Password6";
-	        Dipendente dip6 = new Dipendente(cdf, "Marco", "Aspini", ld, ruolo, username, password);
+	        Dipendente dip6 = new Dipendente(cdf, "Marco", "Rossi", ld, ruolo, username, password);
 	        listaDipendenti.add(dip6); 
 	        
 	        cdf = Cdf.getCDF("VYHBLK93H24B888J");
@@ -90,10 +88,9 @@ public class AggiungiAmministratoreRestTest {
 	        ruolo = RuoloDipendente.AmministratoreCCS;
 	        username = "username 008";
 	        password = "Password8";
-	        Dipendente dip8 = new Dipendente(cdf, "Andrea", "Lezzi", ld, ruolo, username, password);
+	        Dipendente dip8 = new Dipendente(cdf, "Andrea", "Rispoli", ld, ruolo, username, password);
 	        listaDipendenti.add(dip8);
-	      
-	      
+
 	        MongoDataManager mm = MongoDataManager.getInstance();
 	        
 	        for(Dipendente dip : listaDipendenti) {
@@ -111,15 +108,14 @@ public class AggiungiAmministratoreRestTest {
 			token = user.getToken();
 		}
 	
-	/**Droppa i database
-	 */
+	/**Droppa il database*/
 	@After
 	public  void dropDB() {
 		MongoDataManager mm = MongoDataManager.getInstance();
 		mm.dropDB();
 	}
 			
-		/** Test per il metodo rest/CCS/aggiuntamministratore dell'amministratoreCCS, va a buon fine
+		/** Test per il metodo rest/CCS/aggiuntaAmministratore dell'amministratoreCCS, va a buon fine
 		 * @throws EntityAlreadyExistsException 
 		 */
 		@Test	
@@ -135,9 +131,8 @@ public class AggiungiAmministratoreRestTest {
 			Response responseaddAmm = aggiuntaAmministratore.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).post(Entity.form(form1));
 			assertEquals(Status.CREATED.getStatusCode(), responseaddAmm.getStatus());
 		}
-		
-		
-		/** Test per il metodo rest/CCS/aggiuntaamministratore dell'amministratoreCCS, va a buon fine
+
+		/** Test per il metodo rest/CCS/aggiuntaAmministratore dell'amministratoreCCS, va a buon fine
 		 * @throws EntityAlreadyExistsException 
 		 */
 		@Test	
@@ -145,7 +140,7 @@ public class AggiungiAmministratoreRestTest {
 			Form form1 = new Form();
 			form1.param("cdf", "LZZBHR41C46C446V");
 			form1.param("nome", "Lucio");
-			form1.param("cognome", "Spora");
+			form1.param("cognome", "Merlino");
 			form1.param("dataDiNascita", "1977-04-01");
 			form1.param("ruolo", RuoloDipendente.AmministratoreCCS.toString());
 			form1.param("username", "username 234");
@@ -153,9 +148,8 @@ public class AggiungiAmministratoreRestTest {
 			Response responseaddAmm = aggiuntaAmministratore.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).post(Entity.form(form1));
 			assertEquals(Status.CREATED.getStatusCode(), responseaddAmm.getStatus());
 		}
-		
-		
-		/** Test per il metodo rest/CCS/aggiuntaamministratore dell'amministratoreCCS, non va a buon fine,
+
+		/** Test per il metodo rest/CCS/aggiuntaAmministratore dell'amministratoreCCS, non va a buon fine,
 		 * siccome i dati dell'AmministratoreCCS da aggiungere sono in un formato errato
 		 * @throws EntityAlreadyExistsException 
 		 */
@@ -172,5 +166,4 @@ public class AggiungiAmministratoreRestTest {
 			Response responseaddAmm = aggiuntaAmministratore.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).post(Entity.form(form1));
 			assertEquals(Status.BAD_REQUEST.getStatusCode(), responseaddAmm.getStatus());
 		}
-
 	}

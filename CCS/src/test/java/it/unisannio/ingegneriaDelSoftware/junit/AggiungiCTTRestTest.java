@@ -1,9 +1,7 @@
 package it.unisannio.ingegneriaDelSoftware.junit;
 
 import static org.junit.Assert.assertEquals;
-
 import java.time.LocalDate;
-
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -12,13 +10,10 @@ import javax.ws.rs.core.Form;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.Cdf;
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.Dipendente;
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.RuoloDipendente;
@@ -56,17 +51,14 @@ public class AggiungiCTTRestTest {
 		User user = responselogin.readEntity(User.class);
 		token = user.getToken();
 	  }
-	
-	
-	/**Droppa i database
-	 */
+
+	/**Droppa il database*/
 	@After
 	public void drop(){
 		MongoDataManager mm = MongoDataManager.getInstance();
 		mm.dropDB();
 	} 
-	
-	
+
 	/** Test per il metodo rest/CCS/aggiuntaCTT dell'amministratoreCCS, va a buon fine
 	 * @throws EntityAlreadyExistsException 
 	 */
@@ -85,8 +77,7 @@ public class AggiungiCTTRestTest {
 		Response responseaddCTT = aggiuntaCTT.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).post(Entity.form(form1));
 		assertEquals(Status.OK.getStatusCode(), responseaddCTT.getStatus());
 	}
-  
-	
+
 	/** Test per il metodo rest/CCS/aggiuntaCTT dell'amministratoreCCS, non va a buon fine siccome mancano i parametri numero_ctt e nome_ctt
 	 * @throws EntityAlreadyExistsException 
 	 */
@@ -102,8 +93,7 @@ public class AggiungiCTTRestTest {
 		Response responseaddCTT = aggiuntaCTT.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).post(Entity.form(form1));
 		assertEquals(Status.BAD_REQUEST.getStatusCode(), responseaddCTT.getStatus());
 	}
-  
-	
+
 	/** Test per il metodo rest/CCS/aggiuntaCTT dell'amministratoreCCS, non va a buon fine siccome il parametro telefono è in un formato errato
 	 * @throws EntityAlreadyExistsException 
 	 */
@@ -120,7 +110,6 @@ public class AggiungiCTTRestTest {
 		assertEquals(Status.BAD_REQUEST.getStatusCode(), responseaddCTT.getStatus());
 	}
 
-	
 	/**Test per il metodo rest/CCS/aggiuntaCTT dell'amministratoreCCS, non va a buon fine siccome la letitudine inserita non esiste e non è valida
 	 * @throws EntityAlreadyExistsException
 	 */

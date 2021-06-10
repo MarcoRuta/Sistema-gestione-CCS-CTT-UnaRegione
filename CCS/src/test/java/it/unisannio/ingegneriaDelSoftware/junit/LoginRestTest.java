@@ -1,7 +1,6 @@
 package it.unisannio.ingegneriaDelSoftware.junit;
 
 import static org.junit.Assert.assertEquals;
-
 import java.time.LocalDate;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -10,13 +9,10 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Form;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.Cdf;
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.Dipendente;
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.RuoloDipendente;
@@ -43,15 +39,14 @@ public class LoginRestTest {
 	    mm.createDipendente(dip);
 	}
 
-	/**Droppa i database
-	 */
+	/**Droppa i database*/
 	@After
 	public void dropDB(){
 		MongoDataManager mm = MongoDataManager.getInstance();
 		mm.dropDB();
-	} 
-	  
-	/**Test per verificare la non presenza di un amministratoreCCS all'interno del database tramite username e password passate nel form 
+	}
+
+	/**Test per verificare la non presenza di un amministratoreCCS all'interno del database tramite username e password passate nel form
 	 * @throws EntityAlreadyExistsException
 	 */
 	  @Test

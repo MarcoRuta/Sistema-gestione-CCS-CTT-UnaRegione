@@ -1,4 +1,5 @@
 package WebSocket.Encoders;
+
 import javax.websocket.EncodeException;
 import javax.websocket.Encoder;
 import javax.websocket.EndpointConfig;
@@ -25,13 +26,11 @@ public class NotificaSaccaInScadenzaEncoder implements Encoder.Text<ArrayList<No
 		}
 	}
 
-	
 	/**Inizializzatore della WebSocket
 	 */
 	public void init(EndpointConfig ec) {
 	}
 
-	
 	/**Chiusura della WebSocket
 	 */
 	public void destroy() {

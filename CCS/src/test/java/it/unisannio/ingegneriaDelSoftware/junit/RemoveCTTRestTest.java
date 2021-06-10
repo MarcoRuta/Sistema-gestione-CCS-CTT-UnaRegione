@@ -12,16 +12,13 @@ import javax.ws.rs.core.Form;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.*;
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.Beans.User;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
-
 
 public class RemoveCTTRestTest {
 	
@@ -139,8 +136,7 @@ public class RemoveCTTRestTest {
 		token = user.getToken();
 	}
 	
-	/**Droppa i database
-	 */
+	/**Droppa i database*/
 	@After
 	public  void dropDBCTT() {
 		MongoDataManager mm = MongoDataManager.getInstance();

@@ -13,7 +13,6 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,7 +40,7 @@ public class RemoveAmministratoreCCSRestTest {
         RuoloDipendente ruolo = RuoloDipendente.AmministratoreCCS;
         String username = "username 002";
         String password = "Password2";
-        Dipendente dip2 = new Dipendente(cdf, "Pino", "Sfatto", ld, ruolo, username, password);
+        Dipendente dip2 = new Dipendente(cdf, "Pino", "Riccio", ld, ruolo, username, password);
         listaDipendenti.add(dip2);  
         
         cdf = Cdf.getCDF("CZGMJS46A28I333C");
@@ -57,7 +56,7 @@ public class RemoveAmministratoreCCSRestTest {
         ruolo = RuoloDipendente.AmministratoreCCS;
         username = "username 004";
         password = "Password4";
-        Dipendente dip4 = new Dipendente(cdf, "Pietro", "Spini", ld, ruolo, username, password);
+        Dipendente dip4 = new Dipendente(cdf, "Pietro", "Giusto", ld, ruolo, username, password);
         listaDipendenti.add(dip4); 
         
         cdf = Cdf.getCDF("BVNZDG48A06D684R");
@@ -73,7 +72,7 @@ public class RemoveAmministratoreCCSRestTest {
         ruolo = RuoloDipendente.AmministratoreCCS;
         username = "username 006";
         password = "Password6";
-        Dipendente dip6 = new Dipendente(cdf, "Marco", "Aspini", ld, ruolo, username, password);
+        Dipendente dip6 = new Dipendente(cdf, "Marco", "Favoloso", ld, ruolo, username, password);
         listaDipendenti.add(dip6); 
         
         cdf = Cdf.getCDF("VYHBLK93H24B888J");
@@ -89,9 +88,8 @@ public class RemoveAmministratoreCCSRestTest {
         ruolo = RuoloDipendente.AmministratoreCCS;
         username = "username 008";
         password = "Password8";
-        Dipendente dip8 = new Dipendente(cdf, "Andrea", "Lezzi", ld, ruolo, username, password);
+        Dipendente dip8 = new Dipendente(cdf, "Andrea", "Letizio", ld, ruolo, username, password);
         listaDipendenti.add(dip8);
-      
       
         MongoDataManager mm = MongoDataManager.getInstance();
         
@@ -110,11 +108,8 @@ public class RemoveAmministratoreCCSRestTest {
 		token = user.getToken();
 	}
 	
-	/**Droppa i database
-	 */
+	/**Droppa il database*/
 	@After
-	/**Classe per l'eliminazione del database
-	 */
 	public  void dropDB() {
 		MongoDataManager mm = MongoDataManager.getInstance();
 		mm.dropDB();

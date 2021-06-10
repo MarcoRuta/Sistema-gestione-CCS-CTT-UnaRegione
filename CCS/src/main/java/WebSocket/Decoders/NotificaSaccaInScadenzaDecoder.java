@@ -1,4 +1,5 @@
 package WebSocket.Decoders;
+
 import java.util.ArrayList;
 import javax.websocket.DecodeException;
 import javax.websocket.Decoder;
@@ -41,8 +42,7 @@ public class NotificaSaccaInScadenzaDecoder implements Decoder.Text< ArrayList<N
 
 	  public void init(EndpointConfig ec) {
 	  }
-	  
-	  
+
 	  public void destroy() {
 	  }
 }

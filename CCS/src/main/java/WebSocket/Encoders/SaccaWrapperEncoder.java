@@ -2,7 +2,6 @@ package WebSocket.Encoders;
 
 import com.google.gson.Gson;
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.Wrapper.SaccaWrapper;
-
 import javax.websocket.EncodeException;
 import javax.websocket.Encoder;
 import javax.websocket.EndpointConfig;

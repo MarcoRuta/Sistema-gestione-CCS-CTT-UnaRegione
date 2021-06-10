@@ -4,13 +4,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.unisannio.ingegneriaDelSoftware.CcsDataBaseRestApplication;
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.CTTName;
-
 import javax.websocket.DecodeException;
 import javax.websocket.Decoder;
 import javax.websocket.EndpointConfig;
 
 /**Decoder utilizzato dalla webSocket per ricevere in maniera corretta oggetti CTTName*/
 public class CTTNameDecoder implements Decoder.Text<CTTName> {
+
     @Override
     public CTTName decode(String s) throws DecodeException {
         try {
