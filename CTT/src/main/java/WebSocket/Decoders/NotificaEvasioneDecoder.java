@@ -6,10 +6,9 @@ import javax.websocket.EndpointConfig;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
 
-import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaEvasione;
-import it.unisannio.ingegneriaDelSoftware.CttDataBaseRestApplication;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.Notifiche.NotificaEvasione;
+import it.unisannio.ingegneriaDelSoftware.CttRestApplication;
 
 import java.util.ArrayList;
 
@@ -20,7 +19,7 @@ public class NotificaEvasioneDecoder implements Decoder.Text<ArrayList<NotificaE
 
 		try {
 			ArrayList<NotificaEvasione> notifiche = new ObjectMapper().readValue(jsonMessage, ArrayList.class);
-			CttDataBaseRestApplication.logger.info("lista di NotificaEvasione decodificata correttamente: "+notifiche);
+			CttRestApplication.logger.info("lista di NotificaEvasione decodificata correttamente: "+notifiche);
 			return notifiche;
 
 		} catch (JsonProcessingException e) {
@@ -34,7 +33,7 @@ public class NotificaEvasioneDecoder implements Decoder.Text<ArrayList<NotificaE
 			  ArrayList<NotificaEvasione> notifiche = new ObjectMapper().readValue(jsonMessage, ArrayList.class);
 			  return true;
 		  } catch (JsonProcessingException e) {
-			  CttDataBaseRestApplication.logger.error("Problemi nella codifica della lista di EvasioniSacca");
+			  CttRestApplication.logger.error("Problemi nella codifica della lista di EvasioniSacca");
 			  return false;
 		  }
 	  }

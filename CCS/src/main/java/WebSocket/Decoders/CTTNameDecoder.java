@@ -3,7 +3,7 @@ package WebSocket.Decoders;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.unisannio.ingegneriaDelSoftware.CcsDataBaseRestApplication;
-import it.unisannio.ingegneriaDelSoftware.Classes.CTTName;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.CTTName;
 
 import javax.websocket.DecodeException;
 import javax.websocket.Decoder;

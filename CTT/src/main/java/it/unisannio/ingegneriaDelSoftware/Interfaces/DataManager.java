@@ -1,5 +1,5 @@
 package it.unisannio.ingegneriaDelSoftware.Interfaces;
-import it.unisannio.ingegneriaDelSoftware.Classes.*;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.*;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
 

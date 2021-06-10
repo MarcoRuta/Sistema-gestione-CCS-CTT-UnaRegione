@@ -1,10 +1,9 @@
 package it.unisannio.ingegneriaDelSoftware.Searcher;
 
-import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
-import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.GruppoSanguigno;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.Sacca;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Searcher;
-import it.unisannio.ingegneriaDelSoftware.Functional.ScadenzeComparator;
 
 
 import java.time.LocalDate;
@@ -33,7 +32,6 @@ public class SearcherLocale implements Searcher {
                     && sacca.getDataScadenza().isAfter(LocalDate.now()))
                 saccheTrovate.add(sacca);
 
-        saccheTrovate.sort(new ScadenzeComparator());
         return saccheTrovate;
     }
 }

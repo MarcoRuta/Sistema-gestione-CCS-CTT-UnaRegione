@@ -35,7 +35,8 @@ span.fontTitle {
 .loginForm {
 	width: auto;
 	max-width: 20em;
-	margin: 2% auto; 
+	margin: 2% auto;
+	padding-bottom: 2%;
 }
 
 

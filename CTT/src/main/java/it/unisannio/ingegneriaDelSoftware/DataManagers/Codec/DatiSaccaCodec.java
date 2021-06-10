@@ -1,8 +1,8 @@
 package it.unisannio.ingegneriaDelSoftware.DataManagers.Codec;
 
-import it.unisannio.ingegneriaDelSoftware.Classes.DatiSacca;
-import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
-import it.unisannio.ingegneriaDelSoftware.Classes.Seriale;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.DatiSacca;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.GruppoSanguigno;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.Seriale;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 import org.bson.BsonReader;
 import org.bson.BsonWriter;
@@ -12,7 +12,6 @@ import org.bson.codecs.EncoderContext;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Optional;
 
 /**Codec usato per salvare {@link DatiSacca} all'interno  del DB*/
 public class DatiSaccaCodec implements Codec<DatiSacca> {

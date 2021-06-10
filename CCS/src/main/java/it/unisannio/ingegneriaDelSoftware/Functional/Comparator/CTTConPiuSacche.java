@@ -1,9 +1,8 @@
 package it.unisannio.ingegneriaDelSoftware.Functional.Comparator;
 
-import it.unisannio.ingegneriaDelSoftware.Classes.Beans.Sacca;
-import it.unisannio.ingegneriaDelSoftware.Classes.CTTName;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.Beans.Sacca;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.CTTName;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;

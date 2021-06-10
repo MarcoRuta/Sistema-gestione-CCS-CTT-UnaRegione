@@ -1,7 +1,7 @@
 package WebSocket.Decoders;
 
 import com.google.gson.Gson;
-import it.unisannio.ingegneriaDelSoftware.Classes.Wrapper.SaccaWrapper;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.Wrapper.SaccaWrapper;
 
 import javax.websocket.DecodeException;
 import javax.websocket.Decoder;

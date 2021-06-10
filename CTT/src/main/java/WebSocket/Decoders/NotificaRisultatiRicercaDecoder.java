@@ -2,8 +2,8 @@ package WebSocket.Decoders;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaRisultatiRicerca;
-import it.unisannio.ingegneriaDelSoftware.CttDataBaseRestApplication;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.Notifiche.NotificaRisultatiRicerca;
+import it.unisannio.ingegneriaDelSoftware.CttRestApplication;
 
 
 import javax.websocket.DecodeException;
@@ -17,7 +17,7 @@ public class NotificaRisultatiRicercaDecoder implements Decoder.Text<NotificaRis
         try {
             return new ObjectMapper().readValue(s,NotificaRisultatiRicerca.class);
         } catch (JsonProcessingException e) {
-            CttDataBaseRestApplication.logger.error("WebSocket: impossibile deserializzare NotificaRisultatiRicerca");
+            CttRestApplication.logger.error("WebSocket: impossibile deserializzare NotificaRisultatiRicerca");
             return null;
         }
     }
@@ -28,7 +28,7 @@ public class NotificaRisultatiRicercaDecoder implements Decoder.Text<NotificaRis
             new ObjectMapper().readValue(s,ArrayList.class);
             return true;
         } catch (JsonProcessingException e) {
-            CttDataBaseRestApplication.logger.error("WebSocket: impossibile deserializzare NotificaRisultatiRicerca");
+            CttRestApplication.logger.error("WebSocket: impossibile deserializzare NotificaRisultatiRicerca");
             return false;
         }
     }

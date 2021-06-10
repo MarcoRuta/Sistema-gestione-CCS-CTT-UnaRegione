@@ -4,8 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
-import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.GruppoSanguigno;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.Sacca;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Searcher;
 
 public class SearcherCCS implements Searcher {

@@ -52,7 +52,6 @@
                       }
                     }
                     addPrint(table);
-                    //creaCanvasDip();
                     }
                 else if (this.readyState == 4 && this.status != 200) {
                   alert(this.response);
@@ -97,78 +96,7 @@
 
         }
 
-        function creaCanvasDip() {
 
-            let ctxBar = document.getElementById("pie-chart");
-            ctxBar.remove();
-            document.getElementById("chartDip").innerHTML = '<canvas id="pie-chart" style="width=85%; height=85%"></canvas>';
-
-            let obj;
-            let xhttp = new XMLHttpRequest();
-            let url = host + "/rest/amministratore/dipendenti";
-
-            xhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    obj = JSON.parse(this.responseText);
-                    setCanvasDip(obj);
-                    }
-                else if (this.readyState == 4 && this.status != 200) {
-                  alert(this.response);
-                }
-
-            };
-
-            xhttp.open("GET", url, true);
-            xhttp.setRequestHeader('Authorization', 'Basic '+token);
-            xhttp.withCredentials = true;
-            xhttp.send();
-
-            setCanvasDip = function(obj) {
-
-                let Amm = 0, Mag = 0, Op = 0;
-                for(let i = 0; i < obj.length; i++) {
-                    if(obj[i].ruolo == 'OperatoreCTT') {
-                         Op++;
-                         continue;
-                    }
-                    else if(obj[i].ruolo == 'MagazziniereCTT'){
-                         Mag++;
-                         continue;
-                    }
-                    else Amm++;
-                }
-
-                ctxPie = document.getElementById("pie-chart").getContext("2d");
-                var myChartPie = new Chart(ctxPie, {
-                   type: 'pie',
-                   data: {
-                       labels: [
-                               'Amministratori',
-                               'Magazzinieri',
-                               'Operatori'
-                             ],
-                             datasets: [{
-                               label: 'My First Dataset',
-                               data: [Amm, Mag, Op],
-                               backgroundColor: [
-                                 'rgb(255, 99, 132)',
-                                 'rgb(54, 162, 235)',
-                                 'rgb(255, 205, 86)'
-                               ],
-                               hoverOffset: 4
-                             }]
-                   },
-                   options: {
-                       responsive: true,
-                       maintainAspectRatio: false,
-                   }
-
-                });
-
-                myChartPie.render();
-            }
-
-        }
 
        /*###############################
         *       QUERY SACCHE MAGAZZINO

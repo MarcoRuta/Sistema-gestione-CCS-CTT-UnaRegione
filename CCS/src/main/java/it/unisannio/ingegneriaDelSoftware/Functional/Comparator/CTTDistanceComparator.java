@@ -1,8 +1,8 @@
 package it.unisannio.ingegneriaDelSoftware.Functional.Comparator;
 
 import java.util.Comparator;
-import it.unisannio.ingegneriaDelSoftware.Classes.CTT;
-import it.unisannio.ingegneriaDelSoftware.Classes.CTTName;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.CTT;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.CTTName;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
 

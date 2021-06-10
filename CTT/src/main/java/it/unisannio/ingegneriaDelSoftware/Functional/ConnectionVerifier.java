@@ -1,14 +1,9 @@
 package it.unisannio.ingegneriaDelSoftware.Functional;
 
-import it.unisannio.ingegneriaDelSoftware.CttDataBaseRestApplication;
+import it.unisannio.ingegneriaDelSoftware.CttRestApplication;
 import it.unisannio.ingegneriaDelSoftware.Util.Settings;
 
-import javax.ws.rs.ProcessingException;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
@@ -23,10 +18,10 @@ public class ConnectionVerifier {
 		try{
 			Socket socket = new Socket();
 			socket.connect(new InetSocketAddress(Settings.ccsIp, Integer.parseInt(Settings.ccsIpPort)), 5000);
-			CttDataBaseRestApplication.logger.info("EndPointRest CCS è online");
+			CttRestApplication.logger.info("EndPointRest CCS è online");
 			return true;
 		} catch (IOException e) {
-			CttDataBaseRestApplication.logger.info("EndPointRest CCS è offline");
+			CttRestApplication.logger.info("EndPointRest CCS è offline");
 			return false; // Either timeout or unreachable or failed DNS lookup.
 		}
     }

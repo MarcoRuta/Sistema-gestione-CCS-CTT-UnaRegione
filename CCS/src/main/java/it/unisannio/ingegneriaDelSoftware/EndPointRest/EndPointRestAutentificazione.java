@@ -1,7 +1,7 @@
 package it.unisannio.ingegneriaDelSoftware.EndPointRest;
 
-import it.unisannio.ingegneriaDelSoftware.Classes.*;
-import it.unisannio.ingegneriaDelSoftware.Classes.Beans.User;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.*;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.Beans.User;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Functional.IDGenerator;

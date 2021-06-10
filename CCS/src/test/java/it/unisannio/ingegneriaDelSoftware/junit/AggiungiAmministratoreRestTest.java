@@ -19,10 +19,10 @@ import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsExceptio
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import it.unisannio.ingegneriaDelSoftware.Classes.Cdf;
-import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
-import it.unisannio.ingegneriaDelSoftware.Classes.RuoloDipendente;
-import it.unisannio.ingegneriaDelSoftware.Classes.Beans.User;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.Cdf;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.Dipendente;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.RuoloDipendente;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.Beans.User;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 
 public class AggiungiAmministratoreRestTest {	

@@ -1,7 +1,7 @@
 package it.unisannio.ingegneriaDelSoftware.Functional;
 
-import it.unisannio.ingegneriaDelSoftware.Classes.Beans.Sacca;
-import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaSaccaInScadenza;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.Beans.Sacca;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.Notifiche.NotificaSaccaInScadenza;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Notifica;
 

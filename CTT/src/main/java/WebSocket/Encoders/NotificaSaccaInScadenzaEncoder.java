@@ -6,8 +6,8 @@ import javax.websocket.EndpointConfig;
 import java.util.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaSaccaInScadenza;
-import it.unisannio.ingegneriaDelSoftware.CttDataBaseRestApplication;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.Notifiche.NotificaSaccaInScadenza;
+import it.unisannio.ingegneriaDelSoftware.CttRestApplication;
 
 
 public class NotificaSaccaInScadenzaEncoder implements Encoder.Text<ArrayList<NotificaSaccaInScadenza>>{
@@ -17,7 +17,7 @@ public class NotificaSaccaInScadenzaEncoder implements Encoder.Text<ArrayList<No
 	  public String encode(ArrayList<NotificaSaccaInScadenza> notifiche) throws EncodeException {
 		try {
 			String json = new ObjectMapper().writeValueAsString(notifiche);
-			CttDataBaseRestApplication.logger.info("Ho serializzato correttamente la lista delle notifiche sacche in scadenza: "+notifiche);
+			CttRestApplication.logger.info("Ho serializzato correttamente la lista delle notifiche sacche in scadenza: "+notifiche);
 	        return json;
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();

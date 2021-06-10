@@ -1,6 +1,6 @@
 package it.unisannio.ingegneriaDelSoftware.Interfaces;
 
-import it.unisannio.ingegneriaDelSoftware.Classes.Seriale;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.Seriale;
 
 import javax.ws.rs.core.Response;
 import java.util.List;

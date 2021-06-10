@@ -1,9 +1,9 @@
 package it.unisannio.ingegneriaDelSoftware.Searchers;
 
-import it.unisannio.ingegneriaDelSoftware.Classes.Beans.Sacca;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.Beans.Sacca;
 import it.unisannio.ingegneriaDelSoftware.CcsDataBaseRestApplication;
-import it.unisannio.ingegneriaDelSoftware.Classes.CTT;
-import it.unisannio.ingegneriaDelSoftware.Classes.CTTName;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.CTT;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.CTTName;
 import it.unisannio.ingegneriaDelSoftware.ClientRest.CCSRestClient;
 import it.unisannio.ingegneriaDelSoftware.Functional.Comparator.CTTConPiuSacche;
 import it.unisannio.ingegneriaDelSoftware.Util.Settings;

@@ -185,7 +185,6 @@
             let row;
 
             for(let o of Object.keys(obj)) {
-                let name = o.substring(17,23);
                 let v = obj[o];
                 console.log(o);
                 console.log(v);
@@ -194,7 +193,7 @@
                    row.className = "bg-success";
                    row.appendChild(document.createElement('td'));
                    row.appendChild(document.createElement('td'));
-                   row.cells[0].innerHTML = name;
+                   row.cells[0].innerHTML = o;
                    row.cells[1].innerHTML = "Online";
                 }
                 else{
@@ -202,7 +201,7 @@
                 row.className = "bg-danger";
                 row.appendChild(document.createElement('td'));
                 row.appendChild(document.createElement('td'));
-                row.cells[0].innerHTML = name;
+                row.cells[0].innerHTML = o;
                 row.cells[1].innerHTML = "Offline";
                 }
                 table.appendChild(row);

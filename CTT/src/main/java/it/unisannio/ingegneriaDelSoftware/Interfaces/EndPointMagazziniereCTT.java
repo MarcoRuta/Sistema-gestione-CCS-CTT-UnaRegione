@@ -1,6 +1,6 @@
 package it.unisannio.ingegneriaDelSoftware.Interfaces;
 
-import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaEvasione;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.Notifiche.NotificaEvasione;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
 

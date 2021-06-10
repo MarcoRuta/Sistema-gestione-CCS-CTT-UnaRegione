@@ -1,5 +1,5 @@
 package it.unisannio.ingegneriaDelSoftware;
-import it.unisannio.ingegneriaDelSoftware.EndPointRest.RicercaGlobale.EndPointRestRicercaGlobale;
+import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointRestRicercaGlobale;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.ExceptionHandler.*;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.slf4j.Logger;
@@ -8,11 +8,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointRestAmministratoreCCS;
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointRestAutentificazione;
-import it.unisannio.ingegneriaDelSoftware.EndPointRest.SaccheInScadenza.EndPointRestSaccheInScadenza;
+import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointRestSaccheInScadenza;
 import it.unisannio.ingegneriaDelSoftware.Filtri.FiltroDiAutentificazione;
 
 import javax.ws.rs.ApplicationPath;
-import java.util.Map;
 
 @SpringBootApplication (scanBasePackages = {"WebSocket", "ingegneriaDelSoftware"})
 @ApplicationPath("/rest")

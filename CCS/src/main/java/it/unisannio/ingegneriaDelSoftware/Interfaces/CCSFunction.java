@@ -1,7 +1,7 @@
 package it.unisannio.ingegneriaDelSoftware.Interfaces;
 
-import it.unisannio.ingegneriaDelSoftware.Classes.CTT;
-import it.unisannio.ingegneriaDelSoftware.Classes.CTTName;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.CTT;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.CTTName;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
 
 public interface CCSFunction {

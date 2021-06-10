@@ -1,9 +1,11 @@
 package WebSocket;
 
-import it.unisannio.ingegneriaDelSoftware.EndPointRest.Magazziniere.WebSocketEndPointEvasioneSacche;
-import it.unisannio.ingegneriaDelSoftware.EndPointRest.Magazziniere.WebSocketEndPointSmaltimentoSacche;
-import it.unisannio.ingegneriaDelSoftware.EndPointRest.Operatore.RicercaGlobale.WebSocketEndPointResultRicercaGlobale;
-import it.unisannio.ingegneriaDelSoftware.EndPointRest.Operatore.SaccheInScadenza.WebSocketEndPointSaccheInScadenza;
+import it.unisannio.ingegneriaDelSoftware.Filtri.FiltroWebSocket;
+import it.unisannio.ingegneriaDelSoftware.Magazziniere.EvasioneSacche.WebSocketEndPointEvasioneSacche;
+import it.unisannio.ingegneriaDelSoftware.Magazziniere.SmaltimentoSacche.WebSocketEndPointSmaltimentoSacche;
+import it.unisannio.ingegneriaDelSoftware.Operatore.RicercaGlobale.WebSocketEndPointResultRicercaGlobale;
+import it.unisannio.ingegneriaDelSoftware.Operatore.SaccheInScadenza.WebSocketEndPointSaccheInScadenza;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
@@ -14,6 +16,19 @@ import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 @Configuration
 @EnableWebSocket
 public class WebSocketConfig {
+
+    @Bean
+    public FilterRegistrationBean filterRegistrationBean(){
+        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
+        filterRegistrationBean.setFilter(filtroWebSocketCotroller());
+        filterRegistrationBean.addUrlPatterns("/ws/*");
+        return filterRegistrationBean;
+    }
+
+    @Bean
+    public FiltroWebSocket filtroWebSocketCotroller(){
+        return new FiltroWebSocket();
+    }
 
     @Bean
     public WebSocketEndPointEvasioneSacche webSocketEvasioneSaccaController() {
@@ -36,7 +51,7 @@ public class WebSocketConfig {
     }
 
     @Bean
-    public ServerEndpointExporter serverEndpointEvasioneExporter() {
+    public ServerEndpointExporter serverEndpointExporter() {
         return new ServerEndpointExporter();
     }
 

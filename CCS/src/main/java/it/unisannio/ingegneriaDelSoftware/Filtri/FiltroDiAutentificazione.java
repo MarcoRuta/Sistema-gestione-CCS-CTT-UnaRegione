@@ -1,8 +1,8 @@
 package it.unisannio.ingegneriaDelSoftware.Filtri;
 
 import it.unisannio.ingegneriaDelSoftware.Annotazioni.Secured;
-import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
-import it.unisannio.ingegneriaDelSoftware.Classes.Token;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.Dipendente;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.Token;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
 
 import javax.annotation.Priority;

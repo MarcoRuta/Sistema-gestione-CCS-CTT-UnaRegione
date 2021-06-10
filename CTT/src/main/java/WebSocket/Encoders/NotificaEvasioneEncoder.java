@@ -6,10 +6,9 @@ import javax.websocket.EndpointConfig;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
 
-import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaEvasione;
-import it.unisannio.ingegneriaDelSoftware.CttDataBaseRestApplication;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.Notifiche.NotificaEvasione;
+import it.unisannio.ingegneriaDelSoftware.CttRestApplication;
 
 import java.util.ArrayList;
 
@@ -21,10 +20,10 @@ public class NotificaEvasioneEncoder implements Encoder.Text<ArrayList<NotificaE
 
 		  try {
 			  String json = new ObjectMapper().writeValueAsString(notifiche);
-			  CttDataBaseRestApplication.logger.info("ho serializzato correttamente le notificheEvasione: "+json);
+			  CttRestApplication.logger.info("ho serializzato correttamente le notificheEvasione: "+json);
 			  return json;
 		  } catch (JsonProcessingException e) {
-			  CttDataBaseRestApplication.logger.error("Problemi nella serializzazione della lista di notifiche evasione: "+notifiche);
+			  CttRestApplication.logger.error("Problemi nella serializzazione della lista di notifiche evasione: "+notifiche);
 
 		  }
 		return null;

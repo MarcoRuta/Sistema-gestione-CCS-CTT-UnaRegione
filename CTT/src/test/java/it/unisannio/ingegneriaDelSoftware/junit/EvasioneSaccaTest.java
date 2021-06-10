@@ -19,13 +19,13 @@ import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsExceptio
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import it.unisannio.ingegneriaDelSoftware.Classes.Cdf;
-import it.unisannio.ingegneriaDelSoftware.Classes.DatiSacca;
-import it.unisannio.ingegneriaDelSoftware.Classes.Dipendente;
-import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
-import it.unisannio.ingegneriaDelSoftware.Classes.RuoloDipendente;
-import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
-import it.unisannio.ingegneriaDelSoftware.Classes.Beans.User;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.Cdf;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.DatiSacca;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.Dipendente;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.GruppoSanguigno;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.RuoloDipendente;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.Sacca;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.Beans.User;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 

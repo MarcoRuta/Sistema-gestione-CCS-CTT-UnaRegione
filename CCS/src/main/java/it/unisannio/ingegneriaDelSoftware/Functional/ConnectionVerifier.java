@@ -1,7 +1,6 @@
 package it.unisannio.ingegneriaDelSoftware.Functional;
 
-import it.unisannio.ingegneriaDelSoftware.CcsDataBaseRestApplication;
-import it.unisannio.ingegneriaDelSoftware.Classes.CTTName;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.CTTName;
 import it.unisannio.ingegneriaDelSoftware.Util.Settings;
 import java.io.IOException;
 import java.net.InetSocketAddress;

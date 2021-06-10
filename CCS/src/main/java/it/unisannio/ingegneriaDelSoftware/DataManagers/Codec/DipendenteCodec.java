@@ -1,6 +1,6 @@
 package it.unisannio.ingegneriaDelSoftware.DataManagers.Codec;
 
-import it.unisannio.ingegneriaDelSoftware.Classes.*;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.*;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 import org.bson.BsonReader;
 import org.bson.BsonWriter;

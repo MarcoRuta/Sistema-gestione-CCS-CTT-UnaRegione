@@ -1,6 +1,6 @@
 package it.unisannio.ingegneriaDelSoftware.DataManagers.Codec;
 
-import it.unisannio.ingegneriaDelSoftware.Classes.*;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.*;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 import org.bson.BsonReader;
 import org.bson.BsonWriter;
@@ -9,7 +9,6 @@ import org.bson.codecs.DecoderContext;
 import org.bson.codecs.EncoderContext;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**Codec usato per salvare {@link Sacca} all'interno  del DB*/

@@ -1,8 +1,8 @@
 package it.unisannio.ingegneriaDelSoftware.DataManagers.Codec;
 
-import it.unisannio.ingegneriaDelSoftware.Classes.*;
-import it.unisannio.ingegneriaDelSoftware.Classes.Beans.Sacca;
-import it.unisannio.ingegneriaDelSoftware.Classes.Beans.Seriale;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.*;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.Beans.Sacca;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.Beans.Seriale;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 import org.bson.BsonReader;
 import org.bson.BsonWriter;

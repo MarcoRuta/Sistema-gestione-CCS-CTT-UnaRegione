@@ -1,8 +1,8 @@
 package it.unisannio.ingegneriaDelSoftware.Searchers;
 
-import it.unisannio.ingegneriaDelSoftware.Classes.Beans.Sacca;
-import it.unisannio.ingegneriaDelSoftware.Classes.CTT;
-import it.unisannio.ingegneriaDelSoftware.Classes.CTTName;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.Beans.Sacca;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.CTT;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.CTTName;
 import it.unisannio.ingegneriaDelSoftware.ClientRest.CCSRestClient;
 import it.unisannio.ingegneriaDelSoftware.Functional.Comparator.CTTDistanceComparator;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Searcher;

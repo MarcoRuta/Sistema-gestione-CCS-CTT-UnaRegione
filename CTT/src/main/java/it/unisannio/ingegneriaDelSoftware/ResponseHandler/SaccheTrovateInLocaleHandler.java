@@ -1,7 +1,7 @@
 package it.unisannio.ingegneriaDelSoftware.ResponseHandler;
 
-import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaEvasione;
-import it.unisannio.ingegneriaDelSoftware.Classes.Seriale;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.Notifiche.NotificaEvasione;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.Seriale;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.ResponseHandler;
 
 import javax.ws.rs.core.Response;

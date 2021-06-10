@@ -1,11 +1,11 @@
 package it.unisannio.ingegneriaDelSoftware.ResponseHandler;
 
-import it.unisannio.ingegneriaDelSoftware.Classes.CTTName;
-import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
-import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaEvasione;
-import it.unisannio.ingegneriaDelSoftware.Classes.Seriale;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.CTTName;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.GruppoSanguigno;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.Notifiche.NotificaEvasione;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.Seriale;
 import it.unisannio.ingegneriaDelSoftware.ClientRest.CTTRestClient;
-import it.unisannio.ingegneriaDelSoftware.CttDataBaseRestApplication;
+import it.unisannio.ingegneriaDelSoftware.CttRestApplication;
 import it.unisannio.ingegneriaDelSoftware.Functional.ConnectionVerifier;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.ResponseHandler;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
@@ -22,7 +22,7 @@ public class SaccheTrovateParzialmenteInLocaleHandler implements ResponseHandler
 
         //se il CCS è online inoltro la richiesta globale
         if (ConnectionVerifier.isCCSOnline()) {
-            CttDataBaseRestApplication.logger.info("La ricerca in locale non è completa, sto per contattare il CCS");
+            CttRestApplication.logger.info("La ricerca in locale non è completa, sto per contattare il CCS");
             CTTRestClient.estendiRicercaLocale(CTTName.getInstance(),
                     GruppoSanguigno.valueOf(gruppoSanguigno),
                     num,
@@ -40,7 +40,7 @@ public class SaccheTrovateParzialmenteInLocaleHandler implements ResponseHandler
         }
 
         //se il ccs è offline inoltro solo le sacche che ho in locale
-        CttDataBaseRestApplication.logger.info("La ricerca in locale non è completa, non riesco a contattare il CCS");
+        CttRestApplication.logger.info("La ricerca in locale non è completa, non riesco a contattare il CCS");
         return Response
                 .status(Response.Status.PARTIAL_CONTENT)
                 .entity(new NotificaEvasione(serialiDaEvadere, enteRichiedente, indirizzoEnte, "La richiesta non è stata soddisfatta completamente in locale.\n" +

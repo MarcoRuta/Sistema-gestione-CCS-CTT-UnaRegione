@@ -4,10 +4,9 @@ import javax.websocket.DecodeException;
 import javax.websocket.Decoder;
 import javax.websocket.EndpointConfig;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import it.unisannio.ingegneriaDelSoftware.Classes.Notifiche.NotificaSaccaInScadenza;
-import it.unisannio.ingegneriaDelSoftware.CttDataBaseRestApplication;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.Notifiche.NotificaSaccaInScadenza;
+import it.unisannio.ingegneriaDelSoftware.CttRestApplication;
 
 
 public class NotificaSaccaInScadenzaDecoder implements Decoder.Text< ArrayList<NotificaSaccaInScadenza>> {
@@ -18,7 +17,7 @@ public class NotificaSaccaInScadenzaDecoder implements Decoder.Text< ArrayList<N
 	    ArrayList<NotificaSaccaInScadenza> notifiche = new ArrayList<>();
 		try {
 			notifiche = new ObjectMapper().readValue(jsonMessage,ArrayList.class);
-			CttDataBaseRestApplication.logger.info("Ho decodificato la lista di notificheSaccheInScadenza correttamente: "+notifiche);
+			CttRestApplication.logger.info("Ho decodificato la lista di notificheSaccheInScadenza correttamente: "+notifiche);
 			return notifiche;
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();

@@ -1,11 +1,12 @@
 package it.unisannio.ingegneriaDelSoftware.Searcher;
 
-import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
-import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.GruppoSanguigno;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.Sacca;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Searcher;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -29,15 +30,17 @@ public class CompositionSearcher implements Searcher{
      */
     public List<Sacca> search(GruppoSanguigno gs, int numeroSacche, LocalDate dataArrivoMassima) {
         List<Sacca> saccheTrovate = searchers.get(0).search(gs,numeroSacche,dataArrivoMassima);
+        saccheTrovate.sort(Comparator.comparing((Sacca s)-> s.getDataScadenza()));
 
         if(saccheTrovate.size() >= numeroSacche)
             return saccheTrovate.subList(0,numeroSacche);
 
-        saccheTrovate.addAll(this.searchers.get(1).search(gs,numeroSacche,dataArrivoMassima));
+        List<Sacca>saccheCompatbili =this.searchers.get(1).search(gs,numeroSacche,dataArrivoMassima);
+        saccheCompatbili.sort(Comparator.comparing((Sacca s)-> s.getDataScadenza()));
+        saccheTrovate.addAll(saccheCompatbili);
 
         if(saccheTrovate.size()>=numeroSacche)
             return saccheTrovate.subList(0,numeroSacche);
-
 
         return saccheTrovate;
     }

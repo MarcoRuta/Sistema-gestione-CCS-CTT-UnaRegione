@@ -12,7 +12,7 @@ import javax.ws.rs.core.*;
 import com.itextpdf.text.DocumentException;
 import it.unisannio.ingegneriaDelSoftware.Annotazioni.Secured;
 import it.unisannio.ingegneriaDelSoftware.CcsDataBaseRestApplication;
-import it.unisannio.ingegneriaDelSoftware.Classes.*;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.*;
 import it.unisannio.ingegneriaDelSoftware.ClientRest.CCSRestClient;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
@@ -382,16 +382,18 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 	@GET
 	@Path("/statusReteCtt")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response statusReteCtt(@HeaderParam(HttpHeaders.AUTHORIZATION) String headers){
+	public Response statusReteCtt(@HeaderParam(HttpHeaders.AUTHORIZATION) String headers) throws EntityNotFoundException {
 
-		Map<CTTName,Boolean> statusRete = new HashMap<CTTName, Boolean>();
+		Map<String,Boolean> statusRete = new HashMap<>();
 
 		for(CTTName ctt : Settings.ip.keySet()) {
+			CTT aCTT = MongoDataManager.getInstance().getCTT(ctt);
+			String cttInfo = aCTT.getDenominazione().getCttname()+" - "+aCTT.getPosizione().getCitta()+" - "+aCTT.getPosizione().getProvincia();
 
 			if(ConnectionVerifier.isCTTOnline().keySet().contains(ctt))
-				statusRete.put(ctt, true);
+				statusRete.put(cttInfo, true);
 
-			else statusRete.put(ctt, false);
+			else statusRete.put(cttInfo, false);
 		}
 
 		return Response

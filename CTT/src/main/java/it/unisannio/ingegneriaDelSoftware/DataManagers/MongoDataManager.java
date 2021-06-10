@@ -4,7 +4,7 @@ import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import it.unisannio.ingegneriaDelSoftware.Classes.*;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.*;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.Codec.DatiSaccaCodec;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.Codec.DipendenteCodec;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.Codec.SaccaCodec;

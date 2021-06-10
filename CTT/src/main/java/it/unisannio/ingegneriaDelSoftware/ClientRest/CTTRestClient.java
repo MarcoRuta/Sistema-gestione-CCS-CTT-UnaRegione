@@ -1,9 +1,9 @@
 package it.unisannio.ingegneriaDelSoftware.ClientRest;
 
-import it.unisannio.ingegneriaDelSoftware.Classes.CTTName;
-import it.unisannio.ingegneriaDelSoftware.Classes.GruppoSanguigno;
-import it.unisannio.ingegneriaDelSoftware.Classes.Sacca;
-import it.unisannio.ingegneriaDelSoftware.CttDataBaseRestApplication;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.CTTName;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.GruppoSanguigno;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.Sacca;
+import it.unisannio.ingegneriaDelSoftware.CttRestApplication;
 import it.unisannio.ingegneriaDelSoftware.Util.Settings;
 
 import javax.ws.rs.client.Client;
@@ -27,7 +27,7 @@ public class CTTRestClient {
                 .target("http://"+Settings.ccsIp+":"+Settings.ccsIpPort+"/rest/CCS/ritiroAlertCTT")
                 .path(sacca.getSeriale().getSeriale());
         evasioneSacca.request().delete();
-        CttDataBaseRestApplication.logger.info("Avviso il CCS che ho consumato una delle Sacche in Scadenza");
+        CttRestApplication.logger.info("Avviso il CCS che ho consumato una delle Sacche in Scadenza");
     }
 
 
@@ -36,12 +36,12 @@ public class CTTRestClient {
         WebTarget gestioneSaccheInscadenza = client
                 .target("http://"+Settings.ccsIp+":"+Settings.ccsIpPort+"/rest/CCS/saccheInScadenza");
         gestioneSaccheInscadenza.request().post(Entity.json(saccheInScadenza));
-        CttDataBaseRestApplication.logger.info("Ho inviato un alert al CCS con la lista delle sacche in scadenza");
+        CttRestApplication.logger.info("Ho inviato un alert al CCS con la lista delle sacche in scadenza");
     }
     
     public static Response estendiRicercaLocale(CTTName nome, GruppoSanguigno gs, int numeroSacche, LocalDate dataArrivoMassima, String enteRichiedente, String indirizzoEnte, boolean priorità) {
     	 Client client = ClientBuilder.newClient();
-    	 CttDataBaseRestApplication.logger.info("Sto per estendere la ricerca globale al CCS: "+"http://"+Settings.ccsIp+":"+Settings.ccsIpPort+"/rest/CCS/ricercaGlobale");
+    	 CttRestApplication.logger.info("Sto per estendere la ricerca globale al CCS: "+"http://"+Settings.ccsIp+":"+Settings.ccsIpPort+"/rest/CCS/ricercaGlobale");
 
     	 WebTarget ricercaGlobale = client
                  .target("http://"+Settings.ccsIp+":"+Settings.ccsIpPort+"/rest/CCS/ricercaGlobale")
@@ -54,7 +54,7 @@ public class CTTRestClient {
                  .queryParam("priorità", priorità);
 
         Response r = ricercaGlobale.request().get();
-        CttDataBaseRestApplication.logger.info("Ho contattato il CCS per estendere la ricerca locale");
+        CttRestApplication.logger.info("Ho contattato il CCS per estendere la ricerca locale");
         return r;
     }
 }
