@@ -110,7 +110,7 @@ public class RemoveAmministratoreCCSRestTest {
 	
 	/**Droppa il database*/
 	@After
-	public  void dropDB() {
+	public void dropDB() {
 		MongoDataManager mm = MongoDataManager.getInstance();
 		mm.dropDB();
 	}

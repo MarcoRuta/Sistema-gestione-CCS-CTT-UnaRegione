@@ -18,8 +18,9 @@ import javax.ws.rs.core.Response.Status;
 
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.Cdf;
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.Dipendente;
@@ -30,10 +31,10 @@ import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 public class AggiungiDipendenteTest {
 	static String token = null;
 	Client client = ClientBuilder.newClient();
-	WebTarget aggiuntaAmministratore = client.target("http://127.0.0.1:8080/rest/amministratore/aggiuntaDipendente");
+	WebTarget aggiuntaAmministratore = client.target("http://127.0.0.1:8081/rest/amministratore/aggiuntaDipendente");
 		
 	
-	@BeforeClass public static void populateDBDipendenti() throws EntityAlreadyExistsException {
+	@Before public void setUp() throws EntityAlreadyExistsException {
 			List<Dipendente> listaDipendenti = new ArrayList<Dipendente>();
 		        
 		 	Cdf cdf = Cdf.getCDF("XDDBHH45H57H684W");
@@ -100,7 +101,7 @@ public class AggiungiDipendenteTest {
 	        }  
 	        
 	        Client client = ClientBuilder.newClient();
-			WebTarget login = client.target("http://127.0.0.1:8080/rest/autentificazione");
+			WebTarget login = client.target("http://127.0.0.1:8081/rest/autentificazione");
 			Form form1 = new Form();
 			form1.param("username", "username 003");
 			form1.param("password", "Password3");
@@ -111,10 +112,10 @@ public class AggiungiDipendenteTest {
 		}
 
 		
-		/** Test per il metodo rest/CCS/aggiuntaamministratore dell'amministratoreCCS
+		/** Test per il metodo rest/amministratore/aggiuntaDipendente dell'amministratoreCTT, che va a buon fine
 		 */
 		@Test	
-		public void test1(){
+		public void testAggiuntaMagazziniere(){
 			Form form1 = new Form();
 			form1.param("cdf", "SRNGJZ50B54C143L");
 			form1.param("nome", "Ario");
@@ -124,14 +125,14 @@ public class AggiungiDipendenteTest {
 			form1.param("username", "username 123");
 			form1.param("password", "Password123");
 			Response responseaddAmm = aggiuntaAmministratore.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).post(Entity.form(form1));
-			assertEquals(Status.OK.getStatusCode(), responseaddAmm.getStatus());	
+			assertEquals(Status.CREATED.getStatusCode(), responseaddAmm.getStatus());	
 		}
 		
 		
-		/** Test per il metodo rest/CCS/aggiuntaamministratore dell'amministratoreCCS
+		/** Test per il metodo rest/amministratore/aggiuntaDipendente dell'amministratoreCTT, che va a buon fine
 		 */
 		@Test	
-		public void test2(){
+		public void testAggiuntaOperatore(){
 			Form form1 = new Form();
 			form1.param("cdf", "LZZBHR41C46C446V");
 			form1.param("nome", "Lucio");
@@ -141,14 +142,15 @@ public class AggiungiDipendenteTest {
 			form1.param("username", "username 234");
 			form1.param("password", "Password234");
 			Response responseaddAmm = aggiuntaAmministratore.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).post(Entity.form(form1));
-			assertEquals(Status.OK.getStatusCode(), responseaddAmm.getStatus());	
+			assertEquals(Status.CREATED.getStatusCode(), responseaddAmm.getStatus());	
 		}
 		
 		
-		/** Test per il metodo rest/CCS/aggiuntaamministratore dell'amministratoreCCS 
+		/** Test per il metodo rest/amministratore/aggiuntaDipendente dell'amministratoreCTT,
+		 *  non funzionante a causa del formato errato della data di nascita
 		 */
 		@Test	
-		public void test3(){
+		public void testFormatoDatiErrato(){
 			Form form1 = new Form();
 			form1.param("cdf", "LZZBHR41C46C446V");
 			form1.param("nome", "Lucio");
@@ -162,7 +164,7 @@ public class AggiungiDipendenteTest {
 		}
 		
 		
-		@AfterClass public static void dropDBDipendenti() {
+		@After public void dropDBi() {
 			MongoDataManager mm = MongoDataManager.getInstance();
 			mm.dropDB();
 		}

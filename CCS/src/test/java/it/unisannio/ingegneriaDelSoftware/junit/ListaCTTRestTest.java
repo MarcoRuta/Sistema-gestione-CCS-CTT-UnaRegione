@@ -11,7 +11,6 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Form;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
 import org.junit.After;
 import org.junit.Before;
@@ -77,8 +76,8 @@ public class ListaCTTRestTest {
         form1.param("email", "CTT005@gmail.com");
         form1.param("latitude", "65");
         form1.param("longitude", "41");
-        Response responseaddCTT = aggiuntaCTT.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).post(Entity.form(form1));
-        Response respondeListCTT = listaCTT.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).get();
+        aggiuntaCTT.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).post(Entity.form(form1));
+        listaCTT.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).get();
         assertEquals(1,mm.getListaCTT().size());
     }
 
@@ -94,8 +93,8 @@ public class ListaCTTRestTest {
         form1.param("email", "CTT005@gmail.com");
         form1.param("latitude", "65");
         form1.param("longitude", "41");
-        Response responseaddCTT = aggiuntaCTT.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).post(Entity.form(form1));
-        Response respondeListCTT = listaCTT.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).get();
+        aggiuntaCTT.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).post(Entity.form(form1));
+        listaCTT.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).get();
         assertNotEquals(2,mm.getListaCTT().size());
     }
 

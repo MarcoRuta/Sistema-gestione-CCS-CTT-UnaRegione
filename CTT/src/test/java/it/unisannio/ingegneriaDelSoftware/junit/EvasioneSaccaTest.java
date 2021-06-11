@@ -16,8 +16,9 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.Cdf;
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.DatiSacca;
@@ -25,18 +26,21 @@ import it.unisannio.ingegneriaDelSoftware.DomainTypes.Dipendente;
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.RuoloDipendente;
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.Sacca;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.Seriale;
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.Beans.User;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.Notifiche.NotificaEvasione;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
-
 
 public class EvasioneSaccaTest {
 	static String token = null;
 	Client client = ClientBuilder.newClient();
-	WebTarget evasioneSacca = client.target("http://127.0.0.1:8080/rest/magazziniere/evasione");
-
+	WebTarget evasioneSacca = client.target("http://127.0.0.1:8081/rest/magazziniere/evasione");
+	Seriale ser1 = new Seriale();
+	Seriale ser2 = new Seriale();
+	Seriale ser3 = new Seriale();
 	
-	@BeforeClass public static void populateDBSacche() throws EntityAlreadyExistsException {
+	@Before public  void populateDBSacche() throws EntityAlreadyExistsException {
 	
     	List<Sacca> listaSacche = new ArrayList<Sacca>();
     	List<DatiSacca> listaDatiSacche = new ArrayList<DatiSacca>();
@@ -50,7 +54,7 @@ public class EvasioneSaccaTest {
     	GruppoSanguigno gs = GruppoSanguigno.Ap;
     	LocalDate localDataProduzione = LocalDate.of(2020,04,10);
     	LocalDate localDataScadenza = LocalDate.now().plusDays(2);
-    	Sacca sacca = new Sacca(gs, localDataProduzione, localDataScadenza);
+    	Sacca sacca = new Sacca(ser1, gs, localDataProduzione, localDataScadenza, false);
     	sacca.setPrenotato();
     	listaSacche.add(sacca);
     	        
@@ -64,7 +68,7 @@ public class EvasioneSaccaTest {
     	 gs = GruppoSanguigno.Ap;
     	 localDataProduzione = LocalDate.of(2020,05,10);
     	 localDataScadenza = LocalDate.of(2022,05,10);
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza);
+    	 sacca = new Sacca(ser2, gs, localDataProduzione, localDataScadenza, false);
     	 sacca.setPrenotato();
     	 listaSacche.add(sacca);
     	        
@@ -78,7 +82,7 @@ public class EvasioneSaccaTest {
     	 gs = GruppoSanguigno.Ap;
     	 localDataProduzione = LocalDate.of(2020,06,10);
     	 localDataScadenza = LocalDate.of(2022,06,10);
-    	 sacca = new Sacca(gs, localDataProduzione, localDataScadenza);
+    	 sacca = new Sacca(ser3, gs, localDataProduzione, localDataScadenza, false);
     	 sacca.setPrenotato();
     	 listaSacche.add(sacca);
     	        
@@ -100,7 +104,7 @@ public class EvasioneSaccaTest {
         md.createDipendente(d);
     	
         Client client = ClientBuilder.newClient();
-		WebTarget login = client.target("http://127.0.0.1:8080/rest/autentificazione");
+		WebTarget login = client.target("http://127.0.0.1:8081/rest/autentificazione");
 		Form form1 = new Form();
 		form1.param("username", "admin");
 		form1.param("password", "Adminadmin1");
@@ -110,36 +114,42 @@ public class EvasioneSaccaTest {
 		token = user.getToken();  	
 	}
 	
-	
-	/**
-	 * Test 
-	*/
-	@Test public void test1(){
-				
-		Form form1 = new Form();
-		form1.param("listaSeriali", "CTT001-00000001,CTT001-00000002,CTT001-00000003,");
-		form1.param("enteRichiedente", "Ospedale Rummo");
-		form1.param("indirizzoEnte", "Benevento, via pacevecchia 12");
-				
-		Response evasioneSaccaMagazz = evasioneSacca.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).put(Entity.form(form1));
-		assertEquals(Status.OK.getStatusCode(), evasioneSaccaMagazz.getStatus());
+	/** Test per il metodo rest/magazziniere/evasione del magazziniereCTT, che va a buon fine 
+	 */
+	@Test public void test1(){			
+		List<Seriale> listaSeriali = new ArrayList<Seriale>();
+		listaSeriali.add(ser1);
+		listaSeriali.add(ser2);
+		listaSeriali.add(ser3);
+		String enteRichiedente= "Ospedale Rummo";
+		String indirizzoEnte="Benevento, via pacevecchia 12";
+		
+		NotificaEvasione not= new NotificaEvasione(listaSeriali, enteRichiedente, indirizzoEnte, "messaggio");
+		
+		Response evasioneSaccaMagazz = evasioneSacca.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).post(Entity.json(not));
+		assertEquals(Status.CREATED.getStatusCode(), evasioneSaccaMagazz.getStatus());
 	}
 
-	@Test public void test2(){
+	/** Test per il metodo rest/magazziniere/evasione del magazziniereCTT, 
+	 * non funzionante siccome si cerca di evadere una Sacca non presente nel database delle Sacche
+	 */
+	@Test public void test2(){		
+		List<Seriale> listaSeriali = new ArrayList<Seriale>();
+		listaSeriali.add(ser1);
+		Seriale nonPresente = new Seriale();
+		listaSeriali.add(nonPresente);
+		listaSeriali.add(ser3);
+		String enteRichiedente= "Ospedale Rummo";
+		String indirizzoEnte="Benevento, via pacevecchia 12";
 		
-		Form form1 = new Form();					//sacca non presente	
-		form1.param("listaSeriali", "CTT001-00000001,CTT001-00000123,CTT001-00000003,");
-		form1.param("enteRichiedente", "Ospedale Rummo");
-		form1.param("indirizzoEnte", "Benevento, via pacevecchia 12");
+		NotificaEvasione not= new NotificaEvasione(listaSeriali, enteRichiedente, indirizzoEnte, "messaggio");
 		
-		
-		Response evasioneSaccaMagazz = evasioneSacca.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).put(Entity.form(form1));
+		Response evasioneSaccaMagazz = evasioneSacca.request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).post(Entity.json(not));
 		assertEquals(Status.NOT_FOUND.getStatusCode(), evasioneSaccaMagazz.getStatus());
 	}
 
 	
-
-	@AfterClass public static void dropDBSacche() {
+	@After public void dropDBSacche() {
 		MongoDataManager md = MongoDataManager.getInstance();
 		md.dropDB();
 	}
