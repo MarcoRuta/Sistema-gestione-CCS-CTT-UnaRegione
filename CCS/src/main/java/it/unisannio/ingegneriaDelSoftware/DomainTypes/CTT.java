@@ -1,6 +1,11 @@
 package it.unisannio.ingegneriaDelSoftware.DomainTypes;
 
+import it.unisannio.ingegneriaDelSoftware.Util.Settings;
+
+import java.io.IOException;
 import java.io.PrintStream;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 import java.util.Objects;
 import java.lang.Math;
 
@@ -98,6 +103,19 @@ public class CTT{
 		Double y = 2 * Math.atan2(Math.sqrt(x), Math.sqrt(1-x));
 		distanza = R*y;
 		return distanza;
+	}
+
+	/**Calcola la distanza tra due punti applicando la formula dell'emisenovers
+	 * @return TRUE se il CTT è online, FALSE altrimenti
+	 */
+	public boolean isOnline(){
+		try {
+			Socket socket = new Socket();
+			socket.connect(new InetSocketAddress(Settings.ip.get(this), Integer.parseInt(Settings.PORTA)), 5000);
+			return true;
+		} catch (IOException e) {
+			return false;
+		}
 	}
 
 	/**Restituisce il recapito telefonico del CTT

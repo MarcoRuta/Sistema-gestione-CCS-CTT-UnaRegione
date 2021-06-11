@@ -6,6 +6,7 @@ import WebSocket.Encoders.NotificaSaccaInScadenzaEncoder;
 import WebSocket.Encoders.SaccaWrapperEncoder;
 import it.unisannio.ingegneriaDelSoftware.CcsDataBaseRestApplication;
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.Beans.Sacca;
+import it.unisannio.ingegneriaDelSoftware.DomainTypes.CTT;
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.CTTName;
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.Wrapper.SaccaWrapper;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
@@ -72,9 +73,9 @@ public class WebSocketEndpointSaccheInScadenza implements Subject {
         CTTName cttOffline = null;
         try {
             String ip = sessioniCTT.get(s);
-            for (CTTName ctt : Settings.ip.keySet())
+            for (CTT ctt : Settings.ip.keySet())
                 if (Settings.ip.get(ctt).equals(ip))
-                    cttOffline = ctt;
+                    cttOffline = ctt.getDenominazione();
 
             System.err.println("ecco il ctt che si e disconnesso: "+cttOffline);
             sessioniCTT.remove(s);

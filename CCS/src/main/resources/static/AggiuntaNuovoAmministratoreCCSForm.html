@@ -131,7 +131,6 @@
         var xhttp = new XMLHttpRequest();
         var token = sessionStorage.getItem("token");
         var ruolo = sessionStorage.getItem("ruolo");
-        var urlPdf;
         var host = document.location.origin;
 
 
@@ -155,9 +154,10 @@
 
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 201) {
-                        alert(this.responseText);
-                        urlPdf = host + xhttp.getResponseHeader("Content-Location");
-                        creaPdf();
+                        alert("Amministratore "+cd+" aggiunto correttamente");
+                        var blobSrc = window.URL.createObjectURL(new Blob([this.response], { type: 'application/pdf'}));
+                        window.open(blobSrc);
+                        setTimeout(reloadPage, 1000);
                  	}else {
                  	if(this.readyState == 4 && this.status != 201){
                  	    alert(this.response);
@@ -168,7 +168,7 @@
                 };
 
                 xhttp.onerror = function(){
-                    alert("[Error 401] Impossibile Aggiungere Sacca");
+                    alert("[Error 401] Impossibile Aggiungere Amministratore");
                 };
 
 
@@ -176,27 +176,10 @@
                 xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
                 xhttp.setRequestHeader('Authorization', 'Basic '+token);
                 xhttp.withCredentials = true;
+                xhttp.responseType = 'arraybuffer';
                 xhttp.send(params);
         }
 
-
-        /*####### CREA PDF FUNCTION ######*/
-        function creaPdf() {
-             var xhr = new XMLHttpRequest();
-             xhr.open("GET", urlPdf, true);
-             xhr.setRequestHeader('Authorization', 'Basic '+token);
-             xhr.withCredentials = true;
-             xhr.responseType = 'arraybuffer';
-             xhr.send();
-
-            xhr.onreadystatechange = function() {
-                    if (xhr.readyState == 4){
-                        var blobSrc = window.URL.createObjectURL(new Blob([this.response], { type: 'application/pdf'}));
-                        window.open(blobSrc);
-                    }
-            };
-            setTimeout(reloadPage, 1000);
-      }
 
       function reloadPage() {
             codice.value ="";

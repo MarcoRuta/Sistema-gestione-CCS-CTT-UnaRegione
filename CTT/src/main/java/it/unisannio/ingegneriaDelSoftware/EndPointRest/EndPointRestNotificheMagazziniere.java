@@ -132,7 +132,6 @@ public class EndPointRestNotificheMagazziniere extends MagazziniereSubject {
     @Scheduled(fixedDelay = 1000*60*2)
     /** */
     private void updateSaccheScadute() throws EntityNotFoundException {
-        System.err.println("Ricerca per le sacche scadute avviata");
         serialiDaSmaltire =SaccheScaduteRemover.getSmaltimentoSacche();
         if(serialiDaSmaltire != null)
             this.notifySmaltimentoObserver();

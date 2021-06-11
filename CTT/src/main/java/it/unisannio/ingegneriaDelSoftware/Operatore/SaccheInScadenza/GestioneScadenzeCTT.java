@@ -31,7 +31,6 @@ public class GestioneScadenzeCTT implements CTTFunction {
 	 */
 	@Scheduled(fixedDelay = 1000*60*3)
 	public void alertSaccheInScadenza() throws EntityNotFoundException {
-		System.err.println("partito il controllo sacche in scadenza");
 
 		//recupero le sacche in scadenza
 		List<Sacca> saccheInScadenza = getSaccheInScadenza();

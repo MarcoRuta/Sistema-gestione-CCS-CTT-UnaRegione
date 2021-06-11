@@ -22,7 +22,7 @@ public class PDFGenerator {
         Document document = new Document();
         PdfWriter.getInstance(document, output);
         document.open();
-        Image img = Image.getInstance("localsettings/img/logoCTTpdf.png");
+        Image img = Image.getInstance("localsettings/img/logoCCSpdf.png");
         img.setAlignment(1);
         img.setWidthPercentage(20);
         document.add(img);

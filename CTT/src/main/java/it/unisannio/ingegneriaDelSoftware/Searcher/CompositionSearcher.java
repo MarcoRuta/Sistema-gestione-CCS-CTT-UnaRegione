@@ -28,17 +28,11 @@ public class CompositionSearcher implements Searcher{
      */
     public List<Sacca> search(GruppoSanguigno gs, int numeroSacche, LocalDate dataArrivoMassima) {
         List<Sacca> saccheTrovate = searchers.get(0).search(gs,numeroSacche,dataArrivoMassima);
-        saccheTrovate.sort(Comparator.comparing((Sacca s)-> s.getDataScadenza()));
 
-        if(saccheTrovate.size() >= numeroSacche)
-            return saccheTrovate.subList(0,numeroSacche);
+        if(saccheTrovate.size() == numeroSacche)
+            return saccheTrovate;
 
-        List<Sacca>saccheCompatbili =this.searchers.get(1).search(gs,numeroSacche,dataArrivoMassima);
-        saccheCompatbili.sort(Comparator.comparing((Sacca s)-> s.getDataScadenza()));
-        saccheTrovate.addAll(saccheCompatbili);
-
-        if(saccheTrovate.size()>=numeroSacche)
-            return saccheTrovate.subList(0,numeroSacche);
+        saccheTrovate.addAll(searchers.get(1).search(gs,numeroSacche - saccheTrovate.size(),dataArrivoMassima));
 
         return saccheTrovate;
     }

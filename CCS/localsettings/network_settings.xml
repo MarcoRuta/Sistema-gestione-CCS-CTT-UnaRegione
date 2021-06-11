@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
-    <entry key="CTT001">192.168.193.160</entry>
-    <entry key="CTT002">192.168.193.55</entry>
+    <entry key="CTT001">192.168.193.220</entry>
+    <entry key="CTT002">192.168.193.38</entry>
     <entry key="PORT">8081</entry>
 </properties>
         <!-- Marco Ruta : 192.168.193.220

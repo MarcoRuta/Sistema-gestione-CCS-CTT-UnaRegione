@@ -31,7 +31,8 @@ import it.unisannio.ingegneriaDelSoftware.Util.Settings;
 public class EndPointRestRicercaGlobale implements Subject {
 
 	Observer scadenzeObserver = new SaccheInScadenzaObserver();
-	
+	MongoDataManager mm = MongoDataManager.getInstance();
+
 	/**Restituisce la Sacca del GruppoSanguigno richiesto con Data di scadenza più vicina nel DataBase locale.
 	 * @param nome Nome del CTT richiedente
 	 * @param gruppoSanguigno Gruppo sanguigno ricercato
@@ -57,7 +58,7 @@ public class EndPointRestRicercaGlobale implements Subject {
 		Map<CTTName,String> cttOnline = ConnectionVerifier.isCTTOnline();
 		//non devo ricercare le sacche presso il CTT richiedente
 		cttOnline.remove(CTTName.getCttName(nome));
-		CTT cttRichiedente = MongoDataManager.getInstance().getCTT(CTTName.getCttName(nome));
+		CTT cttRichiedente = mm.getCTT(CTTName.getCttName(nome));
 		CcsDataBaseRestApplication.logger.info("Ecco i CTT che sono disponibili per la ricerca globale "+ cttOnline);
 		//sacche che ho trovato nei vari ctt
 		Map<CTTName,List<Sacca>> cttSacche = SearcherFactory.searcherMap.get(priorita).search(cttOnline, cttRichiedente,
@@ -79,7 +80,7 @@ public class EndPointRestRicercaGlobale implements Subject {
 		//Richiesta soddisfatta completamente
 		if(serialeList.size() == Integer.parseInt(numeroSacche)){
 			this.prenotaSacca(cttOnline,cttSacche,indirizzoEnte,enteRichiedente);
-			CCSRestClient.sendRisultatiRicerca(Settings.ip.get(cttRichiedente.getDenominazione()),
+			CCSRestClient.sendRisultatiRicerca(Settings.ip.get(cttRichiedente),
 					new NotificaRisultatiRicerca(serialeList, "Esito ricerca globale: completata totalmente"));
 			CcsDataBaseRestApplication.logger.info("La richiesta del "+nome+"è stata soddisfatta");
 			return Response.status(Response.Status.NO_CONTENT).build();
@@ -88,7 +89,7 @@ public class EndPointRestRicercaGlobale implements Subject {
 		//Richiesta soddisfatta parzialmente
 		if (serialeList.size() < Integer.parseInt(numeroSacche) && serialeList.size() != 0){
 			this.prenotaSacca(cttOnline,cttSacche,indirizzoEnte,enteRichiedente);
-			CCSRestClient.sendRisultatiRicerca(Settings.ip.get(CTTName.getCttName(nome)),
+			CCSRestClient.sendRisultatiRicerca(Settings.ip.get(mm.getCTT(CTTName.getCttName(nome))),
 					new NotificaRisultatiRicerca(serialeList, "Esito ricerca globale: completata parzialmente.\n" +
 							"Mancano: "+ (Integer.parseInt(numeroSacche)-serialeList.size())+" sacche."));
 			CcsDataBaseRestApplication.logger.info("Non è stato possibile soddisfare la richiesta del "+nome);
@@ -97,7 +98,7 @@ public class EndPointRestRicercaGlobale implements Subject {
 
 		//Nessuna sacca trovata
 		this.prenotaSacca(cttOnline,cttSacche,indirizzoEnte,enteRichiedente);
-		CCSRestClient.sendRisultatiRicerca(Settings.ip.get(CTTName.getCttName(nome)),
+		CCSRestClient.sendRisultatiRicerca(Settings.ip.get(mm.getCTT(CTTName.getCttName(nome))),
 				new NotificaRisultatiRicerca(serialeList, "Nessuna sacca trovata presso i CTT della rete CCS"));
 		CcsDataBaseRestApplication.logger.info("Non sono riuscito a trovare nessuna sacca per il "+nome);
 		return Response.status(Response.Status.NOT_FOUND).build();

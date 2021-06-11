@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.stream.Collectors;
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Singleton;
 import javax.ws.rs.*;
@@ -32,27 +33,28 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 	private MongoDataManager md = MongoDataManager.getInstance();
 
 
-	/**Aggiunge un Dipendente al DataBase
-	 * @param cdf Dipendente da aggiungere al DataBase
-	 * @param nome Il nome del Dipendente
-	 * @param cognome Il cognome del Dipendente
+	/**
+	 * Aggiunge un Dipendente al DataBase
+	 *
+	 * @param cdf           Dipendente da aggiungere al DataBase
+	 * @param nome          Il nome del Dipendente
+	 * @param cognome       Il cognome del Dipendente
 	 * @param dataDiNascita La data di nascita del Dipendente
-	 * @param ruolo Il ruolo del Dipendente
-	 * @param username L'useername del Dipendente
+	 * @param ruolo         Il ruolo del Dipendente
+	 * @param username      L'useername del Dipendente
 	 * @return Response
 	 * @throws DateTimeParseException, IllegalArgumentException, AssertionError, EntityAlreadyExistsException
 	 */
 	@POST
 	@Path("/aggiuntaDipendente")
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces("application/pdf")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public Response addDipendente(@FormParam("cdf")String cdf,
-								  @FormParam("nome")String nome,
-								  @FormParam("cognome")String cognome,
-								  @FormParam("dataDiNascita")String dataDiNascita,
-								  @FormParam("ruolo")String ruolo,
-								  @FormParam("username")String username,
-								  @Context UriInfo uriInfo) throws DateTimeParseException, IllegalArgumentException, AssertionError, EntityAlreadyExistsException {
+	public Response addDipendente(@FormParam("cdf") String cdf,
+								  @FormParam("nome") String nome,
+								  @FormParam("cognome") String cognome,
+								  @FormParam("dataDiNascita") String dataDiNascita,
+								  @FormParam("ruolo") String ruolo,
+								  @FormParam("username") String username)throws DateTimeParseException, IllegalArgumentException, AssertionError, EntityAlreadyExistsException {
 
 		//creo un dipendente
 		String password = IDGenerator.getID();
@@ -62,61 +64,54 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 		//aggiungo il dipendente al DB
 		md.createDipendente(d);
 		return Response
-				.status(Response.Status.CREATED)
-				.entity("Dipendente aggiunto correttamente")
-				.header(HttpHeaders.CONTENT_LOCATION,uriInfo.getAbsolutePath().getPath()+"/pdf/"+d.getCdf().getCodiceFiscale())
-				.build();
+			.status(Response.Status.CREATED)
+			.entity(getPDF(cdf, username, password))
+			.build();
 	}
 
 
 	/**Metodo tramite il quale è possibile recuperare un pdf con cdf, username e password di un dipendente
 	 * @param cdf il cdf del Dipendente di cui si vogliono recuperare i dati
+	 * @param username l'username del Dipendente
+	 * @param password la password del Dipendente
 	 * @return StreamingOutput StreamingOutput da dove verrà aperto il pdf generato
 	 */
-	@GET
-	@Path("aggiuntaDipendente/pdf/{cdf}")
-	@Produces("application/pdf")
-	@Consumes(MediaType.TEXT_PLAIN)
-	public StreamingOutput getPDF(@PathParam("cdf")String cdf){
+	private StreamingOutput getPDF(String cdf, String username, String password) {
 		return new StreamingOutput() {
-			public void write(OutputStream output){
+			public void write(OutputStream output) {
 				try {
-					Dipendente dip = md.getDipendente(Cdf.getCDF(cdf));
-					PDFGenerator.makeDocumentDipendente(output, cdf,dip.getUsername(),dip.getPassword());
-				} catch (DocumentException | IOException e) {
+					PDFGenerator.makeDocumentDipendente(output, cdf, username, password);
+				}catch (DocumentException | IOException e) {
 					throw new WebApplicationException(Response
 							.status(Response.Status.INTERNAL_SERVER_ERROR)
-							.entity("Impossibile creare il dipendente")
-							.build());
-				} catch (EntityNotFoundException e) {
-					throw new WebApplicationException(Response
-							.status(Response.Status.NOT_FOUND)
 							.entity("Impossibile creare il dipendente")
 							.build());
 				}
 			}
 		};
 	}
-	
-	
-	/**Rimuove un Dipendente dal DataBase
+
+
+	/**
+	 * Rimuove un Dipendente dal DataBase
+	 *
 	 * @param cdf Codice fiscale del Dipendente da rimuovere dal DataBase
-	 * @return Response 
+	 * @return Response
 	 * @throws EntityNotFoundException se si vuole rimuovere un Dipendente non presente nel DB
 	 */
 	@DELETE
 	@Path("/rimozioneDipendente/{cdf}")
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes(MediaType.TEXT_PLAIN)
-	public Response removeDipendente(@HeaderParam(HttpHeaders.AUTHORIZATION)String header,
+	public Response removeDipendente(@HeaderParam(HttpHeaders.AUTHORIZATION) String header,
 									 @PathParam("cdf") String cdf) throws EntityNotFoundException {
 		Dipendente deleter = Token.getDipendenteByToken(header.substring("Basic ".length()));
 		if (deleter.getCdf().getCodiceFiscale().equals(cdf))
-			throw  new WebApplicationException(
+			throw new WebApplicationException(
 					Response
-					.status(Response.Status.FORBIDDEN)
-					.entity("Non puoi cancellare te stesso")
-					.build());
+							.status(Response.Status.FORBIDDEN)
+							.entity("Non puoi cancellare te stesso")
+							.build());
 
 		md.removeDipendente(Cdf.getCDF(cdf));
 		return Response
@@ -134,13 +129,13 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 	@GET
 	@Path("/reportDipendentiCtt")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response reportDipendentiCTT(@QueryParam("ruolo")String ruolo){
+	public Response reportDipendentiCTT(@QueryParam("ruolo") String ruolo) {
 
 		List<Dipendente> listaDipendenti = md.getListaDipendenti();
 		List<Dipendente> risultatoQuery = new ArrayList<Dipendente>();
 
-		for(Dipendente d : listaDipendenti)
-			if(d.getRuolo().toString().equals(ruolo)) risultatoQuery.add(d);
+		for (Dipendente d : listaDipendenti)
+			if (d.getRuolo().toString().equals(ruolo)) risultatoQuery.add(d);
 
 		return Response
 				.status(Response.Status.OK)
@@ -156,9 +151,9 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 	@GET
 	@Path("/reportStatisticoSacche")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response reportStatisticoSacche(@HeaderParam(HttpHeaders.AUTHORIZATION) String headers){
+	public Response reportStatisticoSacche(@HeaderParam(HttpHeaders.AUTHORIZATION) String headers) {
 
-		Map<GruppoSanguigno,Integer> risultatoQuery = this.getNumeroSaccheDB();
+		Map<GruppoSanguigno, Integer> risultatoQuery = this.getNumeroSaccheDB();
 
 		return Response
 				.status(Response.Status.OK)
@@ -166,7 +161,7 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 				.build();
 	}
 
-	
+
 	/*---------REPORT SACCHE INVIATE IN UN PERIODO------------
 	 /**Restituisce la lista dei DatiSacche relativi alle sacche che sono state affidate in un determinato arco temporale
 	 * @param dataInizio Data inizio dell' arco temporale
@@ -176,18 +171,18 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 	@GET
 	@Path("/reportLocaleSaccheInviate")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response reportLocaleSaccheInviate(@QueryParam("dataInizio")String dataInizio,
-											  @QueryParam("dataFine")String dataFine) throws DateTimeParseException{
+	public Response reportLocaleSaccheInviate(@QueryParam("dataInizio") String dataInizio,
+											  @QueryParam("dataFine") String dataFine) throws DateTimeParseException {
 		LocalDate dataInizioReport = LocalDate.parse(dataInizio, DateTimeFormatter.ofPattern(Constants.DATEFORMAT));
 		LocalDate dataAffidamentoReport = LocalDate.parse(dataFine, DateTimeFormatter.ofPattern(Constants.DATEFORMAT));
-		List <DatiSacca> risultatoQuery = getSaccheInviatePeriodoTemporale(dataInizioReport,dataAffidamentoReport);
+		List<DatiSacca> risultatoQuery = getSaccheInviatePeriodoTemporale(dataInizioReport, dataAffidamentoReport);
 		return Response
 				.status(Response.Status.OK)
 				.entity(risultatoQuery)
 				.build();
 	}
 
-	
+
 	/*---------REPORT SACCHE RICEVUTE IN UN PERIODO------------
 	 /**Restituisce la lista dei DatiSacche relativi alle sacche che sono state ricevute in un determinato arco temporale
 	 * @param dataInizio Data inizio dell' arco temporale
@@ -197,18 +192,18 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 	@GET
 	@Path("/reportLocaleSaccheRicevute")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response reportLocaleSaccheRicevute(@QueryParam("dataInizio")String dataInizio,
-											   @QueryParam("dataFine")String dataFine) throws DateTimeParseException{
+	public Response reportLocaleSaccheRicevute(@QueryParam("dataInizio") String dataInizio,
+											   @QueryParam("dataFine") String dataFine) throws DateTimeParseException {
 		LocalDate dataInizioReport = LocalDate.parse(dataInizio, DateTimeFormatter.ofPattern(Constants.DATEFORMAT));
 		LocalDate dataAffidamentoReport = LocalDate.parse(dataFine, DateTimeFormatter.ofPattern(Constants.DATEFORMAT));
-		List <DatiSacca> risultatoQuery = getSaccheRicevutePeriodoTemporale(dataInizioReport,dataAffidamentoReport);
+		List<DatiSacca> risultatoQuery = getSaccheRicevutePeriodoTemporale(dataInizioReport, dataAffidamentoReport);
 		return Response
 				.status(Response.Status.OK)
 				.entity(risultatoQuery)
 				.build();
 	}
 
-	
+
 	/*---------REPORT PERMANENZA MEDIA PER TIPO DI SANGUE------------
 	 /**Calcola quanto è il tempo medio di giacenza delle Sacche di sangue all'interno del magazzino
 	 * @return Response
@@ -216,9 +211,9 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 	@GET
 	@Path("/giacenzaMediaSacche")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response giacenzaMedia(){
+	public Response giacenzaMedia() {
 
-		Map<GruppoSanguigno,Double> risultatoQuery = this.giacenzaMediaMagazzino();
+		Map<GruppoSanguigno, Double> risultatoQuery = this.giacenzaMediaMagazzino();
 		return Response
 				.status(Response.Status.OK)
 				.entity(risultatoQuery)
@@ -226,9 +221,12 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 	}
 
 
-	/**Restituisce la lista di Dipendenti contenuti nel database dei Dipendenti 
+	/**
+	 * Restituisce la lista di Dipendenti contenuti nel database dei Dipendenti
+	 *
 	 * @return la lista di Dipendenti che lavorano al CTT
-	 * @throws EntityNotFoundException*/
+	 * @throws EntityNotFoundException
+	 */
 	@GET
 	@Path("/dipendenti")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -237,119 +235,119 @@ public class EndPointRestAmministratoreCTT implements EndPointAmministratoreCTT 
 		return dipendenti;
 	}
 
-	
-	/**Restituisce una mappa con il numero di Sacche contenute nel database per ogni gruppo sanguigno
+
+	/**
+	 * Restituisce una mappa con il numero di Sacche contenute nel database per ogni gruppo sanguigno
+	 *
 	 * @return mappa con key: gruppoSanguigno value: numero di sacche
 	 */
-	private Map<GruppoSanguigno,Integer> getNumeroSaccheDB(){
+	private Map<GruppoSanguigno, Integer> getNumeroSaccheDB() {
 
-		List<Sacca> listaSacche = md.getListaSacche();
-		int x;
-		Map<GruppoSanguigno,Integer> risultatoQuery = new HashMap<GruppoSanguigno,Integer>();
+		Map<GruppoSanguigno, Integer> risultatoQuery = new HashMap<GruppoSanguigno, Integer>();
 
-		for(GruppoSanguigno g : GruppoSanguigno.values())
-			risultatoQuery.put(g,0);
 
-		for(Sacca s : listaSacche) {
-			x = risultatoQuery.get(s.getGruppoSanguigno());
-			x++;
-			risultatoQuery.put(s.getGruppoSanguigno(), x);
-		}
+		Arrays.stream(GruppoSanguigno.values()).forEach(gs -> risultatoQuery.put(gs, 0));
+
+		md.getListaSacche()
+				.stream()
+				.forEach(sacca -> risultatoQuery.replace(
+						sacca.getGruppoSanguigno(),
+						risultatoQuery.get(sacca.getGruppoSanguigno()) + 1));
+
 		return risultatoQuery;
 	}
 
-	
-	/**Restituisce una lista di DatiSacca che sono state inviate tra dataInizioReport e dataFineReport
+
+	/**
+	 * Restituisce una lista di DatiSacca che sono state inviate tra dataInizioReport e dataFineReport
+	 *
 	 * @param dataInizioReport data dalla quale si selezionano le Sacche
-	 * @param dataFineReport data oltre la quale non si selezionano più le Sacche
-	 * @return lista di Sacche che sono state inviate dal CTT nel periodo selezionato*/
-	private List<DatiSacca> getSaccheInviatePeriodoTemporale(LocalDate dataInizioReport, LocalDate dataFineReport){
-		List<DatiSacca> datiSaccaTransitati = new ArrayList<>();
+	 * @param dataFineReport   data oltre la quale non si selezionano più le Sacche
+	 * @return lista di Sacche che sono state inviate dal CTT nel periodo selezionato
+	 */
+	private List<DatiSacca> getSaccheInviatePeriodoTemporale(LocalDate dataInizioReport, LocalDate dataFineReport) {
 
-		//creo la lista dei dati sacca
-		List<DatiSacca> listaDatiSacca = md.getListaDatiSacche();
-		for (DatiSacca datiSacca : listaDatiSacca)
-			if (datiSacca.getDataAffidamento().isPresent() &&
-					(datiSacca.getDataAffidamento().get().isAfter(dataInizioReport) || datiSacca.getDataAffidamento().get().isEqual(dataInizioReport))
-					&&
-					(datiSacca.getDataAffidamento().get().isBefore(dataFineReport) || datiSacca.getDataAffidamento().get().isEqual(dataFineReport)))
+		return md.getListaDatiSacche()
+				.stream()
+				.filter(datiSacca -> datiSacca.getDataAffidamento().isPresent()
+						&& (datiSacca.getDataAffidamento().get().isAfter(dataInizioReport)
+						|| datiSacca.getDataAffidamento().get().isEqual(dataInizioReport))
+						&& (datiSacca.getDataAffidamento().get().isBefore(dataFineReport)
+						|| datiSacca.getDataAffidamento().get().isEqual(dataFineReport)))
+				.collect(Collectors.toList());
 
-				//se la sacca è stata inviata in un periodo compreso tra dataInizioReport e dataFineReport viene aggiunta alla lista
-				datiSaccaTransitati.add(datiSacca);
-
-		return datiSaccaTransitati;
 	}
 
-	
-	/**Restituisce una lista di DatiSacca che sono state ricevute tra dataInizioReport e dataFineReport
+
+	/**
+	 * Restituisce una lista di DatiSacca che sono state ricevute tra dataInizioReport e dataFineReport
+	 *
 	 * @param dataInizioReport data dalla quale si selezionano le Sacche
-	 * @param dataFineReport data oltre la quale non si selezionano più le Sacche
-	 * @return lista di Sacche che sono state ricevute dal CTT nel periodo selezionato*/
-	private List<DatiSacca> getSaccheRicevutePeriodoTemporale(LocalDate dataInizioReport, LocalDate dataFineReport){
-		List<DatiSacca> datiSaccaTransitati = new ArrayList<>();
+	 * @param dataFineReport   data oltre la quale non si selezionano più le Sacche
+	 * @return lista di Sacche che sono state ricevute dal CTT nel periodo selezionato
+	 */
+	private List<DatiSacca> getSaccheRicevutePeriodoTemporale(LocalDate dataInizioReport, LocalDate dataFineReport) {
 
-		//creo la lista dei dati sacca
-		List<DatiSacca> listaDatiSacca = md.getListaDatiSacche();
-		for (DatiSacca datiSacca : listaDatiSacca)
-			if ((datiSacca.getDataArrivo().isAfter(dataInizioReport) || datiSacca.getDataArrivo().isEqual(dataInizioReport))
-					&&
-					(datiSacca.getDataArrivo().isBefore(dataFineReport) || datiSacca.getDataArrivo().isEqual(dataFineReport)))
+		return md.getListaDatiSacche()
+				.stream()
+				.filter(datiSacca -> (datiSacca.getDataArrivo().isAfter(dataInizioReport)
+						|| datiSacca.getDataArrivo().isEqual(dataInizioReport))
+						&& (datiSacca.getDataArrivo().isBefore(dataFineReport)
+						|| datiSacca.getDataArrivo().isEqual(dataFineReport)))
+				.collect(Collectors.toList());
 
-				//se la sacca è stata inviata in un periodo compreso tra dataInizioReport e dataFineReport viene aggiunta alla lista
-				datiSaccaTransitati.add(datiSacca);
-
-		return datiSaccaTransitati;
 	}
 
-	
-	/**Restituisce la permanenza media delle sacche in magazzino per ogni tipo
+
+	/**
+	 * Restituisce la permanenza media delle sacche in magazzino per ogni tipo
+	 *
 	 * @return mappa con key: gruppoSanguigno e value: permanenza media per quel gruppo sanguigno
 	 */
-	private Map<GruppoSanguigno,Double> giacenzaMediaMagazzino(){
-		Double days;
-		int x;
-		Double y;
+	private Map<GruppoSanguigno, Double> giacenzaMediaMagazzino() {
 
 		//Mappa in cui salvo il numero di sacche trovate per tipo
-		Map<GruppoSanguigno,Integer> saccheTrovate = new HashMap<GruppoSanguigno,Integer>();
+		Map<GruppoSanguigno, Integer> saccheTrovate = new HashMap<GruppoSanguigno, Integer>();
 
 		//Mappa in cui salvo la somma delle permanenze delle sacche trovate per tipo
-		Map<GruppoSanguigno,Double> risultatoQuery = new HashMap<GruppoSanguigno,Double>();
+		Map<GruppoSanguigno, Double> risultatoQuery = new HashMap<GruppoSanguigno, Double>();
 
-		for(GruppoSanguigno g : GruppoSanguigno.values()) {
-			risultatoQuery.put(g, 0.0);
-			saccheTrovate.put(g, 0);
-		}
+		Arrays.stream(GruppoSanguigno.values()).forEach(gs -> {
+					risultatoQuery.put(gs, 0.0);
+					saccheTrovate.put(gs, 0);
+				}
+		);
 
-		List<DatiSacca> listaDatiSacca = md.getListaDatiSacche();
+		List<DatiSacca> datiSacca = md.getListaDatiSacche();
 
-		for (DatiSacca datiSacca : listaDatiSacca)
-			//se la sacca è stata affidata (la query non vale per sacche non affidate)
-			if (datiSacca.getDataAffidamento().isPresent()) {
+		datiSacca
+				.stream()
+				.filter(ds -> ds.getDataAffidamento().isPresent())
+				.forEach(ds -> {
 
-				//calcolo quanto tempo è stata in magazzino
-				days = (double) ChronoUnit.DAYS.between(datiSacca.getDataArrivo(), datiSacca.getDataAffidamento().get());
+					//incremento il numero di sacche trovate di un determinato tipo
+					saccheTrovate.put(
+							ds.getGruppoSanguigno(),
+							saccheTrovate.get(ds.getGruppoSanguigno()) + 1);
 
-				//incremento il numero di sacche trovate di quel gruppo
-				x = saccheTrovate.get(datiSacca.getGruppoSanguigno());
-				x++;
-				saccheTrovate.put(datiSacca.getGruppoSanguigno(), x);
+					//incremento i giorni di permanenza per quel tipo
+					risultatoQuery.put(
+							ds.getGruppoSanguigno(),
+							risultatoQuery.get(ds.getGruppoSanguigno())
+									+ (double) ChronoUnit.DAYS.between(ds.getDataArrivo(), ds.getDataAffidamento().get()));
+				});
 
-				//incremento i giorni di permanenza per quel tipo
-				y = risultatoQuery.get(datiSacca.getGruppoSanguigno());
-				y += days;
-				risultatoQuery.put(datiSacca.getGruppoSanguigno(), y);
-			}
+		risultatoQuery.keySet()
+				.stream()
+				.filter(gs -> saccheTrovate.get(gs) != 0)
+				.forEach(gs -> risultatoQuery.replace(
+						gs,
+						risultatoQuery.get(gs) / saccheTrovate.get(gs)
+				));
 
-		//scorro la mappa e divido il contenuto per il numero di sacche per tipo, in modo da trovare la permanenza media
-		for(GruppoSanguigno gs : risultatoQuery.keySet()) {
-			if(saccheTrovate.get(gs) != 0) {
-				y = risultatoQuery.get(gs);
-				y = y / (saccheTrovate.get(gs));
-				risultatoQuery.put(gs, y);
-			}
-		}
+
 		return risultatoQuery;
+
 	}
 
-}	
+}

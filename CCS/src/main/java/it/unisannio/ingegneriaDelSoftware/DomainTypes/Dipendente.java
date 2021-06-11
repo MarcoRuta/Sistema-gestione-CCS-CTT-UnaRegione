@@ -37,7 +37,7 @@ public class Dipendente {
 		if (!dataDiNascita.isBefore(LocalDate.now())) throw new IllegalArgumentException("La data di nascita non può essere successiva o coincidente a quella odierna");
 		if (!dataDiNascita.isBefore(LocalDate.now().minusYears(18))) throw new IllegalArgumentException(" il Dipendente deve avere almeno 18 anni");
 		if(dataDiNascita.isBefore(LocalDate.now().minusYears(80))) throw  new IllegalArgumentException("Dipendente troppo anziano, inserisci una data di nascita valida");
-		if(!password.matches("((?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,20})"))
+		if(!password.matches("((?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,})"))
 			throw new IllegalArgumentException("La password deve contenere almeno un numero, una lettera minuscola e una lettera Maiuscola, inoltre deve essere di 8 caratteri");
 
 		this.cdf = cdf;
@@ -103,7 +103,7 @@ public class Dipendente {
 	 */
 	public void setPassword(String password) {
 		assert password!= null: "La password del dipendente non può essere null";
-		if(!password.matches("((?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,20})"))
+		if(!password.matches("((?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,})"))
 			throw new IllegalArgumentException("La password deve contenere almeno un numero, deve essere di 8 caratteri, ed avere almeno una lettera grande");		
 		this.password = password;
 	}

@@ -77,10 +77,8 @@
         var ruolo = sessionStorage.getItem("ruolo");
         var name = sessionStorage.getItem("nome");
         var surname = sessionStorage.getItem("cognome");
-        
         var data;
         var str;
-        var urlPdf;
         var host;
         
         
@@ -139,9 +137,8 @@
                   
                     xhttp.onreadystatechange = function() {
                         if (this.readyState == 4 && this.status == 201) {
-                            alert(this.response);
-                            urlPdf = host + xhttp.getResponseHeader("Content-Location");
-                            creaPdf();
+                            var blobSrc = window.URL.createObjectURL(new Blob([this.response], { type: 'application/pdf'}));
+                            window.open(blobSrc);
                         } else if(this.readyState == 4 && this.status != 201) {
                                alert(this.response);
                         }
@@ -157,6 +154,7 @@
                     xhttp.setRequestHeader('Authorization', 'Basic '+token);
                     xhttp.setRequestHeader('Content-type', 'application/json');
                     xhttp.withCredentials = true;
+                    xhttp.responseType = 'arraybuffer';
                     xhttp.send(x.value);
     
                 };
@@ -164,25 +162,7 @@
                 document.getElementById("divNot").appendChild(btn);
               }
           }
-        
-        /*####### CREA PDF FUNCTION ######*/
-          function creaPdf() {
-                  var xhr = new XMLHttpRequest();
-                  xhr.open("GET", urlPdf, true);
-                  xhr.setRequestHeader('Authorization', 'Basic '+token);
-                  xhr.withCredentials = true;
-                  xhr.responseType = 'arraybuffer';
-                  xhr.send();
-    
-                  xhr.onreadystatechange = function() {
-                    if (xhr.readyState == 4){
-                        var blobSrc = window.URL.createObjectURL(new Blob([this.response], { type: 'application/pdf'}));
-                        window.open(blobSrc);
-                    }
-                  };
-          }
-          /*#############################*/
-    
+
           /*#############################*/
            
           /*####### LOGOUT FUNCTION ######*/

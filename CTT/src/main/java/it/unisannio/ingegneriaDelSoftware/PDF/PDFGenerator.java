@@ -57,7 +57,6 @@ public class PDFGenerator {
      * @param enteRichiedente Ente che richiede le sacche
      * @param indirizzoEnte Indirizzo dell'ente che richiede le sacche
      * @param dataAffidamento Data in cui le sacche sono arrivate in magazzino
-     * @param gruppoSanguigno Gruppo sanguigno delle sacche
      * @throws DocumentException
      * @throws IOException
      */
@@ -66,8 +65,7 @@ public class PDFGenerator {
                                           List<Seriale> seriali,
                                           String enteRichiedente,
                                           String indirizzoEnte,
-                                          String dataAffidamento,
-                                          String gruppoSanguigno) throws DocumentException, IOException {
+                                          String dataAffidamento) throws DocumentException, IOException {
         Document document = new Document();
         PdfWriter.getInstance(document, output);
         document.open();

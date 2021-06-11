@@ -53,7 +53,7 @@ public class EndPointRestSaccheInScadenza implements EndPointSaccheInScadenzaCCS
 
 		//Recupero l'indirizzo del CTT che possiede la sacca in scadenza
 		String nomeCTT = seriale.substring(0,6);
-		String indirizzoCTT = Settings.ip.get(CTTName.getCttName(nomeCTT));
+		String indirizzoCTT = Settings.ip.get(mm.getCTT(CTTName.getCttName(nomeCTT)));
 		CcsDataBaseRestApplication.logger.info("Ecco IP del CTT che possiede la sacca: "+ indirizzoCTT);
 
 		//Elimino la sacca dal database SACCHE_IN_SCADENZA del CCS

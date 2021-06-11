@@ -13,6 +13,7 @@ import it.unisannio.ingegneriaDelSoftware.DataManagers.Codec.SaccaCodec;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Util.*;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
 import java.util.ArrayList;
@@ -49,7 +50,15 @@ public class MongoDataManager {
 	    MongoDatabase database = mongoClient.getDatabase(Settings.DB_NAME);
 	    database.drop();
 	}
-	
+
+	/**
+	 * Metodo che droppa la collezione delle sacche in scadenza, utilizzato per evitare inconsistenze quando il CCS viene riavviato
+	 */
+	public void dropSaccheInScadenza(){
+		MongoCollection<Sacca> sacche = getCollectionSacca();
+		sacche.drop();
+	}
+
 	/**
 	 * Restituisce una MongoCollection<SaccaBean> registrando il codec di base di Mongo per la serializzazione in BSON
 	 * @return MongoCollection<SaccaBean>
@@ -158,7 +167,8 @@ public class MongoDataManager {
 	public Dipendente getDipendente(String username, String password) throws EntityNotFoundException{
 	   MongoCollection<Dipendente> collection = getCollectionDipendente();
 	
-	   Dipendente unDipendente = collection.find(and(eq(Constants.ELEMENT_USERNAME, username),eq(Constants.ELEMENT_PASSWORD,password))).first();
+	   Dipendente unDipendente = collection.find(and(eq(Constants.ELEMENT_USERNAME, username),
+			   eq(Constants.ELEMENT_PASSWORD, DigestUtils.sha256Hex(password)+"CryptoCTT"))).first();
 	   if(unDipendente != null) return unDipendente;
 	   throw new EntityNotFoundException("Impossibile trovare il dipendente. Username o Password errati");
 	}
@@ -283,7 +293,7 @@ public class MongoDataManager {
 	   if (!containsDipendente(cdf)) throw new EntityNotFoundException( "Non puoi cambiare la password di un utente non presente nel DB. Codice Fiscale del dipendente: "+cdf.getCodiceFiscale());
 	   Dipendente unDipendente = getDipendente(cdf);
 	   unDipendente.setPassword(password);
-	   getCollectionDipendente().replaceOne(eq(Constants.ELEMENT_CDF),unDipendente);
+	   getCollectionDipendente().replaceOne(eq(Constants.ELEMENT_CDF,cdf.getCodiceFiscale()), unDipendente);
 	}
 
 	/**
@@ -297,4 +307,6 @@ public class MongoDataManager {
 				this.removeSacca(s.getSeriale());
 			}
 	}
+
+
 }

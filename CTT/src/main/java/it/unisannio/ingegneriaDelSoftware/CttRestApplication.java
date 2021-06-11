@@ -1,5 +1,6 @@
 package it.unisannio.ingegneriaDelSoftware;
 
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.*;
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointRestAmministratoreCTT;
 import it.unisannio.ingegneriaDelSoftware.EndPointRest.EndPointRestNotificheMagazziniere;
@@ -24,6 +25,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+
 import javax.ws.rs.ApplicationPath;
 
 
@@ -35,6 +37,7 @@ public class CttRestApplication extends ResourceConfig {
 	public static Logger logger = LoggerFactory.getLogger(CttRestApplication.class);
 
 	public CttRestApplication() throws Exception {
+
 
 		//Filtro per autorizzazione
 		register(FiltroDiAutorizzazione.class);

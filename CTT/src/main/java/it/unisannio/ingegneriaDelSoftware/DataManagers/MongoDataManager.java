@@ -11,12 +11,13 @@ import it.unisannio.ingegneriaDelSoftware.DataManagers.Codec.SaccaCodec;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.*;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.DataManager;
 import it.unisannio.ingegneriaDelSoftware.Util.*;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
 import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
@@ -27,6 +28,7 @@ public class MongoDataManager implements DataManager {
     /**The mongoClient instance represents a pool of connections to the database;you will
      * only need one instance of class MongoClient even with multiple threads*/
     private  MongoClient mongoClient;
+
 
     /**Singleton instance*/
     private static MongoDataManager instance = new MongoDataManager();
@@ -98,7 +100,7 @@ public class MongoDataManager implements DataManager {
         collection.insertOne(s);
     }
 
-    /**Aggiunge un Dipendente al database dei Dipendenti solo se esso non è gia presente nel DB dei Dipendenti
+    /**Aggiunge un Dipendente al database dei Dipendenti solo se esso non è gia presente nel DB dei Dipendenti, criptando la password
      * @param d Dipendente da aggiungere al db
      * @throws EntityAlreadyExistsException se l'entità è gia presente nel DB
      */
@@ -162,10 +164,11 @@ public class MongoDataManager implements DataManager {
     public Dipendente getDipendente(String username, String password) throws EntityNotFoundException{
         MongoCollection<Dipendente> collection = getCollectionDipendente();
 
-       Dipendente unDipendente = collection.find(and(eq(Constants.ELEMENT_USERNAME, username),
-               eq(Constants.ELEMENT_PASSWORD,password))).first();
-       if(unDipendente != null)
-           return unDipendente;
+        Dipendente unDipendente = collection.find(and(eq(Constants.ELEMENT_USERNAME,username),
+                eq(Constants.ELEMENT_PASSWORD, DigestUtils.sha256Hex(password)+"CryptoCTT"))).first();
+        if(unDipendente != null)
+            return unDipendente;
+
         throw new EntityNotFoundException("Impossibile trovare il dipendente. Username o Password errati");
     }
 

@@ -2,6 +2,7 @@ package it.unisannio.ingegneriaDelSoftware.DataManagers.Codec;
 
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.*;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.bson.BsonReader;
 import org.bson.BsonWriter;
 import org.bson.codecs.Codec;
@@ -42,7 +43,8 @@ public class DipendenteCodec implements Codec<Dipendente> {
         writer.writeString(Constants.ELEMENT_DATADINASCITA,DateTimeFormatter.ISO_LOCAL_DATE.format(value.getDataDiNascita()));
         writer.writeString(Constants.ELEMENT_RUOLO, value.getRuolo().toString());
         writer.writeString(Constants.ELEMENT_USERNAME, value.getUsername());
-        writer.writeString(Constants.ELEMENT_PASSWORD,value.getPassword());
+        //Viene inserita la password criptata con funzione di hashing SHA-256 dell'utility class DigestUtils
+        writer.writeString(Constants.ELEMENT_PASSWORD, DigestUtils.sha256Hex(value.getPassword())+"CryptoCTT");
         writer.writeEndDocument();
     }
 

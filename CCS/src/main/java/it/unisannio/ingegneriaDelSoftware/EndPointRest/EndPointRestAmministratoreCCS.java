@@ -23,6 +23,7 @@ import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 import it.unisannio.ingegneriaDelSoftware.Util.Settings;
 import java.time.LocalDate;
 import java.time.format.*;
+import java.util.stream.Collectors;
 import java.util.zip.DataFormatException;
 
 @Path("/CCS")
@@ -106,14 +107,13 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 	 */
 	@POST
 	@Path("/aggiuntaAmministratore")
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces("application/pdf")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public Response addAmministratore(@FormParam("cdf")String cdf,
 								  @FormParam("nome")String nome,
 								  @FormParam("cognome")String cognome,
 								  @FormParam("dataDiNascita")String dataDiNascita,
-								  @FormParam("username")String username,
-								  @Context UriInfo uriInfo) throws DateTimeParseException, IllegalArgumentException, AssertionError, EntityAlreadyExistsException {
+								  @FormParam("username")String username) throws DateTimeParseException, IllegalArgumentException, AssertionError, EntityAlreadyExistsException {
 
 		CcsDataBaseRestApplication.logger.info("Si è richiesta l'aggiunta di un' Amministratore");
 		String password = IDGenerator.getID();
@@ -122,43 +122,34 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 				RuoloDipendente.AmministratoreCCS, username, password);
 		mm.createDipendente(d);
 		CcsDataBaseRestApplication.logger.info("L'amministratore "+d.getCdf().getCodiceFiscale()+" è stato aggiunto correttamente al DataBase");
+
 		return Response
 				.status(Response.Status.CREATED)
-				.entity("Dipendente aggiunto correttamente")
-				.header(HttpHeaders.CONTENT_LOCATION,uriInfo.getAbsolutePath().getPath()+"/pdf/"+d.getCdf().getCodiceFiscale())
+				.entity(getPDF(cdf, username, password))
 				.build();
 	}
-	
-	/**Recupera un pdf con cdf, username e password di un Dipendente
+
+	/**Metodo tramite il quale è possibile recuperare un pdf con cdf, username e password di un dipendente
 	 * @param cdf il cdf del Dipendente di cui si vogliono recuperare i dati
-	 * @return StreamingOutput Lo streaming di output del PDF
-	 * @throws WebApplicationException
+	 * @param username l'username del Dipendente
+	 * @param password la password del Dipendente
+	 * @return StreamingOutput StreamingOutput da dove verrà aperto il pdf generato
 	 */
-	@GET
-	@Path("aggiuntaAmministratore/pdf/{cdf}")
-	@Produces("application/pdf")
-	@Consumes(MediaType.TEXT_PLAIN)
-	public StreamingOutput getPDF(@PathParam("cdf")String cdf){
-		CcsDataBaseRestApplication.logger.info("Sono stati richiesti i dati Del Dipendente: "+cdf);
+	private StreamingOutput getPDF(String cdf, String username, String password) {
 		return new StreamingOutput() {
-			public void write(OutputStream output){
+			public void write(OutputStream output) {
 				try {
-					Dipendente dip = mm.getDipendente(Cdf.getCDF(cdf));
-					PDFGenerator.makeDocumentDipendente(output, cdf,dip.getUsername(),dip.getPassword());
-				} catch (DocumentException | IOException e) {
+					PDFGenerator.makeDocumentDipendente(output, cdf, username, password);
+				}catch (DocumentException | IOException e) {
 					throw new WebApplicationException(Response
 							.status(Response.Status.INTERNAL_SERVER_ERROR)
-							.entity("Impossibile creare il dipendente")
-							.build());
-				} catch (EntityNotFoundException e) {
-					throw new WebApplicationException(Response
-							.status(Response.Status.NOT_FOUND)
-							.entity("Impossibile creare il dipendente")
+							.entity("Impossibile creare l'amministratore")
 							.build());
 				}
 			}
 		};
 	}
+
 
 	/**Rimuove un Dipendente dal DataBase
 	 * @param header Il token di autentificazione
@@ -216,12 +207,11 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 		Map<CTTName, String> cttOnline = ConnectionVerifier.isCTTOnline();
 		Map<CTTName, List<Dipendente>> risultatoQuery = new HashMap<>();
 
-		for (CTTName ctt : cttOnline.keySet()) {
-			CcsDataBaseRestApplication.logger.info("Sto interrogando il " + ctt + " per ricevere la lista degli " + ruolo);
-			risultatoQuery.put(ctt,
-					CCSRestClient.makeReportDipendenti(cttOnline.get(ctt), ruolo)
-			);
-		}
+		cttOnline.keySet()
+				.stream()
+				.forEach(cttName -> risultatoQuery.put(
+						cttName,
+						CCSRestClient.makeReportDipendenti(cttOnline.get(cttName),ruolo)));
 
 		return Response
 				.status(Response.Status.OK)
@@ -234,40 +224,34 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 	  * @param headers Il token di autentificazione
 	  * @return Response
 	 */
-	@GET
-	@Path("/reportStatisticoSaccheCCS")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response reportStatisticoSaccheRegionale(@HeaderParam(HttpHeaders.AUTHORIZATION) String headers){
+	 @GET
+	 @Path("/reportStatisticoSaccheCCS")
+	 @Produces(MediaType.APPLICATION_JSON)
+	 public Response reportStatisticoSaccheRegionale(@HeaderParam(HttpHeaders.AUTHORIZATION) String headers){
 
-		CcsDataBaseRestApplication.logger.info("Sto inizializzando il report di disponibilità regionale sacche");
+		 CcsDataBaseRestApplication.logger.info("Sto inizializzando il report di disponibilità regionale sacche");
 
-		Map<CTTName, String> cttOnline = ConnectionVerifier.isCTTOnline();
-		Map<GruppoSanguigno, Integer> risultatoQuery = new HashMap<GruppoSanguigno, Integer>();
+		 Map<CTTName, String> cttOnline = ConnectionVerifier.isCTTOnline();
+		 Map<GruppoSanguigno, Integer> risultatoQuery = new HashMap<GruppoSanguigno, Integer>();
 
-		for(GruppoSanguigno g: GruppoSanguigno.values())
-			risultatoQuery.put(g,0);
 
-		for(CTTName ctt : cttOnline.keySet()){
-			CcsDataBaseRestApplication.logger.info("Sto interrogando il " + ctt + " per ricevere la lista delle sacche disponibili");
-			Map<GruppoSanguigno, Integer> temp = CCSRestClient.makeReportDisponibilitàSacche(cttOnline.get(ctt));
+		 //inizializzo a zero i risultati
+		 Arrays.stream(GruppoSanguigno.values()).forEach( gs -> risultatoQuery.put(gs,0));
 
-				for(GruppoSanguigno g : GruppoSanguigno.values()) {
+		 for(CTTName ctt : cttOnline.keySet()){
+		 	System.err.println((ctt));
+			 Map<GruppoSanguigno, Integer> temp = CCSRestClient.makeReportDisponibilitàSacche(cttOnline.get(ctt));
+			 Arrays.stream(GruppoSanguigno.values())
+					 .forEach(  gs -> risultatoQuery.put(gs, temp.get(gs.toString())+risultatoQuery.get(gs) ));
+			 System.err.println((risultatoQuery));
+		 }
 
-					int x = temp.get(g.toString());
-					x += risultatoQuery.get(g);
+		 return Response
+				 .status(Response.Status.OK)
+				 .entity(risultatoQuery)
+				 .build();
 
-					risultatoQuery.put(g, x);
-
-				}
-
-		}
-
-		return Response
-				.status(Response.Status.OK)
-				.entity(risultatoQuery)
-				.build();
-
-	}
+	 }
 
 	//--------------------REPORT SACCHE INVIATE RETE REGIONALE--------------------
 	/**Restituisce la lista dei DatiSacche relativi alle sacche che sono state affidate in un determinato arco temporale
@@ -283,14 +267,13 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 										 @QueryParam("dataFine")String dataFine) throws DataFormatException {
 
 		CcsDataBaseRestApplication.logger.info("Sto inizializzando il report delle sacche inviate dalla rete tra il "+dataInizio+"e il "+dataFine);
-		Map<CTTName, String> cttOnline = ConnectionVerifier.isCTTOnline();
 		List<DatiSacca> risultatoQuery = new ArrayList<>();
 
-		for (CTTName ctt : cttOnline.keySet()) {
-			CcsDataBaseRestApplication.logger.info("Sto interrogando il " + ctt + " per ricevere la lista delle sacche inviate dalla rete tra il "+dataInizio+"e il "+dataFine);
-			List<DatiSacca> saccheCtt = CCSRestClient.makeReportSaccheInviate(cttOnline.get(ctt), dataInizio, dataFine);
-			risultatoQuery.addAll(saccheCtt);
-		}
+		ConnectionVerifier.isCTTOnline()
+				.values()
+				.stream()
+				.forEach( ip-> risultatoQuery.addAll(CCSRestClient.makeReportSaccheInviate(ip, dataInizio, dataFine)));
+
 
 		return Response
 				.status(Response.Status.OK)
@@ -312,14 +295,12 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 										@QueryParam("dataFine")String dataFine) throws DataFormatException{
 
 		CcsDataBaseRestApplication.logger.info("Sto inizializzando il report delle sacche ricevute in rete tra il "+dataInizio+"e il "+dataFine);
-		Map<CTTName, String> cttOnline = ConnectionVerifier.isCTTOnline();
 		List<DatiSacca> risultatoQuery = new ArrayList<>();
 
-		for (CTTName ctt : cttOnline.keySet()) {
-			CcsDataBaseRestApplication.logger.info("Sto interrogando il " + ctt + " per ricevere la lista delle sacche ricevute dalla rete tra il "+dataInizio+"e il "+dataFine);
-			List<DatiSacca> saccheCtt = CCSRestClient.makeReportSaccheRicevute(cttOnline.get(ctt), dataInizio, dataFine);
-			risultatoQuery.addAll(saccheCtt);
-		}
+		ConnectionVerifier.isCTTOnline()
+				.values()
+				.stream()
+				.forEach( ip-> risultatoQuery.addAll(CCSRestClient.makeReportSaccheRicevute(ip, dataInizio, dataFine)));
 
 		return Response
 				.status(Response.Status.OK)
@@ -338,27 +319,24 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 	public Response giacenzaMediaSaccheRegionale(@HeaderParam(HttpHeaders.AUTHORIZATION) String headers){
 
 		CcsDataBaseRestApplication.logger.info("Sto inizializzando il report di permanenza regionale sacche");
-
 		Map<CTTName, String> cttOnline = ConnectionVerifier.isCTTOnline();
-		Map<GruppoSanguigno, Double> risultatoQuery = new HashMap<GruppoSanguigno, Double>();
+		Map<GruppoSanguigno, Double> risultatoQuery = new HashMap<>();
 
-		for(GruppoSanguigno g: GruppoSanguigno.values())
-			risultatoQuery.put(g,0.0);
+		//inizializzo a zero i risultati
+		Arrays.stream(GruppoSanguigno.values()).forEach( gs -> risultatoQuery.put(gs,0.0));
 
 		for(CTTName ctt : cttOnline.keySet()){
-			CcsDataBaseRestApplication.logger.info("Sto interrogando il " + ctt + " per ricevere la permanenza delle sacche");
 			Map<GruppoSanguigno, Double> temp = CCSRestClient.makeReportGiacenzaMediaSacche(cttOnline.get(ctt));
-
-			for(GruppoSanguigno g : GruppoSanguigno.values()) {
-
-				double x = temp.get(g.toString());
-				x += risultatoQuery.get(g);
-
-				risultatoQuery.put(g, x);
-
-			}
-
+			Arrays.stream(GruppoSanguigno.values())
+					.forEach(  gs -> risultatoQuery.put(gs, temp.get(gs.toString())+risultatoQuery.get(gs) ));
 		}
+
+		risultatoQuery.keySet()
+				.stream()
+				.forEach(gs -> risultatoQuery.replace(
+						gs,
+						(risultatoQuery.get(gs)/cttOnline.size())));
+
 
 		return Response
 				.status(Response.Status.OK)
@@ -377,17 +355,13 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response statusReteCtt(@HeaderParam(HttpHeaders.AUTHORIZATION) String headers) throws EntityNotFoundException {
 
-		Map<String,Boolean> statusRete = new HashMap<>();
-
-		for(CTTName ctt : Settings.ip.keySet()) {
-			CTT aCTT = MongoDataManager.getInstance().getCTT(ctt);
-			String cttInfo = aCTT.getDenominazione().getCttname()+" - "+aCTT.getPosizione().getCitta()+" - "+aCTT.getPosizione().getProvincia();
-
-			if(ConnectionVerifier.isCTTOnline().keySet().contains(ctt))
-				statusRete.put(cttInfo, true);
-
-			else statusRete.put(cttInfo, false);
-		}
+		Map<String,Boolean> statusRete = Settings.ip.keySet()
+				.stream()
+				.collect(Collectors.toMap(
+						(CTT ctt) -> ctt.getDenominazione().getCttname()
+								+" - "+ctt.getPosizione().getCitta()
+								+" - "+ctt.getPosizione().getProvincia(),
+						(CTT ctt) -> ConnectionVerifier.isCTTOnline().keySet().contains(ctt.getDenominazione())));
 
 		return Response
 				.status(Response.Status.OK)

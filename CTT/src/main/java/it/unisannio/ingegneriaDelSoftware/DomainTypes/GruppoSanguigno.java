@@ -47,15 +47,19 @@ public enum GruppoSanguigno {
 	};
 	
 
-	public static Iterator<GruppoSanguigno> puoDonareA(GruppoSanguigno gs) {
+	public static List<GruppoSanguigno> puoDonareA(GruppoSanguigno gs) {
 		assert gs !=null;
-		return puoDonareA.get(gs).iterator();
+		List<GruppoSanguigno> gruppi = new ArrayList<>();
+		gruppi.addAll(puoDonareA.get(gs));
+		return gruppi;
 	}
 	
 	
-	public static Iterator<GruppoSanguigno> puoRicevereDa(GruppoSanguigno gs) {
+	public static List<GruppoSanguigno> puoRicevereDa(GruppoSanguigno gs) {
 		assert gs !=null;
-		return puoRicevereDa.get(gs).iterator();
+		List<GruppoSanguigno> gruppi = new ArrayList<>();
+		gruppi.addAll(puoRicevereDa.get(gs));
+		return gruppi;
 	}
 		
 }

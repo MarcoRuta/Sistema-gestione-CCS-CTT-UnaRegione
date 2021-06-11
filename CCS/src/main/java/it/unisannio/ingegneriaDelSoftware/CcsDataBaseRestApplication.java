@@ -49,6 +49,7 @@ public class CcsDataBaseRestApplication extends ResourceConfig {
 	}
 
 	public static void main(String[] args) {
+		MongoDataManager.getInstance().dropSaccheInScadenza();
 		SpringApplication.run(CcsDataBaseRestApplication.class, args);
 	}
 }

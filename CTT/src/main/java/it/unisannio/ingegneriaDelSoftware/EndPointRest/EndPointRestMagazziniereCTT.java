@@ -12,6 +12,7 @@ import it.unisannio.ingegneriaDelSoftware.Functional.IDGenerator;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointMagazziniereCTT;
 import it.unisannio.ingegneriaDelSoftware.PDF.PDFGenerator;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
+import org.apache.tomcat.jni.Local;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Singleton;
@@ -31,10 +32,11 @@ public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 
 	/**Riferimento all'unica istanza del MongoDataManager*/
 	private MongoDataManager md = MongoDataManager.getInstance();
-	
+
 	/** Lista delle evasioni giornaliere */
-	private Map<String,List<Seriale>> evasioni = new HashMap<>();
-	
+	//private Map<String,List<Seriale>> evasioni = new HashMap<>();
+
+
 
 	/**Metodo con il quale il Magazziniere aggiunge una Sacca al DataBase
 	 * @param gruppo_sanguigno Gruppo sanguigno della Sacca
@@ -83,16 +85,15 @@ public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 
 
 	/**Metodo attivato dal magazziniere quando riceve una notifica evasione Sacca esso aggiorna i datiSacca e rimuove la Sacca dal DB attivo
-	 * @param uriInfo info dell'uri relativo alla risorsa richiesta
+	 * @param notificaEvasione la notifica evasione relativa all'ordine da evadere
 	 * @return Response
 	 * @throws EntityNotFoundException se la sacca da evadere non è presente nel DB
 	 */
 	@POST
 	@Path("/evasione")
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces("application/pdf")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response evasioneSacca(NotificaEvasione notificaEvasione,
-								  @Context UriInfo uriInfo) throws EntityNotFoundException {
+	public Response evasioneSacca(NotificaEvasione notificaEvasione) throws EntityNotFoundException {
 
 		CttRestApplication.logger.info("Il terminale del magazzinere ha ricevuto una notifica di evasione: "+notificaEvasione);
 
@@ -107,53 +108,35 @@ public class EndPointRestMagazziniereCTT implements EndPointMagazziniereCTT {
 			md.removeSacca(unaSacca.getSeriale());
 		}
 
-		//registro l'evasione
-		String id_evasione = IDGenerator.getID();
-		this.evasioni.put(id_evasione,notificaEvasione.getListaSeriali());
 		//aggiorno la lista delle evasioni rimuovendo quella appena evasa
 		new EndPointRestNotificheMagazziniere().removeNotificaEvasione(notificaEvasione);
 
 		return Response
 				.status(Response.Status.CREATED)
-				.entity("Sacche evase correttamente")
-				.header(HttpHeaders.CONTENT_LOCATION,
-						uriInfo.getAbsolutePath().getPath()+"/pdf/"+id_evasione)
+				.entity(getPDF(notificaEvasione.getListaSeriali(), notificaEvasione.getEnteRichiedente(), notificaEvasione.getIndirizzoEnte(), LocalDate.now()))
 				.build();
 	}
 
 	
 	/**Ottiene i dati di una evasione sotto forma di PDF
-	 * @param id_evasione id dell'evasione cercata
+	 * @param seriali la lista dei seriali da evadere
+	 * @param ente l'ente richiedente
+	 * @param indirizzo l'indirizzo dell'ente richiedente
+	 * @param dataAffidamento data in cui viene evasa la sacca dal magazzino
 	 * @return StreamingOutput StreamingOutput da dove verrà aperto il pdf generato
 	 * */
-	@GET
-	@Path("/evasione/pdf/{id_evasione}")
-	@Produces("application/pdf")
-	@Consumes(MediaType.TEXT_PLAIN)
-	public StreamingOutput getPDF(@PathParam("id_evasione")String id_evasione) {
+	private StreamingOutput getPDF( List<Seriale> seriali, String ente, String indirizzo, LocalDate dataAffidamento) {
 		return new StreamingOutput(){
 			public void write(OutputStream output){
 				try {
-					if(!evasioni.containsKey(id_evasione))
-						throw new WebApplicationException(
-										Response
-										.status(Response.Status.NOT_FOUND)
-										.entity("Evasione non trovata")
-										.build());
 
-					List<Seriale> seriali = evasioni.get(id_evasione);
 					int numeroSacche = seriali.size();
-					Seriale unSeriale = seriali.get(0);
-					DatiSacca unSacca = MongoDataManager.getInstance().getDatiSacca(unSeriale);
-					String indirizzo =unSacca.getIndirizzoEnte();
-					String dataAffidamento = unSacca.getDataAffidamento().get().toString();
-					String gruppoSanguigno = unSacca.getGruppoSanguigno().toString();
-					String ente = unSacca.getEnteRichiedente();
-					PDFGenerator.makeDocumentSacca(output, numeroSacche,seriali, ente, indirizzo, dataAffidamento, gruppoSanguigno);
-				} catch (DocumentException | IOException | EntityNotFoundException e) {
+
+					PDFGenerator.makeDocumentSacca(output, numeroSacche,seriali, ente, indirizzo, DateTimeFormatter.ISO_LOCAL_DATE.format(dataAffidamento));
+				} catch (DocumentException | IOException e) {
 					throw new WebApplicationException(Response
 							.status(Response.Status.INTERNAL_SERVER_ERROR)
-							.entity("Impossibile creare il PDF per l'evasione con id "+id_evasione)
+							.entity("Impossibile creare il PDF per l'evasione")
 							.build());
 				}
 			}

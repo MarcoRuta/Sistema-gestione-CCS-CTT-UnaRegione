@@ -99,13 +99,12 @@ public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT{
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response ricercaSaccheCCS(@PathParam("gs") String gruppoSanguigno,
 									 @PathParam("data") String dataArrivoMassima){
-		
-		int x = 0;
+
 		CttRestApplication.logger.info("Ho ricevuto la richiesta da parte del CCS per ricercare delle sacche di gruppo: "+gruppoSanguigno);
 		List<Sacca> saccheTrovate =
-				new SearcherLocale().search(GruppoSanguigno.valueOf(gruppoSanguigno),x,LocalDate.parse(dataArrivoMassima, DateTimeFormatter.ofPattern(Constants.DATEFORMAT)));
+				new SearcherLocale().search(GruppoSanguigno.valueOf(gruppoSanguigno),Integer.MAX_VALUE,LocalDate.parse(dataArrivoMassima, DateTimeFormatter.ofPattern(Constants.DATEFORMAT)));
 
-		saccheTrovate.addAll(new SearcherCompatibile().search(GruppoSanguigno.valueOf(gruppoSanguigno),x,LocalDate.parse(dataArrivoMassima, DateTimeFormatter.ofPattern(Constants.DATEFORMAT))));
+		saccheTrovate.addAll(new SearcherCompatibile().search(GruppoSanguigno.valueOf(gruppoSanguigno),Integer.MAX_VALUE,LocalDate.parse(dataArrivoMassima, DateTimeFormatter.ofPattern(Constants.DATEFORMAT))));
 		saccheTrovate.sort(Comparator.comparing((Sacca s)->s.getDataScadenza()));
 		return Response
 				.status(Response.Status.OK)

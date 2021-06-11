@@ -34,21 +34,20 @@ public interface EndPointAmministratoreCTT {
 	 * @param cognome Il cognome del Dipendente
 	 * @param dataDiNascita La data di nascita del Dipendente
 	 * @param ruolo Il ruolo del Dipendente
-	 * @param username L'useername del Dipendente
+	 * @param username L'username del Dipendente
 	 * @return Response
 	 * @throws DateTimeParseException, IllegalArgumentException, AssertionError, EntityAlreadyExistsException
 	 */
 	@POST
 	@Path("/aggiuntaDipendente")
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces("application/pdf")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public Response addDipendente(@FormParam("cdf")String cdf,
 								  @FormParam("nome")String nome,
 								  @FormParam("cognome")String cognome,
 								  @FormParam("dataDiNascita")String dataDiNascita,
 								  @FormParam("ruolo")String ruolo,
-								  @FormParam("username")String username,
-								  @Context UriInfo uriInfo) throws DateTimeParseException, IllegalArgumentException, AssertionError, EntityAlreadyExistsException;
+								  @FormParam("username")String username) throws DateTimeParseException, IllegalArgumentException, AssertionError, EntityAlreadyExistsException;
 
 
 	/**Rimuove un Dipendente dal DataBase
@@ -125,14 +124,5 @@ public interface EndPointAmministratoreCTT {
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Dipendente> getDipendenti(@HeaderParam(HttpHeaders.AUTHORIZATION) String header) throws EntityNotFoundException;
 
-	
-	/**Metodo tramite il quale è possibile recuperare un pdf con cdf, username e password di un dipendente
-	 * @param cdf il cdf del Dipendente di cui si vogliono recuperare i dati
-	 * @return StreamingOutput StreamingOutput da dove verrà aperto il pdf generato
-	 */
-	@GET
-	@Path("aggiuntaDipendente/pdf/{cdf}")
-	@Produces("application/pdf")
-	@Consumes(MediaType.TEXT_PLAIN)
-	public StreamingOutput getPDF(@PathParam("cdf")String cdf);
+
 }

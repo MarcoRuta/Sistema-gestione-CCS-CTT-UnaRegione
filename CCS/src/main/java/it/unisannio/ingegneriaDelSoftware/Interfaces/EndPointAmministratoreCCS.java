@@ -74,19 +74,8 @@ public interface EndPointAmministratoreCCS {
 								  @FormParam("nome")String nome,
 								  @FormParam("cognome")String cognome,
 								  @FormParam("dataDiNascita")String dataDiNascita,
-								  @FormParam("username")String username,
-								  @Context UriInfo uriInfo) throws DateTimeParseException, IllegalArgumentException, AssertionError, EntityAlreadyExistsException;
+								  @FormParam("username")String username) throws DateTimeParseException, IllegalArgumentException, AssertionError, EntityAlreadyExistsException;
 
-	/**Recupera un pdf con cdf, username e password di un Dipendente
-	 * @param cdf il cdf del Dipendente di cui si vogliono recuperare i dati
-	 * @return StreamingOutput Lo streaming di output del PDF
-	 * @throws WebApplicationException
-	 */
-	@GET
-	@Path("aggiuntaAmministratore/pdf/{cdf}")
-	@Produces("application/pdf")
-	@Consumes(MediaType.TEXT_PLAIN)
-	public StreamingOutput getPDF(@PathParam("cdf")String cdf);
 
 	/**Rimuove un Dipendente dal DataBase
 	 * @param header Il token di autentificazione

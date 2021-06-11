@@ -40,26 +40,16 @@ public interface EndPointMagazziniereCTT {
 
 	
 	/**Metodo attivato dal magazziniere quando riceve una notifica evasione Sacca esso aggiorna i datiSacca e rimuove la Sacca dal DB attivo
-	 * @param uriInfo info dell'uri relativo alla risorsa richiesta
 	 * @return Response
 	 * @throws EntityNotFoundException se la sacca da evadere non è presente nel DB
 	 */
 	@POST
 	@Path("/evasione")
-	@Produces(MediaType.TEXT_PLAIN)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response evasioneSacca(NotificaEvasione notificaEvasione,
-								  @Context UriInfo uriInfo) throws EntityNotFoundException;
-	
-	
-	/**Ottiene i dati di una evasione sotto forma di PDF
-	 * @param id_evasione id dell'evasione cercata
-	 * @return StreamingOutput StreamingOutput da dove verrà aperto il pdf generato
-	 * */
-	@GET
-	@Path("/evasione/pdf/{id_evasione}")
 	@Produces("application/pdf")
-	@Consumes(MediaType.TEXT_PLAIN)
-	public StreamingOutput getPDF(@PathParam("id_evasione")String id_evasione);
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response evasioneSacca(NotificaEvasione notificaEvasione) throws EntityNotFoundException;
+	
+	
+
 	
 }
