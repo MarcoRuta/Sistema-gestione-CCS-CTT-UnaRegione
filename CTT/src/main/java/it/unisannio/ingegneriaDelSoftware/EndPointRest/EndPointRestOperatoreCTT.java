@@ -58,7 +58,10 @@ public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT{
 									   @QueryParam("priorità") String priorita) throws InterruptedException {
 
 		if (LocalDate.parse(dataArrivoMassima).isBefore(LocalDate.now()))
-			throw new WebApplicationException("Data affidamento inserita non valida.", Response.Status.BAD_REQUEST);
+			throw new IllegalArgumentException("Data affidamento inserita non valida.");
+
+		if (Integer.parseInt(numeroSacche) < 0)
+			throw new IllegalArgumentException("Numero di sacche inserito non valido.");
 
 		CttRestApplication.logger.info("Ho ricevuto la richiesta per ricercare "+ numeroSacche +" sacche di gruppo: "+gruppoSanguigno);
 		

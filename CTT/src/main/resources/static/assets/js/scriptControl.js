@@ -174,26 +174,24 @@
           }
         }
         
-        function controllaNumSacca()
+        function controllaNum()
         {
           // Definisco un pattern per il confronto
-          var pattern = /^[a-zA-Z]{3}[0-9]{3}-[0-9]{8}$/;
+          var pattern = /^[0-9]{1,}$/;
         
           // creo una variabile per richiamare con facilità il nostro campo di input
-          var sacca = document.getElementById("numsacca");
+          var num = document.getElementById("numero_sacche");
         
           // utilizzo il metodo search per verificare che il valore inserito nel campo
           // di input rispetti la stringa di verifica (pattern)
-          if (sacca.value.search(pattern) == -1)
+          if (num.value.search(pattern) == -1)
           {
             // In caso di errore stampo un avviso e pulisco il campo...
-            sacca.value = "";
-            print2();
-            document.getElementById("result").innerHTML = "Sacca non esiste";
-            sacca.focus();
+            num.value = "";
+            print5();
+            num.focus();
           }else{
              // ...in caso contrario stampo un avviso di successo!
-             document.getElementById("result").innerHTML = "";
              
           }
         }

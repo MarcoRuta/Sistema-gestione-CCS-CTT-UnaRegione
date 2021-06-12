@@ -176,7 +176,7 @@
                         setTimeout(reloadPage, 1000);
                  	}else {
                  	if(this.readyState == 4 && this.status != 201){
-                 	    alert(this.response);
+                 	    alert(String.fromCharCode.apply(null, new Uint8Array(this.response)));
                  	    setTimeout(reloadPage,1000);
                  	    }
                  	}

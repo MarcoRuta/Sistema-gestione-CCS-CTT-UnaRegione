@@ -140,7 +140,7 @@
                             var blobSrc = window.URL.createObjectURL(new Blob([this.response], { type: 'application/pdf'}));
                             window.open(blobSrc);
                         } else if(this.readyState == 4 && this.status != 201) {
-                               alert(this.response);
+                            alert(String.fromCharCode.apply(null, new Uint8Array(this.response)));
                         }
     
                     };
@@ -235,7 +235,7 @@
                         window.open(blobSrcSma);
                         location.reload();
                     } else if(this.readyState == 4 && this.status != 200) {
-                           alert(this.response);
+                           alert(String.fromCharCode.apply(null, new Uint8Array(this.response)));
                            location.reload();
                     }
     
