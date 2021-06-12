@@ -1,6 +1,6 @@
 package it.unisannio.ingegneriaDelSoftware.ClientRest;
 
-import it.unisannio.ingegneriaDelSoftware.CcsDataBaseRestApplication;
+import it.unisannio.ingegneriaDelSoftware.CcsRestApplication;
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.Beans.Sacca;
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.Beans.Seriale;
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.DatiSacca;
@@ -31,7 +31,7 @@ public class CCSRestClient {
 
         SaccaWrapper saccaWrapper = saccheCompatibili.request().get(SaccaWrapper.class);
         List<Sacca> sacche = saccaWrapper.getSacche();
-        if(sacche.size()!=0)CcsDataBaseRestApplication.logger.info("Sacche compatibili trovate presso un CTT");
+        if(sacche.size()!=0) CcsRestApplication.logger.info("Sacche compatibili trovate presso un CTT");
             return sacche;
     }
 
@@ -40,22 +40,22 @@ public class CCSRestClient {
         WebTarget saccheDaEvadere = client
                 .target("http://"+ip+":"+ Settings.PORTA +"/rest/notifica/notificaEvasione");
 
-        CcsDataBaseRestApplication.logger.info("Sto per mandare richiesta evasione presso url: "+saccheDaEvadere.getUri());
+        CcsRestApplication.logger.info("Sto per mandare richiesta evasione presso url: "+saccheDaEvadere.getUri());
         Response r = saccheDaEvadere.request().post(Entity.json(new NotificaEvasione(
                 serialiDaEvadere,enteRichiedente,indirizzoEnte,"Sacche richieste da un altro CTT")));
-        CcsDataBaseRestApplication.logger.info("Richiesta evasione mandata");
+        CcsRestApplication.logger.info("Richiesta evasione mandata");
     }
 
     public static void sendRisultatiRicerca(String ip, NotificaRisultatiRicerca notificaRisultatiRicerca) {
-        CcsDataBaseRestApplication.logger.info("Sto per mandare il risultato della ricerca");
+        CcsRestApplication.logger.info("Sto per mandare il risultato della ricerca");
         Client client = ClientBuilder.newClient();
         WebTarget risultati = client
                 .target("http://"+ip+":"+ Settings.PORTA +"/rest/notificheOperatore/risultatiRicercaGlobale");
 
         //prenoto la sacca e mando la notifica evasione al magazzinere
         Response r = risultati.request().post(Entity.json(notificaRisultatiRicerca));
-        CcsDataBaseRestApplication.logger.info("Risultati mandati all'uri: "+risultati.getUri());
-        CcsDataBaseRestApplication.logger.info("ecco la risposta: "+r.getStatus()+r.readEntity(String.class));
+        CcsRestApplication.logger.info("Risultati mandati all'uri: "+risultati.getUri());
+        CcsRestApplication.logger.info("ecco la risposta: "+r.getStatus()+r.readEntity(String.class));
     }
 
     public static List<Dipendente> makeReportDipendenti(String ip, String ruolo){

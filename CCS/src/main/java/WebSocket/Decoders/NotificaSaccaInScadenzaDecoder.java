@@ -6,7 +6,7 @@ import javax.websocket.Decoder;
 import javax.websocket.EndpointConfig;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import it.unisannio.ingegneriaDelSoftware.CcsDataBaseRestApplication;
+import it.unisannio.ingegneriaDelSoftware.CcsRestApplication;
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.Beans.Sacca;
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.Notifiche.NotificaSaccaInScadenza;
 
@@ -19,7 +19,7 @@ public class NotificaSaccaInScadenzaDecoder implements Decoder.Text< ArrayList<N
 		try {
 			ArrayList<NotificaSaccaInScadenza> notifiche = new ArrayList<>();
 			notifiche = new ObjectMapper().readValue(jsonMessage,ArrayList.class);
-			CcsDataBaseRestApplication.logger.info("Ho deserializzato correttamente la lista di notifiche sacche in scadenza: "+notifiche);
+			CcsRestApplication.logger.info("Ho deserializzato correttamente la lista di notifiche sacche in scadenza: "+notifiche);
 			return notifiche;
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();

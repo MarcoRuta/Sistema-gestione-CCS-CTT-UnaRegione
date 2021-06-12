@@ -8,7 +8,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
-import it.unisannio.ingegneriaDelSoftware.CcsDataBaseRestApplication;
+import it.unisannio.ingegneriaDelSoftware.CcsRestApplication;
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.Beans.Seriale;
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.CTT;
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.CTTName;
@@ -54,12 +54,12 @@ public class EndPointRestRicercaGlobale implements Subject {
 									   @QueryParam("indirizzoEnte") String indirizzoEnte,
 									   @QueryParam("priorità") String priorita) throws InterruptedException, EntityNotFoundException {
 
-		CcsDataBaseRestApplication.logger.info("Ho ricevuto la richiesta per ricercare sacche di gruppo: "+gruppoSanguigno+" dal CTT: "+nome+" numeroSacche: "+numeroSacche+ " con priorità: "+priorita);
+		CcsRestApplication.logger.info("Ho ricevuto la richiesta per ricercare sacche di gruppo: "+gruppoSanguigno+" dal CTT: "+nome+" numeroSacche: "+numeroSacche+ " con priorità: "+priorita);
 		Map<CTTName,String> cttOnline = ConnectionVerifier.isCTTOnline();
 		//non devo ricercare le sacche presso il CTT richiedente
 		cttOnline.remove(CTTName.getCttName(nome));
 		CTT cttRichiedente = mm.getCTT(CTTName.getCttName(nome));
-		CcsDataBaseRestApplication.logger.info("Ecco i CTT che sono disponibili per la ricerca globale "+ cttOnline);
+		CcsRestApplication.logger.info("Ecco i CTT che sono disponibili per la ricerca globale "+ cttOnline);
 		//sacche che ho trovato nei vari ctt
 		Map<CTTName,List<Sacca>> cttSacche = SearcherFactory.searcherMap.get(priorita).search(cttOnline, cttRichiedente,
 				dataArrivoMassima, gruppoSanguigno, Integer.valueOf(numeroSacche));
@@ -75,14 +75,14 @@ public class EndPointRestRicercaGlobale implements Subject {
 				}
 			}
 		
-		CcsDataBaseRestApplication.logger.info("Sacche trovate globalmente: "+ serialeList );
+		CcsRestApplication.logger.info("Sacche trovate globalmente: "+ serialeList );
 
 		//Richiesta soddisfatta completamente
 		if(serialeList.size() == Integer.parseInt(numeroSacche)){
 			this.prenotaSacca(cttOnline,cttSacche,indirizzoEnte,enteRichiedente);
 			CCSRestClient.sendRisultatiRicerca(Settings.ip.get(cttRichiedente),
 					new NotificaRisultatiRicerca(serialeList, "Esito ricerca globale: completata totalmente"));
-			CcsDataBaseRestApplication.logger.info("La richiesta del "+nome+"è stata soddisfatta");
+			CcsRestApplication.logger.info("La richiesta del "+nome+"è stata soddisfatta");
 			return Response.status(Response.Status.NO_CONTENT).build();
 		}
 
@@ -92,7 +92,7 @@ public class EndPointRestRicercaGlobale implements Subject {
 			CCSRestClient.sendRisultatiRicerca(Settings.ip.get(mm.getCTT(CTTName.getCttName(nome))),
 					new NotificaRisultatiRicerca(serialeList, "Esito ricerca globale: completata parzialmente.\n" +
 							"Mancano: "+ (Integer.parseInt(numeroSacche)-serialeList.size())+" sacche."));
-			CcsDataBaseRestApplication.logger.info("Non è stato possibile soddisfare la richiesta del "+nome);
+			CcsRestApplication.logger.info("Non è stato possibile soddisfare la richiesta del "+nome);
 			return Response.status(Response.Status.NO_CONTENT).build();
 		}
 
@@ -100,7 +100,7 @@ public class EndPointRestRicercaGlobale implements Subject {
 		this.prenotaSacca(cttOnline,cttSacche,indirizzoEnte,enteRichiedente);
 		CCSRestClient.sendRisultatiRicerca(Settings.ip.get(mm.getCTT(CTTName.getCttName(nome))),
 				new NotificaRisultatiRicerca(serialeList, "Nessuna sacca trovata presso i CTT della rete CCS"));
-		CcsDataBaseRestApplication.logger.info("Non sono riuscito a trovare nessuna sacca per il "+nome);
+		CcsRestApplication.logger.info("Non sono riuscito a trovare nessuna sacca per il "+nome);
 		return Response.status(Response.Status.NOT_FOUND).build();
 	}
 
@@ -112,7 +112,7 @@ public class EndPointRestRicercaGlobale implements Subject {
 	 * @throws InterruptedException, EntityNotFoundException
 	 */
 	private void prenotaSacca(Map<CTTName, String> cttOnline, Map<CTTName, List<Sacca>> cttSacche, String indirizzoEnte, String enteRichiedente) throws InterruptedException, EntityNotFoundException {
-		CcsDataBaseRestApplication.logger.info("Inizio la procedura per prenotare le sacche");
+		CcsRestApplication.logger.info("Inizio la procedura per prenotare le sacche");
 		for (CTTName cttName : cttSacche.keySet()) {
 			List<Seriale> serialiDaEvadere = new ArrayList<>();
 			for (Sacca s : cttSacche.get(cttName)) {
@@ -122,7 +122,7 @@ public class EndPointRestRicercaGlobale implements Subject {
 				this.notifyCTT(NotificaSaccaInScadenzaMaker.creaNotificheSaccheInScadenza());
 			}
 
-			CcsDataBaseRestApplication.logger.info("Sto prenotando le sacche presso il : "+cttName.getCttname());
+			CcsRestApplication.logger.info("Sto prenotando le sacche presso il : "+cttName.getCttname());
 			CCSRestClient.makeEvasioneRequest(cttOnline.get(cttName),serialiDaEvadere, indirizzoEnte, enteRichiedente);
 		}
 

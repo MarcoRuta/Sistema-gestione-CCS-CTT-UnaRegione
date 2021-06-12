@@ -1,0 +1,441 @@
+[{
+  "_id": {
+    "$oid": "60c373f996c09522b7708896"
+  },
+  "seriale": "CTT001-00000063",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3741296c09522b77088ad"
+  },
+  "seriale": "CTT001-00000064",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3747d96c09522b77089c3"
+  },
+  "seriale": "CTT001-00000065",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c374b096c09522b7708a4b"
+  },
+  "seriale": "CTT001-00000066",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c374c196c09522b7708a59"
+  },
+  "seriale": "CTT001-00000067",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c374cc96c09522b7708a66"
+  },
+  "seriale": "CTT001-00000068",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c374db96c09522b7708a75"
+  },
+  "seriale": "CTT001-00000069",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3754c96c09522b7708b25"
+  },
+  "seriale": "CTT001-00000070",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3755696c09522b7708b31"
+  },
+  "seriale": "CTT001-00000071",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3755e96c09522b7708b3d"
+  },
+  "seriale": "CTT001-00000072",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3756896c09522b7708b49"
+  },
+  "seriale": "CTT001-00000073",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3757396c09522b7708b55"
+  },
+  "seriale": "CTT001-00000074",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3758296c09522b7708bc9"
+  },
+  "seriale": "CTT001-00000075",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3759296c09522b7708bd6"
+  },
+  "seriale": "CTT001-00000076",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c375b996c09522b7708cb8"
+  },
+  "seriale": "CTT001-00000077",
+  "gruppo": "ABp",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c375c296c09522b7708cc5"
+  },
+  "seriale": "CTT001-00000078",
+  "gruppo": "ABp",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c375cf96c09522b7708cd3"
+  },
+  "seriale": "CTT001-00000079",
+  "gruppo": "ABp",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c375d696c09522b7708cdd"
+  },
+  "seriale": "CTT001-00000080",
+  "gruppo": "ABp",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c375e096c09522b7708ce9"
+  },
+  "seriale": "CTT001-00000081",
+  "gruppo": "ABp",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c375ed96c09522b7708cf7"
+  },
+  "seriale": "CTT001-00000082",
+  "gruppo": "ABp",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3763896c09522b7708d8d"
+  },
+  "seriale": "CTT001-00000083",
+  "gruppo": "Bp",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3764496c09522b7708d9e"
+  },
+  "seriale": "CTT001-00000084",
+  "gruppo": "Bp",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3764e96c09522b7708daa"
+  },
+  "seriale": "CTT001-00000085",
+  "gruppo": "Bp",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3765796c09522b7708db5"
+  },
+  "seriale": "CTT001-00000086",
+  "gruppo": "Bp",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3766096c09522b7708dc1"
+  },
+  "seriale": "CTT001-00000087",
+  "gruppo": "Bp",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3766b96c09522b7708dce"
+  },
+  "seriale": "CTT001-00000088",
+  "gruppo": "Bp",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3768e96c09522b7708e4c"
+  },
+  "seriale": "CTT001-00000089",
+  "gruppo": "Bm",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3769796c09522b7708e58"
+  },
+  "seriale": "CTT001-00000090",
+  "gruppo": "Bm",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c376a096c09522b7708e64"
+  },
+  "seriale": "CTT001-00000091",
+  "gruppo": "Bm",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c376aa96c09522b7708e6f"
+  },
+  "seriale": "CTT001-00000092",
+  "gruppo": "Bm",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c376bc96c09522b7708e80"
+  },
+  "seriale": "CTT001-00000093",
+  "gruppo": "Bm",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c376e296c09522b7708f00"
+  },
+  "seriale": "CTT001-00000094",
+  "gruppo": "Am",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c376f296c09522b7708f0f"
+  },
+  "seriale": "CTT001-00000095",
+  "gruppo": "Am",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3773e96c09522b7708fa7"
+  },
+  "seriale": "CTT001-00000096",
+  "gruppo": "Am",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3775696c09522b770901d"
+  },
+  "seriale": "CTT001-00000097",
+  "gruppo": "ABm",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3776496c09522b770902d"
+  },
+  "seriale": "CTT001-00000098",
+  "gruppo": "ABm",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3777096c09522b770903e"
+  },
+  "seriale": "CTT001-00000099",
+  "gruppo": "ABm",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3778b96c09522b7709055"
+  },
+  "seriale": "CTT001-00000100",
+  "gruppo": "ZEROm",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c377ac96c09522b770906e"
+  },
+  "seriale": "CTT001-00000101",
+  "gruppo": "ZEROm",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c377d796c09522b77090f2"
+  },
+  "seriale": "CTT001-00000102",
+  "gruppo": "ZEROm",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+}]

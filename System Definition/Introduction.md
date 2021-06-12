@@ -1,6 +1,6 @@
 # Introduzione al sistema
 
-Definizione del dominio del problema [qui](#Definizione-del-problema)
+## Definizione del dominio del problema [qui](#Definizione-del-problema)
 
 <p align= "center">
 <img src="https://www.unisannio.it/sites/default/files/emblema.png.pagespeed.ce.L9uvAVRynq.png" alt="Unisannio" width= 50%>
@@ -31,13 +31,13 @@ Le funzionalità offerte dal CCS sono:
 >[Aggiungere un nuovo Amministratore del CCS](#Aggiungere-un-nuovo-Amministratore-del-CCS)  
 >[Rimuovere un Amministratore del CCS](#Rimuovere-un-Amministratore-del-CCS)  
 
->I dipendenti presenti all'interno di un CTT sono:
->>[AmministratoreCTT](#AmministratoreCTT)  
+I dipendenti presenti all'interno di un CTT sono:
+>[AmministratoreCTT](#AmministratoreCTT)  
 >[OperatoreCTT](#OperatoreCTT)   
 >[MagazziniereCTT](#MagazziniereCTT)
 
->L'unico dipendente del CCS è:  
->>[AmministratoreCCS](#AmministratoreCCS)  
+L'unico dipendente del CCS è:  
+>[AmministratoreCCS](#AmministratoreCCS)  
 
 Breve cenno sulle collezioni dati permanenti:
 >[Collezioni dati permanenti](#Collezioni-dati-permanenti)
@@ -45,8 +45,6 @@ Breve cenno sulle collezioni dati permanenti:
 Breve cenno sulle scelte architetturali prese:
 >[Scelte architetturali](#Scelte-architetturali)
 
-Breve cenno sui protocolli utilizzati:
->[Protocolli adottati](#Protocolli-adottati)
 
 Strumenti utilizzati:
 
@@ -58,9 +56,6 @@ Strumenti utilizzati:
 
 >[Controllo della versione e canali di comunicazione](#Controllo-della-versione-e-comunicazione)
 
-Team di sviluppo:
-
->[Know the team](#Know-the-team)
 
 # Definizione del problema:
 
@@ -437,8 +432,8 @@ Una volta confermato, tutti i dati relativi al dipendente vengono rimossi dal si
 L'**amministratoreCTT** è un dipendente di un Centro Tasfusionale Territoriale.
 Possiede i requisiti necessari per poter accedere al terminale dell'amministratore e si occupa della gestione del CTT attraverso delle funzionalità specificatamente designate per il suo ruolo: 
 
-- La possibilità di aggiungere/rimuovere DipendentiCTT dal CTT presso cui lavora.
-- La possibilità di effettuare dei report statistici per avere una visione globale dell'andamento del CTT tramite un sistema di query dinamico. Grazie ad appositi elementi dell'interfaccia grafica, gli è consentito di visualizzare risultati, istogrammi e grafici a torta in tempo reale.
+- Aggiungere/rimuovere DipendentiCTT dal CTT presso cui lavora.
+- Effettuare dei report statistici per avere una visione globale dell'andamento del CTT tramite un sistema di query dinamico. Grazie ad appositi elementi dell'interfaccia grafica, gli è consentito di visualizzare risultati, istogrammi e grafici a torta in tempo reale.
 
 # OperatoreCTT
 
@@ -466,15 +461,39 @@ Possiede i requisiti neccessari per poter accedere al terminale del magazziniere
 e si occupa della gestione dell'intera rete di distribuzione di sacche di sangue.
 Le funzionalità specificatamente designate per il suo ruolo sono:
 
-- La possibilità di aggiungere/rimuovere CTT dalla rete
-- La possibilità di aggiungere/rimuovere AmministratoriCCS
-- La possibilità di effettuare dei report statistici per avere una visione globale dell'andamento dell'intera rete tramite un sistema di query dinamico. Grazie ad appositi elementi dell'interfaccia grafica, gli è consentito di visualizzare risultati, istogrammi e grafici a torta in tempo reale.
+- Aggiungere/rimuovere CTT dalla rete
+- Aggiungere/rimuovere AmministratoriCCS
+- Effettuare dei report statistici per avere una visione globale dell'andamento dell'intera rete tramite un sistema di query dinamico. Grazie ad appositi elementi dell'interfaccia grafica, gli è consentito di visualizzare risultati, istogrammi e grafici a torta in tempo reale.
 
-# Collezioni dati permanenti
+
 
 # Scelte architetturali
+Al fine di avere un sistema che fosse `leggero e veloce` quindi utilizzabile al meglio anche su computer di fascia medio bassa, abbiamo deciso di utilizzare ad un alto livello di astrazione una Architettura Client/Server Three Tier a Client leggero.
 
-# Protocolli adottati
+
+
+Nella nostra visione il CTT è un server che espone diversi `EndPointRest`. Il CTT avrà poi a disposizione diversi client che implementano Interface Layer tramite i quali potranno richiedere i servizi esposti dal CTT.
+
+Affinché il sistema possa mantenere le informazioni sulle sacche, e funzionare anche in assenza di connessione, abbiamo deciso di creare un `Database NO-R` in locale data la necessità di salvare pochi dati e di effettuare su di essi delle query abbastanza semplici che non necessitano dell’uso di un database relazionale.
+
+Gli EndPointRest del sistema sono gli unici che interagisco con il database in maniera indiretta tramite un `DataManager`. Concentrandoci quindi solo su questa porzione del sistema, abbiamo strutturato quest’ultima sfruttando una architettura a repository.
+ 
+Ogni `EndPointRest` implementa le funzionalità di un `singolo dipendente`. Quindi esso è stato implementato in modo tale che possa essere acceduto solo da un dipendente precedentemente autentificato e autorizzato.
+
+Il sistema `CTT` presenta poi un'altra componente che è in grado di comunicare con il `CCS` nel momento in cui è possibile stabilire una connessione. Dato che il CTT deve inoltrare le sue *`sacche in scadenza`* al CCS, in modo che esso possa farne il broadcast agli altri CTT, ma allo stesso tempo deve essere in grado di ricevere delle sacche in scadenza dal CCS senza previa richiesta, abbiamo deciso di realizzare questa parte del sistema sfruttando un'architettura `Peer to Peer`.
+
+Per realizzare questo tipo di architettura abbiamo utilizzato il protocollo `WebSocket` cosicchè tra CTT e CCS ci fosse un canale di comunicazione che permettesse ai due di ricevere senza nessuna richiesta iniziale ed in `tempo reale` la lista sempre aggiornata delle sacche in scadenza.
+
+Per quanto riguarda la *`ricerca globale`* essa è stata modellata sempre sfruttando un'architettura Client/Server in stile `REST` in quanto in questo caso è necessario fornire delle sacche solo dopo aver effettuato una richiesta da parte del client.
+
+Per quanto riguarda i client abbiamo sfruttato lo stile `MVC` implementandolo utilizzando l’`observer pattern` così da ridurre il coupling tra model e view. 
+Difatti i vari client oltre agli esiti delle richieste rest sono interessati anche alle `sacche in scadenza`, alle `sacche da smaltire` e agli `esiti delle ricerche globali`. 
+Per far si che essi ricevano queste notifiche in tempo reale abbiamo realizzato dei `sottosistemi` che presentassero dei server endpoint collegati a delle `websocket` collegate ai vari client. 
+
+Il `CCS` nella nostra visione è quindi sia un `Server` che espone `endPointRest` per la ricerca globale, la prenotazione di sacche in scadenza e le funzionalità dell’amministratore del CCS, ma anche un `Client`.
+
+Per evitare `inconsistenze`, il CCS non ha il mirroring dei dati dei vari CTT ma può accedervi tramite una richiesta Rest. Così facendo esso è in grado di fornire sempre una lista di sacche realmente presenti nei DB nel momento in cui viene contattato per una ricerca globale.
+
 
 # Tools e framework
 <img alt="MongoDB" src ="https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white"/>
@@ -505,5 +524,3 @@ Le funzionalità specificatamente designate per il suo ruolo sono:
 
 <img alt="GitHub" src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white"/>
 <img alt="Discord" src="https://img.shields.io/badge/%3CServer%3E-%237289DA.svg?style=for-the-badge&logo=discord&logoColor=white"/>
-
-# Know the team

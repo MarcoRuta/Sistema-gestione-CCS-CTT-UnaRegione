@@ -1,5 +1,5 @@
 package it.unisannio.ingegneriaDelSoftware.Util;
-import it.unisannio.ingegneriaDelSoftware.CcsDataBaseRestApplication;
+import it.unisannio.ingegneriaDelSoftware.CcsRestApplication;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.CTT;
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.CTTName;
@@ -30,11 +30,11 @@ public class Settings {
             loadNetworkProps.loadFromXML(new FileInputStream("localsettings/network_settings.xml"));
             loadDatabaseProps.loadFromXML(new FileInputStream("localsettings/database_settings.xml"));
         } catch (InvalidPropertiesFormatException e) {
-            CcsDataBaseRestApplication.logger.error("File properties invalido");
+            CcsRestApplication.logger.error("File properties invalido");
         } catch (FileNotFoundException e) {
-            CcsDataBaseRestApplication.logger.error("Impossibile trovare i file dei settings");
+            CcsRestApplication.logger.error("Impossibile trovare i file dei settings");
         } catch (IOException e) {
-            CcsDataBaseRestApplication.logger.error("Errore durante l'apertura dei file del settings");
+            CcsRestApplication.logger.error("Errore durante l'apertura dei file del settings");
         }
         //carico impostazioni DB
         DB_NAME = loadDatabaseProps.getProperty("DB_NAME");

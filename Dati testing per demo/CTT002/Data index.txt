@@ -1,0 +1,13 @@
+CTT002 data index:
+
+Ente donatore: AVIS Salerno
+
+60 Datisacche per query
+100 Datisacche complete tra presenti e non
+40 sacche presenti al momento nel DB
+
+Sono presenti:
+
+0 sacche in scadenza tra il 15 e il 16 giugno
+7 sacche scadute prima del 15/06/2021
+33 sacche utili

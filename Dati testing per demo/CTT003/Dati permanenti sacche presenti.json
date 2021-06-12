@@ -1,0 +1,408 @@
+[{
+  "_id": {
+    "$oid": "60c37273847d114ae37e7cea"
+  },
+  "seriale": "CTT003-00000061",
+  "gruppo": "ABp",
+  "dataArrivo": "2021-05-15",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c372b2847d114ae37e7d18"
+  },
+  "seriale": "CTT003-00000062",
+  "gruppo": "ABp",
+  "dataArrivo": "2021-05-15",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c372d3847d114ae37e7d35"
+  },
+  "seriale": "CTT003-00000063",
+  "gruppo": "ABm",
+  "dataArrivo": "2021-05-14",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c372fc847d114ae37e7dee"
+  },
+  "seriale": "CTT003-00000064",
+  "gruppo": "Bm",
+  "dataArrivo": "2021-05-13",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3730a847d114ae37e7dfd"
+  },
+  "seriale": "CTT003-00000065",
+  "gruppo": "ABp",
+  "dataArrivo": "2021-05-15",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3736a847d114ae37e7efb"
+  },
+  "seriale": "CTT003-00000066",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-05-18",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c37376847d114ae37e7f09"
+  },
+  "seriale": "CTT003-00000067",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-05-19",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3739c847d114ae37e7f29"
+  },
+  "seriale": "CTT003-00000068",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-05-17",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c373ad847d114ae37e7f3b"
+  },
+  "seriale": "CTT003-00000069",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-05-19",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c373b8847d114ae37e7f48"
+  },
+  "seriale": "CTT003-00000070",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-05-20",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c373c8847d114ae37e7f57"
+  },
+  "seriale": "CTT003-00000071",
+  "gruppo": "Bp",
+  "dataArrivo": "2021-05-17",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c373d5847d114ae37e7f68"
+  },
+  "seriale": "CTT003-00000072",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-05-20",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c373f2847d114ae37e7f80"
+  },
+  "seriale": "CTT003-00000073",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-05-20",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c37404847d114ae37e7f91"
+  },
+  "seriale": "CTT003-00000074",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-05-19",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c37413847d114ae37e7fa3"
+  },
+  "seriale": "CTT003-00000075",
+  "gruppo": "ABm",
+  "dataArrivo": "2021-05-22",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c37422847d114ae37e7fb1"
+  },
+  "seriale": "CTT003-00000076",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-05-19",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c37437847d114ae37e7fc6"
+  },
+  "seriale": "CTT003-00000077",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-05-17",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c37447847d114ae37e7fd6"
+  },
+  "seriale": "CTT003-00000078",
+  "gruppo": "ZEROm",
+  "dataArrivo": "2021-05-21",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c37454847d114ae37e7fe7"
+  },
+  "seriale": "CTT003-00000079",
+  "gruppo": "Am",
+  "dataArrivo": "2021-05-19",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c37475847d114ae37e8003"
+  },
+  "seriale": "CTT003-00000080",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-05-17",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3748f847d114ae37e8236"
+  },
+  "seriale": "CTT003-00000081",
+  "gruppo": "ZEROm",
+  "dataArrivo": "2021-05-17",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3749d847d114ae37e8247"
+  },
+  "seriale": "CTT003-00000082",
+  "gruppo": "Bm",
+  "dataArrivo": "2021-05-21",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c374a9847d114ae37e8254"
+  },
+  "seriale": "CTT003-00000083",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-05-21",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c374b7847d114ae37e8262"
+  },
+  "seriale": "CTT003-00000084",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-05-19",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c374c5847d114ae37e8274"
+  },
+  "seriale": "CTT003-00000085",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-05-20",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c374d9847d114ae37e8287"
+  },
+  "seriale": "CTT003-00000086",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-05-19",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c374e6847d114ae37e8296"
+  },
+  "seriale": "CTT003-00000087",
+  "gruppo": "Bp",
+  "dataArrivo": "2021-05-21",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c374f1847d114ae37e82a3"
+  },
+  "seriale": "CTT003-00000088",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-05-17",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c37502847d114ae37e82b6"
+  },
+  "seriale": "CTT003-00000089",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-05-19",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c37533847d114ae37e82da"
+  },
+  "seriale": "CTT003-00000090",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-05-17",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3753e847d114ae37e82e7"
+  },
+  "seriale": "CTT003-00000091",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-05-19",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c37557847d114ae37e82fd"
+  },
+  "seriale": "CTT003-00000092",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-05-16",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3756a847d114ae37e830f"
+  },
+  "seriale": "CTT003-00000093",
+  "gruppo": "ABp",
+  "dataArrivo": "2021-05-20",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3757e847d114ae37e8322"
+  },
+  "seriale": "CTT003-00000094",
+  "gruppo": "Am",
+  "dataArrivo": "2021-05-17",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3758c847d114ae37e8332"
+  },
+  "seriale": "CTT003-00000095",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-05-17",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3759d847d114ae37e8342"
+  },
+  "seriale": "CTT003-00000096",
+  "gruppo": "ZEROm",
+  "dataArrivo": "2021-05-17",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c375af847d114ae37e8355"
+  },
+  "seriale": "CTT003-00000097",
+  "gruppo": "Bp",
+  "dataArrivo": "2021-05-18",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+}]

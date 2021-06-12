@@ -1,0 +1,661 @@
+[{
+  "_id": {
+    "$oid": "60c22cc4fd6f2867c05b6f69"
+  },
+  "seriale": "CTT002-00000001",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-04-02",
+  "dataAffidamento": "2021-04-12",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Ospedale San Giovanni di Dio e Ruggi d'Aragona",
+  "indirizzoEnte": "Via San Leonardo, 5"
+},{
+  "_id": {
+    "$oid": "60c22cd3fd6f2867c05b6f77"
+  },
+  "seriale": "CTT002-00000002",
+  "gruppo": "Am",
+  "dataArrivo": "2021-04-02",
+  "dataAffidamento": "2021-04-16",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Presidio Ospedaliero Giovanni da Procida",
+  "indirizzoEnte": "Via Salvatore Calenda, 162"
+},{
+  "_id": {
+    "$oid": "60c22ce0fd6f2867c05b6f87"
+  },
+  "seriale": "CTT002-00000003",
+  "gruppo": "Bp",
+  "dataArrivo": "2021-04-03",
+  "dataAffidamento": "2021-04-04",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Presidio Ospedaliero Giovanni da Procida",
+  "indirizzoEnte": "Via Salvatore Calenda, 162"
+},{
+  "_id": {
+    "$oid": "60c22cfdfd6f2867c05b6fb1"
+  },
+  "seriale": "CTT002-00000004",
+  "gruppo": "Bm",
+  "dataArrivo": "2021-04-03",
+  "dataAffidamento": "2021-04-10",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Ospedale San Giovanni di Dio e Ruggi d'Aragona",
+  "indirizzoEnte": "Via San Leonardo, 5"
+},{
+  "_id": {
+    "$oid": "60c22d99fd6f2867c05b7046"
+  },
+  "seriale": "CTT002-00000005",
+  "gruppo": "ABp",
+  "dataArrivo": "2021-04-03",
+  "dataAffidamento": "2021-04-09",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Ospedale San Giovanni di Dio e Ruggi d'Aragona",
+  "indirizzoEnte": "Via San Leonardo, 5"
+},{
+  "_id": {
+    "$oid": "60c22dadfd6f2867c05b705c"
+  },
+  "seriale": "CTT002-00000006",
+  "gruppo": "ABm",
+  "dataArrivo": "2021-04-03",
+  "dataAffidamento": "2021-04-10",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Presidio Ospedaliero Giovanni da Procida",
+  "indirizzoEnte": "Via Salvatore Calenda, 162"
+},{
+  "_id": {
+    "$oid": "60c22dbafd6f2867c05b7068"
+  },
+  "seriale": "CTT002-00000007",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-04-04",
+  "dataAffidamento": "2021-04-12",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Ospedale San Giovanni di Dio e Ruggi d'Aragona",
+  "indirizzoEnte": "Via San Leonardo, 5"
+},{
+  "_id": {
+    "$oid": "60c22dcbfd6f2867c05b707a"
+  },
+  "seriale": "CTT002-00000008",
+  "gruppo": "ZEROm",
+  "dataArrivo": "2021-04-04",
+  "dataAffidamento": "2021-04-14",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Presidio Ospedaliero Giovanni da Procida",
+  "indirizzoEnte": "Via Salvatore Calenda, 162"
+},{
+  "_id": {
+    "$oid": "60c22ddafd6f2867c05b7089"
+  },
+  "seriale": "CTT002-00000009",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-04-05",
+  "dataAffidamento": "2021-04-12",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Presidio Ospedaliero Giovanni da Procida",
+  "indirizzoEnte": "Via Salvatore Calenda, 162"
+},{
+  "_id": {
+    "$oid": "60c22de7fd6f2867c05b7095"
+  },
+  "seriale": "CTT002-00000010",
+  "gruppo": "Am",
+  "dataArrivo": "2021-04-06",
+  "dataAffidamento": "2021-04-21",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Ospedale San Giovanni di Dio e Ruggi d'Aragona",
+  "indirizzoEnte": "Via San Leonardo, 5"
+},{
+  "_id": {
+    "$oid": "60c22df4fd6f2867c05b70a3"
+  },
+  "seriale": "CTT002-00000011",
+  "gruppo": "Bp",
+  "dataArrivo": "2021-04-06",
+  "dataAffidamento": "2021-04-20",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Ospedale San Giovanni di Dio e Ruggi d'Aragona",
+  "indirizzoEnte": "Via San Leonardo, 5"
+},{
+  "_id": {
+    "$oid": "60c22e49fd6f2867c05b70e4"
+  },
+  "seriale": "CTT002-00000012",
+  "gruppo": "Bm",
+  "dataArrivo": "2021-04-06",
+  "dataAffidamento": "2021-04-22",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Presidio Ospedaliero Giovanni da Procida",
+  "indirizzoEnte": "Via Salvatore Calenda, 162"
+},{
+  "_id": {
+    "$oid": "60c22e6cfd6f2867c05b7106"
+  },
+  "seriale": "CTT002-00000013",
+  "gruppo": "ABp",
+  "dataArrivo": "2021-04-07",
+  "dataAffidamento": "2021-04-21",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Presidio Ospedaliero Giovanni da Procida",
+  "indirizzoEnte": "Via Salvatore Calenda, 162"
+},{
+  "_id": {
+    "$oid": "60c22e78fd6f2867c05b7113"
+  },
+  "seriale": "CTT002-00000014",
+  "gruppo": "ABm",
+  "dataArrivo": "2021-04-07",
+  "dataAffidamento": "2021-04-17",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Ospedale San Giovanni di Dio e Ruggi d'Aragona",
+  "indirizzoEnte": "Via San Leonardo, 5"
+},{
+  "_id": {
+    "$oid": "60c22e95fd6f2867c05b712e"
+  },
+  "seriale": "CTT002-00000015",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-04-07",
+  "dataAffidamento": "2021-04-26",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Presidio Ospedaliero Giovanni da Procida",
+  "indirizzoEnte": "Via Salvatore Calenda, 162"
+},{
+  "_id": {
+    "$oid": "60c22ea3fd6f2867c05b713d"
+  },
+  "seriale": "CTT002-00000016",
+  "gruppo": "ZEROm",
+  "dataArrivo": "2021-04-08",
+  "dataAffidamento": "2021-04-25",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Presidio Ospedaliero Giovanni da Procida",
+  "indirizzoEnte": "Via Salvatore Calenda, 162"
+},{
+  "_id": {
+    "$oid": "60c22ec2fd6f2867c05b7158"
+  },
+  "seriale": "CTT002-00000017",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-04-08",
+  "dataAffidamento": "2021-04-26",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Ospedale San Giovanni di Dio e Ruggi d'Aragona",
+  "indirizzoEnte": "Via San Leonardo, 5"
+},{
+  "_id": {
+    "$oid": "60c22ed2fd6f2867c05b7168"
+  },
+  "seriale": "CTT002-00000018",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-04-08",
+  "dataAffidamento": "2021-04-18",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Ospedale San Giovanni di Dio e Ruggi d'Aragona",
+  "indirizzoEnte": "Via San Leonardo, 5"
+},{
+  "_id": {
+    "$oid": "60c22ee4fd6f2867c05b7179"
+  },
+  "seriale": "CTT002-00000019",
+  "gruppo": "Bm",
+  "dataArrivo": "2021-04-08",
+  "dataAffidamento": "2021-05-01",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Presidio Ospedaliero Giovanni da Procida",
+  "indirizzoEnte": "Via Salvatore Calenda, 162"
+},{
+  "_id": {
+    "$oid": "60c22ef6fd6f2867c05b718b"
+  },
+  "seriale": "CTT002-00000020",
+  "gruppo": "Bm",
+  "dataArrivo": "2021-04-09",
+  "dataAffidamento": "2021-05-01",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Ospedale San Giovanni di Dio e Ruggi d'Aragona",
+  "indirizzoEnte": "Via San Leonardo, 5"
+},{
+  "_id": {
+    "$oid": "60c22f32fd6f2867c05b71bc"
+  },
+  "seriale": "CTT002-00000021",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-05-02",
+  "dataAffidamento": "2021-05-05",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Presidio Ospedaliero Giovanni da Procida",
+  "indirizzoEnte": "Via Salvatore Calenda, 162"
+},{
+  "_id": {
+    "$oid": "60c22f40fd6f2867c05b71c9"
+  },
+  "seriale": "CTT002-00000022",
+  "gruppo": "Am",
+  "dataArrivo": "2021-05-02",
+  "dataAffidamento": "2021-05-20",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Presidio Ospedaliero Giovanni da Procida",
+  "indirizzoEnte": "Via Salvatore Calenda, 162"
+},{
+  "_id": {
+    "$oid": "60c22f50fd6f2867c05b71da"
+  },
+  "seriale": "CTT002-00000023",
+  "gruppo": "Bp",
+  "dataArrivo": "2021-05-02",
+  "dataAffidamento": "2021-05-25",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Presidio Ospedaliero Giovanni da Procida",
+  "indirizzoEnte": "Via Salvatore Calenda, 162"
+},{
+  "_id": {
+    "$oid": "60c22f5dfd6f2867c05b71e6"
+  },
+  "seriale": "CTT002-00000024",
+  "gruppo": "Bm",
+  "dataArrivo": "2021-05-03",
+  "dataAffidamento": "2021-05-15",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Ospedale San Giovanni di Dio e Ruggi d'Aragona",
+  "indirizzoEnte": "Via San Leonardo, 5"
+},{
+  "_id": {
+    "$oid": "60c22f6efd6f2867c05b71f5"
+  },
+  "seriale": "CTT002-00000025",
+  "gruppo": "ABp",
+  "dataArrivo": "2021-05-03",
+  "dataAffidamento": "2021-05-12",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Ospedale San Giovanni di Dio e Ruggi d'Aragona",
+  "indirizzoEnte": "Via San Leonardo, 5"
+},{
+  "_id": {
+    "$oid": "60c22f7cfd6f2867c05b7204"
+  },
+  "seriale": "CTT002-00000026",
+  "gruppo": "ABp",
+  "dataArrivo": "2021-05-03",
+  "dataAffidamento": "2021-05-27",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Presidio Ospedaliero Giovanni da Procida",
+  "indirizzoEnte": "Via Salvatore Calenda, 162"
+},{
+  "_id": {
+    "$oid": "60c22f8bfd6f2867c05b7214"
+  },
+  "seriale": "CTT002-00000027",
+  "gruppo": "ABm",
+  "dataArrivo": "2021-05-04",
+  "dataAffidamento": "2021-05-28",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Presidio Ospedaliero Giovanni da Procida",
+  "indirizzoEnte": "Via Salvatore Calenda, 162"
+},{
+  "_id": {
+    "$oid": "60c22fc6fd6f2867c05b724a"
+  },
+  "seriale": "CTT002-00000028",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-05-04",
+  "dataAffidamento": "2021-05-20",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Presidio Ospedaliero Giovanni da Procida",
+  "indirizzoEnte": "Via Salvatore Calenda, 162"
+},{
+  "_id": {
+    "$oid": "60c22fd3fd6f2867c05b7258"
+  },
+  "seriale": "CTT002-00000029",
+  "gruppo": "ZEROm",
+  "dataArrivo": "2021-05-04",
+  "dataAffidamento": "2021-05-14",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Ospedale San Giovanni di Dio e Ruggi d'Aragona",
+  "indirizzoEnte": "Via San Leonardo, 5"
+},{
+  "_id": {
+    "$oid": "60c22ff0fd6f2867c05b7270"
+  },
+  "seriale": "CTT002-00000030",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-05-05",
+  "dataAffidamento": "2021-05-11",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Presidio Ospedaliero Giovanni da Procida",
+  "indirizzoEnte": "Via Salvatore Calenda, 162"
+},{
+  "_id": {
+    "$oid": "60c2305ffd6f2867c05b72bd"
+  },
+  "seriale": "CTT002-00000031",
+  "gruppo": "Am",
+  "dataArrivo": "2021-05-05",
+  "dataAffidamento": "2021-05-19",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Presidio Ospedaliero Giovanni da Procida",
+  "indirizzoEnte": "Via Salvatore Calenda, 162"
+},{
+  "_id": {
+    "$oid": "60c231d3fd6f2867c05b73c9"
+  },
+  "seriale": "CTT002-00000032",
+  "gruppo": "Bp",
+  "dataArrivo": "2021-05-05",
+  "dataAffidamento": "2021-05-29",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Presidio Ospedaliero Giovanni da Procida",
+  "indirizzoEnte": "Via Salvatore Calenda, 162"
+},{
+  "_id": {
+    "$oid": "60c231e9fd6f2867c05b73dd"
+  },
+  "seriale": "CTT002-00000033",
+  "gruppo": "Bm",
+  "dataArrivo": "2021-05-05",
+  "dataAffidamento": "2021-05-28",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Ospedale San Giovanni di Dio e Ruggi d'Aragona",
+  "indirizzoEnte": "Via San Leonardo, 5"
+},{
+  "_id": {
+    "$oid": "60c23206fd6f2867c05b73fb"
+  },
+  "seriale": "CTT002-00000034",
+  "gruppo": "ABp",
+  "dataArrivo": "2021-05-06",
+  "dataAffidamento": "2021-05-21",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Presidio Ospedaliero Giovanni da Procida",
+  "indirizzoEnte": "Via Salvatore Calenda, 162"
+},{
+  "_id": {
+    "$oid": "60c23217fd6f2867c05b740d"
+  },
+  "seriale": "CTT002-00000035",
+  "gruppo": "ABm",
+  "dataArrivo": "2021-05-06",
+  "dataAffidamento": "2021-05-17",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Ospedale San Giovanni di Dio e Ruggi d'Aragona",
+  "indirizzoEnte": "Via San Leonardo, 5"
+},{
+  "_id": {
+    "$oid": "60c23226fd6f2867c05b741c"
+  },
+  "seriale": "CTT002-00000036",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-05-07",
+  "dataAffidamento": "2021-05-19",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Presidio Ospedaliero Giovanni da Procida",
+  "indirizzoEnte": "Via Salvatore Calenda, 162"
+},{
+  "_id": {
+    "$oid": "60c23235fd6f2867c05b742b"
+  },
+  "seriale": "CTT002-00000037",
+  "gruppo": "ZEROm",
+  "dataArrivo": "2021-05-08",
+  "dataAffidamento": "2021-05-21",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Presidio Ospedaliero Giovanni da Procida",
+  "indirizzoEnte": "Via Salvatore Calenda, 162"
+},{
+  "_id": {
+    "$oid": "60c23255fd6f2867c05b7448"
+  },
+  "seriale": "CTT002-00000038",
+  "gruppo": "ABm",
+  "dataArrivo": "2021-05-08",
+  "dataAffidamento": "2021-05-10",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Presidio Ospedaliero Giovanni da Procida",
+  "indirizzoEnte": "Via Salvatore Calenda, 162"
+},{
+  "_id": {
+    "$oid": "60c23264fd6f2867c05b7457"
+  },
+  "seriale": "CTT002-00000039",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-05-08",
+  "dataAffidamento": "2021-05-10",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Ospedale San Giovanni di Dio e Ruggi d'Aragona",
+  "indirizzoEnte": "Via San Leonardo, 5"
+},{
+  "_id": {
+    "$oid": "60c23277fd6f2867c05b746a"
+  },
+  "seriale": "CTT002-00000040",
+  "gruppo": "Bm",
+  "dataArrivo": "2021-05-08",
+  "dataAffidamento": "2021-06-02",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Presidio Ospedaliero Giovanni da Procida",
+  "indirizzoEnte": "Via Salvatore Calenda, 162"
+},{
+  "_id": {
+    "$oid": "60c232d6fd6f2867c05b74af"
+  },
+  "seriale": "CTT002-00000041",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-06-02",
+  "dataAffidamento": "2021-06-04",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Ospedale San Giovanni di Dio e Ruggi d'Aragona",
+  "indirizzoEnte": "Via San Leonardo, 5"
+},{
+  "_id": {
+    "$oid": "60c2336bfd6f2867c05b751f"
+  },
+  "seriale": "CTT002-00000042",
+  "gruppo": "Am",
+  "dataArrivo": "2021-06-02",
+  "dataAffidamento": "2021-06-07",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Presidio Ospedaliero Giovanni da Procida",
+  "indirizzoEnte": "Via Salvatore Calenda, 162"
+},{
+  "_id": {
+    "$oid": "60c23399fd6f2867c05b7545"
+  },
+  "seriale": "CTT002-00000043",
+  "gruppo": "Bp",
+  "dataArrivo": "2021-06-03",
+  "dataAffidamento": "2021-06-10",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Presidio Ospedaliero Giovanni da Procida",
+  "indirizzoEnte": "Via Salvatore Calenda, 162"
+},{
+  "_id": {
+    "$oid": "60c233a6fd6f2867c05b7552"
+  },
+  "seriale": "CTT002-00000044",
+  "gruppo": "Bm",
+  "dataArrivo": "2021-06-03",
+  "dataAffidamento": "2021-06-12",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Ospedale San Giovanni di Dio e Ruggi d'Aragona",
+  "indirizzoEnte": "Via San Leonardo, 5"
+},{
+  "_id": {
+    "$oid": "60c233bdfd6f2867c05b756c"
+  },
+  "seriale": "CTT002-00000045",
+  "gruppo": "ABp",
+  "dataArrivo": "2021-06-03",
+  "dataAffidamento": "2021-06-07",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Ospedale San Giovanni di Dio e Ruggi d'Aragona",
+  "indirizzoEnte": "Via San Leonardo, 5"
+},{
+  "_id": {
+    "$oid": "60c233c8fd6f2867c05b7578"
+  },
+  "seriale": "CTT002-00000046",
+  "gruppo": "ABm",
+  "dataArrivo": "2021-06-04",
+  "dataAffidamento": "2021-06-08",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Ospedale San Giovanni di Dio e Ruggi d'Aragona",
+  "indirizzoEnte": "Via San Leonardo, 5"
+},{
+  "_id": {
+    "$oid": "60c233d7fd6f2867c05b7587"
+  },
+  "seriale": "CTT002-00000047",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-06-04",
+  "dataAffidamento": "2021-06-10",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Presidio Ospedaliero Giovanni da Procida",
+  "indirizzoEnte": "Via Salvatore Calenda, 162"
+},{
+  "_id": {
+    "$oid": "60c23475fd6f2867c05b75f7"
+  },
+  "seriale": "CTT002-00000048",
+  "gruppo": "ZEROm",
+  "dataArrivo": "2021-06-04",
+  "dataAffidamento": "2021-06-12",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Ospedale San Giovanni di Dio e Ruggi d'Aragona",
+  "indirizzoEnte": "Via San Leonardo, 5"
+},{
+  "_id": {
+    "$oid": "60c2348afd6f2867c05b7609"
+  },
+  "seriale": "CTT002-00000049",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-06-05",
+  "dataAffidamento": "2021-06-06",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Presidio Ospedaliero Giovanni da Procida",
+  "indirizzoEnte": "Via Salvatore Calenda, 162"
+},{
+  "_id": {
+    "$oid": "60c234b2fd6f2867c05b762e"
+  },
+  "seriale": "CTT002-00000050",
+  "gruppo": "Am",
+  "dataArrivo": "2021-06-05",
+  "dataAffidamento": "2021-06-11",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Ospedale San Giovanni di Dio e Ruggi d'Aragona",
+  "indirizzoEnte": "Via San Leonardo, 5"
+},{
+  "_id": {
+    "$oid": "60c234bdfd6f2867c05b763a"
+  },
+  "seriale": "CTT002-00000051",
+  "gruppo": "Bp",
+  "dataArrivo": "2021-06-05",
+  "dataAffidamento": "2021-06-12",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Presidio Ospedaliero Giovanni da Procida",
+  "indirizzoEnte": "Via Salvatore Calenda, 162"
+},{
+  "_id": {
+    "$oid": "60c234cbfd6f2867c05b7648"
+  },
+  "seriale": "CTT002-00000052",
+  "gruppo": "Bm",
+  "dataArrivo": "2021-06-05",
+  "dataAffidamento": "2021-06-07",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Ospedale San Giovanni di Dio e Ruggi d'Aragona",
+  "indirizzoEnte": "Via San Leonardo, 5"
+},{
+  "_id": {
+    "$oid": "60c234f1fd6f2867c05b766b"
+  },
+  "seriale": "CTT002-00000053",
+  "gruppo": "ABp",
+  "dataArrivo": "2021-06-06",
+  "dataAffidamento": "2021-06-12",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Ospedale San Giovanni di Dio e Ruggi d'Aragona",
+  "indirizzoEnte": "Via San Leonardo, 5"
+},{
+  "_id": {
+    "$oid": "60c2351afd6f2867c05b768e"
+  },
+  "seriale": "CTT002-00000054",
+  "gruppo": "ABm",
+  "dataArrivo": "2021-06-06",
+  "dataAffidamento": "2021-06-10",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Presidio Ospedaliero Giovanni da Procida",
+  "indirizzoEnte": "Via Salvatore Calenda, 162"
+},{
+  "_id": {
+    "$oid": "60c23529fd6f2867c05b769f"
+  },
+  "seriale": "CTT002-00000055",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-06-06",
+  "dataAffidamento": "2021-06-08",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Ospedale San Giovanni di Dio e Ruggi d'Aragona",
+  "indirizzoEnte": "Via San Leonardo, 5"
+},{
+  "_id": {
+    "$oid": "60c23540fd6f2867c05b76b6"
+  },
+  "seriale": "CTT002-00000056",
+  "gruppo": "ZEROm",
+  "dataArrivo": "2021-06-07",
+  "dataAffidamento": "2021-06-15",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Ospedale San Giovanni di Dio e Ruggi d'Aragona",
+  "indirizzoEnte": "Via San Leonardo, 5"
+},{
+  "_id": {
+    "$oid": "60c2354cfd6f2867c05b76c4"
+  },
+  "seriale": "CTT002-00000057",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-06-07",
+  "dataAffidamento": "2021-06-19",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Presidio Ospedaliero Giovanni da Procida",
+  "indirizzoEnte": "Via Salvatore Calenda, 162"
+},{
+  "_id": {
+    "$oid": "60c23558fd6f2867c05b76d1"
+  },
+  "seriale": "CTT002-00000058",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-06-07",
+  "dataAffidamento": "2021-06-17",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Ospedale San Giovanni di Dio e Ruggi d'Aragona",
+  "indirizzoEnte": "Via San Leonardo, 5"
+},{
+  "_id": {
+    "$oid": "60c2357cfd6f2867c05b76f0"
+  },
+  "seriale": "CTT002-00000059",
+  "gruppo": "Bm",
+  "dataArrivo": "2021-06-08",
+  "dataAffidamento": "2021-06-12",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Ospedale San Giovanni di Dio e Ruggi d'Aragona",
+  "indirizzoEnte": "Via San Leonardo, 5"
+},{
+  "_id": {
+    "$oid": "60c23587fd6f2867c05b76fe"
+  },
+  "seriale": "CTT002-00000060",
+  "gruppo": "ABp",
+  "dataArrivo": "2021-06-08",
+  "dataAffidamento": "2021-06-10",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "Presidio Ospedaliero Giovanni da Procida",
+  "indirizzoEnte": "Via Salvatore Calenda, 162"
+}]

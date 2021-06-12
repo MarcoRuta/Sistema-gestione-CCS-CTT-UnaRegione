@@ -15,7 +15,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import it.unisannio.ingegneriaDelSoftware.CcsDataBaseRestApplication;
+import it.unisannio.ingegneriaDelSoftware.CcsRestApplication;
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.Beans.Seriale;
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.CTTName;
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.Notifiche.NotificaEvasione;
@@ -54,7 +54,7 @@ public class EndPointRestSaccheInScadenza implements EndPointSaccheInScadenzaCCS
 		//Recupero l'indirizzo del CTT che possiede la sacca in scadenza
 		String nomeCTT = seriale.substring(0,6);
 		String indirizzoCTT = Settings.ip.get(mm.getCTT(CTTName.getCttName(nomeCTT)));
-		CcsDataBaseRestApplication.logger.info("Ecco IP del CTT che possiede la sacca: "+ indirizzoCTT);
+		CcsRestApplication.logger.info("Ecco IP del CTT che possiede la sacca: "+ indirizzoCTT);
 
 		//Elimino la sacca dal database SACCHE_IN_SCADENZA del CCS
 		Seriale ser = new Seriale();
@@ -69,7 +69,7 @@ public class EndPointRestSaccheInScadenza implements EndPointSaccheInScadenzaCCS
 		WebTarget evasioneSacca = client.target("http://"+indirizzoCTT+":"+Settings.PORTA+"/rest/notifica/notificaEvasione");
 		
 		NotificaEvasione notifica = new NotificaEvasione(listaSeriali,ente_richiedente,indirizzo, "La tua sacca è stata richiesta da un CTT");
-		CcsDataBaseRestApplication.logger.info("Ho creato la notifica evasione Sacca che sto per inoltrare al CTT che possiede la sacca: "+notifica);
+		CcsRestApplication.logger.info("Ho creato la notifica evasione Sacca che sto per inoltrare al CTT che possiede la sacca: "+notifica);
 		Response response = evasioneSacca.request().post(Entity.entity(notifica, MediaType.APPLICATION_JSON));
 		//Aggiorno la lista delle notifiche presenti sui CTT
 		this.notifyCTT(NotificaSaccaInScadenzaMaker.creaNotificheSaccheInScadenza());
@@ -95,7 +95,7 @@ public class EndPointRestSaccheInScadenza implements EndPointSaccheInScadenzaCCS
 		Seriale ser = new Seriale();
 		ser.setSeriale(seriale);
 		mm.removeSacca(ser);
-		CcsDataBaseRestApplication.logger.info("Alert ritirato correttamente per la sacca con seriale: "+seriale);
+		CcsRestApplication.logger.info("Alert ritirato correttamente per la sacca con seriale: "+seriale);
 
 		//Aggiorno la lista delle notifiche presenti sui CTT
 		this.notifyCTT(NotificaSaccaInScadenzaMaker.creaNotificheSaccheInScadenza());
@@ -106,6 +106,6 @@ public class EndPointRestSaccheInScadenza implements EndPointSaccheInScadenzaCCS
 	@Override
 	public void notifyCTT(List<Notifica> notifiche) {
 		this.cttObserver.update(notifiche);
-		CcsDataBaseRestApplication.logger.info("Sto per inoltrare le sacche in scadenza ai CTT");
+		CcsRestApplication.logger.info("Sto per inoltrare le sacche in scadenza ai CTT");
 	}	
 }

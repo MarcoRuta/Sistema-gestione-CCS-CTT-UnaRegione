@@ -1,0 +1,441 @@
+[{
+  "_id": {
+    "$oid": "60c372ba88efcf4cf7f54505"
+  },
+  "seriale": "CTT002-00000061",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c372d888efcf4cf7f54520"
+  },
+  "seriale": "CTT002-00000062",
+  "gruppo": "Bp",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c372fb88efcf4cf7f5453e"
+  },
+  "seriale": "CTT002-00000063",
+  "gruppo": "ABp",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3731888efcf4cf7f54559"
+  },
+  "seriale": "CTT002-00000064",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3732b88efcf4cf7f5456b"
+  },
+  "seriale": "CTT002-00000065",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3734388efcf4cf7f5457d"
+  },
+  "seriale": "CTT002-00000066",
+  "gruppo": "Bp",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3737c88efcf4cf7f545ac"
+  },
+  "seriale": "CTT002-00000067",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3739d88efcf4cf7f545c4"
+  },
+  "seriale": "CTT002-00000068",
+  "gruppo": "Am",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c373ba88efcf4cf7f545df"
+  },
+  "seriale": "CTT002-00000069",
+  "gruppo": "Bp",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c373db88efcf4cf7f545f9"
+  },
+  "seriale": "CTT002-00000070",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c373f388efcf4cf7f54610"
+  },
+  "seriale": "CTT002-00000071",
+  "gruppo": "Bp",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3741b88efcf4cf7f5462f"
+  },
+  "seriale": "CTT002-00000072",
+  "gruppo": "ZEROm",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3742b88efcf4cf7f5463b"
+  },
+  "seriale": "CTT002-00000073",
+  "gruppo": "Bp",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3744288efcf4cf7f5464f"
+  },
+  "seriale": "CTT002-00000074",
+  "gruppo": "Am",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3745b88efcf4cf7f54666"
+  },
+  "seriale": "CTT002-00000075",
+  "gruppo": "Bm",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c374a188efcf4cf7f54695"
+  },
+  "seriale": "CTT002-00000076",
+  "gruppo": "ABp",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c374b688efcf4cf7f546a7"
+  },
+  "seriale": "CTT002-00000077",
+  "gruppo": "ABm",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c374cf88efcf4cf7f546c1"
+  },
+  "seriale": "CTT002-00000078",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c374ec88efcf4cf7f546dc"
+  },
+  "seriale": "CTT002-00000079",
+  "gruppo": "Bp",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3756c88efcf4cf7f5472f"
+  },
+  "seriale": "CTT002-00000080",
+  "gruppo": "Bp",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3758e88efcf4cf7f5474d"
+  },
+  "seriale": "CTT002-00000081",
+  "gruppo": "Bp",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c375be88efcf4cf7f54772"
+  },
+  "seriale": "CTT002-00000082",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c375d588efcf4cf7f54786"
+  },
+  "seriale": "CTT002-00000083",
+  "gruppo": "Am",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c375e688efcf4cf7f54795"
+  },
+  "seriale": "CTT002-00000084",
+  "gruppo": "Bm",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3761b88efcf4cf7f547c0"
+  },
+  "seriale": "CTT002-00000085",
+  "gruppo": "ABm",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3762e88efcf4cf7f547d3"
+  },
+  "seriale": "CTT002-00000086",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3764488efcf4cf7f547e6"
+  },
+  "seriale": "CTT002-00000087",
+  "gruppo": "Bp",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3765b88efcf4cf7f547f8"
+  },
+  "seriale": "CTT002-00000088",
+  "gruppo": "ABm",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3767488efcf4cf7f5480f"
+  },
+  "seriale": "CTT002-00000089",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3768b88efcf4cf7f54821"
+  },
+  "seriale": "CTT002-00000090",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c376ad88efcf4cf7f5483c"
+  },
+  "seriale": "CTT002-00000091",
+  "gruppo": "ZEROm",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c376d588efcf4cf7f54858"
+  },
+  "seriale": "CTT002-00000092",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c376e188efcf4cf7f5486a"
+  },
+  "seriale": "CTT002-00000093",
+  "gruppo": "Bm",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c376f688efcf4cf7f5487c"
+  },
+  "seriale": "CTT002-00000094",
+  "gruppo": "Bp",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3772888efcf4cf7f548a1"
+  },
+  "seriale": "CTT002-00000095",
+  "gruppo": "ABp",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3773688efcf4cf7f548ad"
+  },
+  "seriale": "CTT002-00000096",
+  "gruppo": "ABp",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3774388efcf4cf7f548c0"
+  },
+  "seriale": "CTT002-00000097",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3775388efcf4cf7f548cf"
+  },
+  "seriale": "CTT002-00000098",
+  "gruppo": "ZEROm",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c3776388efcf4cf7f548e0"
+  },
+  "seriale": "CTT002-00000099",
+  "gruppo": "ABp",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+},{
+  "_id": {
+    "$oid": "60c377d688efcf4cf7f5492d"
+  },
+  "seriale": "CTT002-00000101",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-06-11",
+  "dataAffidamento": "",
+  "enteDonatore": "AVIS Salerno",
+  "enteRichiedente": "",
+  "indirizzoEnte": ""
+}]

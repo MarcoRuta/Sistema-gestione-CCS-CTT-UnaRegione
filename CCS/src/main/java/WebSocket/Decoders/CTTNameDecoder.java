@@ -2,7 +2,7 @@ package WebSocket.Decoders;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import it.unisannio.ingegneriaDelSoftware.CcsDataBaseRestApplication;
+import it.unisannio.ingegneriaDelSoftware.CcsRestApplication;
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.CTTName;
 import javax.websocket.DecodeException;
 import javax.websocket.Decoder;
@@ -16,7 +16,7 @@ public class CTTNameDecoder implements Decoder.Text<CTTName> {
         try {
             return new ObjectMapper().readValue(s,CTTName.class);
         } catch (JsonProcessingException e) {
-            CcsDataBaseRestApplication.logger.error("Non sono riuscito a deserializzare l'oggetto "+s);
+            CcsRestApplication.logger.error("Non sono riuscito a deserializzare l'oggetto "+s);
         }
         return null;
     }

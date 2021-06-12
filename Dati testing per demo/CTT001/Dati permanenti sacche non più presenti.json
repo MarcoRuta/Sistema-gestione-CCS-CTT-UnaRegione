@@ -1,0 +1,672 @@
+[{
+  "_id": {
+    "$oid": "60c22b4a96c09522b770502e"
+  },
+  "seriale": "CTT001-00000002",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-04-12",
+  "dataAffidamento": "2021-04-15",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c22c6396c09522b7705113"
+  },
+  "seriale": "CTT001-00000003",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-04-01",
+  "dataAffidamento": "2021-04-12",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c22cb996c09522b77051c9"
+  },
+  "seriale": "CTT001-00000004",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-04-12",
+  "dataAffidamento": "2021-04-17",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c22cc696c09522b77051d5"
+  },
+  "seriale": "CTT001-00000005",
+  "gruppo": "ABp",
+  "dataArrivo": "2021-04-12",
+  "dataAffidamento": "2021-04-18",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c22cd396c09522b77051e4"
+  },
+  "seriale": "CTT001-00000006",
+  "gruppo": "ABp",
+  "dataArrivo": "2021-04-02",
+  "dataAffidamento": "2021-04-19",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c22cdf96c09522b77051f3"
+  },
+  "seriale": "CTT001-00000007",
+  "gruppo": "ABp",
+  "dataArrivo": "2021-04-18",
+  "dataAffidamento": "2021-04-28",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c22d0696c09522b770524a"
+  },
+  "seriale": "CTT001-00000008",
+  "gruppo": "Bp",
+  "dataArrivo": "2021-04-02",
+  "dataAffidamento": "2021-04-22",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c22d1196c09522b7705257"
+  },
+  "seriale": "CTT001-00000009",
+  "gruppo": "Bp",
+  "dataArrivo": "2021-04-23",
+  "dataAffidamento": "2021-04-30",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c22d1996c09522b7705261"
+  },
+  "seriale": "CTT001-00000010",
+  "gruppo": "Bp",
+  "dataArrivo": "2021-04-12",
+  "dataAffidamento": "2021-04-20",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c22d2596c09522b770526f"
+  },
+  "seriale": "CTT001-00000011",
+  "gruppo": "ZEROm",
+  "dataArrivo": "2021-04-10",
+  "dataAffidamento": "2021-04-28",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c22d3196c09522b770527b"
+  },
+  "seriale": "CTT001-00000012",
+  "gruppo": "ZEROm",
+  "dataArrivo": "2021-04-13",
+  "dataAffidamento": "2021-04-25",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c22d4796c09522b77052c5"
+  },
+  "seriale": "CTT001-00000013",
+  "gruppo": "ZEROm",
+  "dataArrivo": "2021-04-12",
+  "dataAffidamento": "2021-04-16",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c22d5696c09522b77052d6"
+  },
+  "seriale": "CTT001-00000014",
+  "gruppo": "Am",
+  "dataArrivo": "2021-04-21",
+  "dataAffidamento": "2021-04-26",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c22d5f96c09522b77052e1"
+  },
+  "seriale": "CTT001-00000015",
+  "gruppo": "Am",
+  "dataArrivo": "2021-04-12",
+  "dataAffidamento": "2021-04-17",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c22d6996c09522b77052ef"
+  },
+  "seriale": "CTT001-00000016",
+  "gruppo": "Bm",
+  "dataArrivo": "2021-04-01",
+  "dataAffidamento": "2021-06-10",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c22d7b96c09522b7705334"
+  },
+  "seriale": "CTT001-00000017",
+  "gruppo": "Am",
+  "dataArrivo": "2021-04-12",
+  "dataAffidamento": "2021-04-27",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c22d8696c09522b7705340"
+  },
+  "seriale": "CTT001-00000018",
+  "gruppo": "Bm",
+  "dataArrivo": "2021-04-10",
+  "dataAffidamento": "2021-04-20",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c22dac96c09522b770539b"
+  },
+  "seriale": "CTT001-00000020",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-04-12",
+  "dataAffidamento": "2021-04-22",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c22ddd96c09522b7705412"
+  },
+  "seriale": "CTT001-00000021",
+  "gruppo": "ABm",
+  "dataArrivo": "2021-04-11",
+  "dataAffidamento": "2021-04-17",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c22de796c09522b770541e"
+  },
+  "seriale": "CTT001-00000022",
+  "gruppo": "ABm",
+  "dataArrivo": "2021-04-12",
+  "dataAffidamento": "2021-04-23",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c22ef496c09522b77054cd"
+  },
+  "seriale": "CTT001-00000023",
+  "gruppo": "Am",
+  "dataArrivo": "2021-05-12",
+  "dataAffidamento": "2021-05-30",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c22efc96c09522b77054d8"
+  },
+  "seriale": "CTT001-00000024",
+  "gruppo": "Am",
+  "dataArrivo": "2021-05-10",
+  "dataAffidamento": "2021-05-13",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c22f0c96c09522b77054e6"
+  },
+  "seriale": "CTT001-00000025",
+  "gruppo": "Am",
+  "dataArrivo": "2021-05-12",
+  "dataAffidamento": "2021-05-14",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c22f6d96c09522b770562b"
+  },
+  "seriale": "CTT001-00000026",
+  "gruppo": "ABp",
+  "dataArrivo": "2021-05-11",
+  "dataAffidamento": "2021-05-19",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c22f7796c09522b7705637"
+  },
+  "seriale": "CTT001-00000027",
+  "gruppo": "ABp",
+  "dataArrivo": "2021-05-04",
+  "dataAffidamento": "2021-05-12",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c22f7f96c09522b7705642"
+  },
+  "seriale": "CTT001-00000028",
+  "gruppo": "ABp",
+  "dataArrivo": "2021-05-05",
+  "dataAffidamento": "2021-05-19",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c22f8e96c09522b770564f"
+  },
+  "seriale": "CTT001-00000029",
+  "gruppo": "Bm",
+  "dataArrivo": "2021-05-20",
+  "dataAffidamento": "2021-05-30",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c22f9896c09522b770565b"
+  },
+  "seriale": "CTT001-00000030",
+  "gruppo": "Bm",
+  "dataArrivo": "2021-05-22",
+  "dataAffidamento": "2021-06-30",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c22f9f96c09522b7705667"
+  },
+  "seriale": "CTT001-00000031",
+  "gruppo": "Bm",
+  "dataArrivo": "2021-05-15",
+  "dataAffidamento": "2021-05-26",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c22fbe96c09522b77056d9"
+  },
+  "seriale": "CTT001-00000032",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-05-06",
+  "dataAffidamento": "2021-05-14",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c22fc696c09522b77056e5"
+  },
+  "seriale": "CTT001-00000033",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-05-07",
+  "dataAffidamento": "2021-05-10",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c22fd096c09522b77056f0"
+  },
+  "seriale": "CTT001-00000034",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-05-06",
+  "dataAffidamento": "2021-05-14",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c22fea96c09522b7705765"
+  },
+  "seriale": "CTT001-00000035",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-05-14",
+  "dataAffidamento": "2021-05-19",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c22ff396c09522b770576f"
+  },
+  "seriale": "CTT001-00000036",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-05-12",
+  "dataAffidamento": "2021-05-17",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c22ffe96c09522b770577d"
+  },
+  "seriale": "CTT001-00000037",
+  "gruppo": "Bp",
+  "dataArrivo": "2021-05-10",
+  "dataAffidamento": "2021-05-10",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c2300f96c09522b77057e4"
+  },
+  "seriale": "CTT001-00000038",
+  "gruppo": "Bp",
+  "dataArrivo": "2021-05-17",
+  "dataAffidamento": "2021-05-24",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c2301b96c09522b77057f5"
+  },
+  "seriale": "CTT001-00000039",
+  "gruppo": "ABm",
+  "dataArrivo": "2021-05-12",
+  "dataAffidamento": "2021-05-30",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c2302396c09522b77057fc"
+  },
+  "seriale": "CTT001-00000040",
+  "gruppo": "ABm",
+  "dataArrivo": "2021-05-16",
+  "dataAffidamento": "2021-05-23",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c2302d96c09522b7705808"
+  },
+  "seriale": "CTT001-00000041",
+  "gruppo": "ZEROm",
+  "dataArrivo": "2021-05-20",
+  "dataAffidamento": "2021-05-30",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c2303596c09522b7705815"
+  },
+  "seriale": "CTT001-00000042",
+  "gruppo": "ZEROm",
+  "dataArrivo": "2021-05-10",
+  "dataAffidamento": "2021-05-17",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c231c596c09522b770596c"
+  },
+  "seriale": "CTT001-00000043",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-06-01",
+  "dataAffidamento": "2021-06-06",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c231cd96c09522b7705977"
+  },
+  "seriale": "CTT001-00000044",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-06-04",
+  "dataAffidamento": "2021-06-09",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c231d496c09522b7705983"
+  },
+  "seriale": "CTT001-00000045",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-06-04",
+  "dataAffidamento": "2021-06-07",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c231e096c09522b770598f"
+  },
+  "seriale": "CTT001-00000046",
+  "gruppo": "ABm",
+  "dataArrivo": "2021-06-09",
+  "dataAffidamento": "2021-06-10",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c231e896c09522b770599c"
+  },
+  "seriale": "CTT001-00000047",
+  "gruppo": "ABm",
+  "dataArrivo": "2021-06-07",
+  "dataAffidamento": "2021-06-12",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c231f496c09522b77059a8"
+  },
+  "seriale": "CTT001-00000048",
+  "gruppo": "ABm",
+  "dataArrivo": "2021-06-01",
+  "dataAffidamento": "2021-06-04",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c2320996c09522b7705a14"
+  },
+  "seriale": "CTT001-00000049",
+  "gruppo": "Bp",
+  "dataArrivo": "2021-06-02",
+  "dataAffidamento": "2021-06-02",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c2321096c09522b7705a20"
+  },
+  "seriale": "CTT001-00000050",
+  "gruppo": "Bp",
+  "dataArrivo": "2021-06-06",
+  "dataAffidamento": "2021-06-10",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c2321a96c09522b7705a2d"
+  },
+  "seriale": "CTT001-00000051",
+  "gruppo": "Bp",
+  "dataArrivo": "2021-06-03",
+  "dataAffidamento": "2021-06-04",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c2322196c09522b7705a34"
+  },
+  "seriale": "CTT001-00000052",
+  "gruppo": "ZEROm",
+  "dataArrivo": "2021-06-05",
+  "dataAffidamento": "2021-06-07",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c2323096c09522b7705a45"
+  },
+  "seriale": "CTT001-00000053",
+  "gruppo": "ZEROm",
+  "dataArrivo": "2021-06-01",
+  "dataAffidamento": "2021-06-08",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c2323f96c09522b7705aab"
+  },
+  "seriale": "CTT001-00000054",
+  "gruppo": "ZEROm",
+  "dataArrivo": "2021-06-07",
+  "dataAffidamento": "2021-06-10",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c2324a96c09522b7705abb"
+  },
+  "seriale": "CTT001-00000055",
+  "gruppo": "Am",
+  "dataArrivo": "2021-06-01",
+  "dataAffidamento": "2021-06-12",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c2325296c09522b7705ac6"
+  },
+  "seriale": "CTT001-00000056",
+  "gruppo": "Am",
+  "dataArrivo": "2021-06-05",
+  "dataAffidamento": "2021-06-17",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c2325b96c09522b7705ad2"
+  },
+  "seriale": "CTT001-00000057",
+  "gruppo": "Bm",
+  "dataArrivo": "2021-06-02",
+  "dataAffidamento": "2021-06-22",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c2326e96c09522b7705b3c"
+  },
+  "seriale": "CTT001-00000058",
+  "gruppo": "Bm",
+  "dataArrivo": "2021-06-04",
+  "dataAffidamento": "2021-06-19",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c2327796c09522b7705b48"
+  },
+  "seriale": "CTT001-00000059",
+  "gruppo": "ABp",
+  "dataArrivo": "2021-06-10",
+  "dataAffidamento": "2021-06-20",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c2327e96c09522b7705b54"
+  },
+  "seriale": "CTT001-00000060",
+  "gruppo": "ABp",
+  "dataArrivo": "2021-06-04",
+  "dataAffidamento": "2021-06-19",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c2328d96c09522b7705bb9"
+  },
+  "seriale": "CTT001-00000061",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-06-07",
+  "dataAffidamento": "2021-06-22",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c2329996c09522b7705c1e"
+  },
+  "seriale": "CTT001-00000062",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-06-04",
+  "dataAffidamento": "2021-06-18",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+},{
+  "_id": {
+    "$oid": "60c235c896c09522b77060dd"
+  },
+  "seriale": "CTT001-00000071",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-06-01",
+  "dataAffidamento": "2021-06-10",
+  "enteDonatore": "Avis Benevento",
+  "enteRichiedente": "Ospedale Rummo",
+  "indirizzoEnte": "Via Pacevecchia, 53"
+}]

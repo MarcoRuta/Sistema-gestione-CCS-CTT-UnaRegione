@@ -1,0 +1,13 @@
+CTT001 data index:
+
+Ente donatore: AVIS Benevento
+
+60 Datisacche per query
+100 Datisacche complete tra presenti e non
+40 sacche presenti al momento nel DB
+
+Sono presenti:
+
+12 sacche in scadenza tra il 16 e il 18 giugno
+3 sacche scadute prima del 15/06/2021
+27 sacche utili

@@ -1,0 +1,661 @@
+[{
+  "_id": {
+    "$oid": "60c231abb6d87b551425e914"
+  },
+  "seriale": "CTT003-00000001",
+  "gruppo": "ABp",
+  "dataArrivo": "2021-04-01",
+  "dataAffidamento": "2021-04-02",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale San Paolo Asl",
+  "indirizzoEnte": "Via Terracina, 219"
+},{
+  "_id": {
+    "$oid": "60c23222b6d87b551425e9d7"
+  },
+  "seriale": "CTT003-00000002",
+  "gruppo": "Bp",
+  "dataArrivo": "2021-04-01",
+  "dataAffidamento": "2021-04-08",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale San Paolo Asl",
+  "indirizzoEnte": "Via Terracina, 219"
+},{
+  "_id": {
+    "$oid": "60c2322cb6d87b551425e9e3"
+  },
+  "seriale": "CTT003-00000003",
+  "gruppo": "ABp",
+  "dataArrivo": "2021-04-04",
+  "dataAffidamento": "2021-04-08",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale San Paolo Asl",
+  "indirizzoEnte": "Via Terracina, 219"
+},{
+  "_id": {
+    "$oid": "60c23235b6d87b551425e9ef"
+  },
+  "seriale": "CTT003-00000004",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-04-04",
+  "dataAffidamento": "2021-04-08",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale del Mare",
+  "indirizzoEnte": "Via Enrico Russo, 11"
+},{
+  "_id": {
+    "$oid": "60c23251b6d87b551425ea68"
+  },
+  "seriale": "CTT003-00000005",
+  "gruppo": "ABm",
+  "dataArrivo": "2021-04-06",
+  "dataAffidamento": "2021-04-08",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale San Paolo Asl",
+  "indirizzoEnte": "Via Terracina, 219"
+},{
+  "_id": {
+    "$oid": "60c2325db6d87b551425ea75"
+  },
+  "seriale": "CTT003-00000006",
+  "gruppo": "Bp",
+  "dataArrivo": "2021-04-06",
+  "dataAffidamento": "2021-04-12",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale San Gennaro",
+  "indirizzoEnte": "Via S. Gennaro dei Poveri, 25"
+},{
+  "_id": {
+    "$oid": "60c23265b6d87b551425ea81"
+  },
+  "seriale": "CTT003-00000007",
+  "gruppo": "ABm",
+  "dataArrivo": "2021-04-06",
+  "dataAffidamento": "2021-04-12",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale S. Maria di Loreto Nuovo",
+  "indirizzoEnte": "Via Amerigo Vespucci, 15"
+},{
+  "_id": {
+    "$oid": "60c2326fb6d87b551425ea8d"
+  },
+  "seriale": "CTT003-00000008",
+  "gruppo": "ABp",
+  "dataArrivo": "2021-04-06",
+  "dataAffidamento": "2021-04-12",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale San Paolo Asl",
+  "indirizzoEnte": "Via Terracina, 219"
+},{
+  "_id": {
+    "$oid": "60c23279b6d87b551425ea99"
+  },
+  "seriale": "CTT003-00000009",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-04-09",
+  "dataAffidamento": "2021-04-12",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale San Gennaro",
+  "indirizzoEnte": "Via S. Gennaro dei Poveri, 25"
+},{
+  "_id": {
+    "$oid": "60c23283b6d87b551425eaa5"
+  },
+  "seriale": "CTT003-00000010",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-04-10",
+  "dataAffidamento": "2021-04-12",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale del Mare",
+  "indirizzoEnte": "Via Enrico Russo, 11"
+},{
+  "_id": {
+    "$oid": "60c2328bb6d87b551425eaaf"
+  },
+  "seriale": "CTT003-00000011",
+  "gruppo": "ABp",
+  "dataArrivo": "2021-04-10",
+  "dataAffidamento": "2021-04-15",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale San Paolo Asl",
+  "indirizzoEnte": "Via Terracina, 219"
+},{
+  "_id": {
+    "$oid": "60c23294b6d87b551425eabb"
+  },
+  "seriale": "CTT003-00000012",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-04-10",
+  "dataAffidamento": "2021-04-15",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale San Paolo Asl",
+  "indirizzoEnte": "Via Terracina, 219"
+},{
+  "_id": {
+    "$oid": "60c2329fb6d87b551425eac9"
+  },
+  "seriale": "CTT003-00000013",
+  "gruppo": "Am",
+  "dataArrivo": "2021-04-11",
+  "dataAffidamento": "2021-04-15",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale del Mare",
+  "indirizzoEnte": "Via Enrico Russo, 11"
+},{
+  "_id": {
+    "$oid": "60c232c1b6d87b551425eb3e"
+  },
+  "seriale": "CTT003-00000014",
+  "gruppo": "Bp",
+  "dataArrivo": "2021-04-11",
+  "dataAffidamento": "2021-04-15",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale San Paolo Asl",
+  "indirizzoEnte": "Via Terracina, 219"
+},{
+  "_id": {
+    "$oid": "60c232cdb6d87b551425eb4c"
+  },
+  "seriale": "CTT003-00000015",
+  "gruppo": "ABm",
+  "dataArrivo": "2021-04-11",
+  "dataAffidamento": "2021-04-15",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale S. Maria di Loreto Nuovo",
+  "indirizzoEnte": "Via Amerigo Vespucci, 15"
+},{
+  "_id": {
+    "$oid": "60c232e9b6d87b551425ebc5"
+  },
+  "seriale": "CTT003-00000016",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-04-12",
+  "dataAffidamento": "2021-04-19",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale del Mare",
+  "indirizzoEnte": "Via Enrico Russo, 11"
+},{
+  "_id": {
+    "$oid": "60c232f6b6d87b551425ebd1"
+  },
+  "seriale": "CTT003-00000017",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-04-12",
+  "dataAffidamento": "2021-04-19",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale S. Maria di Loreto Nuovo",
+  "indirizzoEnte": "Via Amerigo Vespucci, 15"
+},{
+  "_id": {
+    "$oid": "60c23302b6d87b551425ebdf"
+  },
+  "seriale": "CTT003-00000018",
+  "gruppo": "ABm",
+  "dataArrivo": "2021-04-12",
+  "dataAffidamento": "2021-04-19",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale San Gennaro",
+  "indirizzoEnte": "Via S. Gennaro dei Poveri, 25"
+},{
+  "_id": {
+    "$oid": "60c23310b6d87b551425ebef"
+  },
+  "seriale": "CTT003-00000019",
+  "gruppo": "ABp",
+  "dataArrivo": "2021-04-14",
+  "dataAffidamento": "2021-04-19",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale San Paolo Asl",
+  "indirizzoEnte": "Via Terracina, 219"
+},{
+  "_id": {
+    "$oid": "60c23340b6d87b551425ec6f"
+  },
+  "seriale": "CTT003-00000020",
+  "gruppo": "Am",
+  "dataArrivo": "2021-04-16",
+  "dataAffidamento": "2021-04-19",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale del Mare",
+  "indirizzoEnte": "Via Enrico Russo, 11"
+},{
+  "_id": {
+    "$oid": "60c234afb6d87b551425edf0"
+  },
+  "seriale": "CTT003-00000021",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-05-01",
+  "dataAffidamento": "2021-05-04",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale del Mare",
+  "indirizzoEnte": "Via Enrico Russo, 11"
+},{
+  "_id": {
+    "$oid": "60c234e2b6d87b551425f022"
+  },
+  "seriale": "CTT003-00000022",
+  "gruppo": "Bm",
+  "dataArrivo": "2021-05-01",
+  "dataAffidamento": "2021-05-07",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale Cotugno",
+  "indirizzoEnte": "Via Gaetano Quagliariello, 54"
+},{
+  "_id": {
+    "$oid": "60c23562b6d87b551425f28a"
+  },
+  "seriale": "CTT003-00000023",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-05-01",
+  "dataAffidamento": "2021-05-07",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale S. Maria di Loreto Nuovo",
+  "indirizzoEnte": "Via Amerigo Vespucci, 15"
+},{
+  "_id": {
+    "$oid": "60c2356bb6d87b551425f296"
+  },
+  "seriale": "CTT003-00000024",
+  "gruppo": "ABm",
+  "dataArrivo": "2021-05-03",
+  "dataAffidamento": "2021-05-07",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale San Paolo Asl",
+  "indirizzoEnte": "Via Terracina, 219"
+},{
+  "_id": {
+    "$oid": "60c23585b6d87b551425f363"
+  },
+  "seriale": "CTT003-00000025",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-05-03",
+  "dataAffidamento": "2021-05-10",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale del Mare",
+  "indirizzoEnte": "Via Enrico Russo, 11"
+},{
+  "_id": {
+    "$oid": "60c2359fb6d87b551425f42f"
+  },
+  "seriale": "CTT003-00000026",
+  "gruppo": "ABm",
+  "dataArrivo": "2021-05-03",
+  "dataAffidamento": "2021-05-10",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale San Paolo Asl",
+  "indirizzoEnte": "Via Terracina, 219"
+},{
+  "_id": {
+    "$oid": "60c235a8b6d87b551425f43a"
+  },
+  "seriale": "CTT003-00000027",
+  "gruppo": "Bm",
+  "dataArrivo": "2021-05-09",
+  "dataAffidamento": "2021-05-10",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale Cotugno",
+  "indirizzoEnte": "Via Gaetano Quagliariello, 54"
+},{
+  "_id": {
+    "$oid": "60c235b4b6d87b551425f448"
+  },
+  "seriale": "CTT003-00000028",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-05-09",
+  "dataAffidamento": "2021-05-12",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale San Gennaro",
+  "indirizzoEnte": "Via S. Gennaro dei Poveri, 25"
+},{
+  "_id": {
+    "$oid": "60c235c4b6d87b551425f457"
+  },
+  "seriale": "CTT003-00000029",
+  "gruppo": "ZEROm",
+  "dataArrivo": "2021-05-09",
+  "dataAffidamento": "2021-05-12",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale S. Maria di Loreto Nuovo",
+  "indirizzoEnte": "Via Amerigo Vespucci, 15"
+},{
+  "_id": {
+    "$oid": "60c235ceb6d87b551425f463"
+  },
+  "seriale": "CTT003-00000030",
+  "gruppo": "ZEROm",
+  "dataArrivo": "2021-05-09",
+  "dataAffidamento": "2021-05-12",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale San Gennaro",
+  "indirizzoEnte": "Via S. Gennaro dei Poveri, 25"
+},{
+  "_id": {
+    "$oid": "60c235d8b6d87b551425f46f"
+  },
+  "seriale": "CTT003-00000031",
+  "gruppo": "ZEROm",
+  "dataArrivo": "2021-05-11",
+  "dataAffidamento": "2021-05-12",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale S. Maria di Loreto Nuovo",
+  "indirizzoEnte": "Via Amerigo Vespucci, 15"
+},{
+  "_id": {
+    "$oid": "60c235e6b6d87b551425f47e"
+  },
+  "seriale": "CTT003-00000032",
+  "gruppo": "Bm",
+  "dataArrivo": "2021-05-11",
+  "dataAffidamento": "2021-05-14",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale S. Maria di Loreto Nuovo",
+  "indirizzoEnte": "Via Amerigo Vespucci, 15"
+},{
+  "_id": {
+    "$oid": "60c235fbb6d87b551425f547"
+  },
+  "seriale": "CTT003-00000033",
+  "gruppo": "Bm",
+  "dataArrivo": "2021-05-11",
+  "dataAffidamento": "2021-05-14",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale Cotugno",
+  "indirizzoEnte": "Via Gaetano Quagliariello, 54"
+},{
+  "_id": {
+    "$oid": "60c23605b6d87b551425f553"
+  },
+  "seriale": "CTT003-00000034",
+  "gruppo": "Am",
+  "dataArrivo": "2021-05-11",
+  "dataAffidamento": "2021-05-14",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale San Paolo Asl",
+  "indirizzoEnte": "Via Terracina, 219"
+},{
+  "_id": {
+    "$oid": "60c23610b6d87b551425f561"
+  },
+  "seriale": "CTT003-00000035",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-05-11",
+  "dataAffidamento": "2021-05-14",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale San Paolo Asl",
+  "indirizzoEnte": "Via Terracina, 219"
+},{
+  "_id": {
+    "$oid": "60c23624b6d87b551425f62a"
+  },
+  "seriale": "CTT003-00000036",
+  "gruppo": "ABm",
+  "dataArrivo": "2021-05-13",
+  "dataAffidamento": "2021-05-14",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale San Gennaro",
+  "indirizzoEnte": "Via S. Gennaro dei Poveri, 25"
+},{
+  "_id": {
+    "$oid": "60c2362fb6d87b551425f636"
+  },
+  "seriale": "CTT003-00000037",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-05-13",
+  "dataAffidamento": "2021-05-17",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale San Gennaro",
+  "indirizzoEnte": "Via S. Gennaro dei Poveri, 25"
+},{
+  "_id": {
+    "$oid": "60c23646b6d87b551425f6fe"
+  },
+  "seriale": "CTT003-00000038",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-05-13",
+  "dataAffidamento": "2021-05-17",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale del Mare",
+  "indirizzoEnte": "Via Enrico Russo, 11"
+},{
+  "_id": {
+    "$oid": "60c2364eb6d87b551425f70a"
+  },
+  "seriale": "CTT003-00000039",
+  "gruppo": "ABp",
+  "dataArrivo": "2021-05-13",
+  "dataAffidamento": "2021-05-17",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale San Paolo Asl",
+  "indirizzoEnte": "Via Terracina, 219"
+},{
+  "_id": {
+    "$oid": "60c23658b6d87b551425f716"
+  },
+  "seriale": "CTT003-00000040",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-05-15",
+  "dataAffidamento": "2021-05-17",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale San Gennaro",
+  "indirizzoEnte": "Via S. Gennaro dei Poveri, 25"
+},{
+  "_id": {
+    "$oid": "60c23797b6d87b551425f8ac"
+  },
+  "seriale": "CTT003-00000041",
+  "gruppo": "Bp",
+  "dataArrivo": "2021-06-01",
+  "dataAffidamento": "2021-06-02",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale Cotugno",
+  "indirizzoEnte": "Via Gaetano Quagliariello, 54"
+},{
+  "_id": {
+    "$oid": "60c237a0b6d87b551425f8b6"
+  },
+  "seriale": "CTT003-00000042",
+  "gruppo": "Bp",
+  "dataArrivo": "2021-06-01",
+  "dataAffidamento": "2021-06-03",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale San Paolo Asl",
+  "indirizzoEnte": "Via Terracina, 219"
+},{
+  "_id": {
+    "$oid": "60c237a9b6d87b551425f8c0"
+  },
+  "seriale": "CTT003-00000043",
+  "gruppo": "ABm",
+  "dataArrivo": "2021-06-02",
+  "dataAffidamento": "2021-06-03",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale S. Maria di Loreto Nuovo",
+  "indirizzoEnte": "Via Amerigo Vespucci, 15"
+},{
+  "_id": {
+    "$oid": "60c237b0b6d87b551425f8ca"
+  },
+  "seriale": "CTT003-00000044",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-06-02",
+  "dataAffidamento": "2021-06-03",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale del Mare",
+  "indirizzoEnte": "Via Enrico Russo, 11"
+},{
+  "_id": {
+    "$oid": "60c237c4b6d87b551425f8dc"
+  },
+  "seriale": "CTT003-00000045",
+  "gruppo": "ZEROm",
+  "dataArrivo": "2021-06-05",
+  "dataAffidamento": "2021-06-07",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale San Gennaro",
+  "indirizzoEnte": "Via S. Gennaro dei Poveri, 25"
+},{
+  "_id": {
+    "$oid": "60c237d8b6d87b551425f9a7"
+  },
+  "seriale": "CTT003-00000046",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-06-05",
+  "dataAffidamento": "2021-06-07",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale S. Maria di Loreto Nuovo",
+  "indirizzoEnte": "Via Amerigo Vespucci, 15"
+},{
+  "_id": {
+    "$oid": "60c237e2b6d87b551425f9b4"
+  },
+  "seriale": "CTT003-00000047",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-06-05",
+  "dataAffidamento": "2021-06-07",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale S. Maria di Loreto Nuovo",
+  "indirizzoEnte": "Via Amerigo Vespucci, 15"
+},{
+  "_id": {
+    "$oid": "60c237e9b6d87b551425f9bf"
+  },
+  "seriale": "CTT003-00000048",
+  "gruppo": "Am",
+  "dataArrivo": "2021-06-05",
+  "dataAffidamento": "2021-06-07",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale Cotugno",
+  "indirizzoEnte": "Via Gaetano Quagliariello, 54"
+},{
+  "_id": {
+    "$oid": "60c237f5b6d87b551425f9cc"
+  },
+  "seriale": "CTT003-00000049",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-06-05",
+  "dataAffidamento": "2021-06-09",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale S. Maria di Loreto Nuovo",
+  "indirizzoEnte": "Via Amerigo Vespucci, 15"
+},{
+  "_id": {
+    "$oid": "60c237fdb6d87b551425f9d7"
+  },
+  "seriale": "CTT003-00000050",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-06-08",
+  "dataAffidamento": "2021-06-09",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale S. Maria di Loreto Nuovo",
+  "indirizzoEnte": "Via Amerigo Vespucci, 15"
+},{
+  "_id": {
+    "$oid": "60c2382fb6d87b551425fab2"
+  },
+  "seriale": "CTT003-00000051",
+  "gruppo": "ABm",
+  "dataArrivo": "2021-06-09",
+  "dataAffidamento": "2021-06-09",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale del Mare",
+  "indirizzoEnte": "Via Enrico Russo, 11"
+},{
+  "_id": {
+    "$oid": "60c23839b6d87b551425fabe"
+  },
+  "seriale": "CTT003-00000052",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-06-09",
+  "dataAffidamento": "2021-06-09",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale S. Maria di Loreto Nuovo",
+  "indirizzoEnte": "Via Amerigo Vespucci, 15"
+},{
+  "_id": {
+    "$oid": "60c23846b6d87b551425faca"
+  },
+  "seriale": "CTT003-00000053",
+  "gruppo": "ABp",
+  "dataArrivo": "2021-06-09",
+  "dataAffidamento": "2021-06-10",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale San Paolo Asl",
+  "indirizzoEnte": "Via Terracina, 219"
+},{
+  "_id": {
+    "$oid": "60c23865b6d87b551425fae4"
+  },
+  "seriale": "CTT003-00000054",
+  "gruppo": "ZEROm",
+  "dataArrivo": "2021-06-09",
+  "dataAffidamento": "2021-06-10",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale S. Maria di Loreto Nuovo",
+  "indirizzoEnte": "Via Amerigo Vespucci, 15"
+},{
+  "_id": {
+    "$oid": "60c23872b6d87b551425faf4"
+  },
+  "seriale": "CTT003-00000055",
+  "gruppo": "Am",
+  "dataArrivo": "2021-06-09",
+  "dataAffidamento": "2021-06-10",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale San Gennaro",
+  "indirizzoEnte": "Via S. Gennaro dei Poveri, 25"
+},{
+  "_id": {
+    "$oid": "60c2387fb6d87b551425fb01"
+  },
+  "seriale": "CTT003-00000056",
+  "gruppo": "Bm",
+  "dataArrivo": "2021-06-09",
+  "dataAffidamento": "2021-06-10",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale San Paolo Asl",
+  "indirizzoEnte": "Via Terracina, 219"
+},{
+  "_id": {
+    "$oid": "60c23886b6d87b551425fb0b"
+  },
+  "seriale": "CTT003-00000057",
+  "gruppo": "ZEROp",
+  "dataArrivo": "2021-06-09",
+  "dataAffidamento": "2021-06-10",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale San Paolo Asl",
+  "indirizzoEnte": "Via Terracina, 219"
+},{
+  "_id": {
+    "$oid": "60c2388cb6d87b551425fb14"
+  },
+  "seriale": "CTT003-00000058",
+  "gruppo": "ZEROm",
+  "dataArrivo": "2021-06-09",
+  "dataAffidamento": "2021-06-10",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale San Paolo Asl",
+  "indirizzoEnte": "Via Terracina, 219"
+},{
+  "_id": {
+    "$oid": "60c23893b6d87b551425fb20"
+  },
+  "seriale": "CTT003-00000059",
+  "gruppo": "Ap",
+  "dataArrivo": "2021-06-10",
+  "dataAffidamento": "2021-06-10",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale S. Maria di Loreto Nuovo",
+  "indirizzoEnte": "Via Amerigo Vespucci, 15"
+},{
+  "_id": {
+    "$oid": "60c2389bb6d87b551425fb2c"
+  },
+  "seriale": "CTT003-00000060",
+  "gruppo": "Am",
+  "dataArrivo": "2021-06-10",
+  "dataAffidamento": "2021-06-10",
+  "enteDonatore": "AVIS Napoli",
+  "enteRichiedente": "Ospedale San Paolo Asl",
+  "indirizzoEnte": "Via Terracina, 219"
+}]

@@ -16,11 +16,11 @@ import javax.ws.rs.ApplicationPath;
 
 @SpringBootApplication (scanBasePackages = {"WebSocket", "ingegneriaDelSoftware"})
 @ApplicationPath("/rest")
-public class CcsDataBaseRestApplication extends ResourceConfig {
+public class CcsRestApplication extends ResourceConfig {
 
-	public static Logger logger = LoggerFactory.getLogger(CcsDataBaseRestApplication.class);
+	public static Logger logger = LoggerFactory.getLogger(CcsRestApplication.class);
 
-	public CcsDataBaseRestApplication() {
+	public CcsRestApplication() {
 		/**####Configurazione#####*/
 				
 		//Filtro per Autentificazione
@@ -50,6 +50,6 @@ public class CcsDataBaseRestApplication extends ResourceConfig {
 
 	public static void main(String[] args) {
 		MongoDataManager.getInstance().dropSaccheInScadenza();
-		SpringApplication.run(CcsDataBaseRestApplication.class, args);
+		SpringApplication.run(CcsRestApplication.class, args);
 	}
 }

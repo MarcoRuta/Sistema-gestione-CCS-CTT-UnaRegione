@@ -62,8 +62,6 @@ Metodi presenti sulle interfacce REST del CCS
 
 [ricercaSaccaGlobale](#ricercaSaccaGlobale)
 
-[aggiungiSaccaInScadenza](#aggiungiSaccaInScadenza)
-
 [prenotaSacca](#prenotaSacca)
 
 [ritiroAlertCTTSacca](#ritiroAlertCTTSacca)
@@ -219,18 +217,13 @@ Metodi presenti sull'interfaccia REST dell'AmministratoreCCS
  
 * **Error Response:**
 
-        Code: 400 BAD_REQUEST
-        Content: Formato password errato
-
-        OR
-
         Code: 404 NOT_FOUND
         Content: Utente non trovato
 
         OR 
 
         Code: 403 FORBIDDEN
-        Content: username e codice fiscale non coincidono
+        Content: Username e codice fiscale non coincidono
 
 # ricercaSaccaLocale
 
@@ -845,30 +838,6 @@ Metodo che ricerca le sacche del gruppo sanguigno richiesto cercando nei databas
         Code: 500 INTERNAL_SERVER_ERROR
         Content: Non è stato possibile completare la richiesta per allinearsi con lo stato del CCS. Contattare il CCS per risolvere il problema.
 
-# aggiungiSaccaInScadenza
-
-Metodo che aggiunge al database delle sacche in scadenza una lista di sacche in scadenza a partire da quelle presenti nei database dei vari CTT
-
-* **URL:**
-
-        /rest/CCS/saccheInScadenza
-
-* **Method:**
-  
-       POST
-  
-*  **Data Params**
-
-        Sacca[] listaSaccheInScadenza
-
-* **Success Response:**
-  
-        Sacca in scadenza aggiunta correttamente al DB
-
-* **Error Response**
-
-        Code: 400 BAD_REQUEST
-        Content: Sacca in scadenza già presente nel database
 
 # prenotaSacca
 

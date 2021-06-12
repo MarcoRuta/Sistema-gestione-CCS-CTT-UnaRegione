@@ -2,7 +2,7 @@ package WebSocket.Encoders;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import it.unisannio.ingegneriaDelSoftware.CcsDataBaseRestApplication;
+import it.unisannio.ingegneriaDelSoftware.CcsRestApplication;
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.CTTName;
 import javax.websocket.EncodeException;
 import javax.websocket.Encoder;
@@ -14,10 +14,10 @@ public class CTTNameEncoder implements  Encoder.Text<CTTName> {
     @Override
     public String encode(CTTName object) throws EncodeException {
         try {
-            CcsDataBaseRestApplication.logger.error("Encoding in corso di "+object);
+            CcsRestApplication.logger.error("Encoding in corso di "+object);
             return new ObjectMapper().writeValueAsString(object);
         } catch (JsonProcessingException e) {
-            CcsDataBaseRestApplication.logger.error("Non sono riuscito a fare l'encoding del CTT name: "+object);
+            CcsRestApplication.logger.error("Non sono riuscito a fare l'encoding del CTT name: "+object);
             e.printStackTrace();
         }
         return null;

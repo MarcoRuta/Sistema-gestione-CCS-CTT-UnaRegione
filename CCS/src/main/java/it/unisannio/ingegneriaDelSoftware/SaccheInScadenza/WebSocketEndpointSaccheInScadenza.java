@@ -4,7 +4,7 @@ import WebSocket.Decoders.NotificaSaccaInScadenzaDecoder;
 import WebSocket.Decoders.SaccaWrapperDecoder;
 import WebSocket.Encoders.NotificaSaccaInScadenzaEncoder;
 import WebSocket.Encoders.SaccaWrapperEncoder;
-import it.unisannio.ingegneriaDelSoftware.CcsDataBaseRestApplication;
+import it.unisannio.ingegneriaDelSoftware.CcsRestApplication;
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.Beans.Sacca;
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.CTT;
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.CTTName;
@@ -17,7 +17,7 @@ import it.unisannio.ingegneriaDelSoftware.Interfaces.Notifica;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Observer;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.Subject;
 import it.unisannio.ingegneriaDelSoftware.Util.Settings;
-import java.io.IOException;
+
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -37,7 +37,7 @@ public class WebSocketEndpointSaccheInScadenza implements Subject {
 
     @OnOpen
     public void start(Session session) {
-        CcsDataBaseRestApplication.logger.info("CTT connesso al SaccheInScadenza EndPoint");
+        CcsRestApplication.logger.info("CTT connesso al SaccheInScadenza EndPoint");
         sessioniCTT.put(session,session.getUserPrincipal().getName());
     }
 
@@ -45,7 +45,7 @@ public class WebSocketEndpointSaccheInScadenza implements Subject {
      * Appena ricevuto il CCS provvede a memorizzarlo nella mappa e ad inoltrare la lista delle sacche in scadenza*/
     @OnMessage
     public void receive(SaccaWrapper saccheInScadenza, Session session) {
-        CcsDataBaseRestApplication.logger.info("Ho ricevuto delle sacche in scadenza");
+        CcsRestApplication.logger.info("Ho ricevuto delle sacche in scadenza");
         MongoDataManager mm = MongoDataManager.getInstance();
 
         for (Sacca s : saccheInScadenza.getSacche()) {
@@ -70,7 +70,7 @@ public class WebSocketEndpointSaccheInScadenza implements Subject {
                 if (Settings.ip.get(ctt).equals(ip))
                     cttOffline = ctt.getDenominazione();
 
-            CcsDataBaseRestApplication.logger.error("Ecco il CTT che si è disconnesso: "+cttOffline);
+            CcsRestApplication.logger.error("Ecco il CTT che si è disconnesso: "+cttOffline);
             sessioniCTT.remove(s);
             MongoDataManager.getInstance().removeSaccheCttOffline(cttOffline);
             this.notifyCTT(NotificaSaccaInScadenzaMaker.creaNotificheSaccheInScadenza());
@@ -81,7 +81,7 @@ public class WebSocketEndpointSaccheInScadenza implements Subject {
 
     @OnError
     public void onError(Throwable t) throws Throwable {
-        CcsDataBaseRestApplication.logger.error("Errore :"+ t.getMessage() );
+        CcsRestApplication.logger.error("Errore :"+ t.getMessage() );
     }
 
     @Override

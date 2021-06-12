@@ -1,0 +1,12 @@
+[{
+  "_id": {
+    "$oid": "60c390fd752cd65d05d11e3a"
+  },
+  "cdf": "XDDBHH45H57H684W",
+  "nome": "Amministratore",
+  "cognome": "TestingCTT003",
+  "dataDiNascita": "1988-07-11",
+  "ruolo": "AmministratoreCTT",
+  "username": "amministratore",
+  "password": "40085d143cc9dcac3755abb2eec46a052ab33aceb57188430227bf4437390d25CryptoCTT"
+}]

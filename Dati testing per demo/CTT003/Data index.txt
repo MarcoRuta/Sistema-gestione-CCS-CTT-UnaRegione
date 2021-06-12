@@ -1,0 +1,13 @@
+CTT003 data index:
+
+Ente donatore: AVIS Napoli
+
+60 Datisacche per query
+97 Datisacche complete tra presenti e non
+37 sacche presenti al momento nel DB
+
+Sono presenti:
+
+5 sacche in scadenza tra il 15 e il 16 giugno
+0 sacche scadute prima del 15/06/2021
+32 sacche utili

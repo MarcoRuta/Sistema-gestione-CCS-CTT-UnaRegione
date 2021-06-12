@@ -34,6 +34,7 @@ Progetto di ingegneria del software svolto dal gruppo formato da:
 - Se il codice è corretto sarà effettuato il merging sul main branch;
 
 
+
 # Sommario
 
 [1. Premessa](#premessa)
