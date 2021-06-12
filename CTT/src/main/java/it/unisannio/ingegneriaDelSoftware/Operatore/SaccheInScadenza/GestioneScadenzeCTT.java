@@ -29,12 +29,11 @@ public class GestioneScadenzeCTT implements CTTFunction {
 	 * * * ? -> Tutti i giorni dell'anno
 	 * @throws EntityNotFoundException Se non ci sono sacche in scadenza
 	 */
-	@Scheduled(fixedDelay = 1000*60*3)
+	@Scheduled(initialDelay = 1000*2, fixedRate = 1000*60*3)
 	public void alertSaccheInScadenza() throws EntityNotFoundException {
 
 		//recupero le sacche in scadenza
 		List<Sacca> saccheInScadenza = getSaccheInScadenza();
-
 
 		if(ConnectionVerifier.isCCSOnline() && !saccheInScadenza.isEmpty()) {
 			try {

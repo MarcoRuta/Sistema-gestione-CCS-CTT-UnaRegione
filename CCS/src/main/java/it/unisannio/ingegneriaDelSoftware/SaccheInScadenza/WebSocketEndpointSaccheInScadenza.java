@@ -39,13 +39,6 @@ public class WebSocketEndpointSaccheInScadenza implements Subject {
     public void start(Session session) {
         CcsDataBaseRestApplication.logger.info("CTT connesso al SaccheInScadenza EndPoint");
         sessioniCTT.put(session,session.getUserPrincipal().getName());
-        try {
-            session.getBasicRemote().sendObject(NotificaSaccaInScadenzaMaker.creaNotificheSaccheInScadenza());
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (EncodeException e) {
-            e.printStackTrace();
-        }
     }
 
     /**Il CCS puo ricevere dal CTT soltanto il suo nome.
@@ -77,7 +70,7 @@ public class WebSocketEndpointSaccheInScadenza implements Subject {
                 if (Settings.ip.get(ctt).equals(ip))
                     cttOffline = ctt.getDenominazione();
 
-            System.err.println("ecco il ctt che si e disconnesso: "+cttOffline);
+            CcsDataBaseRestApplication.logger.error("Ecco il CTT che si è disconnesso: "+cttOffline);
             sessioniCTT.remove(s);
             MongoDataManager.getInstance().removeSaccheCttOffline(cttOffline);
             this.notifyCTT(NotificaSaccaInScadenzaMaker.creaNotificheSaccheInScadenza());

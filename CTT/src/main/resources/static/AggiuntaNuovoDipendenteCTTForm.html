@@ -173,11 +173,11 @@
                         alert("Dipendente "+cdf+" aggiunto correttamente");
                         var blobSrc = window.URL.createObjectURL(new Blob([this.response], { type: 'application/pdf'}));
                         window.open(blobSrc);
-                        //setTimeout(reloadPage, 1000);
+                        setTimeout(reloadPage, 1000);
                  	}else {
                  	if(this.readyState == 4 && this.status != 201){
                  	    alert(this.response);
-                 	    //setTimeout(reloadPage,1000);
+                 	    setTimeout(reloadPage,1000);
                  	    }
                  	}
 

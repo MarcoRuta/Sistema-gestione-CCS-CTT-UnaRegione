@@ -25,8 +25,6 @@ import it.unisannio.ingegneriaDelSoftware.CttRestApplication;
 import it.unisannio.ingegneriaDelSoftware.Functional.ConnectionVerifier;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointOperatoreCTT;
 import it.unisannio.ingegneriaDelSoftware.Searcher.CompositionSearcher;
-import it.unisannio.ingegneriaDelSoftware.Searcher.SearcherCompatibile;
-import it.unisannio.ingegneriaDelSoftware.Searcher.SearcherLocale;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
 import it.unisannio.ingegneriaDelSoftware.ResponseHandler.ResponseBuilderFactory;
 import it.unisannio.ingegneriaDelSoftware.Util.Settings;
@@ -62,7 +60,7 @@ public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT{
 		if (LocalDate.parse(dataArrivoMassima).isBefore(LocalDate.now()))
 			throw new WebApplicationException("Data affidamento inserita non valida.", Response.Status.BAD_REQUEST);
 
-		CttRestApplication.logger.info("Ho ricevuto la richiesta per ricercare "+ numeroSacche +"sacche di gruppo: "+gruppoSanguigno);
+		CttRestApplication.logger.info("Ho ricevuto la richiesta per ricercare "+ numeroSacche +" sacche di gruppo: "+gruppoSanguigno);
 		
 		List<Sacca> saccheTrovate = new ArrayList<Sacca>();
 		List<Seriale> serialiDaEvadere = new ArrayList<>();
