@@ -6,7 +6,7 @@ import it.unisannio.ingegneriaDelSoftware.Interfaces.ResponseHandler;
 
 import javax.ws.rs.core.Response;
 import java.util.List;
-
+/**Response handler che gestisce l'evento di una ricerca sacche con risultato completo in locale */
 public class SaccheTrovateInLocaleHandler implements ResponseHandler {
     public  Response makeResearchResponse(int numSacche, List<Seriale> serialiDaEvadere, String enteRichiedente, String indirizzoEnte, String dataArrivoMassima, String priorita, String gruppoSanguigno) {
         return Response

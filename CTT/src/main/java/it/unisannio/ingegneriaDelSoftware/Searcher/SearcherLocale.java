@@ -12,14 +12,14 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**Classe che implementa il behavior di ricerca Sacca ma in locale*/
+/**Classe che implementa il behavior di ricerca Sacca in locale di un determinato gruppo sanguigno*/
 public class SearcherLocale implements Searcher {
 	
     /**Ricerca la sacche filtrandole tramite i parametri passati come argomento
      * @param gs Gruppo sanguigno della Sacca
      * @param x Il quantitativo di sacche che si vuole ricercare
      * @param dataArrivoMassima Specifica la data di arrivo massima entro cui la Sacca deve essere nel nuovo magazzino. Questo in modo da evitare che una Sacca arrivi scaduta a destinazione
-     * @return List<Sacca> La lista delle sacche disponibili per quei parametri
+     * @return List<Sacca> La lista delle sacche dello stesso gruppo sanguigno ricercato
      */
     @Override
     public List<Sacca> search(GruppoSanguigno gs, int x, LocalDate dataArrivoMassima) {

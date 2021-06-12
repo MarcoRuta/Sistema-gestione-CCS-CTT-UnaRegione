@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class SaccheInScadenzaObserver implements Observer {
+
+    /**Supplier utilizzato per accedere in modo protetto allo stato del modello*/
     Supplier<List<NotificaSaccaInScadenza>> saccheInScadenzaSupplier;
 
     public SaccheInScadenzaObserver(Supplier<List<NotificaSaccaInScadenza>> saccheInScadenzaSupplier) {

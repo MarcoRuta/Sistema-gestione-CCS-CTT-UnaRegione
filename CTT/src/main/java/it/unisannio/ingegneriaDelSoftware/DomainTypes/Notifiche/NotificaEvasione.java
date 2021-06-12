@@ -3,9 +3,8 @@ package it.unisannio.ingegneriaDelSoftware.DomainTypes.Notifiche;
 import java.util.List;
 
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.Seriale;
-import it.unisannio.ingegneriaDelSoftware.Interfaces.Notifica;
 
-public class NotificaEvasione implements Notifica {
+public class NotificaEvasione {
 	
 	/**Lista dei seriali da evadere */
 	private List<Seriale> listaSeriali;

@@ -14,6 +14,8 @@ import it.unisannio.ingegneriaDelSoftware.Util.*;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
+
+import javax.inject.Singleton;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +24,7 @@ import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
-/**Singleton*/
+@Singleton
 public class MongoDataManager implements DataManager {
 
     /**The mongoClient instance represents a pool of connections to the database;you will

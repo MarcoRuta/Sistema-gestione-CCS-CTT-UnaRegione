@@ -46,7 +46,7 @@ public class CttRestApplication extends ResourceConfig {
 		//gestione AssertionError
 		register(AssertionErrorHandler.class);
 		//gestione Exception
-		//register(ExceptionHandler.class);
+		register(ExceptionHandler.class);
 		register(EntityAlreadyExistsExceptionHandler.class);
 		register(DateTimeParseExceptionHandler.class);
 		register(EntityNotFoundExceptionHandler.class);
@@ -90,5 +90,5 @@ public class CttRestApplication extends ResourceConfig {
 		SaccheInScadenzaClientEndPoint saccheInScadenzaClient = new SaccheInScadenzaClientEndPoint();
 	}
 
-	
+
 }

@@ -9,6 +9,7 @@ import it.unisannio.ingegneriaDelSoftware.Interfaces.Subject;
 import it.unisannio.ingegneriaDelSoftware.Operatore.RicercaGlobale.RisultatiRicercaGlobaleObserver;
 
 import javax.annotation.security.RolesAllowed;
+import javax.inject.Singleton;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -17,6 +18,7 @@ import javax.ws.rs.core.MediaType;
 @Secured
 @RolesAllowed("CCS")
 @Path("/notificheOperatore")
+@Singleton
 public class EndPointRestNotificheOperatore extends OperatoreSubject {
 
     private static NotificaRisultatiRicerca notificaRisultatiRicerca;

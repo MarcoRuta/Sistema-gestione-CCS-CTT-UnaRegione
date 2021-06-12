@@ -8,6 +8,7 @@ import it.unisannio.ingegneriaDelSoftware.Functional.IDGenerator;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointAutentificazione;
 
 import javax.annotation.security.PermitAll;
+import javax.inject.Singleton;
 import javax.ws.rs.*;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
@@ -15,6 +16,7 @@ import javax.ws.rs.core.Response;
 
 @Path("/autentificazione")
 @PermitAll
+@Singleton
 public class EndPointRestAutentificazione implements EndPointAutentificazione {
 
     private MongoDataManager mm = MongoDataManager.getInstance();
@@ -61,7 +63,7 @@ public class EndPointRestAutentificazione implements EndPointAutentificazione {
     @Path("/cambiopassword/{cdf}")
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
-    public Response cambioPassword(@HeaderParam(HttpHeaders.AUTHORIZATION) String header,@PathParam("cdf")String cdf, String password) throws AssertionError, EntityNotFoundException {
+    public Response cambioPassword(@HeaderParam(HttpHeaders.AUTHORIZATION) String header,@PathParam("cdf")String cdf, String password) throws EntityNotFoundException {
         String requestToken = header.substring("Basic ".length());
         Dipendente dip = Token.getDipendenteByToken(requestToken);
         if (dip.getCdf().getCodiceFiscale().equals(cdf)) {
@@ -87,7 +89,7 @@ public class EndPointRestAutentificazione implements EndPointAutentificazione {
     @Path("/recuperoPassword/{cdf}")
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
-    public Response recuperoPassword(@PathParam("cdf")String cdf, String username) throws AssertionError, EntityNotFoundException {
+    public Response recuperoPassword(@PathParam("cdf")String cdf, String username) throws EntityNotFoundException {
         Dipendente dip = MongoDataManager.getInstance().getDipendente(Cdf.getCDF(cdf));
         String password = IDGenerator.getID();
         if (dip.getUsername().equals(username)) {

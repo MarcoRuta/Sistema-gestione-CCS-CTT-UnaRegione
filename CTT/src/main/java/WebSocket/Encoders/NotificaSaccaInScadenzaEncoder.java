@@ -12,8 +12,7 @@ import it.unisannio.ingegneriaDelSoftware.CttRestApplication;
 
 public class NotificaSaccaInScadenzaEncoder implements Encoder.Text<ArrayList<NotificaSaccaInScadenza>>{
 	
-
-
+	  @Override
 	  public String encode(ArrayList<NotificaSaccaInScadenza> notifiche) throws EncodeException {
 		try {
 			String json = new ObjectMapper().writeValueAsString(notifiche);
@@ -25,11 +24,11 @@ public class NotificaSaccaInScadenzaEncoder implements Encoder.Text<ArrayList<No
 		}
 		
 	  }
-
+	  @Override
 	  public void init(EndpointConfig ec) {
 
 	  }
-
+	  @Override
 	  public void destroy() {
 
 	  }

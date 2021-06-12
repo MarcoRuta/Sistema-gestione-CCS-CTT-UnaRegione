@@ -27,12 +27,12 @@ public class WebSocketEndPointSaccheInScadenza {
         CttRestApplication.logger.info("Terminale Operatore Connesso al Server Endpoint sessione: "+session.getId());
         try {
             session.getBasicRemote().sendObject(SaccheInScadenzaClientEndPoint.notificheSaccheInScadenza);
+            sessions.add(session);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (EncodeException e) {
             e.printStackTrace();
         }
-        sessions.add(session);
     }
 
     /**Viene rimossa la sessione dalla lista delle sessioni*/
@@ -45,10 +45,12 @@ public class WebSocketEndPointSaccheInScadenza {
 
     @OnMessage
     public void receive(String message, Session session) {
+        //No message supported
     }
 
     @OnError
     public void onError(Throwable t) throws Throwable {
+        CttRestApplication.logger.error(t.getMessage());
     }
 
 }

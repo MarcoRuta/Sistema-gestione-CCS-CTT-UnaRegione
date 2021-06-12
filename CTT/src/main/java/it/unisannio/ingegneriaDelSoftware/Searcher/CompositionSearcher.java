@@ -24,7 +24,7 @@ public class CompositionSearcher implements Searcher{
      * @param gs Gruppo sanguigno della Sacca
      * @param numeroSacche Il quantitativo di sacche che si vuole ricercare
      * @param dataArrivoMassima Specifica la data di arrivo massima entro cui la Sacca deve essere nel nuovo magazzino. Questo in modo da evitare che una Sacca arrivi scaduta a destinazione
-     * @return List<Sacca> La lista delle sacche disponibili per quei parametri
+     * @return List<Sacca> la lista delle sacche del tipo ricercato e dei tipi compatibili per la trasfusione
      */
     public List<Sacca> search(GruppoSanguigno gs, int numeroSacche, LocalDate dataArrivoMassima) {
         List<Sacca> saccheTrovate = searchers.get(0).search(gs,numeroSacche,dataArrivoMassima);

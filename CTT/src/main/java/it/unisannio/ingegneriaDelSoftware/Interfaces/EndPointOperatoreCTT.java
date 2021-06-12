@@ -24,15 +24,7 @@ public interface EndPointOperatoreCTT {
 	 * @param enteRichiedente Ente richiedente della Sacca
 	 * @return Response
 	 */
-	@GET
-	@Path("/ricerca")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response ricercaSaccaLocale(@QueryParam("gruppoSanguigno") String gruppoSanguigno,
-									   @QueryParam("numeroSacche") String numeroSacche,
-									   @QueryParam("dataArrivoMassima") String dataArrivoMassima,
-									   @QueryParam("enteRichiedente") String enteRichiedente,
-									   @QueryParam("indirizzoEnte") String indirizzoEnte,
-									   @QueryParam("priorità") String priorita) throws InterruptedException;
+	public Response ricercaSaccaLocale(String gruppoSanguigno, String numeroSacche, String dataArrivoMassima,String enteRichiedente, String indirizzoEnte, String priorita) throws InterruptedException;
 	
 	
 	/**Alert della prenotazione della Sacca
@@ -41,12 +33,7 @@ public interface EndPointOperatoreCTT {
 	 * @param enteRichiedente L'ente che ha richiesto la Sacca
 	 * @return Response
 	 */
-	@POST
-	@Path("/prenotaSaccaInScadenza/{seriale}")
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public Response prenotaSaccaAlert(@PathParam("seriale") String seriale,
-									  @FormParam("indirizzoEnte") String indirizzoEnte,
-									  @FormParam("enteRichiedente")String enteRichiedente);
+	public Response prenotaSaccaAlert(String seriale, String indirizzoEnte, String enteRichiedente);
 	
 	
 }

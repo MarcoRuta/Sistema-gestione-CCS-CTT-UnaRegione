@@ -9,4 +9,5 @@ import java.util.List;
 public interface Searcher {
 	
     List<Sacca> search(GruppoSanguigno gs, int x, LocalDate dataArrivoMassima);
+
 }

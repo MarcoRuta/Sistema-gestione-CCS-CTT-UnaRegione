@@ -1,4 +1,4 @@
-package it.unisannio.ingegneriaDelSoftware.PDF;
+package it.unisannio.ingegneriaDelSoftware.Functional;
 
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;

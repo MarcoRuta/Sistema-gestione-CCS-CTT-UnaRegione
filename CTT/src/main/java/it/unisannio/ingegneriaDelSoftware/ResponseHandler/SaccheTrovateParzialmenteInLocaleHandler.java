@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+/**Response handler che gestisce l'evento di una ricerca sacche con risultato parziale in locale */
 public class SaccheTrovateParzialmenteInLocaleHandler implements ResponseHandler {
     @Override
     public Response makeResearchResponse(int numSacche, List<Seriale> serialiDaEvadere, String enteRichiedente, String indirizzoEnte, String dataArrivoMassima, String priorita, String gruppoSanguigno) {

@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+/**Response handler che gestisce l'evento di una ricerca sacche senza risultato in locale */
 public class SaccheNonTrovateInLocaleHandler implements ResponseHandler {
     @Override
     public Response makeResearchResponse(int numSacche, List<Seriale> serialiDaEvadere, String enteRichiedente, String indirizzoEnte, String dataArrivoMassima, String priorita, String gruppoSanguigno) {
@@ -33,7 +34,7 @@ public class SaccheNonTrovateInLocaleHandler implements ResponseHandler {
             return Response
                     .status(Response.Status.NOT_FOUND)
                     .entity("Localmente non è stata trovata nessuna sacca.\n" +
-                            "Inoltriamo la richiesta al CCS")
+                            "Inoltro la richiesta al CCS")
                     .build();
         }
 

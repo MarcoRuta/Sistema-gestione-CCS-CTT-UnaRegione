@@ -8,11 +8,9 @@ import it.unisannio.ingegneriaDelSoftware.Annotazioni.Secured;
 import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsException;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
-import it.unisannio.ingegneriaDelSoftware.Functional.IDGenerator;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointMagazziniereCTT;
-import it.unisannio.ingegneriaDelSoftware.PDF.PDFGenerator;
+import it.unisannio.ingegneriaDelSoftware.Functional.PDFGenerator;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
-import org.apache.tomcat.jni.Local;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Singleton;

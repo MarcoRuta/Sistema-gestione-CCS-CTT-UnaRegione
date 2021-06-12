@@ -1,13 +1,12 @@
 package it.unisannio.ingegneriaDelSoftware.DomainTypes.Notifiche;
 
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.Seriale;
-import it.unisannio.ingegneriaDelSoftware.Interfaces.Notifica;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class NotificaSmaltimentoSacche implements Notifica {
+public class NotificaSmaltimentoSacche {
     
 	/**Lista dei seriali delle sacche scadute */
 	List<Seriale> serialeList = new ArrayList<>();

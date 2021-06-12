@@ -1,9 +1,6 @@
 package it.unisannio.ingegneriaDelSoftware.Interfaces;
 
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
 public interface EndPointRicercaGlobale {
@@ -19,13 +16,5 @@ public interface EndPointRicercaGlobale {
      * @return Response
      * @throws InterruptedException, EntityNotFoundException
      */
-    @GET
-    @Path("/ricercaGlobale")
-    public Response ricercaSaccaGlobale(@QueryParam("nome") String nome,
-                                        @QueryParam("gruppo") String gruppoSanguigno,
-                                        @QueryParam("numero") String numeroSacche,
-                                        @QueryParam("dataArrivoMassima") String dataArrivoMassima,
-                                        @QueryParam("enteRichiedente") String enteRichiedente,
-                                        @QueryParam("indirizzoEnte") String indirizzoEnte,
-                                        @QueryParam("priorità") String priorita) throws InterruptedException, EntityNotFoundException;
+    public Response ricercaSaccaGlobale(String nome, String gruppoSanguigno, String numeroSacche, String dataArrivoMassima, String enteRichiedente, String indirizzoEnte, String priorita) throws InterruptedException, EntityNotFoundException;
 }

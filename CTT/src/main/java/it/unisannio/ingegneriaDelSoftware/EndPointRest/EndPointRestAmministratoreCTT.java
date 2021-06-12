@@ -21,7 +21,7 @@ import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityAlreadyExistsExceptio
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Functional.IDGenerator;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointAmministratoreCTT;
-import it.unisannio.ingegneriaDelSoftware.PDF.PDFGenerator;
+import it.unisannio.ingegneriaDelSoftware.Functional.PDFGenerator;
 import it.unisannio.ingegneriaDelSoftware.Util.*;
 
 @Path("/amministratore")

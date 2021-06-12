@@ -3,6 +3,7 @@ package it.unisannio.ingegneriaDelSoftware.Interfaces;
 import java.util.ArrayList;
 import java.util.List;
 
+/**This class represents an observable object, or "data" in the model-view paradigm. It can be subclassed to represent an object that the application wants to have observed. */
 public interface Subject {
     public static List<Observer> observerList = new ArrayList<>();
 

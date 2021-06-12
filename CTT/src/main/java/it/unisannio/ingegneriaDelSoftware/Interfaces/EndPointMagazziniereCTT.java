@@ -28,25 +28,13 @@ public interface EndPointMagazziniereCTT {
 	 * @return Response
 	 * @throws EntityAlreadyExistsException se si vuole aggiungere una Sacca già presente nel DB
 	 */
-	@POST
-	@Path("/aggiuntaSacca")
-	@Produces(MediaType.TEXT_PLAIN)
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public Response aggiuntaSaccaMagazzino(@FormParam("gruppo_sanguigno") String gruppo_sanguigno,
-										   @FormParam("data_scadenza") String data_scadenza,
-										   @FormParam("data_produzione") String data_produzione,
-										   @FormParam("ente_donatore") String ente_donatore,
-										   @Context UriInfo uriInfo) throws EntityAlreadyExistsException;
+	public Response aggiuntaSaccaMagazzino(String gruppo_sanguigno, String data_scadenza, String data_produzione, String ente_donatore, @Context UriInfo uriInfo) throws EntityAlreadyExistsException;
 
 	
 	/**Metodo attivato dal magazziniere quando riceve una notifica evasione Sacca esso aggiorna i datiSacca e rimuove la Sacca dal DB attivo
 	 * @return Response
 	 * @throws EntityNotFoundException se la sacca da evadere non è presente nel DB
 	 */
-	@POST
-	@Path("/evasione")
-	@Produces("application/pdf")
-	@Consumes(MediaType.APPLICATION_JSON)
 	public Response evasioneSacca(NotificaEvasione notificaEvasione) throws EntityNotFoundException;
 	
 	

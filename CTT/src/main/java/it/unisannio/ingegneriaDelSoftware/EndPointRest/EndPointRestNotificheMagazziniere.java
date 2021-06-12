@@ -13,12 +13,13 @@ import it.unisannio.ingegneriaDelSoftware.Interfaces.Subject;
 import it.unisannio.ingegneriaDelSoftware.Magazziniere.EvasioneSacche.EvasioneObserver;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Magazziniere.SmaltimentoSacche.SmaltimentoObserver;
-import it.unisannio.ingegneriaDelSoftware.PDF.PDFGenerator;
+import it.unisannio.ingegneriaDelSoftware.Functional.PDFGenerator;
 import it.unisannio.ingegneriaDelSoftware.Magazziniere.SmaltimentoSacche.SaccheScaduteRemover;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.security.RolesAllowed;
+import javax.inject.Singleton;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -32,6 +33,7 @@ import java.util.List;
 @Secured
 @RolesAllowed({"CCS","OperatoreCTT", "MagazziniereCTT"})
 @Component
+@Singleton
 public class EndPointRestNotificheMagazziniere extends MagazziniereSubject {
 
     /**Riferimento all'unica istanza del MongoDataManager*/

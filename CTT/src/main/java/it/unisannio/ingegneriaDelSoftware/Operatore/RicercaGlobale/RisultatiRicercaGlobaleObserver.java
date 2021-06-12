@@ -11,6 +11,7 @@ import java.util.function.Supplier;
 
 public class RisultatiRicercaGlobaleObserver implements Observer {
 
+    /**Supplier utilizzato per accedere in modo protetto allo stato del modello*/
     Supplier<NotificaRisultatiRicerca> risultatiRicercaSupplier;
 
     public RisultatiRicercaGlobaleObserver(Supplier<NotificaRisultatiRicerca> risultatiRicercaSupplier) {

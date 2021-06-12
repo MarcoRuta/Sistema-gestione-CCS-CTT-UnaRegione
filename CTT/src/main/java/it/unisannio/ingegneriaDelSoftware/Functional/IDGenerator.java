@@ -4,7 +4,7 @@ import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.Random;
 
-/**Generatore di ID*/
+/**Generatore di password randomatiche*/
 public class IDGenerator {
     public static String getID() {
         SecureRandom secureRandom = new SecureRandom();

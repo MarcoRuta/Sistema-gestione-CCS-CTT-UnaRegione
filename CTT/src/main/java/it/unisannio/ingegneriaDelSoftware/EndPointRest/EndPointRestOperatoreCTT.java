@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Singleton;
 import javax.ws.rs.*;
@@ -14,6 +15,7 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import it.unisannio.ingegneriaDelSoftware.Annotazioni.Secured;
+import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.GruppoSanguigno;
 import it.unisannio.ingegneriaDelSoftware.DomainTypes.Wrapper.SaccaWrapper;
 import it.unisannio.ingegneriaDelSoftware.ClientRest.CTTRestClient;
@@ -23,7 +25,6 @@ import it.unisannio.ingegneriaDelSoftware.CttRestApplication;
 import it.unisannio.ingegneriaDelSoftware.Functional.ConnectionVerifier;
 import it.unisannio.ingegneriaDelSoftware.Interfaces.EndPointOperatoreCTT;
 import it.unisannio.ingegneriaDelSoftware.Searcher.CompositionSearcher;
-import it.unisannio.ingegneriaDelSoftware.Searcher.SearcherCCS;
 import it.unisannio.ingegneriaDelSoftware.Searcher.SearcherCompatibile;
 import it.unisannio.ingegneriaDelSoftware.Searcher.SearcherLocale;
 import it.unisannio.ingegneriaDelSoftware.Util.Constants;
@@ -39,7 +40,7 @@ public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT{
 
 	/**Composite che effettua la ricerca prima in locale con il gruppo sanguigno specificato e poi in locale con i gs compatibili*/
 	public CompositionSearcher aSearcher = new CompositionSearcher();
-	public SearcherCCS CCSSearcher = new SearcherCCS();
+
 
 	/**Restituisce la Sacca del GruppoSanguigno richiesto con Data di scadenza più vicina nel DataBase locale.
 	 * @param gruppoSanguigno Gruppo sanguigno ricercato
@@ -101,11 +102,18 @@ public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT{
 									 @PathParam("data") String dataArrivoMassima){
 
 		CttRestApplication.logger.info("Ho ricevuto la richiesta da parte del CCS per ricercare delle sacche di gruppo: "+gruppoSanguigno);
-		List<Sacca> saccheTrovate =
-				new SearcherLocale().search(GruppoSanguigno.valueOf(gruppoSanguigno),Integer.MAX_VALUE,LocalDate.parse(dataArrivoMassima, DateTimeFormatter.ofPattern(Constants.DATEFORMAT)));
 
-		saccheTrovate.addAll(new SearcherCompatibile().search(GruppoSanguigno.valueOf(gruppoSanguigno),Integer.MAX_VALUE,LocalDate.parse(dataArrivoMassima, DateTimeFormatter.ofPattern(Constants.DATEFORMAT))));
-		saccheTrovate.sort(Comparator.comparing((Sacca s)->s.getDataScadenza()));
+		List<Sacca> saccheTrovate =
+				MongoDataManager.getInstance().getListaSacche()
+				.stream()
+				.filter(sacca -> !sacca.isPrenotato())
+				.filter(sacca -> sacca.getDataScadenza().isAfter(LocalDate.parse(dataArrivoMassima, DateTimeFormatter.ofPattern(Constants.DATEFORMAT))))
+				.filter(sacca -> sacca.getDataScadenza().isAfter(LocalDate.now()))
+				.filter(sacca -> GruppoSanguigno.puoRicevereDa(GruppoSanguigno.valueOf(gruppoSanguigno)).contains(sacca.getGruppoSanguigno()))
+				.sorted(Comparator.comparing((Sacca s)-> s.getDataScadenza()))
+				.collect(Collectors.toList());
+
+
 		return Response
 				.status(Response.Status.OK)
 				.entity(new SaccaWrapper(saccheTrovate))

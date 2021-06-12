@@ -2,9 +2,7 @@ package it.unisannio.ingegneriaDelSoftware.DomainTypes.Notifiche;
 
 import java.time.LocalDate;
 
-import it.unisannio.ingegneriaDelSoftware.Interfaces.Notifica;
-
-public class NotificaSaccaInScadenza implements Notifica {
+public class NotificaSaccaInScadenza {
 
 	/**Seriale della Sacca in scadenza */
 	private String seriale;

@@ -12,7 +12,8 @@ import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 
 
-/** classe di configurazione della WebSocket in ambiete Spring Boot */
+/** classe di configurazione della WebSocket in ambiente Spring Boot
+ * Vengono inizializzati diversi bean (relativi alle websocket) in modo da renderli fruibili alla SpingApplication a runTime*/
 @Configuration
 @EnableWebSocket
 public class WebSocketConfig {

@@ -1,22 +1,20 @@
-package it.unisannio.ingegneriaDelSoftware.PDF;
+package it.unisannio.ingegneriaDelSoftware.Functional;
 
 import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.stream.Stream;
 
 /**Classe utilizzata per la creazione dei vari pdf */
 public class PDFGenerator {
 	
-	/**Genera il pdf con username e password provvisoria del dipendente generata automaticamente la prima volta che viene inserito dall'amministratore come nuovo Dipendente 
+	/**Genera il pdf con username e password provvisoria del Dipendente generata automaticamente la prima volta che viene inserito dall'amministratore come nuovo Dipendente 
 	 * @param output OutputStream dove verrà stampato il documento
 	 * @param cdf codice fiscale del Dipendente 
 	 * @param username username del Dipendente 
 	 * @param password password provvisoria del Dipendente 
-	 * @throws DocumentException,IOException
+	 * @throws DocumentException, IOException
 	 */
     public static void  makeDocumentDipendente(OutputStream output, String cdf, String username , String password) throws DocumentException, IOException {
         Document document = new Document();

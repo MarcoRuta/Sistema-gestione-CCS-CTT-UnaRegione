@@ -47,13 +47,15 @@ public class WebSocketEndPointResultRicercaGlobale {
 
     @OnMessage
     public void receive(NotificaRisultatiRicerca noitificaRisultatiRicerca, Session session) {
+        //No message supported
     }
 
     @OnError
     public void onError(Throwable t) throws Throwable {
+        CttRestApplication.logger.error(t.getMessage());
     }
 
-
+    /**Vengono inviati i risultati della ricerca globale alla sessione relativa ad un terminale dell'operatore */
     private void notifyOperatore(Session session) {
         try {
             if (EndPointRestNotificheOperatore.getNotificaRisultatiRicerca() != null) {

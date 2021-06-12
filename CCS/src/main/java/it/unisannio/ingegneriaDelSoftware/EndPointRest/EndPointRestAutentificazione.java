@@ -6,6 +6,7 @@ import it.unisannio.ingegneriaDelSoftware.DataManagers.MongoDataManager;
 import it.unisannio.ingegneriaDelSoftware.Exceptions.EntityNotFoundException;
 import it.unisannio.ingegneriaDelSoftware.Functional.IDGenerator;
 import javax.annotation.security.PermitAll;
+import javax.inject.Singleton;
 import javax.ws.rs.*;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
@@ -13,6 +14,7 @@ import javax.ws.rs.core.Response;
 
 @Path("/autentificazione")
 @PermitAll
+@Singleton
 public class EndPointRestAutentificazione {
 
     private MongoDataManager mm = MongoDataManager.getInstance();

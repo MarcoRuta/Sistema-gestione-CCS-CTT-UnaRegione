@@ -38,16 +38,7 @@ public interface EndPointAmministratoreCTT {
 	 * @return Response
 	 * @throws DateTimeParseException, IllegalArgumentException, AssertionError, EntityAlreadyExistsException
 	 */
-	@POST
-	@Path("/aggiuntaDipendente")
-	@Produces("application/pdf")
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public Response addDipendente(@FormParam("cdf")String cdf,
-								  @FormParam("nome")String nome,
-								  @FormParam("cognome")String cognome,
-								  @FormParam("dataDiNascita")String dataDiNascita,
-								  @FormParam("ruolo")String ruolo,
-								  @FormParam("username")String username) throws DateTimeParseException, IllegalArgumentException, AssertionError, EntityAlreadyExistsException;
+	public Response addDipendente(String cdf, String nome, String cognome, String dataDiNascita, String ruolo, String username) throws DateTimeParseException, IllegalArgumentException, AssertionError, EntityAlreadyExistsException;
 
 
 	/**Rimuove un Dipendente dal DataBase
@@ -55,32 +46,21 @@ public interface EndPointAmministratoreCTT {
 	 * @return Response 
 	 * @throws EntityNotFoundException se si vuole rimuovere un Dipendente non presente nel DB
 	 */
-	@DELETE
-	@Path("/rimozioneDipendente/{cdf}")
-	@Produces(MediaType.TEXT_PLAIN)
-	@Consumes(MediaType.TEXT_PLAIN)
-	public Response removeDipendente(@HeaderParam(HttpHeaders.AUTHORIZATION)String header,
-									 @PathParam("cdf") String cdf) throws EntityNotFoundException;
+	public Response removeDipendente(String header, String cdf) throws EntityNotFoundException;
 
 
-	/*---------REPORT OPERATORI CTT------------
+
 	 /**Restituisce la lista dei Dipendenti del CTT che occupano il Ruolo scelto
 	 * @param ruolo Ruolo dei Dipendenti da cercare
 	 * @return Response
 	 */
-	@GET
-	@Path("/reportDipendentiCtt")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response reportDipendentiCTT(@QueryParam("ruolo")String ruolo);
+	public Response reportDipendentiCTT(String ruolo);
 
 
 	 /**Restituisce il numero di Sacche presenti di ogni gruppo sanguigno nel database delle Sacche
 	  * @return Response 
 	  */
-	@GET
-	@Path("/reportStatisticoSacche")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response reportStatisticoSacche(@HeaderParam(HttpHeaders.AUTHORIZATION) String headers);
+	public Response reportStatisticoSacche(String headers);
 
 	
 	/**Restituisce la lista dei DatiSacche relativi alle sacche che sono state affidate in un determinato arco temporale
@@ -88,11 +68,7 @@ public interface EndPointAmministratoreCTT {
 	 * @param dataFine Data fine dell' arco temporale
 	 * @return Response
 	 */
-	@GET
-	@Path("/reportLocaleSaccheInviate")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response reportLocaleSaccheInviate(@QueryParam("dataInizio")String dataInizio,
-											  @QueryParam("dataFine")String dataFine) throws DateTimeParseException;
+	public Response reportLocaleSaccheInviate(String dataInizio, String dataFine) throws DateTimeParseException;
 
 	
 	/**Restituisce la lista dei DatiSacche relativi alle sacche che sono state ricevute in un determinato arco temporale
@@ -100,29 +76,19 @@ public interface EndPointAmministratoreCTT {
 	 * @param dataFine Data fine dell' arco temporale
 	 * @return Response
 	 */
-	@GET
-	@Path("/reportLocaleSaccheRicevute")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response reportLocaleSaccheRicevute(@QueryParam("dataInizio")String dataInizio,
-											   @QueryParam("dataFine")String dataFine) throws DateTimeParseException;
+	public Response reportLocaleSaccheRicevute(String dataInizio, String dataFine) throws DateTimeParseException;
 
 	
 	/**Calcola quanto è il tempo medio di giacenza delle Sacche di sangue all'interno del magazzino
 	 * @return Response
 	 */
-	@GET
-	@Path("/giacenzaMediaSacche")
-	@Produces(MediaType.APPLICATION_JSON)
 	public Response giacenzaMedia();
 
 	
 	/**Restituisce la lista di Dipendenti contenuti nel database dei Dipendenti 
 	 * @return la lista di Dipendenti che lavorano al CTT
 	 * @throws EntityNotFoundException*/
-	@GET
-	@Path("/dipendenti")
-	@Produces(MediaType.APPLICATION_JSON)
-	public List<Dipendente> getDipendenti(@HeaderParam(HttpHeaders.AUTHORIZATION) String header) throws EntityNotFoundException;
+	public List<Dipendente> getDipendenti(String header) throws EntityNotFoundException;
 
 
 }
