@@ -1,137 +1,509 @@
-# Progetto per la fornitura di un sistema software per la gestione integrata delle scorte di sangue per la rete dei centri trasfusionali territoriali di UnaRegione
+# Introduzione al sistema
 
-## 1. Introduction
+Definizione del dominio del problema [qui](#Definizione-del-problema)
 
-La Regione “UnaRegione” (committente) intende dotarsi di una soluzione software avanzata per la gestione integrata della giacenze di sangue presso la rete dei Centri Trasfusionali Territoriali.
-Problemi da risolvere:
+<p align= "center">
+<img src="https://www.unisannio.it/sites/default/files/emblema.png.pagespeed.ce.L9uvAVRynq.png" alt="Unisannio" width= 50%>
 
--	Attualmente i Centri Trasfusionali Territoriali gestiscono le scorte di sangue localmente, e questo impedisce la gestione ottimale delle scorte su base Regionale. 
+Il sistema progettato è composto da due diversi entità ben definite:
 
--	Ad esempio, uno specifico Centro Trasfusionale Territoriale che avesse bisogno di una dose di sangue di un certo gruppo, non presente localmente, non ha nessuno strumento per verificarne la presenza presso altri Centri della Regione. 
+>**CTT**: magazzino dedito alla gestione di scorte di sangue.  
+>**CCS**: sistema di controllo dei vari CTT distribuiti all'interno della regione.    
 
--	Similmente, se un Centro ha una sacca in scadenza a breve (es. 72 ore), non ha nessuna possibilità di allertare altri Centri che ne avessero eventualmente bisogno, con il rischio che la dose venga lasciata scadere mentre potrebbe essere utilizzata immediatamente in altre aree della Regione.
+Il sistema è composto da più CTT, opportunamente distribuiti sulla rete, ed un CCS che contribuisce ad una gestione ottimale delle scorte di sangue a livello regionale.
 
-Il sistema software dovrà possedere le caratteristiche di seguito indicate:
-1.	Permette di integrare i diversi Centri Trasfusionali Territoriali (CTT) e un Centro Controllo e Smistamento (CCS) con il compito di raccogliere le informazioni nate in periferia nei CTT e trasmettere ai CTT informazioni di interesse ed alert.
-2.	Il colloquio fra centro e periferia deve avvenire in tempo reale attraverso un canale di comunicazione; i sistemi periferici devono comunque essere in grado di garantire la loro piena operatività anche in temporanea assenza di connettività di rete, garantendo il successivo riallineamento dei dati;
-3.	Le componenti CTT dovranno presentare funzionalità per:
+Le funzionalità offerte da un singolo CTT sono:
 
-- a.	Caricare / scaricare una o più dosi di sangue dal proprio magazzino;
+>[Aggiungere una nuova sacca sul sistema](#Aggiungere-una-nuova-sacca-sul-sistema)  
+>[Effettuare una ricerca di sacche per conto di un ente esterno](#Effettuare-una-ricerca-di-sacche-per-conto-di-un-ente-esterno)   
+>[Evadere un ordine verso un ente esterno](#Evadere-un-ordine-verso-un-ente-esterno)   
+>[Aggiungere un nuovo dipendente al CTT](#Aggiungere-un-nuovo-dipendente-al-CTT)  
+>[Rimuovere un dipendente dal CTT](#Rimuovere-un-dipendente-dal-CTT)  
+>[Rimuovere sacche scadute ed avvisare il CCS di sacche in scadenza](#Rimuovere-sacche-scadute-e-avvisare-il-CCS-di-sacche-in-scadenza)  
+>[Accettare sacche in scadenza presenti sulla rete](#Accettare-sacche-in-scadenza-presenti-sulla-rete)  
 
-- b.	Verificare la disponibilità di dosi di sangue di un certo gruppo localmente e in tutto il territorio Regionale ed eventualmente richiederne il trasferimento presso la propria sede, indicando un livello di priorità della richiesta;
+Le funzionalità offerte dal CCS sono:
 
-- c.	Aggiungere/rimuovere operatori e magazzinieri
+>[Aggiungere una nuovo CTT sulla rete](#Aggiungere-un-nuovo-CTT)  
+>[Rimuovere un CTT dalla rete](#Rimuovere-un-CTT-dalla-rete)   
+>[Estendere una ricerca per conto di un CTT sulla rete](#Estendere-una-ricerca-per-conto-di-un-CTT-sulla-rete)   
+>[Notificare tutti i CTT delle sacche in scadenza presenti in rete](#Notificare-tutti-i-CTT-delle-sacche-in-scadenza-presenti-in-rete)   
+>[Aggiungere un nuovo Amministratore del CCS](#Aggiungere-un-nuovo-Amministratore-del-CCS)  
+>[Rimuovere un Amministratore del CCS](#Rimuovere-un-Amministratore-del-CCS)  
 
-4.	La componente CCS dovrà prevedere operazioni per:
+>I dipendenti presenti all'interno di un CTT sono:
+>>[AmministratoreCTT](#AmministratoreCTT)  
+>[OperatoreCTT](#OperatoreCTT)   
+>[MagazziniereCTT](#MagazziniereCTT)
 
-- a.	Definire un nuovo CTT o rimuovere un CTT esistente;
+>L'unico dipendente del CCS è:  
+>>[AmministratoreCCS](#AmministratoreCCS)  
 
-- b.	Raccogliere e gestire i dati necessari alla realizzazione delle operazioni previste per i CTT;
+Breve cenno sulle collezioni dati permanenti:
+>[Collezioni dati permanenti](#Collezioni-dati-permanenti)
 
-- c.	Allertare gli altri CTT sull’avvicinarsi di date di scadenza mediante messaggi in broadcast.
+Breve cenno sulle scelte architetturali prese:
+>[Scelte architetturali](#Scelte-architetturali)
 
-5.	Il sistema dovrà essere dotato, sia nelle componenti CTT, sia nella componente CCS, di interfacce utente semplici ed intuitive per la realizzazione delle operazioni previste. Tali interfacce dovranno inoltre consentire di impostare report statistici di stampa personalizzati, memorizzabili e riutilizzabili secondo modalità di facile utilizzo per l’utente.
+Breve cenno sui protocolli utilizzati:
+>[Protocolli adottati](#Protocolli-adottati)
 
-6.	L’installazione della componente centrale della soluzione deve avvenire in modalità on-premises, ovvero presso il data-centre della Regione; quella periferica presso le postazioni distribuite nei diversi CTT. Attualmente sul territorio Regionale sono attivi 43 CTT. La fornitura dovrà prevedere la configurazione di tali centri nel sistema (CCS) nonché l’installazione delle componenti periferiche presso i CCT. 
+Strumenti utilizzati:
 
-7.	Il sistema deve fornire le necessarie garanzie sulla sicurezza e sulla riservatezza delle informazioni e dei dati, in funzione della tipologia dei trattamenti gestiti. La fornitura dovrà comprendere la consegna, l’installazione, la configurazione e l’avvio operativo del sistema software, nonché la formazione del personale del CCS e dei CTT.
+>[Tools e framework](#Tools-e-framework)
 
-### 1.1 Osservazioni
+>[Linguaggi](#Linguaggi)
 
--	Se un CTT avvisa il CCS che non ha abbastanza sacche per poter soddisfare una richiesta, il CCS deve essere in grado di scegliere da quale CTT recuperare le sacche, basandosi su criteri di vicinanza e di priorità delle richieste.
+>[IDE](#IDE)
 
-Riguardo evasione e ricezione di sacche di sangue, bisogna specificare chi si occupa dell’aggiornamento del database. È necessaria la figura del magazziniere che si occupa di aggiungere/rimuovere le sacche dal database solo quando fisicamente arrivano/lasciano il magazzino, in modo da evitare problemi di inconsistenza.
+>[Controllo della versione e canali di comunicazione](#Controllo-della-versione-e-comunicazione)
 
--	CTT devono funzionare localmente, quindi devono gestire i loro DB autonomamente ed in maniera indipendente dal CCS a cui sono collegati, dunque nel momento in cui una sacca è in scadenza, sarà il CTT che la contiene a notificare il CCS, il quale si occupa di inoltrare a tutti i CTT che possono ricevere tale sacca una notifica. Non può occuparsi il CCS della gestione delle scadenze, altrimenti i CTT non si accorgerebbero di sacche scadure in caso di assenza di connessione.
+Team di sviluppo:
 
-In caso di sacca prossima alla scadenza, l’alert non viene inviato più volte, è una notifica che rimane nel sistema fino a quando la sacca non viene aggiudicata da un CTT o scade.
+>[Know the team](#Know-the-team)
 
-La sacca in scadenza viene assegnata dal primo CTT che la richiede, in modo da minimizzare il rischio di farla scadere.
+# Definizione del problema:
 
--	Siccome per qualunque operazione non automatica del CTT è previsto un login, l’amministratore del CTT deve essere in grado di aggiungere e rimuovere operatori e tener traccia di username e password. 
+La Regione “UnaRegione” (committente) intende dotarsi di una soluzione software avanzata per la gestione integrata della giacenze di sangue presso la rete dei Centri Trasfusionali Territoriali. Attualmente i Centri Trasfusionali Territoriali gestiscono le scorte di sangue localmente, e questo impedisce la gestione ottimale delle scorte su base Regionale. Ad esempio, uno specifico Centro Trasfusionale Territoriale che avesse bisogno di una dose di sangue di un certo gruppo, non presente localmente, non ha nessuno strumento per verificarne la presenza presso altri Centri della Regione. Similmente, se un Centro ha una sacca in scadenza a breve (es. 72 ore), non ha nessuna possibilità di allertare altri Centri che ne avessero eventualmente bisogno, con il rischio che la dose venga lasciata scadere mentre potrebbe essere utilizzata immediatamente in altre aree della Regione. Il sistema software permettere di integrare i diversi Centri Trasfusionali Territoriali (CTT) e un Centro Controllo e Smistamento (CCS) con il compito di raccogliere le informazioni nate in periferia nei CTT, ovvero trasmettere ai CTT informazioni di interesse ed alert. E’ espressamente previsto che il colloquio fra CCT e CCS avvenga in tempo reale attraverso un canale di comunicazione.
 
--	Lo statement specifica che è possibile impostare report statistici di stampa sia per i CTT, sia per i CCS. In entrambi i casi le query sono effettuate da un amministratore del sistema.
+## Oggetto della Fornitura:
 
--	Nello statement si afferma che è possibile rimuovere un CTT dalla rete regionale del CCS, bisogna considerare di rimuovere le sacche presenti nel database “attivo” in modo che tali sacche non risulteranno più disponibili per il CCS.
+Il presente capitolato d’appalto ha per oggetto la fornitura del sistema software per la gestione integrata della giacenze di sangue presso la rete dei Centri Trasfusionali Territoriali di cui in premessa secondo le caratteristiche di seguito indicate. Il sistema deve articolarsi in diversi sistemi periferici (per i diversi CTT)) ed in una componente centrale (CCS); quest’ultima deve avere il compito di raccolta delle informazioni nate in periferia o della trasmissione alla periferia di informazioni ed alert; Il colloquio fra centro e periferia deve avvenire in tempo reale attraverso un canale di comunicazione; i sistemi periferici devono comunque essere in grado di garantire la loro piena operatività anche in temporanea assenza di connettività di rete, garantendo il successivo riallineamento dei dati; Le componenti CTT dovranno presentare funzionalità per: Caricare / scaricare una o più dosi di sangue dal proprio magazzino; Verificare la disponibilità di dosi di sangue di un certo gruppo localmente, ovvero in tutto il territorio Regionale ed eventualmente richiederne il trasferimento presso la propria sede, indicando un livello di priorità della richiesta; La componente CCS dovrà prevedere operazioni per: Definire un nuovo CTT o rimuovere un CTT esistente; Raccogliere e gestire i dati necessarie alla realizzazioni delle operazioni previste per i CCT; Allertare i CCT sull’avvicinarsi di date di scadenza mediante messaggi in broadcast. Il sistema dovrà essere dotato, sia nelle componenti CTT sia nella componente CCS, di interfacce utente semplici ed intuitive per la realizzazione delle operazioni previste. Tale interfaccia dovrà inoltre consentire di impostare report statistici di stampa personalizzati, memorizzabili e riutilizzabili secondo modalità di facile utilizzo per l’utente. L’installazione della componente centrale della soluzione deve avvenire in modalità on-premises, ovvero presso il data-centre della Regione; quella periferica presso le postazioni distribuite nei diversi CTT. Attualmente sul territorio Regionale sono attivi 43 CTT, come riportato nell’elenco allegato. La fornitura dovrà prevedere la configurazione di tali centri nel sistema (CCS) nonché l’istallazione delle componenti periferiche presso i CCT. L’elenco deve intendersi indicativo, potendo il committente introdurre delle modifiche sia per ciò che riguarda l’ubicazione di alcuni Centri, sia per quanto riguarda il numero dei Centri da gestire. Il sistema deve fornire le necessarie garanzie sulla sicurezza e sulla riservatezza delle informazioni e dei dati, in funzione della tipologia dei trattamenti gestiti. La fornitura dovrà comprendere la consegna, l’installazione, la configurazione e l’avvio operativo del sistema software, nonché la formazione del personale del CCS e dei CTT.
 
+## Durata:
 
+La durata massima del progetto, comprensiva di installazione, configurazione, formazione e collaudo, è di 15 settimane a partire dalla data di pubblicazione del seguente bando. I gruppi dovranno proporre una temporizzazione delle attività e una descrizione della struttura del progetto e della struttura organizzativa del team entro le prime due settimane. Durante il progetto, il committente si impegna ad assicurare un minimo di 3 incontri in cui sarà possibile discutere e definire l’introduzione di modifiche o nuove funzionalità del sistema di gestione. L’accettazione del prodotto avverrà a valle di una attività di collaudo condotta congiuntamente dal gruppo di lavoro e dal committente o suo rappresentante. In caso di non conformità rilevate durante il collaudo, la consegna è considerata in ritardo e una nuova data per la ripetizione del collaudo sarà concordata fra gruppo e committente. Sono possibili al massimo due ripetizioni, dopo le quali il committente si riserva di rifiutare il prodotto o di accettarlo come non conforme.
 
-<div style="height: 50px"></div>
+## Servizi Aggiuntivi
 
-## 2. Il metodo seguito
-<p style="font-size: 16px">Il metodo di analisi, progettazione e sviluppo prevede i seguenti passi:</p>
+Il gruppo potrà proporre, dettagliandoli nella documentazione tecnica, eventuali funzionalità aggiuntive e migliorie che intende apportare rispetto a quelli espressamente richiesti nel capitolato, se pertinenti agli ambiti trattati. Funzionalità aggiuntive e/o integrative verranno prese in considerazione dal committente ai fini della valutazione finale.
 
-### 1. Analisi dei requisiti
+## Trattamento dei dati:
 
--	Costruzione del modello di dominio
--	Specifica dei requisiti funzionali
--	Analisi dei casi d’uso
--	Validazione requisiti–casi d’uso
+Il committente si impegna al pieno rispetto della riservatezza dei dati e della documentazione che ciascun gruppo fornirà durante lo sviluppo del progetto. Ciascun gruppo ha l’obbligo di mantenere riservati i dati e le informazioni fornite dal committente, o da questi rese disponibili attraverso sistemi informativi, di non divulgarli in alcun modo e in qualsiasi forma e di non farne oggetto di utilizzazione a qualsiasi titolo per scopi diversi da quelli strettamente necessari all’esecuzione del progetto.
 
-<div style="Height: 20px"></div>
+## Responsabilità e obblighi:
 
-### 2. Analisi/Progetto preliminare
+I partecipanti a ciascun gruppo di lavoro si impegnano a dare il loro personale contributo all’avanzamento dei lavori del proprio gruppo, secondo i ruoli e i compiti definiti. Eventuali difficoltà o impossibilità, anche temporanee, a portare avanti il proprio carico di lavoro, vanno immediatamente riportata al resto del gruppo di lavoro, e discusse con il committente. Tutti i partecipanti, individualmente e come gruppo, si impegnano ad evitare situazioni di plagio, a non spacciare il lavoro degli altri per il proprio lavoro e a non falsificare i risultati.
 
--	Analisi di robustezza
--	Rifinitura dei casi d’uso e eventuali aggiornamenti al modello di dominio
+# Aggiungere una nuova sacca sul sistema
 
-<div style="Height: 20px"></div>
+L'operazione di *AggiuntaSacca* viene inizializzata dal **MagazziniereCTT** nel momento in cui un carico di sacche arriva in magazzino.  
+I carichi di sacche provengono da Enti autorizzati e quindi non sono necessarie verifiche sui dati delle sacche.   
 
-### 3. Progetto dettagliato
--	Diagrammi di sequenza
--	Assegnazione delle responsabilità (operazioni) alle classi
+Le informazioni relative ad ogni singola sacca sono stampate su un'apposita etichetta che contiene:
+- Data di produzione
+- Data di scadenza
+- Gruppo sanguigno
+- Ente donatore 
 
-<div style="Height: 20px"></div>
+Il magazziniere si occcupa di caricare sul sistema le sacche una per volta.
+Nel momento in cui viene caricata una sacca il sistema le assegna un nuovo seriale.  
+Il seriale rapresenta l'identificativo univoco della sacca all'interno dell'intera rete dei CTT. 
+Tutti i seriali presentano la medesima struttuta: 15 caratteri di cui i primi 6 caratteri indicano quale CTT ha caricato tale sacca sul sistema, un trattino e i restanti 8 il numero progressivo della sacca.
 
-### 4. Realizzazione
+        *************************************************************************************
+        Arriva un carico di sacche presso il CTT002
 
-<div style="height: 50px"></div>
+        Il magazziniere del CTT002 carica una ad una le sacche sul sistema
 
-## Ruoli CTT
-_MagazziniereCTT_ → registra le sacche che arrivano nel magazzino ed evade sacche verso enti esterni.
+        Ogni sacca viene registrata con un seriale progressivo ma avente la radice comune CTT002
+        es: CTT002-00000001
+        *************************************************************************************
 
-_OperatoreCTT_ → riceve richieste da enti esterni al sistema e le soddisfa interrogando il sistema .
+# Effettuare una ricerca di sacche per conto di un ente esterno
 
-_AmministratoreCTT_ → aggiunge nuovi operatori al sistema e può eseguire report statistici sul sistema CTT. 
+L'operazione di *RicercaSacca* viene inizializzata dall' **OperatoreCTT** nel momento in cui un ente esterno, attraverso una richiesta formale (fatta per vie telematiche o di persona), richiede al CTT una fornitura di un certo numero di sacche.
 
-<div style="height: 50px"></div>
+La ricerca di sacche non sempre coinvolge il singolo CTT.
+Nel momento in cui l'ente contatta un CTT (il più vicino, l'affiliato etc...) e quest'ultimo non riesca a soddisfare in pieno la richiesta, il CCS si occupa di completare la ricerca sull'intera rete dei CTT.
 
-## Ruoli CCS
-_AmministratoreCCS_ → aggiunge/rimuove CTT e può eseguire report statistici sul sistema CCS.
+La ricerca coinvolge quindi l'intera *rete* CTT/CCS.
 
-<div style="height: 50px"></div>
+Se la richiesta non è prioritaria la *rete* si impegna a consegnare all'ente le sacche entro la data massima di arrivo prevista, richiedendo, in caso di ricerca locale non completa, le sacche ai CTT che ne hanno maggior disponibilità del tipo richiesto. 
 
-## Rationale:
+Se la richiesta è prioritaria la *rete* si impegna a consegnare all'ente le sacche entro la data massima di arrivo prevista, richiedendo, in caso di ricerca locale non completa, le sacche ai CTT più vicini al CTT a cui è stata fatta la richiesta. 
 
--	I CTT devono funzionare localmente, quindi devono gestire i loro DB autonomamente ed in maniera indipendente dal CCS a cui sono collegati. Gli scenari di invio e ricezione per renderli possibili anche in assenza di rete (purchè la richiesta sia stata effettuata in precendenza al problema di rete).
+I dati necessari per poter effettuare una ricerca sono:
 
--	L’operazione di evasione sacche presso un CTT viene sempre inizializzata dalla lettura di una notifica, inviata dal sistema CTT o CCS sul terminale magazziniereCTT. Nella notifica è specificato il seriale delle sacche da evadere e i dati dell’ente richiedente. 
+- Gruppo sanguigno
+- Numero di sacche
+- Data massima di arrivo
+- Ente richiedente
+- Indirizzo ente
+- Priorità
 
--	L’operazione di ricezione sacca presso un CTT viene inizializzata dal magazziniere quando arriva fisicamente un carico di sacche dall’esterno. Il magazziniere si occupa di inserire i dati presenti sull’etichetta della sacca sul sistema in modo da poter aggiornare il database.
+Il sistema si occupa di ricercare sacche compatibili con la richiesta all'interno del Database.
+Le sacche vengono ricercate prima dello stesso gruppo sanguigno richiesto e poi dei gruppi sanguigni compatibili, dando priorità alle sacche con data di scadenza più vicina.
 
--	L’operazione di ricerca sacca avviene sempre a seguito di una richiesta proveniente dall’esterno (non è possibile per un CTT ordinare sacche senza necessità), se le sacche richieste sono presenti nel database del CTT da cui si effettua la ricerca, attraverso una notifica si avverte il magazziniere di inviare tali sacche all’ente richiedente. Se nel database locale non sono presenti abbastanza sacche per poter soddisfare la richiesta, attraverso una notifica si avverte il CCS di estendere la ricerca a tutti i database dei CTT presenti in rete. Il CCS dopo aver individuato le sacche, attraverso una notifica avverte i magazzinieri dei CTT che le possiedono di inviare tali sacche direttamente all’ente richiedente.
+`Se il CTT riesce a soddisfare completamente la richiesta dell'ente` al termine dell'operazione di ricerca vengono mostrati all'operatore i seriali delle sacche trovate, in modo che egli possa confermare l'ordine.
 
--	Abbiamo deciso che per garantire la massima operatività offline, sono i CTT ad occuparsi del controllo delle sacche in scadenza per poi, connessione permettendo, avvisare il CCS. In questo modo in caso di una sacca scaduta presso un CTT, il CTT stesso avviserà i magazzinieri di smaltire tale sacca. Usiamo data di scadenza piuttosto che data di produzione perche non siamo sicuri che la durata (di vita) sia la stessa per sacche dello stesso tipo.
+Dopo che l'operatore ha confermato l'ordine, viene inoltrata sul terminale del magazziniere una notifica contenente i dati necessari per l'evasione:
 
--	Per poter tenere traccia dello storico sacche di ogni CTT abbiamo modellato il DataBase delle sacche costituito da due parti. Una parte “Attiva”, dove sono mantenuti i dati delle sacche attualmente presenti in magazzino e una parte “Passiva”, dove sono presenti dati sull’ affidamento/ricezione di tutte le sacche passate per quel CTT.
+- Lista dei seriali da evadere
+- Ente richiedente
+- Indirizzo ente  
 
+        *************************************************************************************
+        L'ospedale Rummo richiede 15 sacche A+ al CTT005 che devono essere consegnate entro il 26/07/2021.
+        L'operatore del CTT005 inizializza l'operazione di ricerca.
 
+        A seguito della richiesta vengono trovate 13 sacche A+ e 2 Compatibili.
+        L'operatore visualizza i seriali delle sacche trovate e conferma l'ordine.
 
+        Viene inoltrata al magazziniere la notifica contenente i dati dell'evasione.
+        *************************************************************************************
 
--	Per ogni CTT possiamo pensare di tenere traccia di:
-	le sacche presenti fisicamente nel magazzino, prenotate o no (Sacca)
-	lo storico delle sacche che sono passate per il magazzino, complete di informazioni sull’ente che ha fornito e sull’ente che ha ottenuto la sacca. (DatiSacca)
+`Se il CTT riesce a soddisfare parzialmente la richiesta dell'ente` al termine dell'operazione di ricerca vengono mostrati all'operatore i seriali delle sacche trovate, in modo che egli possa confermare l'ordine.
 
--	La divisione in ruoli è stata necessaria per garantire una buona distribuzione delle attività all’interno dei CTT.
+Viene informato l'operatore che è stato contattato il **CCS** per completare l'ordine e viene inizializzata un'operazione di [ricerca sacca sull'intera rete](#Estendere-una-ricerca-per-conto-di-un-CTT-sulla-rete) 
 
--	Il CCS è una rete che interconnette i magazzini dei diversi CTT e che raccoglie dati dai vari CTT per fornire dei report statistici globali. Il CCS deve gestire una comunicazione in broadcast verso i CTT in modo da avvisarli in caso di sacche in scadenza e permettere la fruizione di tali sacche. Il CCS deve riuscire a fornire al singolo CTT una visione “estesa” del suo magazzino, in caso di una ricerca sacche in locale fallita esso inoltra tale ricerca a tutti gli altri CTT in modo da soddisfarla. Dal punto di vista del “cliente”, ovvero degli enti esterni che richiedono sacche presso i CTT, a seguito di una richiesta o il CTT a cui si è fatta domanda o un altro CTT della rete invieranno la sacca richiesta entro una data compatibile.
+Dopo che l'operatore ha confermato l'ordine, viene inoltrata sul terminale del magazziniere una notifica contenente i dati necessari per l'evasione.
 
--	Il CCS può ricevere richieste prioritarie o meno:
-	in caso di richieste prioritarie fornisce all'ente richiedente le sacche proveniente dai CTT più vicini a quello da cui è partita la richiesta.
-	in caso di richieste non prioritarie fornisce all'ente richiedente sacche provenienti dai CTT che hanno molte sacche di quel tipo in magazzino. Delle richieste che arrivano al CCS è noto: il tipo di sangue richiesto, la data di affidamento e l’ente richiedente (con il suo indirizzo), il CCS in base a questa informazioni sceglie le sacche da inviare.
-     
+- Lista dei seriali da evadere
+- Ente richiedente
+- Indirizzo ente
 
--	Dobbiamo pensare che CTT e CSS sono degli strumenti che gestiscono solamente le sacche nei magazzini e i loro spostamenti, non l’utilizzo o il prelievo delle sacche ma solo la ricezione e l’affidamento di sacche da e ad enti esterni.
+Il CCS una volta terminata la ricerca globale informerà l'operatore del CTT dell'esito della ricerca globale.
 
+        *************************************************************************************
+        L'ospedale Rummo richiede 15 sacche A+ al CTT005 che devono essere consegnate entro il 26/07/2021.
 
+        L'operatore del CTT005 inizializza l'operazione di ricerca.
+        A seguito della richiesta vengono trovate 8 sacche Ap e 4 Compatibili.
 
+        L'operatore visualizza i seriali delle sacche trovate e conferma l'ordine.
+
+        L'operatore viene avvisato che è stato contattato il CCS per completare l'ordine.
+
+        Viene inoltrata al magazziniere la notifica contenente i dati dell'evasione.
+
+        L'operatore visualizza i risultati della ricerca globale.
+        *************************************************************************************
+
+`Se il CTT non riesce a soddisfare  la richiesta dell'ente` al termine dell'operazione di ricerca viene avvisato l'operatore del fatto che non è stata trovata nessuna sacca.
+
+Viene informato l'operatore che è stato contattato il **CCS** per completare l'ordine e viene inizializzata un'operazione di [ricerca sacca sull'intera rete](#Estendere-una-ricerca-per-conto-di-un-CTT-sulla-rete) 
+
+Il CCS una volta terminata la ricerca globale informerà l'operatore del CTT dell'esito della ricerca globale.
+
+        *************************************************************************************
+        L'ospedale Rummo richiede 5 sacche A+ al CTT005 che devono essere consegnate entro il 26/07/2021.
+
+        L'operatore del CTT005 inizializza l'operazione di ricerca.
+
+        A seguito della richiesta non vengono trovate sacche compatibili.
+        L'operatore viene avvisato che è stato contattato il CCS per completare l'ordine.
+
+        L'operatore visualizza i risultati della ricerca globale.
+        *************************************************************************************        
+
+# Evadere un ordine verso un ente esterno
+
+L'operazione di *EvasioneOrdine* viene inizializzata dal **MagazziniereCTT** nel momento in cui viene visualizzata sul suo terminale una notifica di evasione.
+
+Il magazziniere si occupa di rimuovere fisicamente le sacche dal magazzino del CTT e di preparare l'ordine da consegnare al corriere.
+Queste operazioni vengono eseguite appena arriva una notifica, in modo da poter consegnare gli ordini agli enti richiedenti il prima possibile. 
+
+I dati presenti sulla notifica sono:
+
+- Lista dei seriali da evadere
+- Ente richiedente
+- Indirizzo ente richiedente
+
+Quando il magazziniere interagisce con una notifica il sistema stampa un PDF contenenti tutti i dati dell'evasione, utilizzabile come lettera di vettura per il corriere.
+
+        *************************************************************************************
+        Il magazziniere del CTT001 riceve una notifica di evasione delle sacche:
+        CTT001-0000000012,CTT001-0000000041,CTT001-0000000018
+        verso l'ospedale Rummo situato a Via Pacevecchia, 53, 82100 Benevento BN.
+                
+        Il magazziniere interagisce con la notifica e stampa la lettera di vettura.
+
+        Il magazziniere si occupa di rimuovere le sacche dal magazzino e di preparare l'ordine.
+        *************************************************************************************
+
+# Aggiungere un nuovo dipendente al CTT
+
+L'operazione di *AggiuntaDipendenteCTT* viene inizializzata dall'**AmministratoreCTT** nel momento in cui deve essere aggiunto del personale all'interno del CTT.
+
+L'operatore si occupa di registrare sul sistema i dati fornitogli dal nuovo dipendente.
+
+I dati da inserire sono:
+
+- Codice fiscale
+- Nome
+- Cognome
+- Data di nascita 
+- Ruolo
+- Username
+
+Quando l'amministratore conferma, viene generato dal sistema un PDF contenente tutti i dati del dipendente completi di username e password autogenerata.
+Questo pdf viene affidato al dipendente in modo che egli possa accedere alla propria area personale e impostare una nuova password.
+
+        *************************************************************************************
+        L'amministratore del CTT001 deve aggiungere un nuovo Magazziniere.
+                
+        L'amministratore inserisce tutti i dati del nuovo dipendente e conferma l'inserimento.
+
+        Viene consegnato al dipendente un PDF contenente i dati(username e password) per accedere al sistema. 
+        *************************************************************************************
+
+# Rimuovere un dipendente dal CTT
+
+L'operazione di *RimozioneDipendenteCTT* viene inizializzata dall'**AmministratoreCTT** nel momento in cui deve essere rimosso del personale dal CTT.
+
+L'operatore si occupa di ricercare il dipendente all'interno del sistema e di confermare il licenziamento.
+
+Una volta confermato, tutti i dati relativi al dipendente vengono rimossi dal sistema.
+
+        *************************************************************************************
+        L'amministratore deve rimuovere l'operatore Mario Rossi.
+                
+        L'amministratore ricerca Mario Rossi all'interno del sistema tramite il codice fiscale.
+
+        Vengono rimossi tutti i dati relativi a Mario Rossi.
+        *************************************************************************************
+
+# Rimuovere sacche scadute e avvisare il CCS di sacche in scadenza
+
+L'operazione di *GestioneSaccheInScadenza* viene inizializzata in automatico dal sistemaCTT ogni 24h alle ore 01:00 di notte.
+
+Vengono individuate tutte le **sacche scadute** presenti nel magazzino e vengono automaticamente rimosse dal DataBase.
+Viene inoltrata al magazziniere una notifica di rimozione sacche scadute contenente i seriali delle sacche da rimuovere dal magazzino.
+
+Oltre alle sacche scadute vengono individuate anche le **sacche in scadenza** nelle prossime 72h e la lista di tali sacche viene inoltrata al CCS, in modo da renderle fruibili su tutta la rete.
+
+        *************************************************************************************
+        Durante un controllo periodico vengono individuate 3 sacche scadute e 12 in scadenza nelle prossime 72h.
+
+        Le 3 sacche scadute vengono rimosse dal Database e viene notificato il magazziniere di smaltirle.
+
+        Viene notificato il CCS delle 12 sacche in scadenza presenti nel CTT.
+        *************************************************************************************
+
+# Accettare sacche in scadenza presenti sulla rete
+
+L'operazione di *AccettazioneSaccaInScadenza* viene inizializzata dall' **OperatoreCTT** nel momento in cui un ente esterno, attraverso una richiesta formale (fatta per vie telematiche o di persona), richiede al CTT una fornitura di un certo numero di sacche e l'operatore individua nella lista delle sacche in scadenza presenti in rete una sacca compatibile.
+
+L'operatore interagisce con la notifica inviatagli dal CCS relativa alla sacca in scadenza ed inserisce i dati necessari per far si che quella sacca venga evasa:
+
+- Ente richiedente
+- Indirizzo ente
+
+Una volta confermata la richiesta, il CCS si impegna ad inoltrare tale richiesta al CTT che mantiene la sacca in scadenza, in modo da poterla far evadere.
+
+        *************************************************************************************
+        ​L'ospedale Rummo richiede 1 sacca di tipo A+ al CTT005 che deve essere consegnata entro il 26/07/2021.
+
+        L'operatore del CTT002, a seguito di una richiesta di 1 sacca di tipo A+, nota che nella lista delle sacche
+        in scadenza è presente una sacca di tipo A+ del CTT005
+
+        L'operatore del CTT002 richiede la sacca inserendo i dati necessari.
+
+        Viene notificato il CCS, il quale si occuperà di notificare il CTT005 di evadere quella sacca.
+        *************************************************************************************
+
+# Aggiungere una nuovo CTT sulla rete
+
+L'operazione di *AggiuntaCTT* viene inizializzata dall' **AmministartoreCCS** nel momento in cui riceve la richiesta di aggiungere un nuovo CTT sulla rete regionale.  
+Ogni CTT può scegliere liberamente di partecipare alla rete regionale o continuare ad esserne distaccato. 
+Le informazioni relative ad ogni singolo CTT sono:
+
+- Città
+- Indirizzo
+- Telefono
+- Email
+- Latitudine
+- Longitudine
+
+L'amministratore si occcupa di caricare sul sistema le informazioni del CTT e sottomettere la domanda.
+Nel momento in cui viene caricato un CTT esso sarà inserito nella mappa dei CTT e da quel momento in poi può interagire attivamente nella gestione delle scorte di sangue.  
+
+        *************************************************************************************
+        Arriva la richiesta da parte del CTT numero 1 di essere inserito nella rete.
+
+        L'amministratore del CCS inserisce i dati nel sistema.
+
+        Il sistema risponde con una notifica CTT aggiunto correttamente.
+        *************************************************************************************
+
+# Rimuovere un CTT dalla rete
+L'operazione di *RimozioneCTT* viene inizializzata dall'**AmministratoreCCS** nel momento in cui deve essere rimosso dal suo sistema uno specifico CTT.
+L'amministratore si occupa di ricercare il CTT all'interno del sistema e di confermare la sua rimozione.
+Una volta confermata, tutti i dati relativi al CTT vengono rimossi dal suo sistema.
+A questo punto il CTT rimosso dal sistema CCS può continuare la sua funzione unicamente in locale.
+Nonostante la rimozione, il sistema CCS è abilitato ad accettare richieste di adesione da CTT rimossi in passato.
+
+        *************************************************************************************
+        L'amministratore deve rimuovere il CTT001.
+                
+        L'amministratore ricerca il CTT001 all'interno del sistema tramite il nome.
+
+        Vengono rimossi tutti i dati relativi al CTT001.
+        *************************************************************************************
+
+# Estendere una ricerca per conto di un CTT sulla rete
+
+L'operazione di RicercaGlobale viene fatta partire dal CCS nel momento in cui la RicercaLocale, avviata da un'operatore di un CTT online, non va a buon fine.
+Le motivazioni possono essere o l'assenza completa di sacche compatibili con la ricerca in locale  oppure la parziale presenza delle sacche ricercate.
+
+L'operatore del CTT richiedente riceve sul suo terminale una notifica secondo cui è stata inoltrata la stessa richiesta eseguita localmente sugli altri CTT online.
+Dopo pochi secondi viene mostrato il risultato della ricerca all'interno di un pulsante a comparsa adottato solo per le ricerche globali.
+
+In caso di ricerca prioritaria le sacche verranno ricercate fra i CTT più vicini al richiedente. Mentre, se la ricerca non è prioritaria, le sacche saranno ricercate fra i CTT che ne possiedono di più di quel tipo.
+
+In ogni caso la ricerca globale può finire in tre modi:
+
+- la richiesta è stata soddisfatta in toto. In questo caso verranno notificati: l'operatore del CTT richiedente per informarlo che le sacche sono state trovate e che arriveranno il prima possibile; ogni magazziniere del/dei CTT che dovranno inviarle.
+- la richiesta è stata soddisfatta parzialmente. In questo caso verranno notificati: l'operatore del CTT richiedente per informarlo che alcune sacche sono state trovate e che arriveranno il prima possibile; ogni magazziniere del/dei CTT che dovranno inviarle.
+- la richiesta non è stata soddisfatta da nessun CTT e l'iterazione finisce lì.
+
+         *************************************************************************************
+        L'operatore del CTT001 effettua una ricerca locale non prioritaria per 7 sacche compatibili col gruppo sanguigno 0+. 
+                
+        Nel database locale vengono trovate solo 4 sacche compatibili con la ricerca. A questo punto il CCS provvede ad inoltrare la richiesta a livello regionale. 
+
+        L'operatore riceve la notifica che le 3 sacche rimanenti saranno inviate dal CTT003 e che il magazziniere di quest'ultimo è stato contattato per avviare l'evasione.
+        *************************************************************************************
+
+        L'operatore del CTT001 effettua una ricerca locale prioritaria per 7 sacche compatibili col gruppo sanguigno 0-. 
+                
+        Nel database locale vengono trovate solo 5 sacche compatibili con la ricerca. A questo punto il CCS provvede ad inoltrare la richiesta a livello regionale. 
+
+        L'operatore riceve la notifica che è stata trovata una sola sacca, che sarà inviata dal CTT005 e che il magazziniere di quest'ultimo è stato contattato per avviare l'evasione.
+        *************************************************************************************
+
+        L'operatore del CTT001 effettua una ricerca locale non prioritaria per 12 sacche compatibili col gruppo sanguigno AB+. 
+                
+        Nel database locale vengono trovate solo 4 sacche compatibili con la ricerca. A questo punto il CCS provvede ad inoltrare la richiesta a livello regionale. 
+
+        L'operatore riceve la notifica che non sono state trovate sacche compatibili con la ricerca.
+        *************************************************************************************
+
+# Notificare tutti i CTT delle sacche in scadenza presenti in rete 
+
+Ogni CTT alle 01:00 effettua il controllo delle sacche in scadenza. Ogni volta che una sacca arriva a 72h o meno dalla data di scadenza, viene avvisato il CCS della presenza di tale sacca. Il CCS prende le informazioni di questa sacca e le inoltra sui terminali di tutti gli operatori dei vari CTT online, in modo che possa essere prenotata da chiunque ne necessiti. 
+
+        *************************************************************************************
+
+        Il CTT003 individua una sacca in scadenza fra tre giorni ed avvisa il CCS.
+
+        Il CCS inoltra i dati della sacca ai vari CTT. 
+
+        La notifica con i dati della sacca arriva sul terminale dell'operatore del CTT002, che decide di prenotarla.
+        *************************************************************************************
+
+# Aggiungere un nuovo Amministratore del CCS
+
+L'operazione di *AggiuntaDipendenteCCS* viene inizializzata dall'**AmministratoreCCS** nel momento in cui deve essere aggiunto del personale all'interno del CCS.
+L'amministratore si occupa di registrare sul sistema i dati fornitogli dal nuovo dipendente.
+I dati da inserire sono:
+
+- Codice fiscale
+- Nome
+- Cognome
+- Data di nascita 
+- Ruolo
+- Username
+
+Quando l'amministratore conferma, viene generato dal sistema un PDF contenente tutti i dati del dipendente completi di username e password autogenerata.
+Questo pdf viene affidato al dipendente in modo che egli possa accedere alla propria area personale e impostare una nuova password.
+
+        *************************************************************************************
+        L'amministratore del CCS deve aggiungere un nuovo AmministratoreCCS.
+
+        L'amministratore inserisce tutti i dati del nuovo dipendente e conferma l'inserimento.
+
+        Viene consegnato al dipendente un PDF contenente i dati(username e password) per accedere al sistema. 
+        *************************************************************************************
+
+# Rimuovere un Amministratore del CCS
+
+L'operazione di *RimozioneDipendenteCCS* viene inizializzata dall'**AmministratoreCCS** nel momento in cui deve essere rimosso un amministratore dal CCS.
+L'amministratore si occupa di ricercare il dipendente all'interno del sistema e di confermare il licenziamento.
+Una volta confermato, tutti i dati relativi al dipendente vengono rimossi dal sistema.
+
+        *************************************************************************************
+        L'amministratore deve rimuovere l'amministratore Pietro Neri.
+
+        L'amministratore ricerca Pietro Neri all'interno del sistema tramite il codice fiscale.
+
+        Vengono rimossi tutti i dati relativi a Pietro Neri.
+        *************************************************************************************
+
+# AmministratoreCTT
+
+L'**amministratoreCTT** è un dipendente di un Centro Tasfusionale Territoriale.
+Possiede i requisiti necessari per poter accedere al terminale dell'amministratore e si occupa della gestione del CTT attraverso delle funzionalità specificatamente designate per il suo ruolo: 
+
+- La possibilità di aggiungere/rimuovere DipendentiCTT dal CTT presso cui lavora.
+- La possibilità di effettuare dei report statistici per avere una visione globale dell'andamento del CTT tramite un sistema di query dinamico. Grazie ad appositi elementi dell'interfaccia grafica, gli è consentito di visualizzare risultati, istogrammi e grafici a torta in tempo reale.
+
+# OperatoreCTT
+
+L'**operatoreCTT** è un dipendente di un Centro Trasfusionale Territoriale.
+Possiede i requisiti necessari per poter accedere al terminale dell'operatore e si occupa della gestione delle comunicazioni con gli enti autorizzati ad effettuare richieste al CTT.
+Le funzionalità specificatamente designate per il 
+suo ruolo sono:
+
+- Accettare delle sacche in scadenza a seguito di un Alert.
+- Ricercare sacche a livello locale/regionale tramite un apposito form.
+
+# MagazziniereCTT
+
+Il **magazziniereCTT** è un dipendente di un Centro Trasfusionale Territoriale.
+Possiede i requisiti neccessari per poter accedere al terminale del magazziniere e si occupa della gestione del magazzino tramite interazioni con il database locale del CTT. Le funzionalità specificatamente designate per il suo ruolo sono:
+
+- Aggiungere sacche
+- Evadere sacche
+- Smaltire le sacche scadute
+
+# AmministratoreCCS
+
+L'**amministratoreCCS** e un dipendente di un Centro Controllo e smistamento .
+Possiede i requisiti neccessari per poter accedere al terminale del magazziniere
+e si occupa della gestione dell'intera rete di distribuzione di sacche di sangue.
+Le funzionalità specificatamente designate per il suo ruolo sono:
+
+- La possibilità di aggiungere/rimuovere CTT dalla rete
+- La possibilità di aggiungere/rimuovere AmministratoriCCS
+- La possibilità di effettuare dei report statistici per avere una visione globale dell'andamento dell'intera rete tramite un sistema di query dinamico. Grazie ad appositi elementi dell'interfaccia grafica, gli è consentito di visualizzare risultati, istogrammi e grafici a torta in tempo reale.
+
+# Collezioni dati permanenti
+
+# Scelte architetturali
+
+# Protocolli adottati
+
+# Tools e framework
+<img alt="MongoDB" src ="https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white"/>
+
+<img alt="Bootstrap" src="https://img.shields.io/badge/bootstrap-%23563D7C.svg?style=for-the-badge&logo=bootstrap&logoColor=white"/>   
+
+<img alt="Spring" src="https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white"/>
+
+<img alt="Apache" src="https://img.shields.io/badge/apache-%23D42029.svg?style=for-the-badge&logo=apache&logoColor=white"/>
+
+# Linguaggi
+
+<img alt="Java" src="https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=java&logoColor=white"/>
+
+<img alt="JavaScript" src="https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E"/>
+
+<img alt="HTML5" src="https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white"/>
+<img alt="CSS3" src="https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white"/>
+
+<img alt="Markdown" src="https://img.shields.io/badge/markdown-%23000000.svg?style=for-the-badge&logo=markdown&logoColor=white"/>
+
+# IDE
+
+<img alt="Visual Studio Code" src="https://img.shields.io/badge/VisualStudioCode-0078d7.svg?style=for-the-badge&logo=visual-studio-code&logoColor=white"/>
+<img alt="IntelliJ IDEA" src="https://img.shields.io/badge/IntelliJIDEA-000000.svg?style=for-the-badge&logo=intellij-idea&logoColor=white"/>
+
+# Controllo della versione e comunicazione
+
+<img alt="GitHub" src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white"/>
+<img alt="Discord" src="https://img.shields.io/badge/%3CServer%3E-%237289DA.svg?style=for-the-badge&logo=discord&logoColor=white"/>
+
+# Know the team
