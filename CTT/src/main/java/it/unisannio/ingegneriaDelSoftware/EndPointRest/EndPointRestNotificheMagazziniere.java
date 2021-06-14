@@ -131,7 +131,7 @@ public class EndPointRestNotificheMagazziniere extends MagazziniereSubject {
                 obs.update();
     }
 
-    @Scheduled(fixedDelay = 1000*60*2)
+    @Scheduled(initialDelay = 1000*1, fixedRate = 1000*60*3)
     /** */
     private void updateSaccheScadute() throws EntityNotFoundException {
         serialiDaSmaltire =SaccheScaduteRemover.getSmaltimentoSacche();
