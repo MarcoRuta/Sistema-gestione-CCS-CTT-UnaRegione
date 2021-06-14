@@ -45,6 +45,7 @@
 
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
+
                     objRl = JSON.parse(this.responseText);
                     if(table.rows.length != 1) {
                       while(table.rows.length != 1) {
@@ -74,8 +75,8 @@
                 for(let o of Object.keys(objRl)) {
                         let name = o.substring(17,23);
                         console.log(name);
-                    for (let v of Object.values(objRl)) {
-                            for(let i =0; i < v.length; i++) {
+                        let v= objRl[o];
+                        for(let i =0; i < v.length; i++) {
                             row = document.createElement('tr');
                             row.appendChild(document.createElement('td'));
                             row.appendChild(document.createElement('td'));
@@ -89,11 +90,9 @@
                             row.cells[4].innerHTML = v[i].dataDiNascita;
                             table.appendChild(row);
                             console.log(v[i]);
-
-                            }
                         }
-                }
 
+                }
         }
 
 

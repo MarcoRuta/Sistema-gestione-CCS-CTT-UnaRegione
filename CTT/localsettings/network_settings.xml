@@ -4,8 +4,8 @@
     <entry key="CCSIP">192.168.193.89</entry>
     <entry key="CCSWebSocketIP">ws://192.168.193.89:8080/ws/saccheInScadenza</entry>
     <entry key="CCS_retry_connection">30</entry>
-    <entry key="MagazziniereIP">192.168.193.194</entry>
-    <entry key="OperatoreIP">192.168.193.34</entry>
-    <entry key="AmministratoreIP">192.168.193.214</entry>
+    <entry key="MagazziniereIP">192.168.193.57</entry>
+    <entry key="OperatoreIP">192.168.193.28</entry>
+    <entry key="AmministratoreIP">192.168.193.38</entry>
     <entry key ="CCS_PORT">8080</entry>
 </properties>

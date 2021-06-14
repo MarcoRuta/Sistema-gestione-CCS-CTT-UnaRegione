@@ -146,4 +146,9 @@ public class Sacca {
 				", prenotato=" + prenotato +
 				'}';
 	}
+
+	/**Restituisce true se la sacca è scaduta*/
+    public boolean isScaduta() {
+		return  (LocalDate.now().isEqual(this.dataScadenza) || LocalDate.now().isAfter(dataScadenza));
+    }
 }
