@@ -32,6 +32,7 @@ public class CCSRestClient {
         SaccaWrapper saccaWrapper = saccheCompatibili.request().get(SaccaWrapper.class);
         List<Sacca> sacche = saccaWrapper.getSacche();
         if(sacche.size()!=0) CcsRestApplication.logger.info("Sacche compatibili trovate presso un CTT");
+
             return sacche;
     }
 
@@ -55,7 +56,7 @@ public class CCSRestClient {
         //prenoto la sacca e mando la notifica evasione al magazzinere
         Response r = risultati.request().post(Entity.json(notificaRisultatiRicerca));
         CcsRestApplication.logger.info("Risultati mandati all'uri: "+risultati.getUri());
-        CcsRestApplication.logger.info("ecco la risposta: "+r.getStatus()+r.readEntity(String.class));
+        CcsRestApplication.logger.info("Ecco la risposta: "+r.getStatus()+r.readEntity(String.class));
     }
 
     public static List<Dipendente> makeReportDipendenti(String ip, String ruolo){

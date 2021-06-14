@@ -55,8 +55,8 @@ public class Settings {
             }
         }
         PORTA = loadNetworkProps.getProperty("PORT");
-        }
     }
+}
 
 
 

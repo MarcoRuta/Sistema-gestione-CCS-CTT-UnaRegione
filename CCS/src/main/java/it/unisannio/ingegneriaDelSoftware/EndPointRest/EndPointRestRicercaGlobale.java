@@ -82,7 +82,7 @@ public class EndPointRestRicercaGlobale implements Subject {
 			this.prenotaSacca(cttOnline,cttSacche,indirizzoEnte,enteRichiedente);
 			CCSRestClient.sendRisultatiRicerca(Settings.ip.get(cttRichiedente),
 					new NotificaRisultatiRicerca(serialeList, "Esito ricerca globale: completata totalmente"));
-			CcsRestApplication.logger.info("La richiesta del "+nome+"è stata soddisfatta");
+			CcsRestApplication.logger.info("La richiesta del "+nome+" è stata soddisfatta");
 			return Response.status(Response.Status.NO_CONTENT).build();
 		}
 

@@ -58,13 +58,19 @@ public class GestioneScadenzeCTT implements CTTFunction {
 
 
 		for (Sacca sacca : listaSacche)
-			if( !sacca.isScaduta() && ( sacca.getDataScadenza().isBefore(LocalDate.now().plusDays(3)) || sacca.getDataScadenza().equals(LocalDate.now().plusDays(3)))
+			if( !this.isScaduta(sacca) && ( sacca.getDataScadenza().isBefore(LocalDate.now().plusDays(3)) || sacca.getDataScadenza().equals(LocalDate.now().plusDays(3)))
 			&& !(sacca.isPrenotato()) ) {
 				saccheInScadenza.add(sacca);
 				CttRestApplication.logger.info("Sacca in scadenza aggiunta: "+sacca.getSeriale().getSeriale());
 			}
 
 		return saccheInScadenza;
+	}
+
+
+	/**Restituisce true se la sacca è scaduta*/
+	public boolean isScaduta(Sacca s) {
+		return  (LocalDate.now().isEqual(s.getDataScadenza()) || LocalDate.now().isAfter(s.getDataScadenza()));
 	}
 
 

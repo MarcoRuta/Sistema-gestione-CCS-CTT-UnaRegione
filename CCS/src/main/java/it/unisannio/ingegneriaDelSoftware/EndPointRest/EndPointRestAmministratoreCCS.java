@@ -239,11 +239,10 @@ public class EndPointRestAmministratoreCCS implements EndPointAmministratoreCCS{
 		 Arrays.stream(GruppoSanguigno.values()).forEach( gs -> risultatoQuery.put(gs,0));
 
 		 for(CTTName ctt : cttOnline.keySet()){
-		 	System.err.println((ctt));
+			 CcsRestApplication.logger.info("Interrogo " + ctt);
 			 Map<GruppoSanguigno, Integer> temp = CCSRestClient.makeReportDisponibilitàSacche(cttOnline.get(ctt));
 			 Arrays.stream(GruppoSanguigno.values())
 					 .forEach(  gs -> risultatoQuery.put(gs, temp.get(gs.toString())+risultatoQuery.get(gs) ));
-			 System.err.println((risultatoQuery));
 		 }
 
 		 return Response

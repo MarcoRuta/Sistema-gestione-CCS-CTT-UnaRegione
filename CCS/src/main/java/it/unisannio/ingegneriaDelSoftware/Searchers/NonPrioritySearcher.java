@@ -20,7 +20,7 @@ public class NonPrioritySearcher implements it.unisannio.ingegneriaDelSoftware.I
     @Override
     public Map<CTTName, List<Sacca>> search(Map<CTTName, String> cttOnline, CTT cttRichiedente, String dataArrivoMassima, String gruppoSanguigno, int numeroSacche) throws EntityNotFoundException {
 
-    	CcsRestApplication.logger.info("è iniziata un operazione di ricerca sacche non prioritaria sulla rete CTT");
+    	CcsRestApplication.logger.info("È iniziata un'operazione di ricerca sacche non prioritaria sulla rete CTT");
 
         Map<CTTName, List<Sacca>> saccheTrovate = new HashMap<>();
 
@@ -52,7 +52,7 @@ public class NonPrioritySearcher implements it.unisannio.ingegneriaDelSoftware.I
 
         }
 
-        CcsRestApplication.logger.info("Ho finitio la ricerca non prioritaria: ",mappaOrdinata);
+        CcsRestApplication.logger.info("Ho finito la ricerca non prioritaria: " + mappaOrdinata);
         return risultato;
     }
 }

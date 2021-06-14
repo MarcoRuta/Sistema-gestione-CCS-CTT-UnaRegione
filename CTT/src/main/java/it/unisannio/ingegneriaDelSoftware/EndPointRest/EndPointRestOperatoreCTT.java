@@ -115,6 +115,7 @@ public class EndPointRestOperatoreCTT implements EndPointOperatoreCTT{
 				.collect(Collectors.toList());
 
 
+
 		return Response
 				.status(Response.Status.OK)
 				.entity(new SaccaWrapper(saccheTrovate))

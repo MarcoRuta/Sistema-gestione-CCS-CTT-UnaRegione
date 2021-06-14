@@ -29,7 +29,7 @@ public class SaccheScaduteRemover {
         CttRestApplication.logger.info("Inizio la procedura di ricerca sacche scadute");
         List<Seriale> serialiDaSmaltireList = new ArrayList<>();
         for(Sacca sacca : mm.getListaSacche())
-            if(sacca.isScaduta()) {
+            if(isScaduta(sacca)) {
                 serialiDaSmaltireList.add(sacca.getSeriale());
                 removeSaccaScaduta(sacca);
             }
@@ -37,6 +37,11 @@ public class SaccheScaduteRemover {
             return new NotificaSmaltimentoSacche(serialiDaSmaltireList);
         return null;
 
+    }
+
+    /**Restituisce true se la sacca è scaduta*/
+    public static boolean isScaduta(Sacca s) {
+        return  (LocalDate.now().isEqual(s.getDataScadenza()) || LocalDate.now().isAfter(s.getDataScadenza()));
     }
 
 
