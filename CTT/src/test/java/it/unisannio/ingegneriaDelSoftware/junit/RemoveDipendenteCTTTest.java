@@ -131,7 +131,17 @@ public class RemoveDipendenteCTTTest {
 	} 
 	
 	
-
+	
+	/**Test del metodo REST rest/amministratore/rimozioneDipendente
+	 * Questo test non deve andare a buon fine in quanto l'AmministratoreCTT tenta di eliminare se stesso dal database dei Dipendenti
+	*/ 
+	@Test public void testRimozioneDipendenteCTTSeStesso(){
+		
+		Response responseRemDip = rimozioneDip.path("CZGMJS46A28I333C").request().header(HttpHeaders.AUTHORIZATION, "Basic "+token).delete();
+		assertEquals(Status.FORBIDDEN.getStatusCode(), responseRemDip.getStatus());
+	} 
+	
+	
 	/**Classe per l'eliminazione del database
 	 */
 	@After public void dropDBDip() {

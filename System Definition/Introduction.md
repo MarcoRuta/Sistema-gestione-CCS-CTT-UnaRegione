@@ -21,6 +21,7 @@ Le funzionalità offerte da un singolo CTT sono:
 >[Rimuovere un dipendente dal CTT](#Rimuovere-un-dipendente-dal-CTT)  
 >[Rimuovere sacche scadute ed avvisare il CCS di sacche in scadenza](#Rimuovere-sacche-scadute-e-avvisare-il-CCS-di-sacche-in-scadenza)  
 >[Accettare sacche in scadenza presenti sulla rete](#Accettare-sacche-in-scadenza-presenti-sulla-rete)  
+>[Effettuare query a livello locale](#Effettuare-query-a-livello-locale)
 
 Le funzionalità offerte dal CCS sono:
 
@@ -29,7 +30,8 @@ Le funzionalità offerte dal CCS sono:
 >[Estendere una ricerca per conto di un CTT sulla rete](#Estendere-una-ricerca-per-conto-di-un-CTT-sulla-rete)   
 >[Notificare tutti i CTT delle sacche in scadenza presenti in rete](#Notificare-tutti-i-CTT-delle-sacche-in-scadenza-presenti-in-rete)   
 >[Aggiungere un nuovo Amministratore del CCS](#Aggiungere-un-nuovo-Amministratore-del-CCS)  
->[Rimuovere un Amministratore del CCS](#Rimuovere-un-Amministratore-del-CCS)  
+>[Rimuovere un Amministratore del CCS](#Rimuovere-un-Amministratore-del-CCS)<br>
+>[Effettuare query a livello regionale](#Effettuare-query-a-livello-regionale)
 
 I dipendenti presenti all'interno di un CTT sono:
 >[AmministratoreCTT](#AmministratoreCTT)  
@@ -92,10 +94,10 @@ Le informazioni relative ad ogni singola sacca sono stampate su un'apposita etic
 - Gruppo sanguigno
 - Ente donatore 
 
-Il magazziniere si occcupa di caricare sul sistema le sacche una per volta.
+Il magazziniere si occupa di caricare sul sistema le sacche una per volta.
 Nel momento in cui viene caricata una sacca il sistema le assegna un nuovo seriale.  
 Il seriale rapresenta l'identificativo univoco della sacca all'interno dell'intera rete dei CTT. 
-Tutti i seriali presentano la medesima struttuta: 15 caratteri di cui i primi 6 caratteri indicano quale CTT ha caricato tale sacca sul sistema, un trattino e i restanti 8 il numero progressivo della sacca.
+Tutti i seriali presentano la medesima struttura: 15 caratteri di cui i primi 6 caratteri indicano quale CTT ha caricato tale sacca sul sistema, un trattino e i restanti 8 il numero progressivo della sacca.
 
         *************************************************************************************
         Arriva un carico di sacche presso il CTT002
@@ -298,6 +300,15 @@ Una volta confermata la richiesta, il CCS si impegna ad inoltrare tale richiesta
 
         Viene notificato il CCS, il quale si occuperà di notificare il CTT005 di evadere quella sacca.
         *************************************************************************************
+# Effettuare query a livello locale
+
+ L'operazione di *inizializzaReportStatisticiCTT*  viene inizializzata dall' **AmministratoreCCT** nel momento in cui è necessario ottenere dei report sull'andamento del CTT sulla rete. Le query effettuabili sono:
+
+- Visualizzare tutti i dipendenti che lavorano nel CTT
+- Verificare la disponibilità delle sacche
+- Verificare quante e quali sacche sono state inviate
+- Verificare quante e quali sacche sono state ricevute
+- Verificare quali e per quanto tempo le sacche sono rimaste in magazzino
 
 # Aggiungere una nuovo CTT sulla rete
 
@@ -426,6 +437,9 @@ Una volta confermato, tutti i dati relativi al dipendente vengono rimossi dal si
 
         Vengono rimossi tutti i dati relativi a Pietro Neri.
         *************************************************************************************
+# Effettuare query a livello regionale
+  L'operazione di *inizializzaReportStatisticiCCS* viene inizializzata dall' **AmministratoreCCS** nel momento in cui è necessario ottenere dei report 
+  sull'andamento di tutti i CTT presenti sulla rete. Le [query](#Effettuare-query-a-livello-locale) effettuabili corrispondono a quelle presenti in locale ma estese all'intera rete di distribuzione delle sacche di sangue.
 
 # AmministratoreCTT
 
